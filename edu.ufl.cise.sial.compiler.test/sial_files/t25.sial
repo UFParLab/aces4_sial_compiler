@@ -1,0 +1,10 @@
+import "aces_defs.sial"
+sial t25
+index j = 1,bvirt
+index i =  1,evirt
+scalar x
+pardo i,j
+      x = 3
+endpardo i,j
+endsial t25
+

@@ -1,0 +1,14 @@
+import "aces_defs.sial"
+sial t21
+index i = 1,evirt
+scalar x
+scalar y
+if x < y 
+  if x < y
+    if i == 2 
+       x = 3
+    endif
+  endif
+endif
+endsial t21
+

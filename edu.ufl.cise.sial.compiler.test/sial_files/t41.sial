@@ -1,0 +1,21 @@
+import "aces_defs.sial"
+sial t41
+      moaindex a = bavirt, eavirt
+      moaindex i1= baocc, eaocc
+      served t1a_old(a,i1) 
+      distributed Dai(a,i1)
+      scalar etemp
+      scalar esum
+paRDO a, i1  
+#
+	   REQUEST             t1a_old(a,i1) a  
+	   GET                 Dai(a,i1) 
+	   etemp             = t1a_old(a,i1)*Dai(a,i1) 
+	   etemp            *= 0.25
+	   esum             += etemp  
+#
+     ENDPARDO a, i1 
+endsial t41
+
+
+

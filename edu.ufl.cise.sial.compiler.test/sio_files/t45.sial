@@ -1,0 +1,43 @@
+#import "aces_defs"
+sial t45
+
+    aoindex mu     = 1, norb
+      aoindex nu     = 1, norb
+      aoindex lambda = 1, norb
+      aoindex sigma  = 1, norb
+#
+      moaindex i = baocc, eaocc
+      moaindex i1= baocc, eaocc
+
+      moaindex a = bavirt, eavirt
+
+      temp Txxxi(mu,nu,lambda,i)
+      temp Txixi(mu,i1,lambda,i)
+      temp Txxii(mu,nu,i1,i)
+      distributed Vxixi(mu,i1,lambda,i)
+      distributed Vxxii(mu,nu,i1,i)
+
+      served AOINT(mu,nu,lambda,sigma) 
+     PARDO mu, nu, lambda, sigma
+#
+              compute_integrals aoint(mu,nu,lambda,sigma)
+#
+              DO i
+#
+           Txxxi(mu,nu,lambda,i)= AOINT(mu,nu,lambda,sigma)*ca(sigma,i)
+#
+                 DO i1
+                  Txixi(mu,i1,lambda,i)= Txxxi(mu,nu,lambda,i)*ca(nu,i1)
+                    put Vxixi(mu,i1,lambda,i) += Txixi(mu,i1,lambda,i)
+                 ENDDO i1
+#
+                 DO i1
+                  Txxii(mu,nu,i1,i)= Txxxi(mu,nu,lambda,i)*ca(lambda,i1)
+                    put Vxxii(mu,nu,i1,i) += Txxii(mu,nu,i1,i)
+                 ENDDO i1
+#
+              ENDDO i
+#
+     ENDPARDO mu, nu, lambda, sigma
+
+endsial t45

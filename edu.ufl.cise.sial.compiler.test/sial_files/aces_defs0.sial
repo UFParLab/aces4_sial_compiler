@@ -1,0 +1,13 @@
+
+sial aces_defs
+
+#These values are inserted into the sip's symbolic_constant_table.
+predefined constant int norb #total number of atomic orbital segments 
+predefined constant int nocc  # number of occupied molecular orbital segments (no spin)
+predefined constant int nvirt # number of unoccupied or virtual orbital segments (no spin)
+predefined constant int bocc  # begin of occupied orbital segment range (no spin)
+
+
+endsial aces_defs
+
+

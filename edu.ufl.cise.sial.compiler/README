@@ -1,0 +1,35 @@
+This it the GIT for the SIAL compiler sources.  
+
+On the HPC center, this is /home/basbas/compiler.git (or /home/basbas/compiler.git/edu.ufl.cise.sial.compiler)
+On pc-358, this is mirrored in the eclipse workspace in C:\sanders\sial_compiler_git\compiler\edu.ufl.cise.sial.compiler
+
+
+To develop and run on the HPC center, load java 7
+
+module load java
+
+
+From the top directory (the one containing bin  build.xml  lib  README  src) 
+
+
+
+To build the sial compiler (this does not run lpg, just recompiles the java), use the ant builder (similar to make)
+
+ant
+
+Note that the ant script is in the file build.xml and has other targets, such as ant clean
+
+
+
+
+To run the sial compiler from this directory
+
+java -classpath lib/*:bin sial.compiler.SialCompiler  -sp PATH TO SIAL FILES FILE
+
+
+
+
+
+Release notes:
+
+It is possible that the equals and hashcode methods have not been designed perfectly for some of the AST nodes.  

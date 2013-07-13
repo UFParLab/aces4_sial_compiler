@@ -1,0 +1,86 @@
+package sial.parser.Ast;
+
+import lpg.runtime.*;
+
+import org.eclipse.imp.parser.IParser;
+  import sial.parser.context.*;
+  import java.util.Date;
+  import java.util.ArrayList;
+  import java.util.List;
+
+/**
+ *<b>
+ *<li>Rule 88:  Statement ::= execute$ Ident ArgList
+ *</b>
+ */
+public class ExecuteStatement extends ASTNode implements IStatement
+{
+    private Ident _Ident;
+    private ArgList _ArgList;
+
+    public Ident getIdent() { return _Ident; }
+    public ArgList getArgList() { return _ArgList; }
+
+    public ExecuteStatement(IToken leftIToken, IToken rightIToken,
+                            Ident _Ident,
+                            ArgList _ArgList)
+    {
+        super(leftIToken, rightIToken);
+
+        this._Ident = _Ident;
+        ((ASTNode) _Ident).setParent(this);
+        this._ArgList = _ArgList;
+        ((ASTNode) _ArgList).setParent(this);
+        initialize();
+    }
+
+    /**
+     * A list of all children of this node, including the null ones.
+     */
+    public java.util.ArrayList getAllChildren()
+    {
+        java.util.ArrayList list = new java.util.ArrayList();
+        list.add(_Ident);
+        list.add(_ArgList);
+        return list;
+    }
+
+    public boolean equals(Object o)
+    {
+        if (o == this) return true;
+        if (! (o instanceof ExecuteStatement)) return false;
+        if (! super.equals(o)) return false;
+        ExecuteStatement other = (ExecuteStatement) o;
+        if (! _Ident.equals(other._Ident)) return false;
+        if (! _ArgList.equals(other._ArgList)) return false;
+        return true;
+    }
+
+    public int hashCode()
+    {
+        int hash = super.hashCode();
+        hash = hash * 31 + (_Ident.hashCode());
+        hash = hash * 31 + (_ArgList.hashCode());
+        return hash;
+    }
+
+    public void accept(IAstVisitor v)
+    {
+        if (! v.preVisit(this)) return;
+        enter((Visitor) v);
+        v.postVisit(this);
+    }
+
+    public void enter(Visitor v)
+    {
+        boolean checkChildren = v.visit(this);
+        if (checkChildren)
+        {
+            _Ident.accept(v);
+            _ArgList.accept(v);
+        }
+        v.endVisit(this);
+    }
+}
+
+

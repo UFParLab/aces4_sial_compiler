@@ -1,0 +1,4 @@
+sial testStringLiteral
+special print
+execute print "xyz"
+endsial testStringLiteral

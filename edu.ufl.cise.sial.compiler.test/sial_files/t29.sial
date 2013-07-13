@@ -1,0 +1,13 @@
+import "aces_defs.sial"
+sial t29
+index i = 1,evirt
+index j = 1,bvirt
+scalar x
+  do i
+    do j
+      where i != j
+         x = 3
+    enddo j
+  enddo i
+endsial t29
+

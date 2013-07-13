@@ -1,0 +1,13 @@
+sial simpleIndexToScalarPass
+
+index i = 1,30
+index j = 1,40
+index k = 1,60
+temp a(i,j,k)
+
+scalar x
+pardo i,j,k
+x = a(i,j,k)
+endpardo i,j,k
+
+endsial simpleIndexToScalarPass

@@ -1,0 +1,29 @@
+import "aces_defs.sial"
+
+sial t44
+      moaindex p = baocc, eavirt
+      moaindex p1= baocc, eavirt
+      moaindex a = bavirt, eavirt
+      moaindex a1= bavirt, eavirt
+      moaindex a2 = bavirt, eavirt
+      moaindex i = baocc, eaocc
+      moaindex i1= baocc, eaocc
+
+      served VSpipi(p1,i,p,i1)
+      served Viaai(i,a1,a,i1) 
+      served Vaaii(a,a1,i,i1)
+      served Vaaai(a2,a,a1,i)
+     PROC READ_2EL   
+#
+      execute list_to_blocks                VSpipi
+      execute list_to_blocks                Vaaii
+      execute list_to_blocks                Viaai
+      execute list_to_blocks                Vaaai
+      execute read_list_to_blocks
+#
+#    
+#
+     ENDPROC READ_2EL   
+
+endsial t44
+

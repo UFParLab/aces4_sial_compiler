@@ -1,0 +1,13 @@
+import "aces_defs.sial"
+sial t24
+
+index j = 1,bvirt
+subindex k of j
+scalar x
+do j
+   do k in j
+      x = 3
+   enddo k in j
+  enddo j
+endsial t24
+

@@ -1,0 +1,239 @@
+//TODO  fix indirect imports and test various import related feature
+//TODO  modify grammar to allow multiple defs on one line, and initialization of
+//scalars and ints
+package sial.compiler;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import lpg.runtime.IAst;
+import lpg.runtime.IPrsStream;
+import sial.code_gen.CodeGenVisitor;
+import sial.code_gen.SipTable;
+import sial.io.SIADataOutput;
+import sial.io.SIADataOutputStream;
+import sial.io.SIALittleEndianDataOutputStream;
+import sial.parser.SialLexer;
+import sial.parser.SialParser;
+import sial.parser.Ast.ImportProg;
+import sial.parser.Ast.ImportProgList;
+import sial.parser.Ast.Sial;
+import sial.parser.context.TypeCheckVisitor;
+//import sial.utils.SIOReader;
+//import sial.utils.SIOReader.*;
+
+public class SialCompiler {
+	
+	SialCompiler(CommandLineOptions options){
+		this.options = options;
+		astCache = new HashMap<String,Sial>();
+	}
+
+	CommandLineOptions options;
+	public Map<String, Sial> astCache; // maps canonical paths of source files
+										// to ASTs of file contents
+
+	ISialMessageHandler msgHandler = new SystemErrMessageHandler();
+	// IMessageHandler msgHandler = new FileMessageHandler(new File("errors"));
+
+	public static int errs;
+
+	// recursively parses the given file and all imported files.
+	// if an ast is returned without its symbol table being populated,
+	// there is a cyclic import list in the program. The caller
+	// should check this.
+	IAst parseFile(String file, boolean isImported) throws IOException {
+		// does file exist?
+		File f = null;
+		try {
+			f = options.PATH.findFile(file);
+		} catch (FileNotFoundException e) {
+			if (isImported)
+				throw new ImportedFileNotFoundException("Imported file " + file
+						+ " not found", e);
+			else
+				throw new ImportedFileNotFoundException("Source file " + file
+						+ " not found", e);
+		}
+		String canonicalPath = f.getCanonicalPath();  //system-wide unique name for file
+		// check cache. If already there and valid then just return the AST
+		Sial ast = astCache.get(canonicalPath);
+		if (ast != null && ast.after(f.lastModified()))
+			return ast;
+
+		//Need to parse input, setup LPG generated lexer and parser
+		ast = null;
+		SialLexer lexer = null;
+		lexer = new SialLexer(canonicalPath, 1); // this should not raise an exception due to error checking in findFile
+		SialParser parser = new SialParser();
+		parser.reset(lexer.getILexStream());
+		IPrsStream prs = parser.getIPrsStream();
+		prs.setMessageHandler(msgHandler);
+		lexer.lexer(prs); // lex the stream obtain tokens
+		ast = (Sial) parser.parser(); // parse to obtain ast
+		if (ast == null)
+			return null; // no ast, error handled by caller
+
+		// An ast was returned, save it in the cache and initialize its fields
+		astCache.put(canonicalPath, ast);
+		ast.initialize(isImported);
+
+		// parse imported programs and populate their symbol tables
+		ImportProgList imports = ast.getImportProgList();
+		for (int i = 0; i != imports.size(); i++) {
+			ImportProg importedProg = imports.getImportProgAt(i);
+			String importedFileName = options.PATH.findPath(importedProg.getName());
+			Sial importedProgAst = (Sial) parseFile(importedFileName, true);
+			if (importedProgAst == null) {
+				parser.emitError(importedProg, "error parsing imported file "
+						+ importedFileName);
+				continue; // go to next import
+			}
+			if (!importedProgAst.isSymbolTablePopulated()) {
+				parser.emitError(importedProg,
+						"illegal cyclic import dependency");
+				return null; 
+			}
+			// successfully parsed imported file, add info to this ast and symbol table
+			importedProg.setAst(importedProgAst);  
+			String importedProgQualifier = importedProgAst.getProgram().getStartName();
+			ast.getSymbolTable().addImportSymtab(importedProgQualifier,importedProgAst.getSymbolTable());
+		}
+
+		Timer parseTimer = new Timer();
+		// populate symbol table for this ast
+		TypeCheckVisitor topVisitor = new TypeCheckVisitor(parser);
+		ast.accept(topVisitor);
+		parseTimer.printElapsed(options.VERBOSE, "parse time for File: " + file);
+		return ast;
+	}
+
+	// Input: Ast representing program being compiled
+	// Precondition: the symbol table is populated.
+	// Returns: SipTable containing the generated code
+	SipTable generate_code(Sial ast) {
+		Timer codeGenTimer = new Timer();
+		CodeGenVisitor visitor = new CodeGenVisitor(options);
+		ast.accept(visitor);
+		codeGenTimer.printElapsed(options.VERBOSE, "codeGen time");
+		return visitor.getSipTable();
+	}
+
+	public static void main(String[] args) throws IOException {
+		CommandLineOptions options = new CommandLineOptions(args);
+		final String SUFFIX = options.SUFFIX;
+
+		/*
+		 * Gets name from command line and constructs list of files to compile
+		 * If the given name is a directory, the list will contain all files
+		 * with ".sialx" suffix
+		 */
+		File inputFile = options.INPUT_DIR_OR_FILE;
+		File[] files;
+		if (inputFile.isDirectory()) {
+			files = inputFile.listFiles(new FileFilter() {
+				public boolean accept(File candidate) {
+					return  candidate.getName().endsWith(SUFFIX);
+				}
+			});
+			// directory_prefix = input.getName() + File.separator;
+			System.out.println("files " + Arrays.toString(files));
+		} else {
+			files = new File[1];
+			files[0] = inputFile;
+			// directory_prefix = input.getParent() + File.separator;
+		}
+
+		/* Process each file */
+		for (File file : files) {
+			errs = 0;
+			SialCompiler compiler = new SialCompiler(options);
+			Sial ast = null;
+			try {
+				ast = (Sial) compiler.parseFile(file.getName(), false);
+			} catch (ImportedFileNotFoundException e) {
+				compiler.msgHandler.handleFileNotFoundMessage(e.getMessage());
+			} catch (IOException e){
+				compiler.msgHandler.handleFileNotFoundMessage(e.getMessage());
+			}
+
+			/* Check for successful parse and output error messages */
+			if (ast == null) {
+				System.err.println("parsing failed.  ");
+			} else if (!ast.isSymbolTablePopulated()) {
+				System.err.println("illegal cyclic import dependency");
+			} else {
+				Set<String> processedFiles = compiler.astCache.keySet();
+				System.out.println("Parsed files: " + processedFiles);
+			}
+			SystemErrMessageHandler handler = (SystemErrMessageHandler) compiler.msgHandler;
+
+			int errors = handler.getErrorCount();
+			errs = errors;
+			if (errors > 0) {
+				System.err.println(errors
+						+ (errors <= 1 ? " error." : " errors."));
+
+				continue;
+
+			}
+
+			if (!options.NO_GENERATE) {
+				// generate the code
+				SipTable sipTable = compiler.generate_code(ast);
+
+				// set up output file
+				//if not otherwise specified, use same directory as input
+				File outputDir;
+				if (options.OUTPUT_DIR == null){
+					outputDir = file.getCanonicalFile().getParentFile();
+				}else
+					outputDir = options.OUTPUT_DIR;
+				
+				String sourceName = file.getName();
+				assert !sourceName.equals("");
+				int suffixLoc = sourceName.lastIndexOf(options.SUFFIX);
+				String outputFileName = sourceName.substring(0, suffixLoc) + "siox";
+				File outputFile = new File(outputDir, outputFileName);
+				SIADataOutput out = null;
+				// Using a BufferedOutputStream is crucial for reasonable
+				// performance on large source files.
+				BufferedOutputStream fileOutputStream = new BufferedOutputStream(
+						new FileOutputStream(outputFile));
+				if (options.BIG_ENDIAN) {
+					out = new SIADataOutputStream(fileOutputStream);
+				} else {
+					out = new SIALittleEndianDataOutputStream(fileOutputStream);
+				}
+
+				Timer outputTimer = new Timer();
+				// write the sipTable
+				sipTable.write(out);
+				outputTimer.printElapsed(options.VERBOSE, "Output time for file "
+						+ outputFileName);
+
+				System.out.println("Output written to file " + 
+						(options.VERBOSE? outputFile.getAbsolutePath():outputFile.getName()));
+				fileOutputStream.close();
+				if (options.BIG_ENDIAN) {
+					((SIADataOutputStream) out).close();
+				} else {
+					((SIALittleEndianDataOutputStream) out).close();
+				}
+
+			}
+
+		}
+
+	}
+	}
+
+

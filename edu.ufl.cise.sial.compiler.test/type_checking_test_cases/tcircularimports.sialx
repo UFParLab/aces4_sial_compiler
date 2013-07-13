@@ -1,0 +1,5 @@
+import "t3circular_def1.sialx"
+sial tcircularimports
+index a = 1,50
+index b = 1,40
+endsial tcircularimports

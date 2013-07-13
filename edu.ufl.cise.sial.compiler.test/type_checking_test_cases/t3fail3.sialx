@@ -1,0 +1,8 @@
+import "t3_def1.sialx"
+import "t3_def2.sialx"
+import "t3_def3.sialx"
+import "t3_def4.sialx"  #misspelled extension, should be .sialx
+
+sial t3fail3
+distributed c(k,k)
+endsial t3fail3

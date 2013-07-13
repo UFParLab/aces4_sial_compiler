@@ -1,0 +1,15 @@
+import "aces_defs.sial"
+sial t11
+index a = 1,5
+aoindex b = 1,norb
+moindex mo = bvirt,evirt
+moaindex moa = bavirt,eavirt
+mobindex mob = boccorb,eoccorb
+local L1(a,b)
+temp T1(mo,moa)
+distributed D1(mo,moa,mob,b)
+served S1(a,b,moa,mob,mob,b)
+L1(a,b) = 0.0
+endsial t11
+
+

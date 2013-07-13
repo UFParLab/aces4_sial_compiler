@@ -1,0 +1,11 @@
+import "aces_defs.sial"
+sial t9
+scalar x
+scalar y
+x += 33
+x -= 2
+x *= 3
+#y /= 5
+endsial t9
+
+

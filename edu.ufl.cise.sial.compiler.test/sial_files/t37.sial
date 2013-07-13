@@ -1,0 +1,21 @@
+import "aces_defs.sial"
+sial t37
+      scalar ecorrT
+      scalar enew 
+      scalar eold 
+      scalar ecrit 
+      scalar ediff
+      index kiter    = 1, cc_iter 
+      DO KITER 
+         IF ecorrT < eold 
+            ediff = eold - ecorrT 
+            IF ediff < ecrit 
+               exit # kiter 
+            ENDIF
+         ENDIF 
+      enddo kiter  
+endsial t37
+
+
+
+

@@ -1,0 +1,11 @@
+import "aces_defs.sialx"
+
+sial t0
+index i = 1,30
+index j = 30,50
+
+distributed a(i,j)
+
+execute blocks_to_list a
+
+endsial t0

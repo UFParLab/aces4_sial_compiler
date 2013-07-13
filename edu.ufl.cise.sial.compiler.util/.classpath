@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="sial/utils/SIOCompare.java|sial/utils/WriteReadDoubleTest.java|sial/utils/SIOReadInts.java|sial/utils/CompareOptables.java|sial/utils/SymbolicConstantReader.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/edu.ufl.cise.sial.compiler"/>
+	<classpathentry kind="lib" path="/edu.ufl.cise.sial.compiler/lib/guava-13.0.1.jar" sourcepath="/edu.ufl.cise.sial.compiler/lib/guava-13.0.1-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/edu.ufl.cise.sial.compiler/lib/guava-13.0.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/edu.ufl.cise.sial.compiler/lib/lpg-java-runtime-bin-2.0.18.jar" sourcepath="/edu.ufl.cise.sial.compiler/lib/lpg-java-runtime-src-2.0.18.zip"/>
+	<classpathentry kind="output" path="src"/>
+</classpath>
