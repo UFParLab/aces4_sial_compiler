@@ -38,6 +38,7 @@ import sial.parser.Ast.ProcDec;
 import sial.parser.Ast.Program;
 import sial.parser.Ast.ScalarDec;
 import sial.parser.Ast.Sial;
+import sial.parser.Ast.SubIndexDec;
 
 public class ASTUtils implements SialParsersym{
 	private ASTUtils(){}
@@ -207,6 +208,27 @@ public class ASTUtils implements SialParsersym{
 //		}
 //		   return builder.toString();
 //	}
+	
+	public static String getQualifiedName(IDec dec) {
+		StringBuilder sb = new StringBuilder();
+		Sial declaringProgram = ASTUtils.getRoot(dec);
+		if (declaringProgram == null) System.out.println(dec + "has null declaring program");
+		if (declaringProgram.isImported()){  //defined in imported file, prefix name with qualifier, the program name
+			String progName = declaringProgram.getProgram().getStartName();
+			sb.append(progName);
+			sb.append('.');
+		}
+		String name = "";
+		if (dec instanceof ArrayDec) name = ((ArrayDec) dec).getName();
+		else if (dec instanceof IndexDec) name = ((IndexDec) dec).getName();
+		else if (dec instanceof ScalarDec) name = ((ScalarDec) dec).getName();
+		else if (dec instanceof IntDec) name = ((IntDec) dec).getName();
+		else if (dec instanceof SubIndexDec) name = ((SubIndexDec) dec).getName();
+		else assert false: "getQualifiedName does not support type of dec" + dec;
+		sb.append (name);
+//		System.out.println("getQualifiedName: " +declaringProgram.getProgram().getStartName() + "." + name);
+		return sb.toString();
+	}
 	
 	//this removes the quotes, handles escape chars, etc. for String literals
 	public static String getStringVal(ASTNodeToken node){

@@ -44,6 +44,11 @@ public class TestTypeChecking {
 //	public void t1() throws IOException {
 //		runTest("t1","t1imports");
 //	}
+	
+	@Test
+	public void hello_world() throws IOException {
+		runTypeCheckTest("hello_world",0);
+	}
 
 	@Test
 	public void t2imports() throws IOException {

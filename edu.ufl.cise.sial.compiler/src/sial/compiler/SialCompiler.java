@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -95,8 +97,8 @@ public class SialCompiler {
 		ImportProgList imports = ast.getImportProgList();
 		for (int i = 0; i != imports.size(); i++) {
 			ImportProg importedProg = imports.getImportProgAt(i);
-			Path importedFilePath = Paths.get(options.getPATH()
-					.findPath(importedProg.getName()));
+			Path importedFilePath = Paths.get(options.getPATH().findPath(
+					importedProg.getName()));
 			Sial importedProgAst = (Sial) parseFile(importedFilePath, true);
 			if (importedProgAst == null) {
 				parser.emitError(importedProg, "error parsing imported file "
@@ -121,8 +123,8 @@ public class SialCompiler {
 		// populate symbol table for this ast
 		TypeCheckVisitor topVisitor = new TypeCheckVisitor(parser);
 		ast.accept(topVisitor);
-		parseTimer
-				.printElapsed(options.isVERBOSE(), "parse time for File: " + file);
+		parseTimer.printElapsed(options.isVERBOSE(), "parse time for File: "
+				+ file);
 		return ast;
 	}
 
@@ -167,12 +169,16 @@ public class SialCompiler {
 
 		/* Check for successful parse and output error messages */
 		if (ast == null) {
-			if (options.isVERBOSE()) System.err.println(options.getINPUT_FILE() + ": parsing failed.  ");
+			if (options.isVERBOSE())
+				System.err.println(options.getINPUT_FILE()
+						+ ": parsing failed.  ");
 		} else if (!ast.isSymbolTablePopulated()) {
-			System.err.println(options.getINPUT_FILE() +": illegal cyclic import dependency");
+			System.err.println(options.getINPUT_FILE()
+					+ ": illegal cyclic import dependency");
 		} else {
 			Set<String> processedFiles = compiler.astCache.keySet();
-			if(options.isVERBOSE()) System.out.println("Parsed files: " + processedFiles);
+			if (options.isVERBOSE())
+				System.out.println("Parsed files: " + processedFiles);
 		}
 		SystemErrMessageHandler handler = (SystemErrMessageHandler) compiler.msgHandler;
 
@@ -180,53 +186,58 @@ public class SialCompiler {
 		errs = errors;
 		if (errors > 0) {
 			System.err.println(errors + (errors <= 1 ? " error." : " errors."));
+			return;
 		}
 
-		else if (!options.isNO_GENERATE()) {
-			// generate the code
-			SipTable sipTable = compiler.generate_code(ast);
-
-			// set up output file
-			// if not otherwise specified, use same directory as input
-			File outputDir;
-			if (options.getOUTPUT_DIR() == null) {
-				System.out.println("inputPath = " + inputPath);
-				outputDir = inputPath.toAbsolutePath().getParent().toFile();
-			} else{
-				outputDir = options.getOUTPUT_DIR().toFile();
-			}
-			String sourceName = inputPath.getFileName().toString();
-			assert !sourceName.equals("");
-			int suffixLoc = sourceName.lastIndexOf(options.getSUFFIX());
-			String outputFileName = sourceName.substring(0, suffixLoc) + "siox";
-			File outputFile = new File(outputDir, outputFileName);
-			SIADataOutput out = null;
-			// Using a BufferedOutputStream is crucial for reasonable
-			// performance on large source files.
-			BufferedOutputStream fileOutputStream = new BufferedOutputStream(
-					new FileOutputStream(outputFile));
-			if (options.isBIG_ENDIAN()) {
-				out = new SIADataOutputStream(fileOutputStream);
-			} else {
-				out = new SIALittleEndianDataOutputStream(fileOutputStream);
-			}
-
-			Timer outputTimer = new Timer();
-			// write the sipTable
-			System.out.println("writing sip Table "+ out.toString());
-			sipTable.write(out);
-			outputTimer.printElapsed(options.isVERBOSE(), "Output time for file "
-					+ outputFileName);
-
-			if (options.isVERBOSE()) System.out.println( "Output written to file " + outputFile.getAbsolutePath());
-			fileOutputStream.close();
-			if (options.isBIG_ENDIAN()) {
-				((SIADataOutputStream) out).close();
-			} else {
-				((SIALittleEndianDataOutputStream) out).close();
-			}
-
+		if (options.isNO_GENERATE()) {
+			return;
 		}
+		// generate the code
+		SipTable sipTable = compiler.generate_code(ast);
+
+		// set up output file
+		// if not otherwise specified, use same directory as input
+		File outputDir;
+		if (options.getOUTPUT_DIR() == null) {
+			System.out.println("inputPath = " + inputPath);
+			outputDir = inputPath.toAbsolutePath().getParent().toFile();
+		} else {
+			outputDir = options.getOUTPUT_DIR().toFile();
+		}
+		String sourceName = inputPath.getFileName().toString();
+		assert !sourceName.equals("");
+		int suffixLoc = sourceName.lastIndexOf(options.getSUFFIX());
+		String outputFileName = sourceName.substring(0, suffixLoc) + "siox";
+		File outputFile = new File(outputDir, outputFileName);
+		SIADataOutput out = null;
+		// Using a BufferedOutputStream is crucial for reasonable
+		// performance on large source files.
+		BufferedOutputStream fileOutputStream = new BufferedOutputStream(
+				new FileOutputStream(outputFile));
+		if (options.isBIG_ENDIAN()) {
+			out = new SIADataOutputStream(fileOutputStream);
+		} else {
+			out = new SIALittleEndianDataOutputStream(fileOutputStream);
+		}
+
+		Timer outputTimer = new Timer();
+		// write the sipTable
+		System.out.println("writing sip Table ");
+//		System.out.println(sipTable.toString());
+		sipTable.write(out);
+		outputTimer.printElapsed(options.isVERBOSE(), "Output time for file "
+				+ outputFileName);
+
+		if (options.isVERBOSE())
+			System.out.println("Output written to file "
+					+ outputFile.getAbsolutePath());
+		((OutputStream) out).close();
+//		fileOutputStream.close();
+//		if (options.isBIG_ENDIAN()) {
+//			((SIADataOutputStream) out).close();
+//		} else {
+//			((SIALittleEndianDataOutputStream) out).close();
+//		}
 
 	}
 

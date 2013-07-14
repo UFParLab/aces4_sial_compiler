@@ -10,6 +10,7 @@ import com.google.common.collect.HashBiMap;
 
 import sial.code_gen.AcesHacks;
 import sial.code_gen.IndexTable.Entry;
+import sial.io.SIADataInput;
 import sial.io.SIADataOutput;
 import sial.parser.SialParsersym;
 
@@ -488,6 +489,12 @@ public class OpTable {
 		return index;
 		
 	}
+	
+	public int addOptableEntry(Entry e){
+		int index = nOps++;
+		entries.add(e);
+		return index;
+	}
 //	
 //	public int addOptableEntry(int type, int op1ArrayIndex, int op2ArrayIndex, 
 //			   int resultArray, int[] indices, int lineno){
@@ -506,15 +513,17 @@ public class OpTable {
 				}
 		}
 	
-	public static OpTable readOpTable(int nentries, DataInput input) throws IOException{
-		OpTable table = new OpTable();
-		table.read(nentries, input);
-        return table;
-	}
+//	public static OpTable readOpTable(int nentries, DataInput input) throws IOException{
+//		OpTable table = new OpTable();
+//		table.read(nentries, input);
+//        return table;
+//	}
 	
 	// returns a string representation of the op table
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(nOps);
+		sb.append('\n');
 		for (int i = 0; i != nOps; i++) {
 			sb.append(entries.get(i).toString());
 			sb.append('\n');
@@ -524,6 +533,7 @@ public class OpTable {
 
 	public void write(DataOutput output) throws IOException {
 		assert nOps == entries.size();
+		output.writeInt(nOps);
 		for (int i = 0; i != nOps; i++)
 			entries.get(i).write(output);	
 	}
@@ -533,19 +543,12 @@ public class OpTable {
 		if (this == other) return true;
 		if ( !(other instanceof OpTable))return false;
 		OpTable o = (OpTable)other;
-////		return entries.equals(((OpTable)other).entries);
-//		System.out.println("entries.size, o.entries.size" + 
-//				entries.size() + " " + o.entries.size());
 		for (int i = 0; i != entries.size(); i++){
 			if (i >= o.entries.size()){ 
-				System.out.println(entries.get(i));
-				System.out.println("no entry");
 				return false;
 			}
 			boolean isEqual = entries.get(i).equalVals(o.entries.get(i));
 			if (!isEqual){
-				System.out.println(entries.get(i));
-				System.out.println(o.entries.get(i));
 				return false;
 			}
 	
@@ -571,6 +574,17 @@ public class OpTable {
 
 	public sial.code_gen.OpTable.Entry getEntryAt(int i) {
 		return entries.get(i);
+	}
+
+
+		public static OpTable readOpTable(DataInput input) throws IOException{
+			OpTable table = new OpTable();
+			int numOps = input.readInt();
+			for (int i = 0; i < numOps; i++){
+				   Entry entry = Entry.readEntry(input);
+				   table.addOptableEntry(entry);
+				}
+	        return table;
 	}
 
 

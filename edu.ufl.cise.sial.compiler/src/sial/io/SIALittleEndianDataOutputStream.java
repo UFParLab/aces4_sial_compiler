@@ -13,6 +13,7 @@ public class SIALittleEndianDataOutputStream extends
 	public SIALittleEndianDataOutputStream(OutputStream out) {
 		super(out);
 	}
+	
 
 	@Override
 	public void writeString(String s) throws IOException {

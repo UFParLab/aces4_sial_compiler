@@ -48,6 +48,17 @@ public class Header {
 		this.release = SipConstants.release;
 	}
 
+	public Header(int magic2, int version2, int release2, int mx_nindex_table2,
+			int mx_narray_table2, int mx_noptable2, int mx_scalar_table2) {
+		magic = magic2;
+		version = version2;
+		release = release2;
+		mx_nindex_table = mx_nindex_table2;
+		mx_narray_table = mx_narray_table2;
+		mx_noptable = mx_noptable2;
+		mx_scalar_table = mx_scalar_table2;
+	}
+
 	public int getMx_nindex_table() {
 		return mx_nindex_table;
 	}
@@ -83,21 +94,26 @@ public class Header {
 //	}
 
 
-	public void read(DataInput input) throws IOException{
-	magic = input.readInt();
-	version = input.readInt();
-	release = input.readInt();
-	mx_nindex_table = input.readInt();
-	mx_narray_table = input.readInt();
-	mx_noptable = input.readInt();
-	mx_scalar_table = input.readInt();
-	}
-	
 	public static Header readHeader(DataInput input) throws IOException{
-		Header header = new Header();
-		header.read(input);
-		return header;
+		int magic = input.readInt();
+		int version = input.readInt();
+		int release = input.readInt();
+		int mx_nindex_table = input.readInt();
+		int mx_narray_table = input.readInt();
+		int mx_noptable = input.readInt();
+		int mx_scalar_table = input.readInt();
+		return new Header(magic, version, release, mx_nindex_table, mx_narray_table, mx_noptable, mx_scalar_table);
+		
 	}
+//	public void read(DataInput input) throws IOException{
+//
+//	}
+//	
+//	public static Header readHeader(DataInput input) throws IOException{
+//		Header header = new Header();
+//		header.read(input);
+//		return header;
+//	}
 	
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(magic);

@@ -37,6 +37,7 @@ public class ScalarTable {
 	                                 //index in scalar array
 	BiMap<Integer, Integer> intLiteralBiMap;  //maps int literals to 
 	                                 //index in int (or scalar) array
+	static ArrayList<Double> global_scalars;
  
 	ArrayList<Double> scalars; // scalar table
 	ArrayList<Integer> integers; // integer table.  
@@ -52,6 +53,7 @@ public class ScalarTable {
 		intLiteralBiMap = HashBiMap.create();
 		
 		scalars = new ArrayList<Double>();
+		global_scalars = scalars;
 		integers = new ArrayList<Integer>();
 		constants = new ArrayList<Integer>();
 		nScalars = 0;
@@ -61,14 +63,22 @@ public class ScalarTable {
 	
 	public String toString(){  //currently shows only scalars,
 		                       //all ints are symbolic constants
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("[");
+//		int size = scalars.size();
+//		assert size == nScalars : "mismatch between scalars.size() and nScalars";
+//		for (int i = 0; i < size; i++){
+//			sb.append(scalars.get(i) + (i<size-1?",":"")); 
+//		}
+//		sb.append("]");
+//		return sb.toString();	
 		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		int size = scalars.size();
-		assert size == nScalars : "mismatch between scalars.size() and nScalars";
-		for (int i = 0; i < size; i++){
-			sb.append(scalars.get(i) + (i<size-1?",":"")); 
+		sb.append(nScalars);
+		sb.append('\n');
+		for (int i = 0; i < nScalars; i++){
+		   sb.append(scalars.get(i));
+		   sb.append('\n');
 		}
-		sb.append("]");
 		return sb.toString();	
 	}
 	
@@ -150,7 +160,7 @@ return sb.toString();
 	int addConstant(String name){
 		int index = nConstants++;
 		Integer oldVal = intBiMap.put(name, -index);  //insert negative of index
-		System.err.println("in ScalarTable.addConstant " + name + ": oldVal=" + oldVal + "new = " + (-index));
+		assert oldVal == null: "adding duplicate constant name";
 		return index;
 	}
 
@@ -181,9 +191,6 @@ return sb.toString();
 	public void read(int n, DataInput input) throws IOException{
 		for (int i = 0; i != n; i++){
 			double d = input.readDouble();
-//			long l = input.readLong();
-//			double d = Double.longBitsToDouble(l);
-//			System.out.println("long="+l + "double="+d);
 			scalars.add(d);
 			nScalars++;
 		}
@@ -191,27 +198,18 @@ return sb.toString();
 	
 	public void readConstants(SIADataInput input) throws IOException{
 	int nConstantsToRead = input.readInt();
-//	System.out.println(nConstantsToRead);
 		for (int i = 0; i != nConstantsToRead; i++){
-			try{
+
 				String s = input.readString();
-	//			System.out.println(s);
 			addConstant(s);
-	//		addEntry(input.readString());
-			}
-			catch(EOFException e){
-				System.out.println("handler: i="+i);
-				System.out.print("handler: nConstants=");
-				System.out.println(nConstants);
-				throw new RuntimeException(e);
-			}
+
 		}
 	}
 	
 	public void write(DataOutput out) throws IOException{
+		out.writeInt(nScalars);
 		for (int i = 0; i != nScalars; i++){
 			double v = scalars.get(i);
-//			System.out.println(Double.doubleToRawLongBits(v));
 			out.writeDouble(v);
 			}
 	}
@@ -226,20 +224,19 @@ return sb.toString();
 		}
 	}
 	
-	public static ScalarTable readScalarTable(int n, DataInput input) throws IOException{
+	
+	public static ScalarTable readScalarTable(SIADataInput input) throws IOException {
+		int n = input.readInt();
 		ScalarTable scalarTable = new ScalarTable();
 		scalarTable.read(n,input);
+		scalarTable.nScalars = n;
 		return scalarTable;
 	}
 	
-	public static void readConstants(ScalarTable table, SIADataInput input) throws IOException{
-		table.readConstants(input);
-	}
 
 	//Only compares the array of scalars
 	//For now, this is changed to compare within epsilon
 	public  boolean equalVals(Object other){
-
 		if (this == other) return true;
 		if ( !(other instanceof ScalarTable)) return false;
 		ArrayList<Double> scalars1 = ((ScalarTable) other).scalars;
@@ -274,4 +271,6 @@ return sb.toString();
 			}
 		return sb.toString();
 	}
+
+
 }

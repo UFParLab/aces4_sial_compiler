@@ -119,7 +119,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	Sial ast; // for debugging convenience
 	CommandLine options;
 	// local copies of sipTable fields for convenience
-	Header header;
+//	Header header;
 	ArrayTable arrayTable;
 	IndexTable indexTable;
 	ScalarTable scalarTable;
@@ -172,7 +172,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	private void init(SipTable sipTable) {
-		header = sipTable.header;
+//		header = sipTable.header;
 		indexTable = sipTable.getIndexTable();
 		arrayTable = sipTable.getArrayTable();
 		opTable = sipTable.getOpTable();

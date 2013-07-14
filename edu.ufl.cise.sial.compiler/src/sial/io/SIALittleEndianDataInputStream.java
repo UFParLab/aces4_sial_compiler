@@ -18,9 +18,13 @@ public class SIALittleEndianDataInputStream
 	@Override
 	public String readString() throws IOException {
 		int length = inputStream.readInt();
+		if (length == 0) return "*****SCALAR LITERAL****";
 		byte[] bytes = new byte[length];
 		inputStream.readFully(bytes,0,length);
-		return new String(bytes,"US-ASCII");
+		String s = new String(bytes,"US-ASCII");
+//		System.out.println(s);
+		return s;
+//		return new String(bytes,"US-ASCII");
 	}
 
 	@Override
@@ -62,7 +66,10 @@ public class SIALittleEndianDataInputStream
 
 	@Override
 	public int readInt() throws IOException {
-		return inputStream.readInt();
+		int x = inputStream.readInt();
+//		System.out.println(x);
+		return x;
+				//return inputStream.readInt();
 	}
 
 	@Override

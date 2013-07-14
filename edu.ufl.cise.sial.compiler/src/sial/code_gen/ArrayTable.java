@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import sial.io.SIADataInput;
 import sial.io.SIADataOutput;
 import sial.parser.Ast.ArrayDec;
 import sial.parser.Ast.IDec;
 import sial.parser.Ast.ScalarDec;
+import sial.parser.context.ASTUtils;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -162,31 +164,14 @@ public class ArrayTable implements SipConstants {
 			nindex = in.readInt(); // dimension of array
 			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
 							// in SipTypeConstants
-			numblks = in.readInt();
 			int max = AcesHacks.max_array_index;
 			index_array = new int[max]; // each element contains the fortran index
 								// in the index array of the corresponding index
 			for(int i = 0; i != max; i++){
 				index_array[i] = in.readInt();
 			}
-//			index_range1 = new int[max]; // in fortran, this is also index_original
-//			for(int i = 0; i != max; i++){
-//				index_range1[i] = in.readInt();
-//			}
-//			index_range2 = new int[max];
-//			for(int i = 0; i != max; i++){
-//				index_range2[i] = in.readInt();
-//			}
-//			block_map = in.readInt();
 			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
 								// int table
-//			create_flag = in.readInt();
-//			put_flag = in.readInt();
-//			prepare_flag = in.readInt();
-//			current_blkndx = in.readInt();
-//			block_list = in.readInt();
-//			array_stack = in.readInt();
-//			array_status = in.readInt();
 		}
 		
 		void readExpanded(DataInput in) throws IOException {
@@ -223,9 +208,11 @@ public class ArrayTable implements SipConstants {
 		public String toString(){
 			int max = AcesHacks.max_array_index;
 			StringBuilder sb = new StringBuilder();
+			sb.append(max);
+			sb.append('\n');
 			sb.append(nindex); sb.append(',');
 			sb.append(array_type); sb.append(',');
-			sb.append(numblks); sb.append(',');
+//			sb.append(numblks); sb.append(',');
 			
 			sb.append('[');
 			sb.append(index_array[0]);
@@ -360,70 +347,20 @@ public class ArrayTable implements SipConstants {
 			out.writeInt(array_status);
 		} 
 
-
-//		public String toString() {
-//			StringBuilder sb = new StringBuilder();
-//			String typeName = AcesHacks.getTypeName(array_type);
-//			sb.append("nindex=").append(nindex).append(" type=")
-//					.append(typeName).append(" ");
-//			if (nindex > 0) {
-//				for (int i = 0; i != nindex; i++) {
-//					if (i != 0)
-//						sb.append(",");
-//					String indexName = indexTable.indexBiMap.inverse().get(
-//							index_array[i]).getName();
-//					sb.append(indexName);
-//				}
-//			} else {
-//				if (array_type == scalar_value_t) {
-//					String scalarName = scalarTable.scalarBiMap.inverse().get(
-//							scalar_index);
-//					sb.append("scalarName=").append(scalarName).append(" scalar index=").append(scalar_index);
-//				} else { // is an int
-//					String intName = intTable.intBiMap.inverse().get(
-//							scalar_index);
-//					sb.append("intName=").append(intName).append(" int_index=").append(scalar_index);;
-//				}
-//			}
-//			return sb.toString();
-//		}
 	}//end of class entry
 
 	BiMap<IDec, Integer> arrayBiMap; // maps declarations to
 									 // index in array table and vice versa
 	int nvars; // number of entries in the array table
 	ArrayList<Entry> entries;
+	ArrayList<String> symbols; //used only to read .siox file
 
-//	public ArrayTable(IndexTable indexTable, ScalarTable scalarTable) {
-//		arrayBiMap = HashBiMap.create();
-//		nvars = 0;
-//		entries = new ArrayList<Entry>();
-//		this.indexTable = indexTable; // needed only for toString
-////		this.scalarTable = scalarTable; // needed only for toString
-////		this.intTable = intTable; // needed only for toString
-//	}
 
 	public ArrayTable() {
 		entries = new ArrayList<Entry>();
 		arrayBiMap = HashBiMap.create();
 	}
 
-//	public String entryToString(int i) {
-//		StringBuilder sb = new StringBuilder();
-//		String name = arrayBiMap.inverse().get(i);
-//		Entry entry = entries.get(i);
-//		sb.append(i).append(": ").append(name).append(" ").append(entry)
-//				.append('\n');
-//		return sb.toString();
-//	}
-
-//	public String toStringWithLabels() {
-//		StringBuilder sb = new StringBuilder();
-//		for (int i = 0; i != entries.size(); i++) {
-//			sb.append(entryToString(i));
-//		}
-//		return sb.toString();
-//	}
 	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
@@ -446,10 +383,7 @@ public class ArrayTable implements SipConstants {
 
 	}
 
-//	public int getIndex(ArrayDec dec) {
-//		String name = dec.getIdent().toString();
-//		return getIndex(name);
-//	}
+
 
 	public int getFortranIndex(IDec dec) {
 		return getIndex(dec) + 1;
@@ -459,9 +393,7 @@ public class ArrayTable implements SipConstants {
 		return arrayBiMap.get(dec);
 	}
 
-//	public int getFortranIndex(String name) {
-//		return getIndex(name) + 1;
-//	}
+
 
 	public int getNIndex(int i) {
 		return entries.get(i).nindex;
@@ -490,40 +422,24 @@ public class ArrayTable implements SipConstants {
 	
 	int getNvars(){return nvars;}
 
-//	public byte[] toByteArray() {
-//		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//		DataOutputStream dataStream = new DataOutputStream(stream); // maybe
-//																	// need LE
-//																	// here.
-//		for (int i = 0; i != entries.size(); i++) {
-//			Entry entry = entries.get(i);
-//			try {
-//				entry.write(dataStream);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		return stream.toByteArray();
-//	}
-
-	protected void read(int mx_narray_table, DataInput input) throws IOException{
-		for (int i = 0; i != mx_narray_table; i++){
-			entries.add(Entry.readEntry(input));
-		}
-		nvars = mx_narray_table;
-	}
-	public static ArrayTable readArrayTable(int mx_narray_table, DataInput input) throws IOException {
+	public static ArrayTable readArrayTable(DataInput input) throws IOException {
 		ArrayTable arrayTable = new ArrayTable();
-		arrayTable.read(mx_narray_table, input);
+		arrayTable.nvars = input.readInt();
+		for (int i = 0; i != arrayTable.nvars; i++){
+			arrayTable.entries.add(Entry.readEntry(input));
+		}
 		return arrayTable;
 	}
+	
+
 
 	public void write(DataOutput output) throws IOException {
-		for (int i = 0; i < nvars; i++){
+		int size = entries.size();
+		assert (size == nvars): "ArrayTable entries.size= "+size + " nvars=" + nvars;
+		output.writeInt(size);
+		for (int i = 0; i < entries.size(); i++){
 			entries.get(i).write(output);
 		}
-		
 	}
 	
 	//this will be null if index represents a scalar literal
@@ -559,19 +475,45 @@ public class ArrayTable implements SipConstants {
 
 		for (int i = 0; i != nvars; i++){
 			IDec dec =  inverse.get(i);
-			String name = null;
-			if (dec == null){ name = ""; }
-			else if (dec instanceof ArrayDec){
-				name = ((ArrayDec)dec).getName();
+			String name;
+//			if (dec == null){ name = ""; }
+//			else if (dec instanceof ArrayDec){
+//				name = ((ArrayDec)dec).getName();
+//			}
+//			else if (dec instanceof ScalarDec){
+//				name = ((ScalarDec)dec).getName();
+//			}
+//			else { assert false: "Unexpected IDec type in ArrayTable";}
+			if (dec == null){  //scalar literals have a slot in the array table, but no declaration. 
+				//Look up their value and create a name.
+				int scalar_table_index = entries.get(i).scalar_index - 1; //this is a fortran index
+				double scalarValue = ScalarTable.global_scalars.get(scalar_table_index);
+				name = "SCALAR_LITERAL_" + scalarValue;
 			}
-			else if (dec instanceof ScalarDec){
-				name = ((ScalarDec)dec).getName();
-			}
-			else { assert false: "Unexpected IDec type in ArrayTable";}
+			else name = ASTUtils.getQualifiedName(dec);
 		output.writeString(name);	
 		}
 	}
 	
+	public void readSymbols(SIADataInput input) throws IOException  {
+		int nSymbols = input.readInt();
+		symbols = new ArrayList<String>();
+		for (int i = 0; i < nSymbols; ++i){
+		   symbols.add(input.readString());
+		}
+	}
+	
+	public String symbolsFromInputFileToString(){
+		if (symbols == null) return "no array symbols";
+		StringBuilder sb = new StringBuilder();
+		sb.append(symbols.size());
+		sb.append('\n');
+		for(String s: symbols){
+			sb.append(s);
+			sb.append('\n');
+		}
+		return sb.toString();
+	}
 	public String symbolsToString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(nvars);
@@ -594,5 +536,11 @@ public class ArrayTable implements SipConstants {
 		}
 		return sb.toString();
 	}
+
+
+
+
+
+
 
 }
