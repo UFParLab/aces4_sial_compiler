@@ -12,7 +12,10 @@ public class SialToSialX {
 	public static void main(String[] args) throws IOException{
 		//if args[0] is a directory, convert all .sial files in the directory
 		//if args[0] is a file with .sial suffix, convert that file
-		assert args.length > 0: "needs file or directory name on command line" ;
+		if ( args.length ==0){
+			System.out.println("needs file or directory name on command line") ;
+			return;
+		}
 		String name = args[0].trim();
 		File input = new File(name);
 		System.out.println( input.getCanonicalPath());
@@ -56,9 +59,12 @@ public class SialToSialX {
 		
 		//insert import statement
 		String line0 = r.readLine();
-		assert line0!= null: "attempted to process empty file " + name;
-		if (line0.trim() == "#" || line0.trim() == ""){
-			//first line is empty or empty comment, replace with import
+		if(line0 == null){
+			System.out.println("File " + name + " is empty.");
+			return;
+		}
+		if (line0.trim() == "#" || line0.trim() == "" || line0.contains("import")){
+			//first line is empty, has an empty comment, or already contains an import statement.  Replace it.
 			w.append(importString);
 		}
 		else if (line0.toLowerCase().contains("sial")){
@@ -96,14 +102,22 @@ public class SialToSialX {
 		 *       execute sip_barrier X => sip_barrier
 		 *       execute server_barrier => server_barrier
 		 *       execute server_barrier X => server_barrier
+		 *       execute print_scalar X => print_scalar X
 		 *       compute_integrals => execute compute_integrals
 		 */
 	public static void convert(String name, BufferedReader r, BufferedWriter w) throws IOException{
 		 String line = r.readLine();
 
 		 while (line != null){
-			 
-			 if (line.toLowerCase().contains("sip_barrier")){
+			 String lineBeforeComment = null;
+			 if (line.toLowerCase().contains("#")){
+				 int commentPos = line.indexOf("#");
+				 lineBeforeComment = line.substring(0,commentPos);
+			 }
+			 else {
+				 lineBeforeComment = line;
+			 }
+			 if (lineBeforeComment.toLowerCase().contains("sip_barrier") && lineBeforeComment.toLowerCase().contains("execute")){
 				 String command = "sip_barrier";
 				 //find comment if any
 				 int beforeIndex = line.toLowerCase().indexOf("execute");  
@@ -126,7 +140,7 @@ public class SialToSialX {
 				 }
 				 w.newLine();
 			 }
-			 else  if (line.toLowerCase().contains("server_barrier")){
+			 else  if (lineBeforeComment.toLowerCase().contains("server_barrier") && lineBeforeComment.toLowerCase().contains("execute")){
 				 String command = "server_barrier";
 				 //find comment if any
 				 int beforeIndex = line.toLowerCase().indexOf("execute");  
@@ -144,7 +158,13 @@ public class SialToSialX {
 				 }
 				 w.newLine();
 			 }
-			 else if (line.toLowerCase().contains("compute_integrals")){
+			 else if (lineBeforeComment.toLowerCase().contains("print_scalar")&& lineBeforeComment.toLowerCase().contains("execute")){
+				 int executeStart = line.toLowerCase().indexOf("execute");
+					w.append(line.substring(0, executeStart));  //copy part of line before "execute"
+				    w.append(line.substring(executeStart + "execute".length(),line.length()));  //copy part of line after "execute"
+				    w.newLine();
+			 }
+			 else if (lineBeforeComment.toLowerCase().contains("compute_integrals") && !lineBeforeComment.toLowerCase().contains("execute")){
 				 int beforeIndex = line.toLowerCase().indexOf("compute_integrals");  
 				 w.append(line.substring(0,beforeIndex)); //copy initial white space
 				 w.append("execute "); 
@@ -161,5 +181,6 @@ public class SialToSialX {
 
 		
 	}
+	
 
 }

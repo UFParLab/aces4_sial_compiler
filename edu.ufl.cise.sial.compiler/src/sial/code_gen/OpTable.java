@@ -275,7 +275,8 @@ public class OpTable {
 			output.writeInt(op1_array); //2
 			output.writeInt(op2_array); //3
 			output.writeInt(result_array); //4
-			for (int i = 0; i < AcesHacks.max_array_index; i++){
+			for (int i = 0; i < AcesHacks.max_array_index; i++){  //This approach requires the size of this to be fixed, and for the sip to read individual ints
+				                                                   //instead of reading an array
 				output.writeInt(ind[i]);
 			}
 			output.writeInt(user_sub); //also pardo_lock_index;

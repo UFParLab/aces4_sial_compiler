@@ -26,6 +26,7 @@ public class CompareOptables implements SipConstants{
 	 */
 	public static final int MAX_ERRORS_TO_PRINT = 10;
 	public static void main(String[] args) throws IOException {
+		assert false: "This program is not up-to-date";
 		String fileExpected = "sio_files/" + args[0] + ".sio";
 		String fileProduced = "sial_files/" + args[0] + ".siox";
 		DataInput inputExpected = 
