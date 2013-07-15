@@ -1,0 +1,15 @@
+import "aces_defs.sialx"
+sial t16
+scalar x
+scalar y
+if x < y 
+if y > 0.0
+  x = 3
+else
+x = 4
+endif
+else 
+   x += y
+endif
+endsial t16
+

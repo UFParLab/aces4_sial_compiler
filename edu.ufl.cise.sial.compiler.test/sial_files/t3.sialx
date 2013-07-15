@@ -1,0 +1,5 @@
+import "aces_defs.sialx"
+sial t3
+index jatom = 1,natoms
+endsial t3
+

@@ -1,0 +1,9 @@
+import "aces_defs.sialx"
+sial t18
+index i = 1,evirt
+scalar x
+do i
+  x = 3
+enddo i
+endsial t18
+

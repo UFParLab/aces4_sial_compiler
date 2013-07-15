@@ -1,0 +1,23 @@
+import "aces_defs.sialx"
+sial t40
+      scalar x
+      aoindex mu     = 1, norb
+      aoindex nu     = 1, norb
+      aoindex lambda = 1, norb
+      aoindex sigma  = 1, norb
+      moaindex i = baocc, eaocc
+      local Txxxi(mu,nu,lambda,i)
+      temp T1xxxi(mu,nu,lambda,i)
+      temp AOINT(mu,nu,lambda,sigma) 
+     PARDO mu, nu, lambda, i
+Txxxi(mu,nu,lambda, i) = Txxxi(mu,nu,lambda,i) + T1xxxi(mu,nu,lambda,i)
+x = 44.5
+Txxxi(mu,nu,lambda, i) += T1xxxi(mu,nu,lambda,i)
+
+endpardo mu, nu, lambda, i
+ 
+endsial t40
+
+
+
+

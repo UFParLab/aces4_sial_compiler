@@ -1,0 +1,5 @@
+import "aces_defs.sialx"
+sial testStringLiteral
+special print
+execute print "xyz"
+endsial testStringLiteral

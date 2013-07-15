@@ -1,0 +1,16 @@
+import "aces_defs.sialx"
+sial t8
+scalar x
+scalar y
+x = 33.3
+x = 44.4
+x = 33.3 + 1.0
+y = x
+y = x + 1.0
+y = x + y
+y = x - y
+y = x * y
+y = x / y
+x = 55.0
+endsial t8
+

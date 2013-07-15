@@ -1,0 +1,18 @@
+import "aces_defs.sialx"
+sial t30
+index i = 1,evirt
+index j = 1,bvirt
+scalar x
+proc p
+ do i
+    do j
+      where i != j
+         x = 3
+    enddo j
+  enddo i
+endproc  p
+x=4
+call p
+x=5
+endsial t30
+

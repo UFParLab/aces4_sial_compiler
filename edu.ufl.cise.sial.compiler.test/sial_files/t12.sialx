@@ -1,0 +1,8 @@
+import "aces_defs.sialx"
+sial t12
+scalar x
+x = -3
+x = -0.5
+endsial t12
+
+

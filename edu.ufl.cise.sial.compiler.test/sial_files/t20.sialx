@@ -1,0 +1,9 @@
+import "aces_defs.sialx"
+sial t20
+index i = 1,evirt
+scalar x
+if i == 3 
+  x = 3
+endif
+endsial t20
+

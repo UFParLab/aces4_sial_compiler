@@ -1,0 +1,8 @@
+import "aces_defs.sialx"
+sial t6
+scalar x
+x = 33.3
+x = 44.4
+x = 33.3 + 1.0
+endsial t6
+

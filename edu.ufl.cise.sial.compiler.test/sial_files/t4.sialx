@@ -1,0 +1,6 @@
+import "aces_defs.sialx"
+sial t1
+index cciter = 1,nocc
+index ijc = 5,10
+endsial t1
+

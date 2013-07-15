@@ -1,0 +1,13 @@
+import "aces_defs.sialx"
+
+sial t43
+index j20 =1, 20
+index k20 =1, 20
+distributed ax(j20,k20)
+scalar x
+
+create ax
+x = 42
+destroy ax
+
+endsial t43

@@ -1,0 +1,223 @@
+import "aces_defs.sialx"
+sial hardcoded_sipdefs
+# Do not modify this file.  It contains the special instructions in the order
+# that the sip expects.  It was taken from 
+# sip_shared/load_pre_defined_routines_compile_time.f, including commented out 
+# functions
+
+special aceshack_sip_barrier #TODO AcesHack to match current imp binary
+special energy_denominator
+special energy_product
+special energy_reg_denominator
+special energy_reg_product
+special energy_denominator_reg_deriv
+special print_scalar
+special trace_on
+special trace_off
+special dump_block
+special load_balance_on
+special load_balance_off
+special blocks_to_list
+special list_to_blocks
+# special fmult
+special der_int_setup
+special compute_derivative_integrals 
+special aceshack_server_barrier #TODO AcesHack to match current imp binary
+special scont1
+special hcont1
+special dcont2
+special eig
+special eig_inv
+special eig_sr
+special eig_sr_inv
+special copy_fock
+
+special diis_setup
+special compute_diis
+special write_blocks_to_list
+special read_list_to_blocks
+special remove_diagonal
+special return_diagonal
+special fock_denominator
+special set_flags
+special set_flags2
+special der2_comp
+special fock_der
+special overlap_der
+special scontxy
+special hcontxy
+special compute_sderivative_integrals
+special read_hess
+special return_h1
+
+special smon_on
+special smon_off
+special scf_rhf
+special array_copy
+special energy_adenominator
+
+special energy_bdenominator
+
+special energy_abdenominator
+
+special read_grad
+special udenominator
+# special set_index
+special remove_xs
+special remove_xd
+special remove_ds
+special remove_ss
+special remove_dd
+special removeoo_dd
+special removevv_dd
+special remove_sd
+special remove_sx
+special remove_dx
+special copy_ff
+special dump_amp
+# special comp_ovl3c
+special check_dconf
+special dropmo_expand_basis
+special square_root
+special norm_fac
+special return_sval
+special return_diagonal4
+special symm_force_a
+special symm_force_i
+special place_sval
+special place_one
+special place_one2
+special place_one3
+special place_one4
+special place_one5
+special place_one6
+special place_oneb
+special place_one2b
+special place_one3b
+special place_one4b
+special place_one5b
+special place_one6b
+special place_one_dip 
+special place_one_dip_2 
+special place_one_dip_3 
+special place_one_dip_4 
+special place_one_dip_5 
+special place_one_dip_6 
+special place_one_dip_7 
+special place_one_dip_8 
+special place_one_dea 
+special place_one_dea_2 
+special place_one_dea_3 
+special place_one_dea_4 
+special place_one_dea_5 
+special place_one_dea_6 
+special place_one_dea_7 
+special place_one_dea_8 
+special eomroot_print 
+# special smooth
+# special smooth4
+special eig_nonsymm
+special apply_den2
+special apply_den4
+special apply_den4_nodiag
+special energy_tdenominator
+
+special compute_aabb_batch
+special compute_abcd_batch
+special compute_no4c_batch
+special remove_atom_rud1
+special remove_atom_rud2
+special der4_comp
+special set_flags4
+special timestamp
+special c1_print
+special c1b_print
+special c2aa_print
+special c2ab_print
+special c2bb_print
+special pardo_sects
+special get_ijk
+special set_ijk_aaa
+special stripi
+special sum_64ss
+special set_ijk_aab
+special get_my_rank
+special broadcast_array
+special checkpoint
+special get_restart_status
+special commit_checkpoint
+special crash
+
+
+#             ...Watson: XYZ moment integrals
+
+special second_moment
+special nuc_dipole_moment
+
+special return_x
+special return_y
+special return_z
+
+# special return_xx
+# special return_yy
+# special return_zz
+
+# special return_xy
+# special return_xz
+# special return_yz
+
+special print_eom_dens_info
+
+# --------------------------------------------------------------------
+# VFl scf integral routines
+# --------------------------------------------------------------------
+
+special compute_batch1
+special compute_batch2
+special compute_batch3
+special compute_batch4
+special compute_batch5
+special compute_batch6
+special compute_batch7
+special compute_batch8
+
+special compute_ubatch1
+special compute_ubatch2
+special compute_ubatch3
+special compute_ubatch4
+special compute_ubatch5
+special compute_ubatch6
+special compute_ubatch7
+special compute_ubatch8
+
+
+special form_iad
+special form_ibd
+
+# special set_itol
+# special fassign
+
+# --------------------------------------------------------------------
+# VFL Instructions needed to perform 'super' T calculations
+# --------------------------------------------------------------------
+
+# special set_t3blocks_a
+# special set_t3blocks_i
+# special compt3_a
+# special compt3_i
+special prefetch_on
+special prefetch_off
+
+# --------------------------------------------------------------------
+# VFL Instruction needed to perform atomic density guess
+# --------------------------------------------------------------------
+
+special scf_atom 
+
+special return_1st_mom
+special return_2nd_mom
+special eomroot_print_new
+special energy_ty_denominator
+special reorder_energy
+
+endsial hardcoded_sipdefs
