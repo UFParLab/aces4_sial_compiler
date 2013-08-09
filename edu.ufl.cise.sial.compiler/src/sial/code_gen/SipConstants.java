@@ -12,21 +12,63 @@ public final static int
     mobindex_t = 1004,
     index_t = 1005,
     laindex_t = 1006,
-    subindex_t = 1007,
-    served_array_t = 201,
-    static_array_t = 202,
-    distributed_array_t = 203,
-    temp_array_t =  204,
-    scalar_value_t = 205,
-    local_array_t =  206,
-    dummy_array_type = 207,
-    int_value_t = 208; //TODO  check this value, new type
+    subindex_t = 1007//,
+//    served_array_t = 201,
+//    static_array_t = 202,
+//    distributed_array_t = 203,
+//    temp_array_t =  204,
+//    scalar_value_t = 205,
+//    local_array_t =  206,
+//    dummy_array_type = 207,
+//    int_value_t = 208
+    ; //TODO  check this value, new type
+
+
+//bit flags representing constants for new array attributes
+//these can be combined with bitwise or as below
+//individual flags can be tested with bitwise and--
+//   attribute & attr_contiguous is non zero if attribute has attr_contiguous set.
+public static final int
+attr_integer = 0x01, //0x01 ==   1 == "00000001"
+attr_sip_consistent = 0x02,     //0x02 ==   2 == "00000010"
+attr_contiguous =0x04,  //0x04 ==   4 == "00000100"
+attr_auto_allocate = 0x08,  //0x08 ==   8 == "00001000"
+attr_scope_extent = 0x10, //0x10 ==  16 == "00010000"
+attr_predefined = 0x20,  //0x20 ==  32 == "00100000"
+attr_persistent = 0x40,  //0x40 ==  64 == "01000000"
+attr_scalar = 0x80;  //0x80 == 128 == "10000000"
+
+//attributes for existing types
+public final static int
+	served_array_t = attr_sip_consistent, // ==2
+    static_array_t = (attr_contiguous | attr_auto_allocate | attr_predefined | attr_persistent),  //==108
+    distributed_array_t = served_array_t, //==2
+    temp_array_t = (attr_auto_allocate | attr_scope_extent), //== 24
+    scalar_value_t = (attr_contiguous | attr_auto_allocate | attr_scalar), //==140
+    local_array_t = 0, //all defaults give a local_array
+    int_value_t = (attr_integer | scalar_value_t);
+  
     
+    		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //constants in .sio files
 public final static int
     magic = 70707,
     version = 1,
-    release = 0,
+    release = 2,
     wild = 90909;
 
 //mask used by sip to recognize a subindex
@@ -97,5 +139,9 @@ public final static int
 	println_op     = 166,
 	print_index_op = 167,
 	print_scalar_op = 168,
-	last_opcode    = print_scalar_op;
+	assign_scalar_op = 169,
+	assign_block_op = 170,
+	assign_fill_op = 180,
+	assign_transpose_op = 181,
+	last_opcode    = assign_transpose_op;
 }

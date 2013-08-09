@@ -10,12 +10,12 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 106:  RelOp ::= <$op
- *<li>Rule 107:  RelOp ::= >$op
- *<li>Rule 108:  RelOp ::= <=$op
- *<li>Rule 109:  RelOp ::= >=$op
- *<li>Rule 110:  RelOp ::= ==$op
- *<li>Rule 111:  RelOp ::= !=$op
+ *<li>Rule 109:  RelOp ::= <$op
+ *<li>Rule 110:  RelOp ::= >$op
+ *<li>Rule 111:  RelOp ::= <=$op
+ *<li>Rule 112:  RelOp ::= >=$op
+ *<li>Rule 113:  RelOp ::= ==$op
+ *<li>Rule 114:  RelOp ::= !=$op
  *</b>
  */
 public class RelOp extends ASTNodeToken implements IRelOp

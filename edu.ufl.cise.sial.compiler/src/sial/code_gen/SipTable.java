@@ -19,13 +19,19 @@ import sial.io.*;
  *    
  *   toStringFromInputFile  returns a String representation of the object. This applies to an instance that has been initialized with data read
  *   from a .siox file.
+ *   
+ *   Format of .siox file
+ *   <siox> ::= <Header> <IntConstantTable> <IndexTable> <ArrayTable> <OpTable> <ScalarTable>  <SpecialTable> <StringLitTable> 
+ *   
+ *   The definitions of each non-terminal can be found in the corresponding class. <IntConstantTable> is
+ *   currently implemented in ScalarTable
  */
 public class SipTable {
 	Header header;
 	private IndexTable indexTable;
 	private ArrayTable arrayTable;
 	private OpTable opTable;
-	private ScalarTable scalarTable;
+	private ScalarTable scalarTable; //contains constants
 	private SpecialInstructionTable specialInstructionTable;
 	private StringLiteralTable stringLiteralTable;
 	
@@ -59,15 +65,13 @@ public class SipTable {
  */
 	public void write(SIADataOutput output) throws IOException{
 		header.write(output);
+		scalarTable.writeConstants(output);  //TODO change this to intTable.write(output);
 		indexTable.write(output);
 		arrayTable.write(output);
 		opTable.write(output);
 		scalarTable.write(output);
-        scalarTable.writeConstants(output);
 		specialInstructionTable.write(output);
 		stringLiteralTable.write(output);
-		indexTable.writeSymbols(output);
-		arrayTable.writeSymbols(output);
 	}
 	
 	/** Reads data from the given SIAInputStream and uses it to initialize a new SipTable instance.  This can read data
@@ -88,16 +92,16 @@ public class SipTable {
 		OpTable opTable = OpTable.readOpTable(input); 
 		if (verbose) System.out.println("reading scalarTable");
 		ScalarTable scalarTable = ScalarTable.readScalarTable(input); 
-		if (verbose) System.out.println("reading constants");
+		if (verbose) System.out.println("reading constants");  //TODO change to be about int table
 		scalarTable.readConstants(input);
 		if (verbose) System.out.println("reading special instructions");
 		SpecialInstructionTable specialInstructionTable = SpecialInstructionTable.readSpecialInstructionTable(input);
 		if (verbose) System.out.println("reading string literals");
 		StringLiteralTable stringLiteralTable = StringLiteralTable.readStringLiteralTable(input);
-		if (verbose) System.out.println("reading index symbols");
-		indexTable.readSymbols(input);
-		if (verbose) System.out.println("reading array symbols");
-		arrayTable.readSymbols(input);
+//		if (verbose) System.out.println("reading index symbols");
+//		indexTable.readSymbols(input);
+//		if (verbose) System.out.println("reading array symbols");
+//		arrayTable.readSymbols(input);
 		return new SipTable(header, indexTable, arrayTable, opTable, scalarTable, specialInstructionTable, stringLiteralTable);
 	}	
 	
@@ -126,11 +130,11 @@ public class SipTable {
 			"specialInstructionTable == null");
 		sb.append("\nstring literal table:\n");
 		sb.append(stringLiteralTable != null ? stringLiteralTable.toString(): "stringLiteralTable == null");
-        sb.append("\nindex names:\n");
-		sb.append(indexTable != null ? indexTable.symbolsFromInputFileToString(): "no index symbols, indexTable == null");
-		sb.append("\narray names:\n");
-		sb.append(arrayTable != null ? arrayTable.symbolsFromInputFileToString(): "no array symbols, arrayTable == null");
-		sb.append('\n');
+//        sb.append("\nindex names:\n");
+//		sb.append(indexTable != null ? indexTable.symbolsFromInputFileToString(): "no index symbols, indexTable == null");
+//		sb.append("\narray names:\n");
+//		sb.append(arrayTable != null ? arrayTable.symbolsFromInputFileToString(): "no array symbols, arrayTable == null");
+//		sb.append('\n');
 		return sb.toString();
 	}
 
@@ -158,10 +162,10 @@ public class SipTable {
 			"specialInstructionTable == null");
 		sb.append("\nstring literal table:\n");
 		sb.append(stringLiteralTable != null ? stringLiteralTable.toString(): "stringLiteralTable == null");
-        sb.append("\nindex names:\n");
-		sb.append(indexTable != null ? indexTable.symbolsToString(): "no index symbols, indexTable == null");
-		sb.append("\narray names:\n");
-		sb.append(arrayTable != null ? arrayTable.symbolsToString(): "no array symbols, arrayTable == null");
+//        sb.append("\nindex names:\n");
+//		sb.append(indexTable != null ? indexTable.symbolsToString(): "no index symbols, indexTable == null");
+//		sb.append("\narray names:\n");
+//		sb.append(arrayTable != null ? arrayTable.symbolsToString(): "no array symbols, arrayTable == null");
 		sb.append('\n');
 		return sb.toString();
 	}

@@ -1,5 +1,13 @@
-//TODO:  fix to reflect fact that only bseg, eseg, and index_type are nonzero.  
+//TODO:  cleanup to get rid of junk left from aces3
+//TODO:  fix to handle subindices
 
+/* Index table format in .siox file
+     <IndexTable> ::= num_entries (<String> <IndexTableEntry>)*
+     <IndexTableEntry> ::= <bseg> <eseg> <index_type>
+     <bseg> ::= int
+     <eseg> ::= int
+     <index_type> ::= int
+*/
 package sial.code_gen;
 
 import java.io.DataInput;
@@ -131,68 +139,51 @@ public class IndexTable implements SipConstants, SialParsersym {
 		// int subindex_ptr= input.readInt();
 		// }
 
+//		public void write(DataOutput output) throws IOException {
+//			// output.writeInt(0 /*index_size*/);
+//			// output.writeInt(0 /*nsegments*/);
+//			// output.writeInt(0 /*current_seg*/);
+//			output.writeInt(bseg);
+//			output.writeInt(eseg);
+//			output.writeInt(index_type);
+//			// output.writeInt(0 /*next_seg*/);
+//			// output.writeInt(0 /*subindex_ptr*/);
+//		}
 		public void write(DataOutput output) throws IOException {
-			// output.writeInt(0 /*index_size*/);
-			// output.writeInt(0 /*nsegments*/);
-			// output.writeInt(0 /*current_seg*/);
-			output.writeInt(bseg);
-			output.writeInt(eseg);
-			output.writeInt(index_type);
-			// output.writeInt(0 /*next_seg*/);
-			// output.writeInt(0 /*subindex_ptr*/);
-		}
+		output.writeInt(bseg); //value given in sial program, may be symbolic predefined
+		output.writeInt(eseg); //value in sial program, may be symbolic predefined
+		output.writeInt(index_type);
+		// output.writeInt(0 /*subindex_ptr*/);
+	}		
+		
 
-		public void writeExpanded(DataOutput output) throws IOException {
-			output.writeInt(0 /* index_size */);
-			output.writeInt(0 /* nsegments */);
-			output.writeInt(0 /* current_seg */);
-			output.writeInt(bseg);
-			output.writeInt(eseg);
-			output.writeInt(index_type);
-			output.writeInt(0 /* next_seg */);
-			output.writeInt(0 /* subindex_ptr */);
-		}
+//		public void writeExpanded(DataOutput output) throws IOException {
+//			output.writeInt(0 /* index_size */);
+//			output.writeInt(0 /* nsegments */);
+//			output.writeInt(0 /* current_seg */);
+//			output.writeInt(bseg);
+//			output.writeInt(eseg);
+//			output.writeInt(index_type);
+//			output.writeInt(0 /* next_seg */);
+//			output.writeInt(0 /* subindex_ptr */);
+//		}
 
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
-			// sb.append(0 /*index_size*/); sb.append(',');
-			// sb.append(0 /*nsegments*/); sb.append(',');
-			// sb.append(0 /*current_seg*/); sb.append(',');
 			sb.append(bseg);
 			sb.append(',');
 			sb.append(eseg);
 			sb.append(',');
 			sb.append(index_type);
 			// sb.append(',');
-			// sb.append(0 /*next_seg*/); sb.append(',');
 			// sb.append(0 /*subindex_ptr*/);
 			sb.append('\n');
 			return sb.toString();
 		}
 
-		public String toStringExpanded() {
-			StringBuilder sb = new StringBuilder();
-			sb.append(0 /* index_size */);
-			sb.append(',');
-			sb.append(0 /* nsegments */);
-			sb.append(',');
-			sb.append(0 /* current_seg */);
-			sb.append(',');
-			sb.append(bseg);
-			sb.append(',');
-			sb.append(eseg);
-			sb.append(',');
-			sb.append(index_type);
-			sb.append(',');
-			sb.append(0 /* next_seg */);
-			sb.append(',');
-			sb.append(0 /* subindex_ptr */);
-			sb.append('\n');
-			return sb.toString();
-		}
 	} // end of class Entry
 
-	int n_index_table_sip; // next entry in index table, also the current number
+	int num_entries; // next entry in index table, also the current number
 							// of
 							// entries
 	HashBiMap<IDec, Integer> indexBiMap; // maps index dec to location in index
@@ -202,7 +193,7 @@ public class IndexTable implements SipConstants, SialParsersym {
 	List<String> symbols; //list of symbols, only used when reading a .siox file 
 
 	public IndexTable() {
-		n_index_table_sip = 0;
+		num_entries = 0;
 		indexBiMap = HashBiMap.create();
 		entries = new ArrayList<Entry>();
 	}
@@ -210,7 +201,8 @@ public class IndexTable implements SipConstants, SialParsersym {
 	// used for reading from existing sio file
 	public IndexTable(int mx_nindex_table) {
 		entries = new ArrayList<Entry>(mx_nindex_table);
-		n_index_table_sip = 0;
+		num_entries = 0;
+		symbols = new ArrayList<String>();		
 	}
 
 	public Entry readEntry(DataInput input) throws IOException {
@@ -228,21 +220,20 @@ public class IndexTable implements SipConstants, SialParsersym {
 	// returns a string representation of the index table
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(n_index_table_sip);
+		sb.append(num_entries);
 		sb.append('\n');
-		for (int i = 0; i != n_index_table_sip; i++) {
+		for (int i = 0; i != num_entries; ++i) {
 			sb.append(entries.get(i).toString());
+		}
+		if (symbols != null){
+			for (int i = 0; i != num_entries; ++i){
+				sb.append(symbols.get(i));
+				sb.append('\n');
+			}
 		}
 		return sb.toString();
 	}
 
-	// public int getIndex(IndexDec dec) {
-	// return indexBiMap.get(dec);
-	// }
-	//
-	// public int getFortranIndex(IndexDec dec) {
-	// return getIndex(dec) + 1;
-	// }
 
 	public int getIndex(IDec dec) {
 		assert (dec instanceof IndexDec || dec instanceof SubIndexDec) : "internal error:  attempting to get non-index from index table";
@@ -255,43 +246,43 @@ public class IndexTable implements SipConstants, SialParsersym {
 	}
 
 	int addEntry(IDec dec, int beg, int end, int type) {
-		int index = n_index_table_sip++;
+		int index = num_entries++;
 		indexBiMap.put(dec, index);
 		Entry entry = new Entry(beg, end, type);
 		entries.add(entry);
 		return index;
 	}
-
-	public void write(DataOutput output) throws IOException {
-		output.writeInt(n_index_table_sip);
-		for (int i = 0; i != n_index_table_sip; i++) {
+	
+	public void write(SIADataOutput output) throws IOException {
+		output.writeInt(num_entries);
+		BiMap<Integer, IDec> inverse = indexBiMap.inverse();
+		for (int i = 0; i != num_entries; i++) {
+//			String name = ((IndexDec)indexBiMap.inverse().get(i)).getName();
+			IDec dec = inverse.get(i);
+			String name = ASTUtils.getQualifiedName(dec);	
+			output.writeString(name);
 			entries.get(i).write(output);
 		}
 	}
 
 	/*
 	 * reads the index table with n entries from a DataInputStream. This is used
-	 * for debugging and reverse engineering of the original compiler
+	 * for debugging 
 	 */
-	public static IndexTable readIndexTable(DataInput input)
+	public static IndexTable readIndexTable(SIADataInput input)
 			throws IOException {
 		int nentries = input.readInt();
 		IndexTable table = new IndexTable(nentries);
 		for (int i = 0; i < nentries; i++) {
+			String name = input.readString();
+			table.symbols.add(name);
 			Entry entry = read(input);
 			table.entries.add(entry);
-			table.n_index_table_sip++;
+			table.num_entries++;
 		}
 		return table;
 	}
 
-//	public void read(int nentries, DataInput input) throws IOException {
-//		for (int i = 0; i < nentries; i++) {
-//			Entry entry = readEntry(input);
-//			entries.add(entry);
-//			n_index_table_sip++;
-//		}
-//	}
 
 	public boolean equalVals(Object other) {
 		if (this == other)
@@ -299,28 +290,27 @@ public class IndexTable implements SipConstants, SialParsersym {
 		if (!(other instanceof IndexTable))
 			return false;
 		IndexTable o = (IndexTable) other;
-		if (this.n_index_table_sip != o.n_index_table_sip)
+		if (this.num_entries != o.num_entries)
 			return false;
 		return entries.equals(o.entries);
 	}
 
 	public void writeSymbols(SIADataOutput output) throws IOException {
-		output.writeInt(n_index_table_sip);
+		output.writeInt(num_entries);
 		BiMap<Integer, IDec> inverse = indexBiMap.inverse();
-		for (int i = 0; i != n_index_table_sip; i++) {
+		for (int i = 0; i != num_entries; i++) {
 			IDec dec = inverse.get(i);
 			String name = ASTUtils.getQualifiedName(dec);
-//			String name = ((IndexDec) dec).getName();
 			output.writeString(name);
 		}
 	}
 
 	public String symbolsToString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(n_index_table_sip);
+		sb.append(num_entries);
 		sb.append('\n');
 		BiMap<Integer, IDec> inverse = indexBiMap.inverse();
-		for (int i = 0; i != n_index_table_sip; i++) {
+		for (int i = 0; i != num_entries; i++) {
 			IDec dec = inverse.get(i);
 			String name = ASTUtils.getQualifiedName(dec);
 			sb.append(name);
@@ -328,8 +318,6 @@ public class IndexTable implements SipConstants, SialParsersym {
 		}
 		return sb.toString();
 	}
-
-
 
 	public String symbolsFromInputFileToString(){
 		if (symbols == null) return "no index symbols";

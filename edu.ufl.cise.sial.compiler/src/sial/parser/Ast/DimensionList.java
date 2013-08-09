@@ -10,8 +10,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 35:  DimensionList ::= Dimension
- *<li>Rule 36:  DimensionList ::= DimensionList ,$ Dimension
+ *<li>Rule 38:  DimensionList ::= Dimension
+ *<li>Rule 39:  DimensionList ::= DimensionList ,$ Dimension
  *</b>
  */
 public class DimensionList extends AbstractASTNodeList implements IDimensionList

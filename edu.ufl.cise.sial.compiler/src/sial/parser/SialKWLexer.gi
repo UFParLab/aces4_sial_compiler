@@ -72,6 +72,10 @@ print
 println
 print_index
 print_scalar
+sip_consistent
+scoped_extent
+contiguous
+auto_allocate
 
 %End
 
@@ -151,5 +155,10 @@ print_scalar
         | p r i n t         /.$setResult($_print);./	 
         | p r i n t  l n       /.$setResult($_println);./
 		| p r i n t _ i n d e x  /.$setResult($_print_index);./
-		| p r i n t _ s c a l a r 	 /.$setResult($_print_scalar);./				  				 			   											  
+		| p r i n t _ s c a l a r 	 /.$setResult($_print_scalar);./			
+		| s i p _ c o n s i s t e n t	 /.$setResult($_sip_consistent);./
+        | s c o p e d _ e x t e n t	 /.$setResult($_scoped_extent);./
+        | c o n t i g u o u s  /.$setResult($_contiguous);./
+        | a u t o _ a l l o c a t e   /.$setResult($_auto_allocate);./ 			
+												   											  
 %End

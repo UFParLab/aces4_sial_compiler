@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 55:  WhereClause ::= where$ RelationalExpression
+ *<li>Rule 58:  WhereClause ::= where$ RelationalExpression
  *</b>
  */
 public class WhereClause extends ASTNode implements IWhereClause

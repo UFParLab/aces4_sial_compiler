@@ -5,7 +5,7 @@ import lpg.runtime.*;
 public class SialKWLexer extends SialKWLexerprs
 {
     private char[] inputChars;
-    private final int keywordKind[] = new int[58 + 1];
+    private final int keywordKind[] = new int[62 + 1];
 
     public int[] getKeywordKinds() { return keywordKind; }
 
@@ -404,6 +404,26 @@ public class SialKWLexer extends SialKWLexerprs
         // Rule 58:  Keyword ::= p r i n t _ s c a l a r
         //
         keywordKind[58] = (SialParsersym.TK_print_scalar);
+
+        //
+        // Rule 59:  Keyword ::= s i p _ c o n s i s t e n t
+        //
+        keywordKind[59] = (SialParsersym.TK_sip_consistent);
+
+        //
+        // Rule 60:  Keyword ::= s c o p e d _ e x t e n t
+        //
+        keywordKind[60] = (SialParsersym.TK_scoped_extent);
+
+        //
+        // Rule 61:  Keyword ::= c o n t i g u o u s
+        //
+        keywordKind[61] = (SialParsersym.TK_contiguous);
+
+        //
+        // Rule 62:  Keyword ::= a u t o _ a l l o c a t e
+        //
+        keywordKind[62] = (SialParsersym.TK_auto_allocate);
 
         for (int i = 0; i < keywordKind.length; i++)
         {

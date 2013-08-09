@@ -1,3 +1,5 @@
+//TODO cleanup 
+
 package sial.code_gen;
 
 import java.io.DataInput;
@@ -12,10 +14,10 @@ public class Header {
 	int magic; 
 	int version;
 	int release;
-	int mx_nindex_table;
-	int mx_narray_table;
-	int mx_noptable;
-	int mx_scalar_table;	
+//	int mx_nindex_table;
+//	int mx_narray_table;
+//	int mx_noptable;
+//	int mx_scalar_table;	
 	
 //	public Header(int magic, int version, int release, int mx_nindex_table,
 //			int mx_narray_table, int mx_noptable, int mx_scalar_table) {
@@ -48,46 +50,45 @@ public class Header {
 		this.release = SipConstants.release;
 	}
 
-	public Header(int magic2, int version2, int release2, int mx_nindex_table2,
-			int mx_narray_table2, int mx_noptable2, int mx_scalar_table2) {
-		magic = magic2;
-		version = version2;
-		release = release2;
-		mx_nindex_table = mx_nindex_table2;
-		mx_narray_table = mx_narray_table2;
-		mx_noptable = mx_noptable2;
-		mx_scalar_table = mx_scalar_table2;
+	public Header(int magic, int version, int release) {
+		this.magic = magic;
+		this.version = version;
+		this.release = release;
+//		mx_nindex_table = mx_nindex_table2;
+//		mx_narray_table = mx_narray_table2;
+//		mx_noptable = mx_noptable2;
+//		mx_scalar_table = mx_scalar_table2;
 	}
 
-	public int getMx_nindex_table() {
-		return mx_nindex_table;
-	}
+//	public int getMx_nindex_table() {
+//		return mx_nindex_table;
+//	}
 //
 //	public void setMx_nindex_table(int mx_nindex_table) {
 //		this.mx_nindex_table = mx_nindex_table;
 //	}
 //
-	public int getMx_narray_table() {
-		return mx_narray_table;
-	}
+//	public int getMx_narray_table() {
+//		return mx_narray_table;
+//	}
 //
 //	public void setMx_narray_table(int mx_narray_table) {
 //		this.mx_narray_table = mx_narray_table;
 //	}
 //
-	public int getMx_noptable() {
-		return mx_noptable;
-	}
+//	public int getMx_noptable() {
+//		return mx_noptable;
+//	}
 //
 //	public void setMx_noptable(int mx_noptable) {
 //		this.mx_noptable = mx_noptable;
 //	}
 //
 //
-	public int getMx_scalar_table() {
-		return mx_scalar_table;
-	}
-
+//	public int getMx_scalar_table() {
+//		return mx_scalar_table;
+//	}
+//
 
 //	public void setMx_scalar_table(int mx_scalar_table) {
 //		this.mx_scalar_table = mx_scalar_table;
@@ -98,11 +99,11 @@ public class Header {
 		int magic = input.readInt();
 		int version = input.readInt();
 		int release = input.readInt();
-		int mx_nindex_table = input.readInt();
-		int mx_narray_table = input.readInt();
-		int mx_noptable = input.readInt();
-		int mx_scalar_table = input.readInt();
-		return new Header(magic, version, release, mx_nindex_table, mx_narray_table, mx_noptable, mx_scalar_table);
+//		int mx_nindex_table = input.readInt();
+//		int mx_narray_table = input.readInt();
+//		int mx_noptable = input.readInt();
+//		int mx_scalar_table = input.readInt();
+		return new Header(magic, version, release);
 		
 	}
 //	public void read(DataInput input) throws IOException{
@@ -118,17 +119,17 @@ public class Header {
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(magic);
 		out.writeInt(version);
-		out.writeInt(release);
-		out.writeInt(mx_nindex_table);
-		out.writeInt(mx_narray_table);
-		out.writeInt(mx_noptable);
-		out.writeInt(mx_scalar_table);
+		out.writeInt(AcesHacks.max_array_index);
+//		out.writeInt(release);  CANGE THIS TO MAXDIM
+//		out.writeInt(mx_nindex_table);
+//		out.writeInt(mx_narray_table);
+//		out.writeInt(mx_noptable);
+//		out.writeInt(mx_scalar_table);
 	}
 	
 	@Override
 	public String toString(){
-		return magic + "," + version + "," + release + "," + mx_nindex_table + "," + 
-		mx_narray_table + "," + mx_noptable + "," + mx_scalar_table;
+		return magic + "," + version + "," + release; 
 	}
 	
 	/* validates first three entries of header for original .sio format */
@@ -140,13 +141,13 @@ public class Header {
 	}
 
 
-	public void setValues(int n_index_table_sip, int nvars, int nOps,
-			int nScalars) {
-		this.mx_nindex_table = n_index_table_sip;
-		this.mx_narray_table = nvars;
-		this.mx_noptable = nOps;
-		this.mx_scalar_table = nScalars;
-	}
+//	public void setValues(int n_index_table_sip, int nvars, int nOps,
+//			int nScalars) {
+//		this.mx_nindex_table = n_index_table_sip;
+//		this.mx_narray_table = nvars;
+//		this.mx_noptable = nOps;
+//		this.mx_scalar_table = nScalars;
+//	}
 	
 	public boolean equalVals(Object other){
 		if (this == other) return true;
@@ -154,11 +155,8 @@ public class Header {
 	    Header o = (Header)other;
 	    return magic == o.magic && 
 	    		version == o.version && 
-	    		release == o.release && 
-	    		mx_nindex_table == o.mx_nindex_table && 
-	    		mx_narray_table == o.mx_narray_table &&
-	    		mx_noptable == o.mx_noptable &&
-	    		mx_scalar_table == o.mx_scalar_table;
+	    		release == o.release;
+
 	}
 
 

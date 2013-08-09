@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 61:  Statement ::= sip_barrier$ IdentOpt
+ *<li>Rule 64:  Statement ::= sip_barrier$ IdentOpt
  *</b>
  */
 public class SipBarrierStatement extends ASTNode implements IStatement

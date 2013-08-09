@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 122:  Primary ::= INTLIT
+ *<li>Rule 125:  Primary ::= INTLIT
  *</b>
  */
 public class IntLitPrimary extends ASTNodeToken implements IPrimary

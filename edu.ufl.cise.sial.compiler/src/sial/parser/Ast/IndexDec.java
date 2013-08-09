@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 38:  IndexDec ::= Modifiersopt IndexKind Ident =$ Range
+ *<li>Rule 41:  IndexDec ::= Modifiersopt IndexKind Ident =$ Range
  *</b>
  */
 public class IndexDec extends ASTNode implements IIndexDec

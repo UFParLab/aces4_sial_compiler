@@ -10,11 +10,11 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<em>
- *<li>Rule 56:  WhereClauseList ::= $Empty
+ *<li>Rule 59:  WhereClauseList ::= $Empty
  *</em>
  *<p>
  *<b>
- *<li>Rule 57:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
+ *<li>Rule 60:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
  *</b>
  */
 public class WhereClauseList extends ASTNode implements IWhereClauseList

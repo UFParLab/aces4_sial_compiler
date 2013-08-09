@@ -10,8 +10,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 18:  DecList ::= $Empty
- *<li>Rule 19:  DecList ::= DecList Dec EOLs$
+ *<li>Rule 21:  DecList ::= $Empty
+ *<li>Rule 22:  DecList ::= DecList Dec EOLs$
  *</b>
  */
 public class DecList extends AbstractASTNodeList implements IDecList

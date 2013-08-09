@@ -1,4 +1,5 @@
-//TODO  int table not in current runtime.  Can also modify to reflect 
+//TODO  int table not in current runtime.  
+//TODO  cleanup junk left over from ACESIII compiler
 
 package sial.code_gen;
 
@@ -160,21 +161,41 @@ public class ArrayTable implements SipConstants {
 
 		public Entry() {}
 
-		void read(DataInput in) throws IOException {
+//		void read(SIADataInput in) throws IOException {
+//			nindex = in.readInt(); // dimension of array
+//			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
+//							// in SipTypeConstants
+//			int max = AcesHacks.max_array_index;
+//			index_array = new int[max]; // each element contains the fortran index
+//								// in the index array of the corresponding index
+//			for(int i = 0; i != max; i++){
+//				index_array[i] = in.readInt();
+//			}
+//			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
+//								// int table
+//		}
+		
+		
+		//this version reads the aces4 format where only the defined indices are written
+		void read(SIADataInput in) throws IOException {
 			nindex = in.readInt(); // dimension of array
-			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
-							// in SipTypeConstants
+
 			int max = AcesHacks.max_array_index;
 			index_array = new int[max]; // each element contains the fortran index
 								// in the index array of the corresponding index
-			for(int i = 0; i != max; i++){
+			for(int i = 0; i != nindex; i++){
 				index_array[i] = in.readInt();
 			}
+			for (int i = nindex; i != max; i++){
+				index_array[i] = 0;
+			}
+			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
+			// in SipTypeConstants
 			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
 								// int table
 		}
 		
-		void readExpanded(DataInput in) throws IOException {
+		void readExpanded(SIADataInput in) throws IOException {
 			nindex = in.readInt(); // dimension of array
 			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
 							// in SipTypeConstants
@@ -286,40 +307,28 @@ public class ArrayTable implements SipConstants {
 			sb.append(array_status); 
 			return sb.toString();
 		}
-		public static Entry readEntry(DataInput in) throws IOException{
+		public static Entry readEntry(SIADataInput in) throws IOException{
 			Entry entry = new Entry();
 			entry.read(in);
 			return entry;
 		}
 		
-		public static Entry readExpandedEntry(DataInput in) throws IOException{
+		public static Entry readExpandedEntry(SIADataInput in) throws IOException{
 			Entry entry = new Entry();
 			entry.readExpanded(in);
 			return entry;
 		}
-		void write(DataOutput out) throws IOException {
+		void write(SIADataOutput out) throws IOException {
 			out.writeInt(nindex);
-			out.writeInt(array_type);
-//			out.writeInt(numblks);
-			for (int i = 0; i != AcesHacks.max_array_index; i++) {
+			//forloop added for aces4
+			for (int i = 0; i != nindex; i++) {
 				out.writeInt(index_array[i]);
 			}
-//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-//				out.writeInt(index_range1[i]);
-//			}
-//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-//				out.writeInt(index_range2[i]);
-//			}
-//			out.writeInt(block_map);
+			out.writeInt(array_type);
+
 			out.writeInt(scalar_index); // if scalar or int, this is index into
 										// the scalar, int table
-//			out.writeInt(create_flag);
-//			out.writeInt(put_flag);
-//			out.writeInt(prepare_flag);
-//			out.writeInt(current_blkndx);
-//			out.writeInt(block_list);
-//			out.writeInt(array_stack);
-//			out.writeInt(array_status);
+
 		} 
 		
 		void writeExpanded(DataOutput out) throws IOException {
@@ -403,8 +412,9 @@ public class ArrayTable implements SipConstants {
 		return entries.get(i).index_array;
 	}
 
-	int addScalarEntry(IDec dec, int scalarIndex){
-		return addEntry(dec, 0, scalar_value_t, null, scalarIndex);
+	int addScalarEntry(IDec dec, int attributes, int scalarIndex){
+		assert ((attributes & scalar_value_t) == scalar_value_t): "Illegal attribute for scalar entry in array table";
+		return addEntry(dec, 0, attributes, null, scalarIndex);
 	}
 	
 	int addArrayEntry(IDec dec, int arraynindex, int type, int[] indarray) {
@@ -422,7 +432,7 @@ public class ArrayTable implements SipConstants {
 	
 	int getNvars(){return nvars;}
 
-	public static ArrayTable readArrayTable(DataInput input) throws IOException {
+	public static ArrayTable readArrayTable(SIADataInput input) throws IOException {
 		ArrayTable arrayTable = new ArrayTable();
 		arrayTable.nvars = input.readInt();
 		for (int i = 0; i != arrayTable.nvars; i++){
@@ -433,18 +443,23 @@ public class ArrayTable implements SipConstants {
 	
 
 
-	public void write(DataOutput output) throws IOException {
+	public void write(SIADataOutput output) throws IOException {
 		int size = entries.size();
 		assert (size == nvars): "ArrayTable entries.size= "+size + " nvars=" + nvars;
 		output.writeInt(size);
 		for (int i = 0; i < entries.size(); i++){
+			IDec dec = getDec(i);
+			if (dec == null) {output.writeString("scalar literal");}
+			else if (dec instanceof ArrayDec){output.writeString(((ArrayDec)dec).getName());}
+			else if (dec instanceof ScalarDec){output.writeString(((ScalarDec)dec).getName());}
+			else assert false;
 			entries.get(i).write(output);
 		}
 	}
 	
 	//this will be null if index represents a scalar literal
-	public ArrayDec getDec(int index){
-		return (ArrayDec) arrayBiMap.inverse().get(index);
+	public IDec getDec(int index){
+		return  arrayBiMap.inverse().get(index);
 	}
 
 	//precondition:  index of literal is in array table

@@ -10,12 +10,12 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 39:  IndexKind ::= aoindex$ikind
- *<li>Rule 40:  IndexKind ::= moindex$ikind
- *<li>Rule 41:  IndexKind ::= moaindex$ikind
- *<li>Rule 42:  IndexKind ::= mobindex$ikind
- *<li>Rule 43:  IndexKind ::= index$ikind
- *<li>Rule 44:  IndexKind ::= laindex$ikind
+ *<li>Rule 42:  IndexKind ::= aoindex$ikind
+ *<li>Rule 43:  IndexKind ::= moindex$ikind
+ *<li>Rule 44:  IndexKind ::= moaindex$ikind
+ *<li>Rule 45:  IndexKind ::= mobindex$ikind
+ *<li>Rule 46:  IndexKind ::= index$ikind
+ *<li>Rule 47:  IndexKind ::= laindex$ikind
  *</b>
  */
 public class IndexKind extends ASTNodeToken implements IIndexKind

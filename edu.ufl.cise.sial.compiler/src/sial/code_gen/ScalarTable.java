@@ -25,8 +25,8 @@ import com.google.common.collect.HashBiMap;
 
 public class ScalarTable {
 
-	/*This sip data structure is currently an array of doubles.  It will also have 
-	 * an array of int for int type.
+	/*This sip data structure is currently an array of doubles, which includes ints.  
+	 * TODO  Create another way to handle ints.
 	 */
 	
 	BiMap<ScalarDec, Integer> scalarBiMap; // maps scalar names to 
@@ -199,15 +199,16 @@ return sb.toString();
 	public void readConstants(SIADataInput input) throws IOException{
 	int nConstantsToRead = input.readInt();
 		for (int i = 0; i != nConstantsToRead; i++){
-
-				String s = input.readString();
-			addConstant(s);
-
+			int index = input.readInt();
+			String name = input.readString();
+			Integer oldVal = intBiMap.put(name, -index);  //insert negative of index
+			assert oldVal == null;
 		}
 	}
 	
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(nScalars);
+		System.out.println("writing nscalars = " + nScalars);
 		for (int i = 0; i != nScalars; i++){
 			double v = scalars.get(i);
 			out.writeDouble(v);
@@ -220,6 +221,7 @@ return sb.toString();
 		BiMap<Integer, String> inverse = intBiMap.inverse();
 		for (int i = 0; i != nConstants; i++){
 			String name = inverse.get(-i);
+			//output.write(i);
 		    output.writeString(name);	
 		}
 	}

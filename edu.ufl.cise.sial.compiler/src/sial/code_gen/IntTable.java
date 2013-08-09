@@ -117,66 +117,66 @@ public class IntTable {
 		return stream.toByteArray();
 	}
 
-	void setAcesIndexRangeConstants() {
-		intBiMap.put("norb", 0);
-		intBiMap.put("nocc", -1);
-		intBiMap.put("nvirt", -2);
-		intBiMap.put("bocc", -3);
-		intBiMap.put("eocc", -4);
-		intBiMap.put("bvirt", -5);
-		intBiMap.put("evirt", -6);
-		intBiMap.put("naocc", -7);
-		intBiMap.put("nbocc", -8);
-		intBiMap.put("navirt", -9);
-		intBiMap.put("nbvirt", -10);
-		intBiMap.put("baocc", -11);
-		intBiMap.put("bbocc", -12);
-		intBiMap.put("eaocc", -13);
-		intBiMap.put("ebocc", -14);
-		intBiMap.put("bavirt", -15);
-		intBiMap.put("bbvirt", -16);
-		intBiMap.put("eavirt", -17);
-		intBiMap.put("ebvirt", -18);
-		intBiMap.put("noccorb", -19);
-		intBiMap.put("nvirtorb", -20);
-		intBiMap.put("boccorb", -21);
-		intBiMap.put("eoccorb", -22);
-		intBiMap.put("bvirtorb", -23);
-		intBiMap.put("evirtorb", -24);
-		intBiMap.put("naoccorb", -25);
-		intBiMap.put("nboccorb", -26);
-		intBiMap.put("navirtorb", -27);
-		intBiMap.put("nbvirtorb", -28);
-		intBiMap.put("baoccorb", -29);
-		intBiMap.put("bboccorb", -30);
-		intBiMap.put("eaoccorb", -31);
-		intBiMap.put("eboccorb", -32);
-		intBiMap.put("bavirtorb", -33);
-		intBiMap.put("bbvirtorb", -34);
-		intBiMap.put("eavirtorb", -35);
-		intBiMap.put("ebvirtorb", -36);
-		intBiMap.put("cc_iter_cons", -37);
-		intBiMap.put("cc_hist_cons", -38);
-		intBiMap.put("cc_beg_cons", -39);
-		intBiMap.put("scf_iter_cons", -40);
-		intBiMap.put("scf_hist_cons", -41);
-		intBiMap.put("scf_beg_cons", -42);
-		intBiMap.put("natoms_cons", -43);
-		intBiMap.put("itrips_parm", -44);
-		intBiMap.put("itripe_parm", -45);
-		intBiMap.put("ihess1_parm", -46);
-		intBiMap.put("ihess2_parm", -47);
-		intBiMap.put("jhess1_parm", -48);
-		intBiMap.put("jhess2_parm", -49);
-		intBiMap.put("subb_parm", -50);
-		intBiMap.put("sube_parm", -51);
-		intBiMap.put("sip_sub_segsize_parm", -52);
-		intBiMap.put("sip_sub_occ_segsize_parm", -53);
-		intBiMap.put("sip_sub_virt_segsize_parm", -54);
-		intBiMap.put("sip_sub_ao_segsize_parm", -55);
-		
-		//take care of 0th entry in array, which holds "norb"
-		ints.add(0); 
-		nInts++;
-	}
+//	void setAcesIndexRangeConstants() {
+//		intBiMap.put("norb", 0);
+//		intBiMap.put("nocc", -1);
+//		intBiMap.put("nvirt", -2);
+//		intBiMap.put("bocc", -3);
+//		intBiMap.put("eocc", -4);
+//		intBiMap.put("bvirt", -5);
+//		intBiMap.put("evirt", -6);
+//		intBiMap.put("naocc", -7);
+//		intBiMap.put("nbocc", -8);
+//		intBiMap.put("navirt", -9);
+//		intBiMap.put("nbvirt", -10);
+//		intBiMap.put("baocc", -11);
+//		intBiMap.put("bbocc", -12);
+//		intBiMap.put("eaocc", -13);
+//		intBiMap.put("ebocc", -14);
+//		intBiMap.put("bavirt", -15);
+//		intBiMap.put("bbvirt", -16);
+//		intBiMap.put("eavirt", -17);
+//		intBiMap.put("ebvirt", -18);
+//		intBiMap.put("noccorb", -19);
+//		intBiMap.put("nvirtorb", -20);
+//		intBiMap.put("boccorb", -21);
+//		intBiMap.put("eoccorb", -22);
+//		intBiMap.put("bvirtorb", -23);
+//		intBiMap.put("evirtorb", -24);
+//		intBiMap.put("naoccorb", -25);
+//		intBiMap.put("nboccorb", -26);
+//		intBiMap.put("navirtorb", -27);
+//		intBiMap.put("nbvirtorb", -28);
+//		intBiMap.put("baoccorb", -29);
+//		intBiMap.put("bboccorb", -30);
+//		intBiMap.put("eaoccorb", -31);
+//		intBiMap.put("eboccorb", -32);
+//		intBiMap.put("bavirtorb", -33);
+//		intBiMap.put("bbvirtorb", -34);
+//		intBiMap.put("eavirtorb", -35);
+//		intBiMap.put("ebvirtorb", -36);
+//		intBiMap.put("cc_iter_cons", -37);
+//		intBiMap.put("cc_hist_cons", -38);
+//		intBiMap.put("cc_beg_cons", -39);
+//		intBiMap.put("scf_iter_cons", -40);
+//		intBiMap.put("scf_hist_cons", -41);
+//		intBiMap.put("scf_beg_cons", -42);
+//		intBiMap.put("natoms_cons", -43);
+//		intBiMap.put("itrips_parm", -44);
+//		intBiMap.put("itripe_parm", -45);
+//		intBiMap.put("ihess1_parm", -46);
+//		intBiMap.put("ihess2_parm", -47);
+//		intBiMap.put("jhess1_parm", -48);
+//		intBiMap.put("jhess2_parm", -49);
+//		intBiMap.put("subb_parm", -50);
+//		intBiMap.put("sube_parm", -51);
+//		intBiMap.put("sip_sub_segsize_parm", -52);
+//		intBiMap.put("sip_sub_occ_segsize_parm", -53);
+//		intBiMap.put("sip_sub_virt_segsize_parm", -54);
+//		intBiMap.put("sip_sub_ao_segsize_parm", -55);
+//		
+//		//take care of 0th entry in array, which holds "norb"
+//		ints.add(0); 
+//		nInts++;
+//	}
 }

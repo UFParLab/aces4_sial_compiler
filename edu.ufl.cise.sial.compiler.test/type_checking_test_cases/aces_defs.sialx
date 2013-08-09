@@ -4,63 +4,63 @@
 
 sial aces_defs
 
-#These values are inserted into the sip's symbolic_constant_table.
-predefined constant int norb #total number of atomic orbital segments 
-predefined constant int nocc  # number of occupied molecular orbital segments (no spin)
-predefined constant int nvirt # number of unoccupied or virtual orbital segments (no spin)
-predefined constant int bocc  # begin of occupied orbital segment range (no spin)
-predefined constant int eocc  # end occupied orbital segment range (no spin)
-predefined constant int bvirt  # begin of virtual orbital segment range (no spin)
-predefined constant int evirt  # end of virtual orbital segment range (no spin)
-predefined constant int naocc # number of occupied molecular orbital segments (alpha)
-predefined constant int nbocc # number of occupied molecular orbital segments (beta)
-predefined constant int navirt # number of unoccupied or virtual orbital segments (alpha)
-predefined constant int nbvirt # number of unoccupied or virtual orbital segments (beta)
-predefined constant int baocc  # begin of occupied orbital segment range (alpha)
-predefined constant int bbocc  # begin of occupied orbital segment range (beta)
-predefined constant int eaocc  # end occupied orbital segment range (alpha)
-predefined constant int ebocc  # end occupied orbital segment range (beta)
-predefined constant int bavirt  # begin of virtual orbital segment range (alpha)
-predefined constant int bbvirt  # begin of virtual orbital segment range (beta)
-predefined constant int eavirt  # end of virtual orbital segment range (alpha)
-predefined constant int ebvirt  # end of virtual orbital segment range (beta)
-predefined constant int noccorb #  TODO used in any code?
-predefined constant int nvirtorb #  TODO used in code?
-predefined constant int boccorb
-predefined constant int eoccorb
-predefined constant int bvirtorb
-predefined constant int evirtorb
-predefined constant int naoccorb
-predefined constant int nboccorb
-predefined constant int navirtorb
-predefined constant int nbvirtorb
-predefined constant int baoccorb
-predefined constant int bboccorb
-predefined constant int eaoccorb
-predefined constant int eboccorb
-predefined constant int bavirtorb
-predefined constant int bbvirtorb
-predefined constant int eavirtorb
-predefined constant int ebvirtorb
-predefined constant int cc_iter  # value of CC_MAXCYC from ZMAT.  Index = 38
-predefined constant int cc_hist  # value of CC_MAXORDER from ZMAT.
-predefined constant int cc_beg  # Constant equal to 2, there is no ZMAT parameter corresponding to this constant.
-predefined constant int scf_iter #value of SCF_MAXCYC from ZMAT.
-predefined constant int scf_hist #value of SCF_EXPORDE from ZMAT.
-predefined constant int scf_beg #value of SCF_EXPSTAR from ZMAT      
-predefined constant int natoms
-predefined constant int itrips  # Starting occupied orbital to process in the triples codes.
-predefined constant int itripe  # Ending occupied orbital to process in the triples codes.     
-predefined constant int ihess1  # Beginning Hessian component to process.
-predefined constant int ihess2  # Ending Hessian component to process.
-predefined constant int jhess1  # Beginning Hessian component to process.
-predefined constant int jhess2  # Ending Hessian component to process.
-predefined constant int subb  # Beginning sub_index range used in triples codes.
-predefined constant int sube  # Ending sub_index range used in triples codes.      
-predefined constant int sip_sub_segsize
-predefined constant int sip_sub_occ_segsize
-predefined constant int sip_sub_virt_segsize
-predefined constant int sip_sub_ao_segsize      
+#These values are inserted into the sip's symbolic__table.
+predefined  int norb #total number of atomic orbital segments 
+predefined  int nocc  # number of occupied molecular orbital segments (no spin)
+predefined  int nvirt # number of unoccupied or virtual orbital segments (no spin)
+predefined  int bocc  # begin of occupied orbital segment range (no spin)
+predefined  int eocc  # end occupied orbital segment range (no spin)
+predefined  int bvirt  # begin of virtual orbital segment range (no spin)
+predefined  int evirt  # end of virtual orbital segment range (no spin)
+predefined  int naocc # number of occupied molecular orbital segments (alpha)
+predefined  int nbocc # number of occupied molecular orbital segments (beta)
+predefined  int navirt # number of unoccupied or virtual orbital segments (alpha)
+predefined  int nbvirt # number of unoccupied or virtual orbital segments (beta)
+predefined  int baocc  # begin of occupied orbital segment range (alpha)
+predefined  int bbocc  # begin of occupied orbital segment range (beta)
+predefined  int eaocc  # end occupied orbital segment range (alpha)
+predefined  int ebocc  # end occupied orbital segment range (beta)
+predefined  int bavirt  # begin of virtual orbital segment range (alpha)
+predefined  int bbvirt  # begin of virtual orbital segment range (beta)
+predefined  int eavirt  # end of virtual orbital segment range (alpha)
+predefined  int ebvirt  # end of virtual orbital segment range (beta)
+predefined  int noccorb #  TODO used in any code?
+predefined  int nvirtorb #  TODO used in code?
+predefined  int boccorb
+predefined  int eoccorb
+predefined  int bvirtorb
+predefined  int evirtorb
+predefined  int naoccorb
+predefined  int nboccorb
+predefined  int navirtorb
+predefined  int nbvirtorb
+predefined  int baoccorb
+predefined  int bboccorb
+predefined  int eaoccorb
+predefined  int eboccorb
+predefined  int bavirtorb
+predefined  int bbvirtorb
+predefined  int eavirtorb
+predefined  int ebvirtorb
+predefined  int cc_iter  # value of CC_MAXCYC from ZMAT.  Index = 38
+predefined  int cc_hist  # value of CC_MAXORDER from ZMAT.
+predefined  int cc_beg  #  equal to 2, there is no ZMAT parameter corresponding to this .
+predefined  int scf_iter #value of SCF_MAXCYC from ZMAT.
+predefined  int scf_hist #value of SCF_EXPORDE from ZMAT.
+predefined  int scf_beg #value of SCF_EXPSTAR from ZMAT      
+predefined  int natoms
+predefined  int itrips  # Starting occupied orbital to process in the triples codes.
+predefined  int itripe  # Ending occupied orbital to process in the triples codes.     
+predefined  int ihess1  # Beginning Hessian component to process.
+predefined  int ihess2  # Ending Hessian component to process.
+predefined  int jhess1  # Beginning Hessian component to process.
+predefined  int jhess2  # Ending Hessian component to process.
+predefined  int subb  # Beginning sub_index range used in triples codes.
+predefined  int sube  # Ending sub_index range used in triples codes.      
+predefined  int sip_sub_segsize
+predefined  int sip_sub_occ_segsize
+predefined  int sip_sub_virt_segsize
+predefined  int sip_sub_ao_segsize      
 
 
 #these are predefined in the index table         
@@ -70,7 +70,7 @@ mobindex aces_defs_pb = 1, norb
 aoindex aces_defs_mu = 1, norb  
 
 
-#these constants are predefined in the array and scalar tables
+#these s are predefined in the array and scalar tables
 predefined static c(aces_defs_mu,aces_defs_p)  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
 predefined static ca(aces_defs_mu,aces_defs_pa)  # Alpha spin orbital transformation matrix from the SCF, read in from JOBARC. 
 predefined static cb(aces_defs_mu,aces_defs_pb)  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
@@ -97,7 +97,7 @@ predefined scalar scf_conv  # value of SCF_CONV from ZMAT
 predefined static fockrohf_a(aces_defs_mu,aces_defs_mu)
 predefined static fockrohf_b(aces_defs_mu,aces_defs_mu)
 
-predefined scalar stabvalue  #this is used only in guess_scf_uhf_finish.sial.  It is not a constant
+predefined scalar stabvalue  #this is used only in guess_scf_uhf_finish.sial.  It is not a 
 
 predefined scalar eom_tol
 predefined scalar eom_roots

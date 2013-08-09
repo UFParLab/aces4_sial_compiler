@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 128:  Ident ::= IDENTIFIER
+ *<li>Rule 131:  Ident ::= IDENTIFIER
  *</b>
  */
 public class Ident extends ASTNodeToken implements IIdent

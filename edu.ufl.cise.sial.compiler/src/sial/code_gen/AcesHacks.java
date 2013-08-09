@@ -28,7 +28,8 @@ import sial.parser.SialParsersym;
 public class AcesHacks implements SipConstants, SialParsersym{
  
     static{
-    	typeConstants = HashBiMap.create();
+//    	typeConstants = HashBiMap.create();
+    	typeConstants = new HashMap<String,Integer>();
     	initializeTypeConstants();
     	initializeWhereCodes();
     }
@@ -114,7 +115,8 @@ public class AcesHacks implements SipConstants, SialParsersym{
 //    dummy_array_type = 207,
 //    int_value_t = 208; //TODO  check this value, new type
 
-	public static HashBiMap<String,Integer> typeConstants;
+//	public static HashBiMap<String,Integer> typeConstants;
+	public static HashMap<String,Integer> typeConstants;
 	
     static void initializeTypeConstants(){
     	typeConstants.put("aoindex",aoindex_t);
@@ -130,13 +132,19 @@ public class AcesHacks implements SipConstants, SialParsersym{
         typeConstants.put("scalar", scalar_value_t);
         typeConstants.put("temp", temp_array_t);
 		typeConstants.put("local", local_array_t);
-		typeConstants.put("dummy", dummy_array_type);
-		typeConstants.put("int", int_value_t);
+//		typeConstants.put("dummy", dummy_array_type);
+		typeConstants.put("int", attr_integer);
+		typeConstants.put("sip_scope", attr_sip_consistent);
+		typeConstants.put("contiguous", attr_contiguous);
+		typeConstants.put("auto_allocate", attr_auto_allocate);
+		typeConstants.put("scope_extent", attr_scope_extent);
+		typeConstants.put("predefined", attr_predefined);
+		typeConstants.put("persistent", attr_persistent );
     }
     
-    static String getTypeName(int type){
-    	return typeConstants.inverse().get(type);
-    }
+//    static String getTypeName(int type){
+//    	return typeConstants.inverse().get(type);
+//    }
     
     static int getTypeConstant(String name){
     	return typeConstants.get(name.toLowerCase());

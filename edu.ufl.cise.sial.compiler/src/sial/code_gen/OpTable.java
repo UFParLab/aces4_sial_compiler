@@ -280,25 +280,7 @@ public class OpTable {
 				output.writeInt(ind[i]);
 			}
 			output.writeInt(user_sub); //also pardo_lock_index;
-			//output.writeInt(instr_timer);
-			//output.writeInt(opblkndx);
-			//output.writeInt(opblock);
-			//output.writeInt(oploop);
-			//output.writeInt(scalar_op1);  //also pardo_chunk_size;
-			//output.writeInt(scalar_op2);  //also pardo_batch_end;
-			//output.writeInt(scalar_result); //also pardo_next_batch_start;
-			//output.writeInt(pardo_batch);
-			//output.writeInt(pardo_max_batch);
-			//output.writeInt(pardo_signal);
-			//output.writeInt(server_stat_key);
 			output.writeInt(lineno);
-//			output.writeInt(get_counter);
-//			output.writeInt(put_counter);
-//			output.writeInt(putinc_counter);
-//			output.writeInt(prepare_counter);
-//			output.writeInt(preparesum_counter);
-//			output.writeInt(request_counter);
-//			output.writeInt(pardomsg_counter);
 		}
 		
 		void writeExpanded(DataOutput output) throws IOException{
@@ -431,23 +413,30 @@ public class OpTable {
 //		 return index;
 //	}
 //	
-	
-	//Deal with Fortran indices in addOptableEntry methods
 
-	//go_to_op, reeindex_op, get_op
+//In ACES3, most of these routines, added 1 to anything that represented an index into a table.
+//In ACES4, only values visible in sial will be indexed from 1 (index values, but 
+	//not indices in the index array
+
+	//go_to_op, reeindex_op, get_op, print_op
+	//ACES4  go_to_op:  do not increment result_array for go_to_op or print_op
 	public int addOptableEntry(int opcode, int result_array, int[] ind, int lineno) {
 		 int index = nOps++;
 		 assert ind.length <= AcesHacks.max_array_index;
-		 entries.add(new Entry(opcode, result_array+1, ind, lineno));
+		 if (opcode == SipConstants.go_to_op || opcode == SipConstants.print_op || opcode==SipConstants.println_op || opcode==SipConstants.print_scalar_op) 
+			 entries.add(new Entry(opcode, result_array, ind, lineno));
+		 else  entries.add(new Entry(opcode, result_array+1, ind, lineno));
 		 return index;
 	}
 	
 	//assign_op:  assignment with unary rhs, fl-load-value_op
+	//ACES4 do not increment operandIdex or resultIndex.  ind is not used.
 	public int addOptableEntry(int op_code, int operandIndex, int resultIndex, int[] ind, 
 			 int lineno){
 		int index = nOps++;
 		assert ind.length <= AcesHacks.max_array_index;
-		entries.add(new Entry(op_code, operandIndex+1, resultIndex+1, ind, lineno));
+		entries.add(new Entry(op_code, operandIndex, resultIndex, ind, lineno));
+//		entries.add(new Entry(op_code, operandIndex+1, resultIndex+1, ind, lineno));
 		return index;
 	}
 	
@@ -476,17 +465,21 @@ public class OpTable {
 //	}
 	
 	//execute instruction
+	//ACES4  TODO  check this!  
+	//I'm not sure when it is used for an execute instruction
+	//result_array and user_sub start at zero, do not increment
 	public int addOptableEntry(int opcode, int result_array, int[] ind, int user_sub, int lineno){
 		int index = nOps++;
-		entries.add(new Entry(opcode, result_array+1, ind, user_sub+1, lineno));
+		entries.add(new Entry(opcode, result_array, ind, user_sub, lineno));
 		return index;
 	}
 	
 	//execute instruction
+	//ACES4 do not increment op1Index, op22Index, resultIndex, or functionAddr
 	public int addOptableEntry(int opcode, int op1Index, int op2Index,
 			int resultIndex, int[] ind, int functionAddr, int lineno) {
 		int index = nOps++;
-		entries.add(new Entry(opcode, op1Index + 1, op2Index + 1, resultIndex+1, ind, functionAddr+1, lineno));
+		entries.add(new Entry(opcode, op1Index, op2Index, resultIndex, ind, functionAddr, lineno));
 		return index;
 		
 	}
@@ -537,6 +530,7 @@ public class OpTable {
 		output.writeInt(nOps);
 		for (int i = 0; i != nOps; i++)
 			entries.get(i).write(output);	
+		System.out.println(this);
 	}
 
 
@@ -559,8 +553,10 @@ public class OpTable {
 	
 	//backpatch jump instruction if If statement.  
 	// Convert jump=to addressto fortran
+	//ACES4  do not convert address to fortran
 	public void backpatchBranch(int instructionToChange){
-		entries.get(instructionToChange).result_array = nOps + 1;
+//		entries.get(instructionToChange).result_array = nOps + 1;
+		entries.get(instructionToChange).result_array = nOps;
 	}
 	
     boolean firstOpInitialized = false;

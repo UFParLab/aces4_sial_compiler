@@ -344,8 +344,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	/* scalar declaration */
 	@Override
 	public boolean visit(ScalarDec n) {
-		check(!isConstant(n), n,
-				"Scalar symbolic constants are not yet implemented");
+//		check(!isConstant(n), n,
+//				"Scalar symbolic constants are not yet implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
@@ -360,7 +360,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	/* int declaration */
 	@Override
 	public boolean visit(IntDec n) {
-		check(isConstant(n) && isPredefined(n), n,
+		check(isPredefined(n), n,
 				"only constant, predefined ints currently implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
@@ -377,7 +377,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	/* array declaration */
 	@Override
 	public boolean visit(ArrayDec n) {
-		check(!isConstant(n), n, "Constant arrays are not implemented");
+//		check(!isConstant(n), n, "Constant arrays are not implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
@@ -496,6 +496,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	public boolean visit(IdentRangeVal n) {
 		IDec dec = findAndSetDec(n);
 		check(dec instanceof IntDec, n, n.getName() + " not declared");
+		check(ASTUtils.isPredefined(dec), n, n.getName() + " must be predefined");
 		return false;
 	}
 
@@ -1584,14 +1585,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	public void endVisit(ModifierList n) { /* nop */
 	}
 
-	@Override
-	public boolean visit(ConstantModifier n) { /* nothing to check */
-		return false;
-	}
-
-	@Override
-	public void endVisit(ConstantModifier n) { /* nop */
-	}
+//	@Override
+//	public boolean visit(ConstantModifier n) { /* nothing to check */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(ConstantModifier n) { /* nop */
+//	}
 
 	@Override
 	public boolean visit(PredefinedModifier n) { /* nothing to check */

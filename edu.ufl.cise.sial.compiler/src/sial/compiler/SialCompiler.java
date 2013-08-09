@@ -231,13 +231,12 @@ public class SialCompiler {
 		if (options.isVERBOSE())
 			System.out.println("Output written to file "
 					+ outputFile.getAbsolutePath());
-		((OutputStream) out).close();
-//		fileOutputStream.close();
-//		if (options.isBIG_ENDIAN()) {
-//			((SIADataOutputStream) out).close();
-//		} else {
-//			((SIALittleEndianDataOutputStream) out).close();
-//		}
+		fileOutputStream.close();
+		if (options.isBIG_ENDIAN()) {
+			((SIADataOutputStream) out).close();
+		} else {
+			((SIALittleEndianDataOutputStream) out).close();
+		}
 
 	}
 

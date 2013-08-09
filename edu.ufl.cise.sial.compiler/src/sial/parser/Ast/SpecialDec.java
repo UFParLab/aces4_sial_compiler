@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 50:  SpecialDec ::= special$ Ident
+ *<li>Rule 53:  SpecialDec ::= special$ Ident
  *</b>
  */
 public class SpecialDec extends ASTNode implements ISpecialDec

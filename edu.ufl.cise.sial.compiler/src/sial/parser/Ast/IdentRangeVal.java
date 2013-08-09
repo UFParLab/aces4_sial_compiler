@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 48:  RangeVal ::= Ident
+ *<li>Rule 51:  RangeVal ::= Ident
  *</b>
  */
 public class IdentRangeVal extends ASTNodeToken implements IRangeVal

@@ -12,9 +12,12 @@ import org.eclipse.imp.parser.IParser;
  * is always implemented by <b>ASTNodeToken</b>. It is also implemented by:
  *<b>
  *<ul>
- *<li>ConstantModifier
+ *<li>Sip_ConsistentModifier
  *<li>PredefinedModifier
  *<li>PersistentModifier
+ *<li>ScopedExtent
+ *<li>Contiguous
+ *<li>Auto_AllocateModifier
  *<li>ArrayKind
  *<li>IndexKind
  *<li>IntLitRangeVal

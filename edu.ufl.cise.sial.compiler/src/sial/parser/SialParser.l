@@ -311,6 +311,10 @@ Terminals:
     println
     print_index
     print_scalar
+    sip_consistent
+    scoped_extent
+    contiguous
+    auto_allocate
     EOF_TOKEN
     SINGLE_LINE_COMMENT
     IDENTIFIER
@@ -343,120 +347,124 @@ Rules:
 12                    | Modifiers
 13     Modifiers$$Modifier ::= Modifier
 14                 | Modifiers Modifier
-15     Modifier$ConstantModifier ::= constant
+15     Modifier$Sip_ConsistentModifier ::= sip_consistent
 16     Modifier$PredefinedModifier ::= predefined
 17     Modifier$PersistentModifier ::= persistent
-18     DecList$$Dec ::= $Empty
-19               | DecList Dec EOLs $
-20     Dec ::= ScalarDec
-21           | ArrayDec
-22           | IndexDec
-23           | SubIndexDec
-24           | IntDec
-25           | ProcDec
-26           | SpecialDec
-27     ScalarDec ::= Modifiersopt scalar $ Ident
-28     IntDec ::= Modifiersopt int $ Ident
-29     ArrayDec ::= Modifiersopt ArrayKind Ident ( $ DimensionList ) $
-30     ArrayKind$ArrayKind ::= static $akind
-31                 | temp $akind
-32                 | local $akind
-33                 | distributed $akind
-34                 | served $akind
-35     DimensionList$$Dimension ::= Dimension
-36                     | DimensionList , $ Dimension
-37     Dimension ::= Ident
-38     IndexDec ::= Modifiersopt IndexKind Ident = $ Range
-39     IndexKind$IndexKind ::= aoindex $ikind
-40                 | moindex $ikind
-41                 | moaindex $ikind
-42                 | mobindex $ikind
-43                 | index $ikind
-44                 | laindex $ikind
-45     SubIndexDec$SubIndexDec ::= subindex $ Ident of $ Ident $ParentIdent
-46     Range ::= RangeVal $RangeValStart , $ RangeVal $RangeValEnd
-47     RangeVal$IntLitRangeVal ::= INTLIT
-48     RangeVal$IdentRangeVal ::= Ident
-49     ProcDec ::= proc $ Ident EOLs $ StatementList endproc Ident $endIdent
-50     SpecialDec ::= special $ Ident
-51     IdentOpt ::= Ident
-52                | $Empty
-53     StatementList$$Statement ::= $Empty
-54                     | StatementList Statement EOLs $
-55     WhereClause ::= where $ RelationalExpression
-56     WhereClauseList ::= $Empty
-57                       | WhereClauseList WhereClause EOLs $
-58     Statement$CallStatement ::= call $ Ident
-59     Statement$ReturnStatement ::= return $
-60     Statement$ServerBarrierStatement ::= server_barrier $ IdentOpt
-61     Statement$SipBarrierStatement ::= sip_barrier $ IdentOpt
-62     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
-63     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
-64     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
-65     Statement$Section ::= section $ EOLs $ StatementList endsection $
-66     Statement$ExitStatement ::= exit $
-67     Statement$CycleStatement ::= cycle $ Ident
-68     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
-69     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
-70     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
-71     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
-72     Statement$CreateStatement ::= create $ Ident AllocIndexListopt
-73     Statement$DeleteStatement ::= delete $ Ident AllocIndexListopt
-74     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-75     Statement$GetStatement ::= get $ DataBlock
-76     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-77     Statement$RequestStatement ::= request $ DataBlock Ident
-78     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
-79     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
-80     Statement$DestroyStatement ::= destroy $ Ident
-81     Statement$PrintlnStatement ::= println $ STRINGLIT
-82     Statement$PrintStatement ::= print $ STRINGLIT
-83     Statement$PrintIndexStatement ::= print_index $ Ident
-84     Statement$PrintScalarStatement ::= print_scalar $ Ident
-85     Arg ::= Primary
-86     ArgList$$Arg ::= $Empty
-87               | ArgList Arg
-88     Statement$ExecuteStatement ::= execute $ Ident ArgList
-89     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
-90     AssignOp$AssignOpEqual ::= =
-91     AssignOp$AssignOpPlus ::= +=
-92     AssignOp$AssignOpMinus ::= -=
-93     AssignOp$AssignOpStar ::= *=
-94     ScalarOrBlockVar ::= Ident
-95                        | DataBlock
-96     DataBlock ::= Ident ( $ Indices ) $
-97     Indices$$Ident ::= Ident
-98               | Indices , $ Ident
-99     AllocIndex$AllocIndexIdent ::= Ident
-100    AllocIndex$AllocIndexWildCard ::= * $
-101    AllocIndexList$$AllocIndex ::= AllocIndex
-102                     | AllocIndexList , $ AllocIndex
-103    AllocIndexListopt ::= $Empty
-104                        | ( AllocIndexList )
-105    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
-106    RelOp$RelOp ::= < $op
-107            | > $op
-108            | <= $op
-109            | >= $op
-110            | == $op
-111            | != $op
-112    Expression ::= UnaryExpression $UnaryExpression
-113                 | BinaryExpression $BinaryExpression
-114    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
-115    BinOp$BinOpStar ::= *
-116    BinOp$BinOpDiv ::= /
-117    BinOp$BinOpPlus ::= +
-118    BinOp$BinOpMinus ::= -
-119    BinOp$BinOpTensor ::= ^
-120    UnaryExpression ::= Primary
-121    UnaryExpression$NegatedUnary ::= - $ Primary
-122    Primary$IntLitPrimary ::= INTLIT
-123    Primary$DoubleLitPrimary ::= DOUBLELIT
-124    Primary$IdentPrimary ::= Ident
-125    Primary$DataBlockPrimary ::= DataBlock
-126    Primary$StringLitPrimary ::= StringLiteral
-127    StringLiteral ::= STRINGLIT
-128    Ident ::= IDENTIFIER
+18     Modifier$ScopedExtent ::= scoped_extent
+19     Modifier$Contiguous ::= contiguous
+20     Modifier$Auto_AllocateModifier ::= auto_allocate
+21     DecList$$Dec ::= $Empty
+22               | DecList Dec EOLs $
+23     Dec ::= ScalarDec
+24           | ArrayDec
+25           | IndexDec
+26           | SubIndexDec
+27           | IntDec
+28           | ProcDec
+29           | SpecialDec
+30     ScalarDec ::= Modifiersopt scalar $ Ident
+31     IntDec ::= Modifiersopt int $ Ident
+32     ArrayDec ::= Modifiersopt ArrayKind Ident ( $ DimensionList ) $
+33     ArrayKind$ArrayKind ::= static $akind
+34                 | temp $akind
+35                 | local $akind
+36                 | distributed $akind
+37                 | served $akind
+38     DimensionList$$Dimension ::= Dimension
+39                     | DimensionList , $ Dimension
+40     Dimension ::= Ident
+41     IndexDec ::= Modifiersopt IndexKind Ident = $ Range
+42     IndexKind$IndexKind ::= aoindex $ikind
+43                 | moindex $ikind
+44                 | moaindex $ikind
+45                 | mobindex $ikind
+46                 | index $ikind
+47                 | laindex $ikind
+48     SubIndexDec$SubIndexDec ::= subindex $ Ident of $ Ident $ParentIdent
+49     Range ::= RangeVal $RangeValStart , $ RangeVal $RangeValEnd
+50     RangeVal$IntLitRangeVal ::= INTLIT
+51     RangeVal$IdentRangeVal ::= Ident
+52     ProcDec ::= proc $ Ident EOLs $ StatementList endproc Ident $endIdent
+53     SpecialDec ::= special $ Ident
+54     IdentOpt ::= Ident
+55                | $Empty
+56     StatementList$$Statement ::= $Empty
+57                     | StatementList Statement EOLs $
+58     WhereClause ::= where $ RelationalExpression
+59     WhereClauseList ::= $Empty
+60                       | WhereClauseList WhereClause EOLs $
+61     Statement$CallStatement ::= call $ Ident
+62     Statement$ReturnStatement ::= return $
+63     Statement$ServerBarrierStatement ::= server_barrier $ IdentOpt
+64     Statement$SipBarrierStatement ::= sip_barrier $ IdentOpt
+65     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
+66     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
+67     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
+68     Statement$Section ::= section $ EOLs $ StatementList endsection $
+69     Statement$ExitStatement ::= exit $
+70     Statement$CycleStatement ::= cycle $ Ident
+71     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
+72     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
+73     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
+74     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
+75     Statement$CreateStatement ::= create $ Ident AllocIndexListopt
+76     Statement$DeleteStatement ::= delete $ Ident AllocIndexListopt
+77     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+78     Statement$GetStatement ::= get $ DataBlock
+79     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+80     Statement$RequestStatement ::= request $ DataBlock Ident
+81     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
+82     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
+83     Statement$DestroyStatement ::= destroy $ Ident
+84     Statement$PrintlnStatement ::= println $ STRINGLIT
+85     Statement$PrintStatement ::= print $ STRINGLIT
+86     Statement$PrintIndexStatement ::= print_index $ Ident
+87     Statement$PrintScalarStatement ::= print_scalar $ Ident
+88     Arg ::= Primary
+89     ArgList$$Arg ::= $Empty
+90               | ArgList Arg
+91     Statement$ExecuteStatement ::= execute $ Ident ArgList
+92     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
+93     AssignOp$AssignOpEqual ::= =
+94     AssignOp$AssignOpPlus ::= +=
+95     AssignOp$AssignOpMinus ::= -=
+96     AssignOp$AssignOpStar ::= *=
+97     ScalarOrBlockVar ::= Ident
+98                        | DataBlock
+99     DataBlock ::= Ident ( $ Indices ) $
+100    Indices$$Ident ::= Ident
+101              | Indices , $ Ident
+102    AllocIndex$AllocIndexIdent ::= Ident
+103    AllocIndex$AllocIndexWildCard ::= * $
+104    AllocIndexList$$AllocIndex ::= AllocIndex
+105                     | AllocIndexList , $ AllocIndex
+106    AllocIndexListopt ::= $Empty
+107                        | ( AllocIndexList )
+108    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
+109    RelOp$RelOp ::= < $op
+110            | > $op
+111            | <= $op
+112            | >= $op
+113            | == $op
+114            | != $op
+115    Expression ::= UnaryExpression $UnaryExpression
+116                 | BinaryExpression $BinaryExpression
+117    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
+118    BinOp$BinOpStar ::= *
+119    BinOp$BinOpDiv ::= /
+120    BinOp$BinOpPlus ::= +
+121    BinOp$BinOpMinus ::= -
+122    BinOp$BinOpTensor ::= ^
+123    UnaryExpression ::= Primary
+124    UnaryExpression$NegatedUnary ::= - $ Primary
+125    Primary$IntLitPrimary ::= INTLIT
+126    Primary$DoubleLitPrimary ::= DOUBLELIT
+127    Primary$IdentPrimary ::= Ident
+128    Primary$DataBlockPrimary ::= DataBlock
+129    Primary$StringLitPrimary ::= StringLiteral
+130    StringLiteral ::= STRINGLIT
+131    Ident ::= IDENTIFIER
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:67:1:67:8:621:628: Informative: The terminal constant is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:68:1:68:9:631:639: Informative: The terminal configure is useless.
 
 
@@ -542,6 +550,10 @@ print ::= print
 println ::= println
 print_index ::= print_index
 print_scalar ::= print_scalar
+sip_consistent ::= sip_consistent
+scoped_extent ::= scoped_extent
+contiguous ::= contiguous
+auto_allocate ::= auto_allocate
 EOF_TOKEN ::= EOF_TOKEN
 SINGLE_LINE_COMMENT ::= SINGLE_LINE_COMMENT
 IDENTIFIER ::= IDENTIFIER

@@ -123,10 +123,12 @@
 	Modifiers$$Modifier ::= Modifier
                           | Modifiers Modifier
 
-    Modifier$ConstantModifier ::= 'constant'
+    Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
     Modifier$PredefinedModifier ::= 'predefined'
     Modifier$PersistentModifier ::= 'persistent'
-	
+	Modifier$ScopedExtent ::= 'scoped_extent'
+	Modifier$Contiguous ::= 'contiguous'
+	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
 
 	 
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
@@ -323,7 +325,7 @@
     Statement$PrintlnStatement ::= println$ STRINGLIT
 	Statement$PrintStatement ::= print$ STRINGLIT
 	Statement$PrintIndexStatement ::= print_index$ Ident
-    Statement$PrintScalarStatement::= print_scalar$ Ident
+    Statement$PrintScalarStatement::= print_scalar$ Ident --TODO rework this to take a unary expression
 	
 	Arg ::= Primary  
 	ArgList$$Arg ::=  %empty | ArgList Arg

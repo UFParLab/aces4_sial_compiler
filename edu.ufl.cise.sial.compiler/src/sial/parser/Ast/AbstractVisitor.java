@@ -34,14 +34,23 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ModifierList n) { unimplementedVisitor("visit(ModifierList)"); return true; }
     public void endVisit(ModifierList n) { unimplementedVisitor("endVisit(ModifierList)"); }
 
-    public boolean visit(ConstantModifier n) { unimplementedVisitor("visit(ConstantModifier)"); return true; }
-    public void endVisit(ConstantModifier n) { unimplementedVisitor("endVisit(ConstantModifier)"); }
+    public boolean visit(Sip_ConsistentModifier n) { unimplementedVisitor("visit(Sip_ConsistentModifier)"); return true; }
+    public void endVisit(Sip_ConsistentModifier n) { unimplementedVisitor("endVisit(Sip_ConsistentModifier)"); }
 
     public boolean visit(PredefinedModifier n) { unimplementedVisitor("visit(PredefinedModifier)"); return true; }
     public void endVisit(PredefinedModifier n) { unimplementedVisitor("endVisit(PredefinedModifier)"); }
 
     public boolean visit(PersistentModifier n) { unimplementedVisitor("visit(PersistentModifier)"); return true; }
     public void endVisit(PersistentModifier n) { unimplementedVisitor("endVisit(PersistentModifier)"); }
+
+    public boolean visit(ScopedExtent n) { unimplementedVisitor("visit(ScopedExtent)"); return true; }
+    public void endVisit(ScopedExtent n) { unimplementedVisitor("endVisit(ScopedExtent)"); }
+
+    public boolean visit(Contiguous n) { unimplementedVisitor("visit(Contiguous)"); return true; }
+    public void endVisit(Contiguous n) { unimplementedVisitor("endVisit(Contiguous)"); }
+
+    public boolean visit(Auto_AllocateModifier n) { unimplementedVisitor("visit(Auto_AllocateModifier)"); return true; }
+    public void endVisit(Auto_AllocateModifier n) { unimplementedVisitor("endVisit(Auto_AllocateModifier)"); }
 
     public boolean visit(DecList n) { unimplementedVisitor("visit(DecList)"); return true; }
     public void endVisit(DecList n) { unimplementedVisitor("endVisit(DecList)"); }
@@ -271,9 +280,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) return visit((ImportProgList) n);
         else if (n instanceof ImportProg) return visit((ImportProg) n);
         else if (n instanceof ModifierList) return visit((ModifierList) n);
-        else if (n instanceof ConstantModifier) return visit((ConstantModifier) n);
+        else if (n instanceof Sip_ConsistentModifier) return visit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) return visit((PredefinedModifier) n);
         else if (n instanceof PersistentModifier) return visit((PersistentModifier) n);
+        else if (n instanceof ScopedExtent) return visit((ScopedExtent) n);
+        else if (n instanceof Contiguous) return visit((Contiguous) n);
+        else if (n instanceof Auto_AllocateModifier) return visit((Auto_AllocateModifier) n);
         else if (n instanceof DecList) return visit((DecList) n);
         else if (n instanceof ScalarDec) return visit((ScalarDec) n);
         else if (n instanceof IntDec) return visit((IntDec) n);
@@ -357,9 +369,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) endVisit((ImportProgList) n);
         else if (n instanceof ImportProg) endVisit((ImportProg) n);
         else if (n instanceof ModifierList) endVisit((ModifierList) n);
-        else if (n instanceof ConstantModifier) endVisit((ConstantModifier) n);
+        else if (n instanceof Sip_ConsistentModifier) endVisit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) endVisit((PredefinedModifier) n);
         else if (n instanceof PersistentModifier) endVisit((PersistentModifier) n);
+        else if (n instanceof ScopedExtent) endVisit((ScopedExtent) n);
+        else if (n instanceof Contiguous) endVisit((Contiguous) n);
+        else if (n instanceof Auto_AllocateModifier) endVisit((Auto_AllocateModifier) n);
         else if (n instanceof DecList) endVisit((DecList) n);
         else if (n instanceof ScalarDec) endVisit((ScalarDec) n);
         else if (n instanceof IntDec) endVisit((IntDec) n);

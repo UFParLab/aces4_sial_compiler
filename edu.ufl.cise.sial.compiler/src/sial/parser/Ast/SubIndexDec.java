@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 45:  SubIndexDec ::= subindex$ Ident of$ Ident$ParentIdent
+ *<li>Rule 48:  SubIndexDec ::= subindex$ Ident of$ Ident$ParentIdent
  *</b>
  */
 public class SubIndexDec extends ASTNode implements ISubIndexDec
