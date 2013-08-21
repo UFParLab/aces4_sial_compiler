@@ -158,6 +158,7 @@ public class AcesHacks implements SipConstants, SialParsersym{
 	//note that these values will be incremented 
 	//by the addOptableEntry routine so are
 	//one less than the constants used in the sip
+	//ACES4--keeping same values, but they will not be incremented.
 	private static void initializeWhereCodes() {
 		whereCodes = new HashMap<Integer,Integer>();
 		whereCodes.put(TK_EQ,0);

@@ -170,6 +170,7 @@ public class OpTable {
 		Entry(int opcode, int operand_array, int result_array,  int[] ind, int lineno){
 			this.opcode = opcode;
 			this.op1_array = operand_array;
+			this.op2_array = -1;
 			this.result_array = result_array;
 			this.ind = ind;
 			this.lineno = lineno;
@@ -423,11 +424,11 @@ public class OpTable {
 	public int addOptableEntry(int opcode, int result_array, int[] ind, int lineno) {
 		 int index = nOps++;
 		 assert ind.length <= AcesHacks.max_array_index;
-		 if (opcode == SipConstants.go_to_op || opcode == SipConstants.print_op || opcode==SipConstants.println_op || opcode==SipConstants.print_scalar_op) 
-			 entries.add(new Entry(opcode, result_array, ind, lineno));
-		 else  entries.add(new Entry(opcode, result_array+1, ind, lineno));
+		 entries.add(new Entry(opcode, result_array, ind, lineno));
 		 return index;
 	}
+
+
 	
 	//assign_op:  assignment with unary rhs, fl-load-value_op
 	//ACES4 do not increment operandIdex or resultIndex.  ind is not used.
@@ -441,11 +442,13 @@ public class OpTable {
 	}
 	
 	//sum_op:  assignment with binary rhs
+	//ACES4 do not increment ops
 	public int addOptableEntry(int opcode, int operand1, int operand2,
 			int resultIndex, int[] ind, int lineno) {
 		int index = nOps++;
 		assert ind.length <= AcesHacks.max_array_index;
-		entries.add(new Entry(opcode, operand1+1, operand2 + 1, resultIndex+1, ind, lineno));
+//		entries.add(new Entry(opcode, operand1+1, operand2 + 1, resultIndex+1, ind, lineno));
+		entries.add(new Entry(opcode, operand1, operand2, resultIndex, ind, lineno));
 		return index;	
 	}
 	

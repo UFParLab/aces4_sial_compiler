@@ -249,11 +249,13 @@ public class IndexTable implements SipConstants, SialParsersym {
 		int index = num_entries++;
 		indexBiMap.put(dec, index);
 		Entry entry = new Entry(beg, end, type);
+		int slot = entries.size();
 		entries.add(entry);
+		System.out.println("In IndexTable.addEntry:  " + dec.toString() + " index " + index + " slot=" + slot);                                                                                             
 		return index;
 	}
 	
-	public void write(SIADataOutput output) throws IOException {
+	public void write(SIADataOutput output) throws IOException { 
 		output.writeInt(num_entries);
 		BiMap<Integer, IDec> inverse = indexBiMap.inverse();
 		for (int i = 0; i != num_entries; i++) {

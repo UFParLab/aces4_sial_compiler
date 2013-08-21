@@ -89,7 +89,7 @@ public final static int
 	delete_op      = 111,
 	call_op        = 112,
 	return_op      = 113,
-	jz_op          = 114,
+	jz_op          = 114, //not used.  check this
 	stop_op        = 115,
 	sp_add_op      = 116,
 	sp_sub_op      = 117,

@@ -286,7 +286,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			attribute = attribute | attr_predefined;
 		}
 		int index = scalarTable.addScalar(n); // Aces4
+
 		arrayTable.addScalarEntry(n, attribute, index);
+//		System.out.println("visit(ScalarDec; array_slot=" + arra_slot + ", attribute = " + attribute + "scalarslot=" +
+//		   scalar_slot);
 		return false;
 	}
 
@@ -472,7 +475,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	@Override
-	public void endVisit(WhereClause n) { /* nop */
+	public void endVisit(WhereClause n) { /* nop, handled in RelationalExpression */
 	}
 
 	@Override
@@ -563,15 +566,18 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		n.getStartIndex().accept(this);
 		int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
 		// replace ind[0] with (fortran) index of loop variable
-		ind[0] = operandStack.pop() + 1;
-		opTable.addOptableEntry(do_op, ind, lineno(n));
+		ind[0] = operandStack.pop() ; //ACES4--this is not a fortran index
+		int do_instruction = opTable.addOptableEntry(do_op, ind, lineno(n));
 		// visit remaining children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
-			n.getStatementList().accept(this);
+			n.getStatementList().accept(this);	
+		opTable.backpatchBranch(do_instruction);
 		opTable.addOptableEntry(enddo_op, ind, lineno(n.getEndIndex()));
-		return false;
+		
+		//backpatch do instruction with address matching enddo.  put is in the result_array.
+        return false;
 	}
 
 	@Override
@@ -933,6 +939,22 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		return true;
 	}
 
+//	@Override
+//	public void endVisit(IdentList n) {
+//		// Each ident in this list has left its address on the operand stack
+//		// Remove them and put into an in array, converting to Fortran indices.
+//		// Push the array on the indexStack
+//		int nindex = n.size();
+//		// Get the index table entries from the stack and fill the ind array,
+//		// converting to fortran indices
+//		int[] ind = new int[AcesHacks.max_array_index];
+//		for (int i = nindex - 1; i >= 0; i--) {
+//			ind[i] = operandStack.pop() + 1;
+//		}
+//		indexArrayStack.push(ind);
+//	}
+
+	//ACES$  not fortran indices, unused indices should be 0
 	@Override
 	public void endVisit(IdentList n) {
 		// Each ident in this list has left its address on the operand stack
@@ -943,11 +965,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		// converting to fortran indices
 		int[] ind = new int[AcesHacks.max_array_index];
 		for (int i = nindex - 1; i >= 0; i--) {
-			ind[i] = operandStack.pop() + 1;
+			ind[i] = operandStack.pop();
 		}
 		indexArrayStack.push(ind);
 	}
-
 	@Override
 	public boolean visit(AllocIndexIdent n) {
 		IDec dec = n.getDec();
@@ -999,135 +1020,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(RelationalExpression n) {
-		// // TODO get rid of AcesHack
-		// // determine if this requires int or floating point comparison. Type
-		// checking has ensured compatibiltiy
-		// // it requires int if either argument is an index
-		// // The other argument could be an int literal or a symbolic constant
-		// // int comparison is also used if both arguments are ints, either
-		// symbolic constant or literal
-		// IUnaryExpression eleft = n.getUnaryExpressionLeft();
-		// // boolean eLeftIsIndex = eleft instanceof Ident
-		// // && ((Ident) eleft).getDec() instanceof IndexDec;
-		// // boolean eLeftIsInt = eleft instanceof Ident
-		// // && ((Ident) eleft).getDec() instanceof IntDec;
-		// boolean eLeftIsIndex = eleft instanceof IdentPrimary
-		// && (((IdentPrimary) eleft).getDec() instanceof IndexDec ||
-		// ((IdentPrimary) eleft).getDec() instanceof SubIndexDec);
-		// boolean eLeftIsInt = (eleft instanceof IdentPrimary
-		// && ((IdentPrimary) eleft).getDec() instanceof IntDec) ;
-		// IUnaryExpression eright = n.getUnaryExpressionRight();
-		// // boolean eRightIsIndex = eright instanceof Ident
-		// // && ((Ident) eright).getDec() instanceof IndexDec;
-		// // boolean eRightIsInt = eright instanceof Ident
-		// // && ((Ident) eright).getDec() instanceof IntDec;
-		// boolean eRightIsIndex = eright instanceof IdentPrimary
-		// && (((IdentPrimary) eright).getDec() instanceof IndexDec ||
-		// ((IdentPrimary) eright).getDec() instanceof SubIndexDec) ;
-		// boolean eRightIsInt = (eright instanceof IdentPrimary
-		// && ((IdentPrimary) eright).getDec() instanceof IntDec) ;
-		//
-		// // if (eLeftIsIndex || eRightIsIndex || (eLeftIsInt ||
-		// // (eleft instanceof IntLitPrimary) && (eRightIsInt || (eright
-		// instanceof IntLitPrimary)))){//use int comparison
-		// if (eLeftIsIndex ||
-		// eRightIsIndex ||
-		// (eLeftIsInt && eRightIsInt) ||
-		// (eLeftIsInt && (eright instanceof IntLitPrimary)) ||
-		// ((eleft instanceof IntLitPrimary) && eRightIsInt)) {
-		// int operand2 = operandStack.pop();
-		// int operand1 = operandStack.pop();
-		// //AcesHack treat expressions in Where clauses differently
-		// if (n.getParent() instanceof WhereClause){
-		// int whereOpCode =
-		// AcesHacks.whereCodes.get(n.getRelOp().getop().getKind());
-		// opTable.addOptableEntry(where_op, operand1, whereOpCode, operand2,
-		// defaultOneInd,
-		// lineno(n));
-		// return;
-		// }
-		// // args and op are ints
-		// int loadOpcode;
-		// int loc1 = intScratchPadIndex++;
-		// int loc2 = intScratchPadIndex++;
-		// if (eLeftIsIndex) {
-		// loadOpcode = sp_ldindex_op;
-		// } else if (eLeftIsInt) {
-		// loadOpcode = sp_ldi_sym_op;
-		// } else {
-		// loadOpcode = sp_ldi_op;
-		// operand1--; // this is a value of an int literal stored in the
-		// instruction, not an index,
-		// // decrement to compensate for
-		// // addOptableEntry increment to make Fortan index
-		// }
-		// opTable.addOptableEntry(loadOpcode, operand1, loc1, defaultOneInd,
-		// lineno(n));
-		// if (eRightIsIndex) {
-		// loadOpcode = sp_ldindex_op;
-		// } else if (eRightIsInt) {
-		// loadOpcode = sp_ldi_sym_op;
-		// } else {
-		// loadOpcode = sp_ldi_op;
-		// operand2--; // this is a value of an int literal stored in the
-		// instruction, not an index,
-		// // decrement to compensate for
-		// // addOptableEntry increment to make Fortan index
-		// }
-		// opTable.addOptableEntry(loadOpcode, operand2, loc2, defaultOneInd,
-		// lineno(n));
-		//
-		// int opcode = 0;
-		// int exprOpKind = n.getRelOp().getIToken().getKind();
-		// opcode = getRelOpcodeInt(exprOpKind);
-		// opTable.addOptableEntry(opcode, loc1, loc2, loc1, defaultOneInd,
-		// lineno(n));
-		// intScratchPadIndex--;
-		//
-		// int opTableIndex = opTable.addOptableEntry(jz_op, loc1,
-		// 0, defaultOneInd, lineno(n));
-		// intScratchPadIndex--;
-		// backpatchInstructionStack.push(opTableIndex);//TODO move to parent??
-		// return;
-		// }
-		// // do floating point comparison
-		// int loadOpcode = fl_load_value_op;
-		// int operand2 = operandStack.pop();
-		// int operand1 = operandStack.pop();
-		// int loc1 = floatScratchPadIndex++;
-		// int loc2 = floatScratchPadIndex++;
-		// opTable.addOptableEntry(loadOpcode, operand1, loc1, defaultOneInd,
-		// lineno(n));
-		// opTable.addOptableEntry(loadOpcode, operand2, loc2, defaultOneInd,
-		// lineno(n));
-		//
-		// int opcode = 0;
-		// int exprOpKind = n.getRelOp().getIToken().getKind();
-		// opcode = getRelOpcodeFP(exprOpKind);
-		// opTable.addOptableEntry(opcode, loc1, loc2, loc1, defaultOneInd,
-		// lineno(n));
-		// floatScratchPadIndex--;
-		// // add a jz and push its index onto the
-		// // backPatchInstructionStack
-		// int opTableIndex = opTable.addOptableEntry(jz_op, loc1, 0,
-		// defaultOneInd, lineno(n));
-		// // floatScratchPadIndex--; I think this should be here, but
-		// // it is eliminated to match the current sial compiler
-		// intScratchPadIndex--; // this is a benign bug, but it is here to
-		// match
-		// // the current sial
-		// // compiler
-		// backpatchInstructionStack.push(opTableIndex); //TODO move to parent
-		// ????
-		// }
-
 		IUnaryExpression eleft = n.getUnaryExpressionLeft();
 		boolean eLeftHasDoubleType = (eleft instanceof IdentPrimary && ((IdentPrimary) eleft)
 				.getDec() instanceof ScalarDec)
 				|| (eleft instanceof DoubleLitPrimary)
 				|| ((eleft instanceof NegatedUnary) && (((NegatedUnary) eleft)
 						.getPrimary() instanceof DoubleLitPrimary));
-		if (eLeftHasDoubleType) { // type checking ensure right hand side is
+		if (eLeftHasDoubleType) { // type checking ensuresright hand side is
 									// double, too
 			// do floating point comparison
 			int loadOpcode = fl_load_value_op;
@@ -1197,10 +1096,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			loadOpcode = sp_ldi_sym_op;
 		} else { // is literal
 			loadOpcode = sp_ldi_op;
-			operand1--; // this is a value of an int literal stored in the
-						// instruction, not an index,
-			// decrement to compensate for
-			// addOptableEntry increment to make Fortan index
+//			operand1--; // this is a value of an int literal stored in the
+//						// instruction, not an index,
+//			// decrement to compensate for
+//			// addOptableEntry increment to make Fortan index
+			//ACES4 will not be incremented.			
 		}
 		opTable.addOptableEntry(loadOpcode, operand1, loc1, defaultOneInd,
 				lineno(n));
@@ -1274,14 +1174,12 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	@Override
-	public boolean visit(BinaryExpression n) {
-		unimplementedVisitor("visit(BinaryExpression)");
+	public boolean visit(BinaryExpression n) { //visit children
 		return true;
 	}
 
 	@Override
-	public void endVisit(BinaryExpression n) {
-		unimplementedVisitor("endVisit(BinaryExpression)");
+	public void endVisit(BinaryExpression n) { //nop
 	}
 
 	@Override
@@ -1505,6 +1403,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		if (lhs instanceof DataBlock) {
 			lhsIndexArray = indexArrayStack.pop();
 		}
+		//get the opcode
 		IAssignOp assignOp = n.getAssignOp();
 		IBinOp binOp = (rhs instanceof BinaryExpression) ? ((BinaryExpression) rhs)
 				.getBinOp() : null;
@@ -1779,11 +1678,14 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(PrintIndexStatement n) {
-		int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
-		// replace ind[0] with index in index array of argument
-		// NOTE: THIS IS NOT A FORTRAN INDEX
-		ind[0] = operandStack.pop();
-		opTable.addOptableEntry(print_index_op, ind, lineno(n));
+//		int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
+//		// replace ind[0] with index in index array of argument
+//		// NOTE: THIS IS NOT A FORTRAN INDEX
+//		ind[0] = operandStack.pop();
+		//put the arg in the same place a the other print statements, rather than where indice are expected
+		int index_slot = operandStack.pop();
+		opTable.addOptableEntry(print_index_op, index_slot, defaultZeroInd, lineno(n));
+		System.out.println("in endVisit(PrintIndexStatement, index_slot= " + index_slot);
 	}
 
 	@Override
