@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 120:  BinOp ::= +
+ *<li>Rule 122:  BinOp ::= +
  *</b>
  */
 public class BinOpPlus extends ASTNodeToken implements IBinOp

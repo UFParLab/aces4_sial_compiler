@@ -529,7 +529,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 		String name = id.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
 				+ name);
-		return true;
+		return false;  //don't need to do anything with optional number of arguments here
 	}
 
 	@Override
@@ -1289,9 +1289,15 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	// bare array names are allowed for some instructions
 	@Override
 	public void endVisit(ExecuteStatement n) {
-		check(n.getIdent().getDec() instanceof SpecialDec, n, n.getIdent()
+		IDec dec = n.getIdent().getDec();
+		check(dec instanceof SpecialDec, n, n.getIdent()
 				.toString() + " not declared as special instruction");
-	}
+		if (   ((SpecialDec) dec).getSigopt() == null) return;
+		//the expected number of arguments was declared so check that it matches the call
+		int expected_args = ASTUtils.getIntVal(((SpecialDec)dec).getSigopt().getINTLIT());
+		int num_args = n.getArgList().size();
+		check (num_args == expected_args, n, "execute statement has "+num_args+" but expects "+expected_args);
+		}
 
 	@Override
 	public boolean visit(DestroyStatement n) { /* visit children */

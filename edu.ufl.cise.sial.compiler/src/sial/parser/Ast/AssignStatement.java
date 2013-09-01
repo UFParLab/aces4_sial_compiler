@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 92:  Statement ::= ScalarOrBlockVar AssignOp Expression
+ *<li>Rule 94:  Statement ::= ScalarOrBlockVar AssignOp Expression
  *</b>
  */
 public class AssignStatement extends ASTNode implements IStatement

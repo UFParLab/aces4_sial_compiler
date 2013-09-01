@@ -91,6 +91,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(SpecialDec n);
     void endVisit(SpecialDec n);
 
+    boolean visit(Sigopt n);
+    void endVisit(Sigopt n);
+
     boolean visit(StatementList n);
     void endVisit(StatementList n);
 

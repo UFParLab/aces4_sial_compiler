@@ -218,7 +218,7 @@
 		 public  List<CallStatement> getCallSites(){return callSites;}
 	   ./
 
-	SpecialDec ::= special$  Ident  --TODO add args
+	SpecialDec ::= special$  Ident  Sigopt
 	/.  public String getName(){
 	  return getIdent().getName();
 	  }
@@ -227,6 +227,7 @@
 		 public int getAddr(){return addr;}
 	 ./
 	 
+	 Sigopt ::= %empty | INTLIT
 
      IdentOpt ::= Ident | %empty
 	 

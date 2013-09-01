@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 53:  SpecialDec ::= special$ Ident
+ *<li>Rule 53:  SpecialDec ::= special$ Ident Sigopt
  *</b>
  */
 public class SpecialDec extends ASTNode implements ISpecialDec
@@ -20,17 +20,25 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     public SialParser getEnvironment() { return environment; }
 
     private Ident _Ident;
+    private Sigopt _Sigopt;
 
     public Ident getIdent() { return _Ident; }
+    /**
+     * The value returned by <b>getSigopt</b> may be <b>null</b>
+     */
+    public Sigopt getSigopt() { return _Sigopt; }
 
     public SpecialDec(SialParser environment, IToken leftIToken, IToken rightIToken,
-                      Ident _Ident)
+                      Ident _Ident,
+                      Sigopt _Sigopt)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
+        this._Sigopt = _Sigopt;
+        if (_Sigopt != null) ((ASTNode) _Sigopt).setParent(this);
         initialize();
     }
 
@@ -41,6 +49,7 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Ident);
+        list.add(_Sigopt);
         return list;
     }
 
@@ -51,6 +60,10 @@ public class SpecialDec extends ASTNode implements ISpecialDec
         if (! super.equals(o)) return false;
         SpecialDec other = (SpecialDec) o;
         if (! _Ident.equals(other._Ident)) return false;
+        if (_Sigopt == null)
+            if (other._Sigopt != null) return false;
+            else; // continue
+        else if (! _Sigopt.equals(other._Sigopt)) return false;
         return true;
     }
 
@@ -58,6 +71,7 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Ident.hashCode());
+        hash = hash * 31 + (_Sigopt == null ? 0 : _Sigopt.hashCode());
         return hash;
     }
 
@@ -72,7 +86,10 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
+        {
             _Ident.accept(v);
+            if (_Sigopt != null) _Sigopt.accept(v);
+        }
         v.endVisit(this);
     }
   public String getName(){

@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 91:  Statement ::= execute$ Ident ArgList
+ *<li>Rule 93:  Statement ::= execute$ Ident ArgList
  *</b>
  */
 public class ExecuteStatement extends ASTNode implements IStatement

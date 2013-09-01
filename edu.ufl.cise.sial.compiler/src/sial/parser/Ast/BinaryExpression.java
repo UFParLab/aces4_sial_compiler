@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 117:  BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
+ *<li>Rule 119:  BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
  *</b>
  */
 public class BinaryExpression extends ASTNode implements IBinaryExpression

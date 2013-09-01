@@ -22,6 +22,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>IndexKind
  *<li>IntLitRangeVal
  *<li>IdentRangeVal
+ *<li>Sigopt
  *<li>CallStatement
  *<li>ReturnStatement
  *<li>ServerBarrierStatement

@@ -9,15 +9,19 @@ import org.eclipse.imp.parser.IParser;
   import java.util.List;
 
 /**
+ *<em>
+ *<li>Rule 54:  Sigopt ::= $Empty
+ *</em>
+ *<p>
  *<b>
- *<li>Rule 121:  BinOp ::= /
+ *<li>Rule 55:  Sigopt ::= INTLIT
  *</b>
  */
-public class BinOpDiv extends ASTNodeToken implements IBinOp
+public class Sigopt extends ASTNodeToken implements ISigopt
 {
-    public IToken getSLASH() { return leftIToken; }
+    public IToken getINTLIT() { return leftIToken; }
 
-    public BinOpDiv(IToken token) { super(token); initialize(); }
+    public Sigopt(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

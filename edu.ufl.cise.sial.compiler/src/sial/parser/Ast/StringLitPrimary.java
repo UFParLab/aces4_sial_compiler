@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 129:  Primary ::= StringLiteral
+ *<li>Rule 131:  Primary ::= StringLiteral
  *</b>
  */
 public class StringLitPrimary extends ASTNodeToken implements IPrimary

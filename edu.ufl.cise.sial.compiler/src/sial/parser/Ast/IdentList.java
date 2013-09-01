@@ -10,8 +10,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 100:  Indices ::= Ident
- *<li>Rule 101:  Indices ::= Indices ,$ Ident
+ *<li>Rule 102:  Indices ::= Ident
+ *<li>Rule 103:  Indices ::= Indices ,$ Ident
  *</b>
  */
 public class IdentList extends AbstractASTNodeList implements IIndices
