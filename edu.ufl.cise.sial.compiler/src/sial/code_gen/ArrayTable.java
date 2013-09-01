@@ -49,18 +49,24 @@ public class ArrayTable implements SipConstants {
 		int numblks;
 		int[] index_array; // each element contains the fortran index
 							// in the index array of the corresponding index
-		int[] index_range1; // in fortran, this is also index_original
-		int[] index_range2;
-		int block_map;
+//		int[] index_range1; // in fortran, this is also index_original
+//		int[] index_range2;
+//		int block_map;
 		int scalar_index; // if scalar or int, this is index into the scalar,
-							// int table
-		int create_flag;
-		int put_flag;
-		int prepare_flag;
-		int current_blkndx;
-		int block_list;
-		int array_stack;
-		int array_status;
+							// int table.  If not, this indicates priority for
+		                    // for data servers.  Priority values are 
+		                    // distributed_array_priority and served_array_priority
+		                    // defined in SipConstants.java  (Local and
+		                    // temp arrays have value 0 here.  We may want 
+		                    //to enhance this later with more values, values
+		                    //that can be changed, etc.
+//		int create_flag;
+//		int put_flag;
+//		int prepare_flag;
+//		int current_blkndx;
+//		int block_list;
+//		int array_stack;
+//		int array_status;
 		
 //		@Override
 //		public boolean equals(Object other){
@@ -116,8 +122,8 @@ public class ArrayTable implements SipConstants {
 		Entry(int max_array_index, int arraynindex, int type, int[] indarray,
 				int scalarIndex) {
 			this.index_array = new int[max_array_index];
-			this.index_range1 = new int[max_array_index];
-			this.index_range2 = new int[max_array_index];
+//			this.index_range1 = new int[max_array_index];
+//			this.index_range2 = new int[max_array_index];
 			this.nindex = arraynindex;
 			this.array_type = type;
 			this.scalar_index = scalarIndex;
@@ -136,28 +142,28 @@ public class ArrayTable implements SipConstants {
 		}
 		
 
-		protected Entry(int nindex, int array_type, int numblks,
-				int[] index_array, int[] index_range1, int[] index_range2,
-				int block_map, int scalar_index, int create_flag, int put_flag,
-				int prepare_flag, int current_blkndx, int block_list,
-				int array_stack, int array_status) {
-			super();
-			this.nindex = nindex;
-			this.array_type = array_type;
-			this.numblks = numblks;
-			this.index_array = index_array;
-			this.index_range1 = index_range1;
-			this.index_range2 = index_range2;
-			this.block_map = block_map;
-			this.scalar_index = scalar_index;
-			this.create_flag = create_flag;
-			this.put_flag = put_flag;
-			this.prepare_flag = prepare_flag;
-			this.current_blkndx = current_blkndx;
-			this.block_list = block_list;
-			this.array_stack = array_stack;
-			this.array_status = array_status;
-		}
+//		protected Entry(int nindex, int array_type, int numblks,
+//				int[] index_array, int[] index_range1, int[] index_range2,
+//				int block_map, int scalar_index, int create_flag, int put_flag,
+//				int prepare_flag, int current_blkndx, int block_list,
+//				int array_stack, int array_status) {
+//			super();
+//			this.nindex = nindex;
+//			this.array_type = array_type;
+//			this.numblks = numblks;
+//			this.index_array = index_array;
+//			this.index_range1 = index_range1;
+//			this.index_range2 = index_range2;
+//			this.block_map = block_map;
+//			this.scalar_index = scalar_index;
+//			this.create_flag = create_flag;
+//			this.put_flag = put_flag;
+//			this.prepare_flag = prepare_flag;
+//			this.current_blkndx = current_blkndx;
+//			this.block_list = block_list;
+//			this.array_stack = array_stack;
+//			this.array_status = array_status;
+//		}
 
 		public Entry() {}
 
@@ -195,36 +201,36 @@ public class ArrayTable implements SipConstants {
 								// int table
 		}
 		
-		void readExpanded(SIADataInput in) throws IOException {
-			nindex = in.readInt(); // dimension of array
-			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
-							// in SipTypeConstants
-			numblks = in.readInt();
-			int max = AcesHacks.max_array_index;
-			index_array = new int[max]; // each element contains the fortran index
-								// in the index array of the corresponding index
-			for(int i = 0; i != max; i++){
-				index_array[i] = in.readInt();
-			}
-			index_range1 = new int[max]; // in fortran, this is also index_original
-			for(int i = 0; i != max; i++){
-				index_range1[i] = in.readInt();
-			}
-			index_range2 = new int[max];
-			for(int i = 0; i != max; i++){
-				index_range2[i] = in.readInt();
-			}
-			block_map = in.readInt();
-			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
-								// int table
-			create_flag = in.readInt();
-			put_flag = in.readInt();
-			prepare_flag = in.readInt();
-			current_blkndx = in.readInt();
-			block_list = in.readInt();
-			array_stack = in.readInt();
-			array_status = in.readInt();
-		}
+//		void readExpanded(SIADataInput in) throws IOException {
+//			nindex = in.readInt(); // dimension of array
+//			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
+//							// in SipTypeConstants
+//			numblks = in.readInt();
+//			int max = AcesHacks.max_array_index;
+//			index_array = new int[max]; // each element contains the fortran index
+//								// in the index array of the corresponding index
+//			for(int i = 0; i != max; i++){
+//				index_array[i] = in.readInt();
+//			}
+//			index_range1 = new int[max]; // in fortran, this is also index_original
+//			for(int i = 0; i != max; i++){
+//				index_range1[i] = in.readInt();
+//			}
+//			index_range2 = new int[max];
+//			for(int i = 0; i != max; i++){
+//				index_range2[i] = in.readInt();
+//			}
+//			block_map = in.readInt();
+//			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
+//								// int table
+//			create_flag = in.readInt();
+//			put_flag = in.readInt();
+//			prepare_flag = in.readInt();
+//			current_blkndx = in.readInt();
+//			block_list = in.readInt();
+//			array_stack = in.readInt();
+//			array_status = in.readInt();
+//		}
 		
 		public String toString(){
 			int max = AcesHacks.max_array_index;
@@ -268,56 +274,56 @@ public class ArrayTable implements SipConstants {
 			return sb.toString();
 		}
 		
-		public String toStringExpanded(){
-			int max = AcesHacks.max_array_index;
-			StringBuilder sb = new StringBuilder();
-			sb.append(nindex); sb.append(',');
-			sb.append(array_type); sb.append(',');
-			sb.append(numblks); sb.append(',');
-			
-			sb.append('[');
-			sb.append(index_array[0]);
-			for (int i = 1; i < max; i++){
-				sb.append(',');
-				sb.append(index_array[i]);
-			}
-			sb.append("],");
-			sb.append('[');
-			sb.append(index_range1[0]);
-			for (int i = 1; i < max; i++){
-				sb.append(',');
-				sb.append(index_range1[i]);
-			}
-			sb.append("],");
-			sb.append('[');
-			sb.append(index_range2[0]);
-			for (int i = 1; i < max; i++){
-				sb.append(',');
-				sb.append(index_range2[i]);
-			}
-			sb.append("],");
-			sb.append(block_map); sb.append(',');
-			sb.append(scalar_index); sb.append(',');
-			sb.append(create_flag); sb.append(',');
-			sb.append(put_flag); sb.append(',');
-			sb.append(prepare_flag); sb.append(',');
-			sb.append(current_blkndx); sb.append(',');
-			sb.append(block_list); sb.append(',');
-			sb.append(array_stack); sb.append(',');
-			sb.append(array_status); 
-			return sb.toString();
-		}
+//		public String toStringExpanded(){
+//			int max = AcesHacks.max_array_index;
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(nindex); sb.append(',');
+//			sb.append(array_type); sb.append(',');
+//			sb.append(numblks); sb.append(',');
+//			
+//			sb.append('[');
+//			sb.append(index_array[0]);
+//			for (int i = 1; i < max; i++){
+//				sb.append(',');
+//				sb.append(index_array[i]);
+//			}
+//			sb.append("],");
+//			sb.append('[');
+//			sb.append(index_range1[0]);
+//			for (int i = 1; i < max; i++){
+//				sb.append(',');
+//				sb.append(index_range1[i]);
+//			}
+//			sb.append("],");
+//			sb.append('[');
+//			sb.append(index_range2[0]);
+//			for (int i = 1; i < max; i++){
+//				sb.append(',');
+//				sb.append(index_range2[i]);
+//			}
+//			sb.append("],");
+//			sb.append(block_map); sb.append(',');
+//			sb.append(scalar_index); sb.append(',');
+//			sb.append(create_flag); sb.append(',');
+//			sb.append(put_flag); sb.append(',');
+//			sb.append(prepare_flag); sb.append(',');
+//			sb.append(current_blkndx); sb.append(',');
+//			sb.append(block_list); sb.append(',');
+//			sb.append(array_stack); sb.append(',');
+//			sb.append(array_status); 
+//			return sb.toString();
+//		}
 		public static Entry readEntry(SIADataInput in) throws IOException{
 			Entry entry = new Entry();
 			entry.read(in);
 			return entry;
 		}
 		
-		public static Entry readExpandedEntry(SIADataInput in) throws IOException{
-			Entry entry = new Entry();
-			entry.readExpanded(in);
-			return entry;
-		}
+//		public static Entry readExpandedEntry(SIADataInput in) throws IOException{
+//			Entry entry = new Entry();
+//			entry.readExpanded(in);
+//			return entry;
+//		}
 		void write(SIADataOutput out) throws IOException {
 			out.writeInt(nindex);
 			//forloop added for aces4
@@ -331,30 +337,30 @@ public class ArrayTable implements SipConstants {
 
 		} 
 		
-		void writeExpanded(DataOutput out) throws IOException {
-			out.writeInt(nindex);
-			out.writeInt(array_type);
-			out.writeInt(numblks);
-			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-				out.writeInt(index_array[i]);
-			}
-			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-				out.writeInt(index_range1[i]);
-			}
-			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-				out.writeInt(index_range2[i]);
-			}
-			out.writeInt(block_map);
-			out.writeInt(scalar_index); // if scalar or int, this is index into
-										// the scalar, int table
-			out.writeInt(create_flag);
-			out.writeInt(put_flag);
-			out.writeInt(prepare_flag);
-			out.writeInt(current_blkndx);
-			out.writeInt(block_list);
-			out.writeInt(array_stack);
-			out.writeInt(array_status);
-		} 
+//		void writeExpanded(DataOutput out) throws IOException {
+//			out.writeInt(nindex);
+//			out.writeInt(array_type);
+//			out.writeInt(numblks);
+//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
+//				out.writeInt(index_array[i]);
+//			}
+//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
+//				out.writeInt(index_range1[i]);
+//			}
+//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
+//				out.writeInt(index_range2[i]);
+//			}
+//			out.writeInt(block_map);
+//			out.writeInt(scalar_index); // if scalar or int, this is index into
+//										// the scalar, int table
+//			out.writeInt(create_flag);
+//			out.writeInt(put_flag);
+//			out.writeInt(prepare_flag);
+//			out.writeInt(current_blkndx);
+//			out.writeInt(block_list);
+//			out.writeInt(array_stack);
+//			out.writeInt(array_status);
+//		} 
 
 	}//end of class entry
 
@@ -417,8 +423,8 @@ public class ArrayTable implements SipConstants {
 		return addEntry(dec, 0, attributes, null, scalarIndex);
 	}
 	
-	int addArrayEntry(IDec dec, int arraynindex, int type, int[] indarray) {
-		return addEntry(dec, arraynindex, type, indarray, 0);
+	int addArrayEntry(IDec dec, int arraynindex, int type, int[] indarray, int priority) {
+		return addEntry(dec, arraynindex, type, indarray, priority);
 	}
 
 	int addEntry(IDec dec, int arraynindex, int type, int[] indarray, int scalarIndex) {
@@ -551,11 +557,5 @@ public class ArrayTable implements SipConstants {
 		}
 		return sb.toString();
 	}
-
-
-
-
-
-
 
 }

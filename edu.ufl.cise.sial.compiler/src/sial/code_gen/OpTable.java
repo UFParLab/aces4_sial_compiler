@@ -1,3 +1,5 @@
+//TODO  clean up junk left over from aces3
+
 package sial.code_gen;
 
 import java.io.DataInput;
@@ -68,18 +70,18 @@ public class OpTable {
 		int op2_array; //3
 		int result_array; //4
 		int[]  ind; //size is max_array_index
-		int user_sub; //also pardo_lock_index;
-		int instr_timer;
-		int opblkndx;
-		int opblock;
-		int oploop;
-		int scalar_op1;  //also int pardo_chunk_size;
-		int scalar_op2;  //also int pardo_batch_end;
-		int scalar_result; //also int pardo_next_batch_start;
-		int pardo_batch;
-		int pardo_max_batch;
-		int pardo_signal;
-		int server_stat_key;
+//		int user_sub; //also pardo_lock_index;
+//		int instr_timer;
+//		int opblkndx;
+//		int opblock;
+//		int oploop;
+//		int scalar_op1;  //also int pardo_chunk_size;
+//		int scalar_op2;  //also int pardo_batch_end;
+//		int scalar_result; //also int pardo_next_batch_start;
+//		int pardo_batch;
+//		int pardo_max_batch;
+//		int pardo_signal;
+//		int server_stat_key;
 		int lineno;
 //		int get_counter;
 //		int put_counter;
@@ -120,7 +122,7 @@ public class OpTable {
 			this.opcode = opcode;
 			this.result_array = result_array;
 			this.ind = ind;
-			this.user_sub = user_sub;
+//			this.user_sub = user_sub;
 			this.lineno = lineno;
 		}
 		
@@ -133,19 +135,19 @@ public class OpTable {
 					op1_array == o.op1_array &&//2
 					op2_array == o.op2_array && //3
 					result_array==o.result_array && //4
-			Arrays.equals(ind, o.ind) && //size is max_array_index
-			user_sub== o.user_sub && //also pardo_lock_index&&
-			instr_timer== o.instr_timer &&
-			opblkndx== o.opblkndx &&
-			opblock== o.opblock  &&
-			oploop == o.oploop &&
-			scalar_op1 == o.scalar_op1&&  //also int pardo_chunk_size;
-			scalar_op2 ==  o.scalar_op2 &&  //also int pardo_batch_end;
-			scalar_result == o.scalar_result && //also int pardo_next_batch_start;
-			pardo_batch == o.pardo_batch &&
-			pardo_max_batch== o.pardo_max_batch &&
-			pardo_signal== o.pardo_signal &&
-			server_stat_key== o.server_stat_key 
+			Arrays.equals(ind, o.ind) //&& //size is max_array_index
+//			user_sub== o.user_sub //&& //also pardo_lock_index&&
+//			instr_timer== o.instr_timer &&
+//			opblkndx== o.opblkndx &&
+//			opblock== o.opblock  &&
+//			oploop == o.oploop &&
+//			scalar_op1 == o.scalar_op1&&  //also int pardo_chunk_size;
+//			scalar_op2 ==  o.scalar_op2 &&  //also int pardo_batch_end;
+//			scalar_result == o.scalar_result && //also int pardo_next_batch_start;
+//			pardo_batch == o.pardo_batch &&
+//			pardo_max_batch== o.pardo_max_batch &&
+//			pardo_signal== o.pardo_signal &&
+//			server_stat_key== o.server_stat_key 
 //			&&
 //			//lineno== o.lineno &&    don't compare line numbers
 //			get_counter== o.get_counter &&
@@ -188,17 +190,17 @@ public class OpTable {
 			this.lineno = lineno;
 		}
 
-		//execute with 3 args 
-		public Entry(int opcode, int op1_array, int op2_array, int result_array, int[] ind, 
-				int user_sub, int lineno) {
-			this.opcode = opcode;
-			this.op1_array = op1_array;
-			this.op2_array = op2_array;
-			this.result_array = result_array;
-			this.ind = ind;
-			this.user_sub= user_sub;
-			this.lineno = lineno;
-		}
+//		//execute with 3 args 
+//		public Entry(int opcode, int op1_array, int op2_array, int result_array, int[] ind, 
+//				int user_sub, int lineno) {
+//			this.opcode = opcode;
+//			this.op1_array = op1_array;
+//			this.op2_array = op2_array;
+//			this.result_array = result_array;
+//			this.ind = ind;
+////			this.user_sub= user_sub;
+//			this.lineno = lineno;
+//		}
 		void read(DataInput input) throws IOException{
 			opcode = input.readInt(); //1
 			op1_array = input.readInt(); //2
@@ -208,7 +210,7 @@ public class OpTable {
 			for (int i = 0; i < AcesHacks.max_array_index; i++){
 				ind[i] = input.readInt();
 			}
-			user_sub = input.readInt(); //also pardo_lock_index;
+//			user_sub = input.readInt(); //also pardo_lock_index;
 			//instr_timer = input.readInt();
 			//opblkndx = input.readInt();
 			//opblock = input.readInt();
@@ -229,36 +231,36 @@ public class OpTable {
 //			request_counter = input.readInt();
 //			pardomsg_counter = input.readInt();
 		}
-		void readExpanded(DataInput input) throws IOException{
-			opcode = input.readInt(); //1
-			op1_array = input.readInt(); //2
-			op2_array = input.readInt(); //3
-			result_array = input.readInt(); //4
-			ind = new int[AcesHacks.max_array_index]; //size is max_array_index
-			for (int i = 0; i < AcesHacks.max_array_index; i++){
-				ind[i] = input.readInt();
-			}
-			user_sub = input.readInt(); //also pardo_lock_index;
-			instr_timer = input.readInt();
-			opblkndx = input.readInt();
-			opblock = input.readInt();
-			oploop = input.readInt();
-			scalar_op1 = input.readInt();  //also pardo_chunk_size;
-			scalar_op2 = input.readInt();  //also pardo_batch_end;
-			scalar_result = input.readInt(); //also pardo_next_batch_start;
-			pardo_batch = input.readInt();
-			pardo_max_batch = input.readInt();
-			pardo_signal = input.readInt();
-			server_stat_key = input.readInt();
-			lineno = input.readInt();     
-//			get_counter = input.readInt();
-//			put_counter = input.readInt();
-//			putinc_counter = input.readInt();
-//			prepare_counter = input.readInt();
-//			preparesum_counter = input.readInt();
-//			request_counter = input.readInt();
-//			pardomsg_counter = input.readInt();
-		}
+//		void readExpanded(DataInput input) throws IOException{
+//			opcode = input.readInt(); //1
+//			op1_array = input.readInt(); //2
+//			op2_array = input.readInt(); //3
+//			result_array = input.readInt(); //4
+//			ind = new int[AcesHacks.max_array_index]; //size is max_array_index
+//			for (int i = 0; i < AcesHacks.max_array_index; i++){
+//				ind[i] = input.readInt();
+//			}
+//			user_sub = input.readInt(); //also pardo_lock_index;
+//			instr_timer = input.readInt();
+//			opblkndx = input.readInt();
+//			opblock = input.readInt();
+//			oploop = input.readInt();
+//			scalar_op1 = input.readInt();  //also pardo_chunk_size;
+//			scalar_op2 = input.readInt();  //also pardo_batch_end;
+//			scalar_result = input.readInt(); //also pardo_next_batch_start;
+//			pardo_batch = input.readInt();
+//			pardo_max_batch = input.readInt();
+//			pardo_signal = input.readInt();
+//			server_stat_key = input.readInt();
+//			lineno = input.readInt();     
+////			get_counter = input.readInt();
+////			put_counter = input.readInt();
+////			putinc_counter = input.readInt();
+////			prepare_counter = input.readInt();
+////			preparesum_counter = input.readInt();
+////			request_counter = input.readInt();
+////			pardomsg_counter = input.readInt();
+//		}
 		
 		static Entry readEntry(DataInput input) throws IOException{
 			Entry entry = new Entry();
@@ -266,11 +268,11 @@ public class OpTable {
 			return entry;
 		}
 		
-		static Entry readExpandedEntry(DataInput input) throws IOException{
-			Entry entry = new Entry();
-			entry.readExpanded(input);
-			return entry;
-		}
+//		static Entry readExpandedEntry(DataInput input) throws IOException{
+//			Entry entry = new Entry();
+//			entry.readExpanded(input);
+//			return entry;
+//		}
 		void write(DataOutput output) throws IOException{
 			output.writeInt(opcode); //1
 			output.writeInt(op1_array); //2
@@ -280,39 +282,39 @@ public class OpTable {
 				                                                   //instead of reading an array
 				output.writeInt(ind[i]);
 			}
-			output.writeInt(user_sub); //also pardo_lock_index;
+//			output.writeInt(user_sub); //also pardo_lock_index;
 			output.writeInt(lineno);
 		}
 		
-		void writeExpanded(DataOutput output) throws IOException{
-			output.writeInt(opcode); //1
-			output.writeInt(op1_array); //2
-			output.writeInt(op2_array); //3
-			output.writeInt(result_array); //4
-			for (int i = 0; i < AcesHacks.max_array_index; i++){
-				output.writeInt(ind[i]);
-			}
-			output.writeInt(user_sub); //also pardo_lock_index;
-			output.writeInt(instr_timer);
-			output.writeInt(opblkndx);
-			output.writeInt(opblock);
-			output.writeInt(oploop);
-			output.writeInt(scalar_op1);  //also pardo_chunk_size;
-			output.writeInt(scalar_op2);  //also pardo_batch_end;
-			output.writeInt(scalar_result); //also pardo_next_batch_start;
-			output.writeInt(pardo_batch);
-			output.writeInt(pardo_max_batch);
-			output.writeInt(pardo_signal);
-			output.writeInt(server_stat_key);
-			output.writeInt(lineno);
-//			output.writeInt(get_counter);
-//			output.writeInt(put_counter);
-//			output.writeInt(putinc_counter);
-//			output.writeInt(prepare_counter);
-//			output.writeInt(preparesum_counter);
-//			output.writeInt(request_counter);
-//			output.writeInt(pardomsg_counter);
-		}
+//		void writeExpanded(DataOutput output) throws IOException{
+//			output.writeInt(opcode); //1
+//			output.writeInt(op1_array); //2
+//			output.writeInt(op2_array); //3
+//			output.writeInt(result_array); //4
+//			for (int i = 0; i < AcesHacks.max_array_index; i++){
+//				output.writeInt(ind[i]);
+//			}
+//			output.writeInt(user_sub); //also pardo_lock_index;
+//			output.writeInt(instr_timer);
+//			output.writeInt(opblkndx);
+//			output.writeInt(opblock);
+//			output.writeInt(oploop);
+//			output.writeInt(scalar_op1);  //also pardo_chunk_size;
+//			output.writeInt(scalar_op2);  //also pardo_batch_end;
+//			output.writeInt(scalar_result); //also pardo_next_batch_start;
+//			output.writeInt(pardo_batch);
+//			output.writeInt(pardo_max_batch);
+//			output.writeInt(pardo_signal);
+//			output.writeInt(server_stat_key);
+//			output.writeInt(lineno);
+////			output.writeInt(get_counter);
+////			output.writeInt(put_counter);
+////			output.writeInt(putinc_counter);
+////			output.writeInt(prepare_counter);
+////			output.writeInt(preparesum_counter);
+////			output.writeInt(request_counter);
+////			output.writeInt(pardomsg_counter);
+//		}
 		
 		@Override
 		public String toString(){
@@ -327,7 +329,7 @@ public class OpTable {
 				sb.append(','); sb.append(ind[i]);
 			}
 			sb.append(']'); sb.append(',');
-			sb.append(user_sub); sb.append(',');//also pardo_lock_index;
+//			sb.append(user_sub); sb.append(',');//also pardo_lock_index;
 			//sb.append(instr_timer);sb.append(',');
 			//sb.append(opblkndx);sb.append(',');
 			//sb.append(opblock);sb.append(',');
@@ -353,40 +355,40 @@ public class OpTable {
 	
 
 
-	public String toStringExpanded(){
-		StringBuilder sb = new StringBuilder();
-		sb.append(opcode); sb.append(',');//1  
-		sb.append(op1_array); sb.append(',');//2
-		sb.append(op2_array); sb.append(',');//3
-		sb.append(result_array); sb.append(',');//4
-		sb.append('[');
-		sb.append(ind[0]);
-		for (int i = 1; i < AcesHacks.max_array_index; i++){
-			sb.append(','); sb.append(ind[i]);
-		}
-		sb.append(']'); sb.append(',');
-		sb.append(user_sub); sb.append(',');//also pardo_lock_index;
-		sb.append(instr_timer);sb.append(',');
-		sb.append(opblkndx);sb.append(',');
-		sb.append(opblock);sb.append(',');
-		sb.append(oploop); sb.append(',');
-		sb.append(scalar_op1);  sb.append(',');//also pardo_chunk_size;
-		sb.append(scalar_op2);  sb.append(',');//also pardo_batch_end;
-		sb.append(scalar_result); sb.append(',');//also pardo_next_batch_start;
-		sb.append(pardo_batch); sb.append(',');
-		sb.append(pardo_max_batch); sb.append(',');
-		sb.append(pardo_signal); sb.append(',');
-		sb.append(server_stat_key); sb.append(',');
-		sb.append(lineno); sb.append(',');
-//		sb.append(get_counter); sb.append(',');
-//		sb.append(put_counter); sb.append(',');
-//		sb.append(putinc_counter); sb.append(',');
-//		sb.append(prepare_counter); sb.append(',');
-//		sb.append(preparesum_counter); sb.append(',');
-//		sb.append(request_counter); sb.append(',');
-//		sb.append(pardomsg_counter); 
-		return sb.toString();
-	}
+//	public String toStringExpanded(){
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(opcode); sb.append(',');//1  
+//		sb.append(op1_array); sb.append(',');//2
+//		sb.append(op2_array); sb.append(',');//3
+//		sb.append(result_array); sb.append(',');//4
+//		sb.append('[');
+//		sb.append(ind[0]);
+//		for (int i = 1; i < AcesHacks.max_array_index; i++){
+//			sb.append(','); sb.append(ind[i]);
+//		}
+//		sb.append(']'); sb.append(',');
+//		sb.append(user_sub); sb.append(',');//also pardo_lock_index;
+//		sb.append(instr_timer);sb.append(',');
+//		sb.append(opblkndx);sb.append(',');
+//		sb.append(opblock);sb.append(',');
+//		sb.append(oploop); sb.append(',');
+//		sb.append(scalar_op1);  sb.append(',');//also pardo_chunk_size;
+//		sb.append(scalar_op2);  sb.append(',');//also pardo_batch_end;
+//		sb.append(scalar_result); sb.append(',');//also pardo_next_batch_start;
+//		sb.append(pardo_batch); sb.append(',');
+//		sb.append(pardo_max_batch); sb.append(',');
+//		sb.append(pardo_signal); sb.append(',');
+//		sb.append(server_stat_key); sb.append(',');
+//		sb.append(lineno); sb.append(',');
+////		sb.append(get_counter); sb.append(',');
+////		sb.append(put_counter); sb.append(',');
+////		sb.append(putinc_counter); sb.append(',');
+////		sb.append(prepare_counter); sb.append(',');
+////		sb.append(preparesum_counter); sb.append(',');
+////		sb.append(request_counter); sb.append(',');
+////		sb.append(pardomsg_counter); 
+//		return sb.toString();
+//	}
 	
 }//class Entry	
 	
@@ -477,15 +479,15 @@ public class OpTable {
 		return index;
 	}
 	
-	//execute instruction
-	//ACES4 do not increment op1Index, op22Index, resultIndex, or functionAddr
-	public int addOptableEntry(int opcode, int op1Index, int op2Index,
-			int resultIndex, int[] ind, int functionAddr, int lineno) {
-		int index = nOps++;
-		entries.add(new Entry(opcode, op1Index, op2Index, resultIndex, ind, functionAddr, lineno));
-		return index;
-		
-	}
+//	//execute instruction
+//	//ACES4 do not increment op1Index, op22Index, resultIndex, or functionAddr
+//	public int addOptableEntry(int opcode, int op1Index, int op2Index,
+//			int resultIndex, int[] ind, int functionAddr, int lineno) {
+//		int index = nOps++;
+//		entries.add(new Entry(opcode, op1Index, op2Index, resultIndex, ind, functionAddr, lineno));
+//		return index;
+//		
+//	}
 	
 	public int addOptableEntry(Entry e){
 		int index = nOps++;

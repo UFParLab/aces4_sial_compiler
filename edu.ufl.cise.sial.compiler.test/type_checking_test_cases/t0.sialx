@@ -5,7 +5,16 @@ index i = 1,30
 index j = 30,50
 
 distributed a(i,j)
+distributed b(i,j)
 
 execute blocks_to_list a
+do i
+do j
+execute blocks_to_list a(i,j)
+execute blocks_to_list b a(i,j) 
+enddo j
+enddo i
+
+
 
 endsial t0

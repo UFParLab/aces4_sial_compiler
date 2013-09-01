@@ -49,7 +49,10 @@ public final static int
     int_value_t = (attr_integer | scalar_value_t);
   
     
-    		
+//priorities for the block server
+public final static int
+   served_array_priority = 1,
+   distributed_array_priority = 2;
 
 
 
