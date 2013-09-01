@@ -1,9 +1,0 @@
-import "aces_defs.sial"
-sial t14
-scalar x
-scalar y
-if x < y 
-x = 3
-endif
-endsial t14
-
