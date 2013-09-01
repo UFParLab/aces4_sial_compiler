@@ -1296,7 +1296,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 		//the expected number of arguments was declared so check that it matches the call
 		int expected_args = ASTUtils.getIntVal(((SpecialDec)dec).getSigopt().getINTLIT());
 		int num_args = n.getArgList().size();
-		check (num_args == expected_args, n, "execute statement has "+num_args+" but expects "+expected_args);
+		check (num_args == expected_args, n, 
+				"execute  " + n.getIdent() + " has "+num_args+" arguments but expects " + expected_args);
 		}
 
 	@Override
