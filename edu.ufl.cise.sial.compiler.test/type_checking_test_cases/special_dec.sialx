@@ -1,16 +1,19 @@
-import "aces_defs.sialx"
-sial special_dec
-special fff 3
-scalar x
-scalar y
-scalar w
-scalar z
-x += 33
-x -= 2
-x *= 3
-y += 5
-execute fff y w z
-execute list_to_blocks y
-endsial special_dec
+sial fill_sequential_test
+predefined int norb
+special fill_block_sequential 2
+aoindex i = 1,norb
+aoindex j = 1,norb
+temp a(i,j)
+temp b(j,i)
+do i
+do j
+execute fill_block_sequential a(i,j) 2.0
+b(j,i) = a(i,j)
+enddo j
+enddo i
+println "end of fill_sequential_test"
+endsial fill_sequential_test
+
+
 
 

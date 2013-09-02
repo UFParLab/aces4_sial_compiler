@@ -434,6 +434,7 @@ public class OpTable {
 	
 	//assign_op:  assignment with unary rhs, fl-load-value_op
 	//ACES4 do not increment operandIdex or resultIndex.  ind is not used.
+	//ACES4 also with reindex_op: op_code, rank, array_table_slot, index_selector, linno
 	public int addOptableEntry(int op_code, int operandIndex, int resultIndex, int[] ind, 
 			 int lineno){
 		int index = nOps++;
