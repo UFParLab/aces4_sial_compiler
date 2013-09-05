@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 53:  SpecialDec ::= special$ Ident Sigopt
+ *<li>Rule 53:  SpecialDec ::= special$ Ident IdentOpt$Signature
  *</b>
  */
 public class SpecialDec extends ASTNode implements ISpecialDec
@@ -20,25 +20,25 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     public SialParser getEnvironment() { return environment; }
 
     private Ident _Ident;
-    private Sigopt _Sigopt;
+    private Ident _Signature;
 
     public Ident getIdent() { return _Ident; }
     /**
-     * The value returned by <b>getSigopt</b> may be <b>null</b>
+     * The value returned by <b>getSignature</b> may be <b>null</b>
      */
-    public Sigopt getSigopt() { return _Sigopt; }
+    public Ident getSignature() { return _Signature; }
 
     public SpecialDec(SialParser environment, IToken leftIToken, IToken rightIToken,
                       Ident _Ident,
-                      Sigopt _Sigopt)
+                      Ident _Signature)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
-        this._Sigopt = _Sigopt;
-        if (_Sigopt != null) ((ASTNode) _Sigopt).setParent(this);
+        this._Signature = _Signature;
+        if (_Signature != null) ((ASTNode) _Signature).setParent(this);
         initialize();
     }
 
@@ -49,7 +49,7 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Ident);
-        list.add(_Sigopt);
+        list.add(_Signature);
         return list;
     }
 
@@ -60,10 +60,10 @@ public class SpecialDec extends ASTNode implements ISpecialDec
         if (! super.equals(o)) return false;
         SpecialDec other = (SpecialDec) o;
         if (! _Ident.equals(other._Ident)) return false;
-        if (_Sigopt == null)
-            if (other._Sigopt != null) return false;
+        if (_Signature == null)
+            if (other._Signature != null) return false;
             else; // continue
-        else if (! _Sigopt.equals(other._Sigopt)) return false;
+        else if (! _Signature.equals(other._Signature)) return false;
         return true;
     }
 
@@ -71,7 +71,7 @@ public class SpecialDec extends ASTNode implements ISpecialDec
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Ident.hashCode());
-        hash = hash * 31 + (_Sigopt == null ? 0 : _Sigopt.hashCode());
+        hash = hash * 31 + (_Signature == null ? 0 : _Signature.hashCode());
         return hash;
     }
 
@@ -88,7 +88,7 @@ public class SpecialDec extends ASTNode implements ISpecialDec
         if (checkChildren)
         {
             _Ident.accept(v);
-            if (_Sigopt != null) _Sigopt.accept(v);
+            if (_Signature != null) _Signature.accept(v);
         }
         v.endVisit(this);
     }
@@ -98,6 +98,13 @@ public class SpecialDec extends ASTNode implements ISpecialDec
   	 int addr;  //index of this function in function table
 	 public void setAddr(int addr){this.addr = addr;}
 	 public int getAddr(){return addr;}
+	 
+	 int numArgs; 
+	 public void setNumArgs(int numArgs){this.numArgs = numArgs;}
+	 public int  getNumArgs(){return numArgs;}
+	 int[] intent;  //array holding intents for each argument.  
+	 public void setIntent(int[] intent){this.intent = intent;}
+	 public int[] getIntent(){return intent;}
  }
 
 

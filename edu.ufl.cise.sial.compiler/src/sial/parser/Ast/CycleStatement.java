@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 72:  Statement ::= cycle$ Ident
+ *<li>Rule 70:  Statement ::= cycle$ Ident
  *</b>
  */
 public class CycleStatement extends ASTNode implements IStatement

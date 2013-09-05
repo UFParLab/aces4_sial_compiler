@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 104:  AllocIndex ::= Ident
+ *<li>Rule 102:  AllocIndex ::= Ident
  *</b>
  */
 public class AllocIndexIdent extends ASTNodeToken implements IAllocIndex

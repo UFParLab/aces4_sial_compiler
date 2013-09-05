@@ -218,16 +218,24 @@
 		 public  List<CallStatement> getCallSites(){return callSites;}
 	   ./
 
-	SpecialDec ::= special$  Ident  Sigopt
+	SpecialDec ::= special$  Ident  IdentOpt$Signature   --the Signature isn't really an ident, but is a list made up of r (read) w(write) u(update) indicating the intent
+	                                                                                                    -- of each argument.  There must be exactly one intent for each argument
 	/.  public String getName(){
 	  return getIdent().getName();
 	  }
 	  	 int addr;  //index of this function in function table
 		 public void setAddr(int addr){this.addr = addr;}
 		 public int getAddr(){return addr;}
+		 
+		 int numArgs; 
+		 public void setNumArgs(int numArgs){this.numArgs = numArgs;}
+		 public int  getNumArgs(){return numArgs;}
+		 int[] intent;  //array holding intents for each argument.  
+		 public void setIntent(int[] intent){this.intent = intent;}
+		 public int[] getIntent(){return intent;}
 	 ./
 	 
-	 Sigopt ::= %empty | INTLIT
+--Sigopt ::= %empty | INTLIT
 
      IdentOpt ::= Ident | %empty
 	 

@@ -385,87 +385,85 @@ Rules:
 50     RangeVal$IntLitRangeVal ::= INTLIT
 51     RangeVal$IdentRangeVal ::= Ident
 52     ProcDec ::= proc $ Ident EOLs $ StatementList endproc Ident $endIdent
-53     SpecialDec ::= special $ Ident Sigopt
-54     Sigopt ::= $Empty
-55              | INTLIT
-56     IdentOpt ::= Ident
-57                | $Empty
-58     StatementList$$Statement ::= $Empty
-59                     | StatementList Statement EOLs $
-60     WhereClause ::= where $ RelationalExpression
-61     WhereClauseList ::= $Empty
-62                       | WhereClauseList WhereClause EOLs $
-63     Statement$CallStatement ::= call $ Ident
-64     Statement$ReturnStatement ::= return $
-65     Statement$ServerBarrierStatement ::= server_barrier $ IdentOpt
-66     Statement$SipBarrierStatement ::= sip_barrier $ IdentOpt
-67     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
-68     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
-69     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
-70     Statement$Section ::= section $ EOLs $ StatementList endsection $
-71     Statement$ExitStatement ::= exit $
-72     Statement$CycleStatement ::= cycle $ Ident
-73     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
-74     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
-75     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
-76     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
-77     Statement$CreateStatement ::= create $ Ident AllocIndexListopt
-78     Statement$DeleteStatement ::= delete $ Ident AllocIndexListopt
-79     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-80     Statement$GetStatement ::= get $ DataBlock
-81     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-82     Statement$RequestStatement ::= request $ DataBlock Ident
-83     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
-84     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
-85     Statement$DestroyStatement ::= destroy $ Ident
-86     Statement$PrintlnStatement ::= println $ STRINGLIT
-87     Statement$PrintStatement ::= print $ STRINGLIT
-88     Statement$PrintIndexStatement ::= print_index $ Ident
-89     Statement$PrintScalarStatement ::= print_scalar $ Ident
-90     Arg ::= Primary
-91     ArgList$$Arg ::= $Empty
-92               | ArgList Arg
-93     Statement$ExecuteStatement ::= execute $ Ident ArgList
-94     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
-95     AssignOp$AssignOpEqual ::= =
-96     AssignOp$AssignOpPlus ::= +=
-97     AssignOp$AssignOpMinus ::= -=
-98     AssignOp$AssignOpStar ::= *=
-99     ScalarOrBlockVar ::= Ident
-100                       | DataBlock
-101    DataBlock ::= Ident ( $ Indices ) $
-102    Indices$$Ident ::= Ident
-103              | Indices , $ Ident
-104    AllocIndex$AllocIndexIdent ::= Ident
-105    AllocIndex$AllocIndexWildCard ::= * $
-106    AllocIndexList$$AllocIndex ::= AllocIndex
-107                     | AllocIndexList , $ AllocIndex
-108    AllocIndexListopt ::= $Empty
-109                        | ( AllocIndexList )
-110    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
-111    RelOp$RelOp ::= < $op
-112            | > $op
-113            | <= $op
-114            | >= $op
-115            | == $op
-116            | != $op
-117    Expression ::= UnaryExpression $UnaryExpression
-118                 | BinaryExpression $BinaryExpression
-119    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
-120    BinOp$BinOpStar ::= *
-121    BinOp$BinOpDiv ::= /
-122    BinOp$BinOpPlus ::= +
-123    BinOp$BinOpMinus ::= -
-124    BinOp$BinOpTensor ::= ^
-125    UnaryExpression ::= Primary
-126    UnaryExpression$NegatedUnary ::= - $ Primary
-127    Primary$IntLitPrimary ::= INTLIT
-128    Primary$DoubleLitPrimary ::= DOUBLELIT
-129    Primary$IdentPrimary ::= Ident
-130    Primary$DataBlockPrimary ::= DataBlock
-131    Primary$StringLitPrimary ::= StringLiteral
-132    StringLiteral ::= STRINGLIT
-133    Ident ::= IDENTIFIER
+53     SpecialDec ::= special $ Ident IdentOpt $Signature
+54     IdentOpt ::= Ident
+55                | $Empty
+56     StatementList$$Statement ::= $Empty
+57                     | StatementList Statement EOLs $
+58     WhereClause ::= where $ RelationalExpression
+59     WhereClauseList ::= $Empty
+60                       | WhereClauseList WhereClause EOLs $
+61     Statement$CallStatement ::= call $ Ident
+62     Statement$ReturnStatement ::= return $
+63     Statement$ServerBarrierStatement ::= server_barrier $ IdentOpt
+64     Statement$SipBarrierStatement ::= sip_barrier $ IdentOpt
+65     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
+66     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
+67     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
+68     Statement$Section ::= section $ EOLs $ StatementList endsection $
+69     Statement$ExitStatement ::= exit $
+70     Statement$CycleStatement ::= cycle $ Ident
+71     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
+72     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
+73     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
+74     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
+75     Statement$CreateStatement ::= create $ Ident AllocIndexListopt
+76     Statement$DeleteStatement ::= delete $ Ident AllocIndexListopt
+77     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+78     Statement$GetStatement ::= get $ DataBlock
+79     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+80     Statement$RequestStatement ::= request $ DataBlock Ident
+81     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
+82     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
+83     Statement$DestroyStatement ::= destroy $ Ident
+84     Statement$PrintlnStatement ::= println $ STRINGLIT
+85     Statement$PrintStatement ::= print $ STRINGLIT
+86     Statement$PrintIndexStatement ::= print_index $ Ident
+87     Statement$PrintScalarStatement ::= print_scalar $ Ident
+88     Arg ::= Primary
+89     ArgList$$Arg ::= $Empty
+90               | ArgList Arg
+91     Statement$ExecuteStatement ::= execute $ Ident ArgList
+92     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
+93     AssignOp$AssignOpEqual ::= =
+94     AssignOp$AssignOpPlus ::= +=
+95     AssignOp$AssignOpMinus ::= -=
+96     AssignOp$AssignOpStar ::= *=
+97     ScalarOrBlockVar ::= Ident
+98                        | DataBlock
+99     DataBlock ::= Ident ( $ Indices ) $
+100    Indices$$Ident ::= Ident
+101              | Indices , $ Ident
+102    AllocIndex$AllocIndexIdent ::= Ident
+103    AllocIndex$AllocIndexWildCard ::= * $
+104    AllocIndexList$$AllocIndex ::= AllocIndex
+105                     | AllocIndexList , $ AllocIndex
+106    AllocIndexListopt ::= $Empty
+107                        | ( AllocIndexList )
+108    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
+109    RelOp$RelOp ::= < $op
+110            | > $op
+111            | <= $op
+112            | >= $op
+113            | == $op
+114            | != $op
+115    Expression ::= UnaryExpression $UnaryExpression
+116                 | BinaryExpression $BinaryExpression
+117    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
+118    BinOp$BinOpStar ::= *
+119    BinOp$BinOpDiv ::= /
+120    BinOp$BinOpPlus ::= +
+121    BinOp$BinOpMinus ::= -
+122    BinOp$BinOpTensor ::= ^
+123    UnaryExpression ::= Primary
+124    UnaryExpression$NegatedUnary ::= - $ Primary
+125    Primary$IntLitPrimary ::= INTLIT
+126    Primary$DoubleLitPrimary ::= DOUBLELIT
+127    Primary$IdentPrimary ::= Ident
+128    Primary$DataBlockPrimary ::= DataBlock
+129    Primary$StringLitPrimary ::= StringLiteral
+130    StringLiteral ::= STRINGLIT
+131    Ident ::= IDENTIFIER
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:67:1:67:8:621:628: Informative: The terminal constant is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:68:1:68:9:631:639: Informative: The terminal configure is useless.
 
@@ -605,7 +603,6 @@ SubIndexDec ::=
 IntDec ::= 
 ProcDec ::= 
 SpecialDec ::= 
-Sigopt ::= 
 IdentOpt ::= 
 WhereClauseList ::= 
 AllocIndexListopt ::= 

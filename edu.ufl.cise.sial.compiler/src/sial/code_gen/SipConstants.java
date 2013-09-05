@@ -4,6 +4,12 @@ import sial.parser.Ast.IndexDec;
 
 public interface SipConstants {
 	
+//constants representing intent of special instruction arguments
+public final static int
+	sig_read = 1991,
+    sig_write = 1992,
+    sig_update = 1993;
+	
 //type constants
 public final static int 
 	aoindex_t = 1001,

@@ -460,7 +460,9 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		// language statement
 		if (name.equals("compute_integrals"))
 			return false;
-		int index = specialInstructionTable.addEntry(name);
+		//append '@' followed by the signature string to the end of the name
+		String sig = n.getNumArgs() == 0? "" : n.getSignature().getName();
+		int index = specialInstructionTable.addEntry(name + '@' + sig);
 		n.setAddr(index); // store index into special instruction table in this
 							// dec
 		return false;

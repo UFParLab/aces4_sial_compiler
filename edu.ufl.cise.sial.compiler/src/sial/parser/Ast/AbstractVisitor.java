@@ -94,9 +94,6 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(SpecialDec n) { unimplementedVisitor("visit(SpecialDec)"); return true; }
     public void endVisit(SpecialDec n) { unimplementedVisitor("endVisit(SpecialDec)"); }
 
-    public boolean visit(Sigopt n) { unimplementedVisitor("visit(Sigopt)"); return true; }
-    public void endVisit(Sigopt n) { unimplementedVisitor("endVisit(Sigopt)"); }
-
     public boolean visit(StatementList n) { unimplementedVisitor("visit(StatementList)"); return true; }
     public void endVisit(StatementList n) { unimplementedVisitor("endVisit(StatementList)"); }
 
@@ -303,7 +300,6 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof IdentRangeVal) return visit((IdentRangeVal) n);
         else if (n instanceof ProcDec) return visit((ProcDec) n);
         else if (n instanceof SpecialDec) return visit((SpecialDec) n);
-        else if (n instanceof Sigopt) return visit((Sigopt) n);
         else if (n instanceof StatementList) return visit((StatementList) n);
         else if (n instanceof WhereClause) return visit((WhereClause) n);
         else if (n instanceof WhereClauseList) return visit((WhereClauseList) n);
@@ -393,7 +389,6 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof IdentRangeVal) endVisit((IdentRangeVal) n);
         else if (n instanceof ProcDec) endVisit((ProcDec) n);
         else if (n instanceof SpecialDec) endVisit((SpecialDec) n);
-        else if (n instanceof Sigopt) endVisit((Sigopt) n);
         else if (n instanceof StatementList) endVisit((StatementList) n);
         else if (n instanceof WhereClause) endVisit((WhereClause) n);
         else if (n instanceof WhereClauseList) endVisit((WhereClauseList) n);

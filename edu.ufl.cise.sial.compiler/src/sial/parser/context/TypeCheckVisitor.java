@@ -14,6 +14,7 @@ import java.util.Set;
 import lpg.runtime.IAst;
 import lpg.runtime.IAstVisitor;
 import lpg.runtime.IToken;
+import sial.code_gen.SipConstants;
 import sial.parser.SialParser;
 import sial.parser.SialParsersym;
 import sial.parser.Ast.ASTNode;
@@ -109,7 +110,7 @@ import sial.parser.context.AcesRangeChecks;
 import sial.parser.context.AmbiguousNameException;
 import sial.parser.context.SymbolTable;
 
-public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
+public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, SipConstants {
 
 	SymbolTable symbolTable;
 	SialParser parser;
@@ -525,11 +526,27 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 	//special instructions can only be declared once.  No qualification is possible
 	@Override
 	public boolean visit(SpecialDec n) {
-		Ident id = n.getIdent();
-		String name = id.getName();
-		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
+		String name = n.getName();
+		check(symbolTable.insert(name, n), n, "Duplicate declaration of "
 				+ name);
-		return false;  //don't need to do anything with optional number of arguments here
+		Ident signature = n.getSignature();
+		if (signature == null){
+			n.setNumArgs(0);
+		}
+		else {
+			String args = signature.getName(); // lower case version of string that was given as signature
+			int numArgs = args.length();
+			for (int i = 0; i < numArgs; ++i){
+				char intent_val = args.charAt(i);
+				switch(intent_val){
+				case 'r': case 'w': case 'u': break; //there are the legal options
+				default:
+					check(false, n, "Illegal character " + intent_val  + " in special instruction signature descriptor");
+				}
+			}
+			n.setNumArgs(numArgs);
+		}
+		return false;  //don't visit children
 	}
 
 	@Override
@@ -1292,9 +1309,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym {
 		IDec dec = n.getIdent().getDec();
 		check(dec instanceof SpecialDec, n, n.getIdent()
 				.toString() + " not declared as special instruction");
-		if (   ((SpecialDec) dec).getSigopt() == null) return;
-		//the expected number of arguments was declared so check that it matches the call
-		int expected_args = ASTUtils.getIntVal(((SpecialDec)dec).getSigopt().getINTLIT());
+		int expected_args = ((SpecialDec)dec).getNumArgs();
 		int num_args = n.getArgList().size();
 		check (num_args == expected_args, n, 
 				"execute  " + n.getIdent() + " has "+num_args+" arguments but expects " + expected_args);

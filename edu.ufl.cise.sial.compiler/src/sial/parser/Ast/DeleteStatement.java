@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 78:  Statement ::= delete$ Ident AllocIndexListopt
+ *<li>Rule 76:  Statement ::= delete$ Ident AllocIndexListopt
  *</b>
  */
 public class DeleteStatement extends ASTNode implements IStatement
