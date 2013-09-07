@@ -199,7 +199,7 @@ public class SialCompiler {
 		// if not otherwise specified, use same directory as input
 		File outputDir;
 		if (options.getOUTPUT_DIR() == null) {
-			System.out.println("inputPath = " + inputPath);
+//			System.out.println("inputPath = " + inputPath);
 			outputDir = inputPath.toAbsolutePath().getParent().toFile();
 		} else {
 			outputDir = options.getOUTPUT_DIR().toFile();
@@ -222,7 +222,7 @@ public class SialCompiler {
 
 		Timer outputTimer = new Timer();
 		// write the sipTable
-		System.out.println("writing sip Table ");
+//		System.out.println("writing sip Table ");
 //		System.out.println(sipTable.toString());
 		sipTable.write(out);
 		outputTimer.printElapsed(options.isVERBOSE(), "Output time for file "

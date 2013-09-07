@@ -208,7 +208,7 @@ return sb.toString();
 	
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(nScalars);
-		System.out.println("writing nscalars = " + nScalars);
+//		System.out.println("writing nscalars = " + nScalars);
 		for (int i = 0; i != nScalars; i++){
 			double v = scalars.get(i);
 			out.writeDouble(v);

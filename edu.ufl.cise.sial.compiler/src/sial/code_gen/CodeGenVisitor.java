@@ -1700,7 +1700,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public boolean visit(PrintStatement n) {
 		String s = ASTUtils.getStringVal(n.getSTRINGLIT());
 		int stringIndex = stringLiteralTable.getAndAdd(s);
-		System.out.println(s + " " + stringIndex);
+//		System.out.println(s + " " + stringIndex);
 		opTable.addOptableEntry(print_op, stringIndex, defaultZeroInd,
 				lineno(n));
 		return false; // should not visit child
@@ -1739,8 +1739,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int index_slot = operandStack.pop();
 		opTable.addOptableEntry(print_index_op, index_slot, defaultZeroInd,
 				lineno(n));
-		System.out.println("in endVisit(PrintIndexStatement, index_slot= "
-				+ index_slot);
+//		System.out.println("in endVisit(PrintIndexStatement, index_slot= "
+//				+ index_slot);
 	}
 
 	@Override

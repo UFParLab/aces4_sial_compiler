@@ -536,7 +536,7 @@ public class OpTable {
 		output.writeInt(nOps);
 		for (int i = 0; i != nOps; i++)
 			entries.get(i).write(output);	
-		System.out.println(this);
+//		System.out.println(this);
 	}
 
 

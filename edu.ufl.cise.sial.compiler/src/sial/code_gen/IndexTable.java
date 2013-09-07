@@ -249,9 +249,9 @@ public class IndexTable implements SipConstants, SialParsersym {
 		int index = num_entries++;
 		indexBiMap.put(dec, index);
 		Entry entry = new Entry(beg, end, type);
-		int slot = entries.size();
+//		int slot = entries.size();
 		entries.add(entry);
-		System.out.println("In IndexTable.addEntry:  " + dec.toString() + " index " + index + " slot=" + slot);                                                                                             
+//		System.out.println("In IndexTable.addEntry:  " + dec.toString() + " index " + index + " slot=" + slot);                                                                                             
 		return index;
 	}
 	
