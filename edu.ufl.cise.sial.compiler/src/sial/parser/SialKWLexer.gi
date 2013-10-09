@@ -64,8 +64,8 @@ persistent
 special
 server_barrier
 sip_barrier
-constant 
-configure --reserved keyword
+--constant 
+--configure --reserved keyword
 section
 endsection
 print
@@ -148,8 +148,8 @@ auto_allocate
         | s p e c i a l             /. $setResult($_special);./			
 		| s e r v e r _ b a r r i e r           /. $setResult($_server_barrier);./
 		| s i p _ b a r r i e r      /.$setResult($_sip_barrier);./		
-	    | c o n s t a n t        /.$setResult($_constant);./				   
-	    | c o n f i g u r e        /.$setResult($_configure);./	   
+--	    | c o n s t a n t        /.$setResult($_constant);./				   
+--	    | c o n f i g u r e        /.$setResult($_configure);./	   
 	    | s e c t i o n        /.$setResult($_section);./		
         | e n d s e c t i o n        /.$setResult($_endsection);./		
         | p r i n t         /.$setResult($_print);./	 

@@ -1,7 +1,7 @@
 package sial.parser;
 
 public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
-    public final static int ERROR_SYMBOL = 88;
+    public final static int ERROR_SYMBOL = 86;
     public final int getErrorSymbol() { return ERROR_SYMBOL; }
 
     public final static int SCOPE_UBOUND = 7;
@@ -16,7 +16,7 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
     public final static int NUM_STATES = 128;
     public final int getNumStates() { return NUM_STATES; }
 
-    public final static int NT_OFFSET = 88;
+    public final static int NT_OFFSET = 86;
     public final int getNtOffset() { return NT_OFFSET; }
 
     public final static int LA_STATE_OFFSET = 596;
@@ -31,7 +31,7 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
     public final static int NUM_NONTERMINALS = 48;
     public final int getNumNonterminals() { return NUM_NONTERMINALS; }
 
-    public final static int NUM_SYMBOLS = 136;
+    public final static int NUM_SYMBOLS = 134;
     public final int getNumSymbols() { return NUM_SYMBOLS; }
 
     public final static int SEGMENT_SIZE = 8192;
@@ -72,12 +72,12 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,1,0,0,0,0,0,1,0,1,
-            0,1,0,1,0,0,0,0,0,0,
-            1,0,1,0,1,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,1,
-            0,0,0,0,0,0
+            0,0,0,0,0,1,0,1,0,1,
+            0,1,0,0,0,0,0,0,1,0,
+            1,0,1,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,1,0,0,
+            0,0,0,0
         };
     };
     public final static byte isNullable[] = IsNullable.isNullable;
@@ -105,7 +105,7 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0
+            0,0,0,0,0,0
         };
     };
     public final static byte isKeyword[] = IsKeyword.isKeyword;
@@ -273,7 +273,7 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0
+            0,0,0,0
         };
     };
     public final static byte termCheck[] = TermCheck.termCheck;
@@ -426,15 +426,15 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
 
     public interface TerminalIndex {
         public final static byte terminalIndex[] = {0,
-            84,87,24,25,26,28,31,32,33,36,
+            82,85,24,25,26,28,31,32,33,36,
             37,38,39,40,41,42,58,59,60,61,
-            62,68,69,72,74,75,76,77,1,88,
-            17,83,85,13,18,86,3,4,29,30,
+            62,68,69,70,72,73,74,75,1,86,
+            17,81,83,13,18,84,3,4,29,30,
             35,43,44,45,46,47,48,51,52,53,
-            54,55,56,57,65,66,78,79,80,81,
+            54,55,56,57,65,66,76,77,78,79,
             2,5,6,7,8,9,10,11,12,14,
             15,16,20,21,22,23,27,34,49,50,
-            63,64,67,73,82,70,71,89
+            63,64,67,71,80,87
         };
     };
     public final static byte terminalIndex[] = TerminalIndex.terminalIndex;
@@ -442,11 +442,11 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
 
     public interface NonterminalIndex {
         public final static byte nonterminalIndex[] = {0,
-            92,108,93,0,104,112,111,0,116,0,
-            109,0,105,0,107,0,96,100,103,106,
-            114,90,0,91,0,94,0,95,97,0,
-            0,0,0,0,0,0,98,99,101,102,
-            110,0,113,115,117,0,118,0
+            90,106,91,0,102,110,109,0,114,0,
+            107,0,103,0,105,0,94,98,101,104,
+            112,88,0,89,0,92,0,93,95,0,
+            0,0,0,0,0,0,96,97,99,100,
+            108,0,111,113,115,0,116,0
         };
     };
     public final static byte nonterminalIndex[] = NonterminalIndex.nonterminalIndex;
@@ -494,13 +494,13 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
 
     public interface ScopeRhs {
         public final static char scopeRhs[] = {0,
-            92,91,78,92,91,108,9,0,41,0,
-            92,91,108,9,0,78,91,92,41,0,
-            92,91,24,0,84,0,92,102,91,103,
-            5,0,77,103,0,92,102,91,89,39,
-            89,6,0,40,89,39,89,0,92,102,
-            91,89,6,0,40,89,0,93,92,0,
-            91,0
+            90,89,78,90,89,106,9,0,41,0,
+            90,89,106,9,0,78,89,90,41,0,
+            90,89,24,0,84,0,90,100,89,101,
+            5,0,77,101,0,90,100,89,87,39,
+            87,6,0,40,87,39,87,0,90,100,
+            89,87,6,0,40,87,0,91,90,0,
+            89,0
         };
     };
     public final static char scopeRhs[] = ScopeRhs.scopeRhs;
@@ -517,19 +517,19 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
 
     public interface InSymb {
         public final static char inSymb[] = {0,
-            0,110,104,91,111,73,82,89,30,91,
-            91,113,117,92,83,75,79,116,115,91,
-            93,74,94,16,28,27,25,26,21,15,
+            0,108,102,89,109,73,82,87,30,89,
+            89,111,115,90,83,75,79,114,113,89,
+            91,74,92,16,28,27,25,26,21,15,
             14,13,12,11,10,18,17,20,19,9,
-            7,24,5,6,23,22,4,89,89,89,
-            89,127,125,49,48,91,89,99,89,89,
-            90,89,90,90,90,89,89,89,89,108,
-            97,89,37,91,103,89,31,91,80,89,
-            89,97,130,99,34,99,99,31,91,133,
-            92,29,91,39,91,103,92,34,31,135,
-            132,92,102,89,102,76,107,126,29,78,
-            101,81,92,91,92,29,29,91,91,77,
-            102,40,92,103,92,40,89,39
+            7,24,5,6,23,22,4,87,87,87,
+            87,125,123,49,48,89,87,97,87,87,
+            88,87,88,88,88,87,87,87,87,106,
+            95,87,37,89,101,87,31,89,80,87,
+            87,95,128,97,34,97,97,31,89,131,
+            90,29,89,39,89,101,90,34,31,133,
+            130,90,100,87,100,76,105,124,29,78,
+            99,81,90,89,90,29,29,89,89,77,
+            100,40,90,101,90,40,87,39
         };
     };
     public final static char inSymb[] = InSymb.inSymb;
@@ -607,8 +607,6 @@ public class SialParserprs implements lpg.runtime.ParseTable, SialParsersym {
             "special",
             "server_barrier",
             "sip_barrier",
-            "constant",
-            "configure",
             "section",
             "endsection",
             "print",

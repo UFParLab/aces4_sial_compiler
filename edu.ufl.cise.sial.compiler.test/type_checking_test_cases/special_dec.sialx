@@ -1,6 +1,6 @@
 sial fill_sequential_test
 predefined int norb
-special fill_block_sequential 2
+special fill_block_sequential wr
 aoindex i = 1,norb
 aoindex j = 1,norb
 temp a(i,j)

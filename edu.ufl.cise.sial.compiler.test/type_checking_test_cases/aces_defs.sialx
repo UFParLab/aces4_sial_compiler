@@ -111,7 +111,7 @@ predefined scalar excite
 # functions
 
 special aceshack_sip_barrier #0TODO AcesHack to match current sip binary
-special energy_denominator   #1
+special energy_denominator  w
 special energy_product       #2
 special energy_reg_denominator
 special energy_reg_product
@@ -122,8 +122,8 @@ special trace_off
 special dump_block
 special load_balance_on
 special load_balance_off
-special blocks_to_list
-special list_to_blocks
+special blocks_to_list r
+special list_to_blocks w
 # special fmult
 special der_int_setup
 special compute_derivative_integrals 
@@ -137,7 +137,7 @@ special eig_sr
 special eig_sr_inv
 special copy_fock
 
-special diis_setup
+special diis_setup w
 special compute_diis
 special write_blocks_to_list
 special read_list_to_blocks
@@ -158,7 +158,7 @@ special return_h1
 special smon_on
 special smon_off
 special scf_rhf
-special array_copy
+special array_copy wr
 special energy_adenominator
 
 special energy_bdenominator
@@ -325,7 +325,7 @@ special eomroot_print_new
 special energy_ty_denominator
 special reorder_energy
 
-special compute_integrals
+special compute_integrals w
 
 endsial aces_defs
 

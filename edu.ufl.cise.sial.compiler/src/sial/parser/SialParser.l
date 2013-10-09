@@ -303,8 +303,6 @@ Terminals:
     special
     server_barrier
     sip_barrier
-    constant
-    configure
     section
     endsection
     print
@@ -464,8 +462,6 @@ Rules:
 129    Primary$StringLitPrimary ::= StringLiteral
 130    StringLiteral ::= STRINGLIT
 131    Ident ::= IDENTIFIER
-/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:67:1:67:8:621:628: Informative: The terminal constant is useless.
-/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:68:1:68:9:631:639: Informative: The terminal configure is useless.
 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
@@ -542,8 +538,6 @@ persistent ::= persistent
 special ::= special
 server_barrier ::= server_barrier
 sip_barrier ::= sip_barrier
-constant ::= constant
-configure ::= configure
 section ::= section
 endsection ::= endsection
 print ::= print

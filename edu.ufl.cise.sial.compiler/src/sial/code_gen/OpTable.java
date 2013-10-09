@@ -163,7 +163,7 @@ public class OpTable {
 		Entry(int opcode, int result_array, int[] ind, int lineno){
 			this.opcode = opcode;
 			this.result_array = result_array;
-			assert ind.length == AcesHacks.max_array_index;
+			assert ind.length == AcesHacks.max_rank;
 			this.ind = ind; 
 			this.lineno = lineno;
 		}
@@ -206,8 +206,8 @@ public class OpTable {
 			op1_array = input.readInt(); //2
 			op2_array = input.readInt(); //3
 			result_array = input.readInt(); //4
-			ind = new int[AcesHacks.max_array_index]; //size is max_array_index
-			for (int i = 0; i < AcesHacks.max_array_index; i++){
+			ind = new int[AcesHacks.max_rank]; //size is max_array_index
+			for (int i = 0; i < AcesHacks.max_rank; i++){
 				ind[i] = input.readInt();
 			}
 //			user_sub = input.readInt(); //also pardo_lock_index;
@@ -278,7 +278,7 @@ public class OpTable {
 			output.writeInt(op1_array); //2
 			output.writeInt(op2_array); //3
 			output.writeInt(result_array); //4
-			for (int i = 0; i < AcesHacks.max_array_index; i++){  //This approach requires the size of this to be fixed, and for the sip to read individual ints
+			for (int i = 0; i < AcesHacks.max_rank; i++){  //This approach requires the size of this to be fixed, and for the sip to read individual ints
 				                                                   //instead of reading an array
 				output.writeInt(ind[i]);
 			}
@@ -325,7 +325,7 @@ public class OpTable {
 			sb.append(result_array); sb.append(',');//4
 			sb.append('[');
 			sb.append(ind[0]);
-			for (int i = 1; i < AcesHacks.max_array_index; i++){
+			for (int i = 1; i < AcesHacks.max_rank; i++){
 				sb.append(','); sb.append(ind[i]);
 			}
 			sb.append(']'); sb.append(',');
@@ -425,7 +425,7 @@ public class OpTable {
 	//ACES4  go_to_op:  do not increment result_array for go_to_op or print_op
 	public int addOptableEntry(int opcode, int result_array, int[] ind, int lineno) {
 		 int index = nOps++;
-		 assert ind.length <= AcesHacks.max_array_index;
+		 assert ind.length <= AcesHacks.max_rank;
 		 entries.add(new Entry(opcode, result_array, ind, lineno));
 		 return index;
 	}
@@ -438,7 +438,7 @@ public class OpTable {
 	public int addOptableEntry(int op_code, int operandIndex, int resultIndex, int[] ind, 
 			 int lineno){
 		int index = nOps++;
-		assert ind.length <= AcesHacks.max_array_index;
+		assert ind.length <= AcesHacks.max_rank;
 		entries.add(new Entry(op_code, operandIndex, resultIndex, ind, lineno));
 //		entries.add(new Entry(op_code, operandIndex+1, resultIndex+1, ind, lineno));
 		return index;
@@ -449,7 +449,7 @@ public class OpTable {
 	public int addOptableEntry(int opcode, int operand1, int operand2,
 			int resultIndex, int[] ind, int lineno) {
 		int index = nOps++;
-		assert ind.length <= AcesHacks.max_array_index;
+		assert ind.length <= AcesHacks.max_rank;
 //		entries.add(new Entry(opcode, operand1+1, operand2 + 1, resultIndex+1, ind, lineno));
 		entries.add(new Entry(opcode, operand1, operand2, resultIndex, ind, lineno));
 		return index;	
@@ -458,7 +458,7 @@ public class OpTable {
 	//do_op, enddo_op, exit_op
 	public int addOptableEntry(int opcode, int[] ind, int lineno) {
 		int index = nOps++;
-		assert ind.length <= AcesHacks.max_array_index;
+		assert ind.length <= AcesHacks.max_rank;
 		entries.add(new Entry(opcode, 0, 0, 0, ind, lineno));
 		return index;
 	}

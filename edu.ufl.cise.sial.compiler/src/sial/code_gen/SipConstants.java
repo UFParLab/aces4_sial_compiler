@@ -152,5 +152,9 @@ public final static int
 	assign_block_op = 170,
 	assign_fill_op = 180,
 	assign_transpose_op = 181,
-	last_opcode    = assign_transpose_op;
+	dosubindex_op = 182,
+	enddosubindex_op = 183,
+	slice_op = 184,
+	insert_op = 185,
+	last_opcode    = insert_op;
 }

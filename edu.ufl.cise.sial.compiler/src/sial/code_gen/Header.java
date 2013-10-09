@@ -119,7 +119,7 @@ public class Header {
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(magic);
 		out.writeInt(version);
-		out.writeInt(AcesHacks.max_array_index);
+		out.writeInt(AcesHacks.max_rank);
 //		out.writeInt(release);  CANGE THIS TO MAXDIM
 //		out.writeInt(mx_nindex_table);
 //		out.writeInt(mx_narray_table);

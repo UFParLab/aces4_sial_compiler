@@ -186,7 +186,7 @@ public class ArrayTable implements SipConstants {
 		void read(SIADataInput in) throws IOException {
 			nindex = in.readInt(); // dimension of array
 
-			int max = AcesHacks.max_array_index;
+			int max = AcesHacks.max_rank;
 			index_array = new int[max]; // each element contains the fortran index
 								// in the index array of the corresponding index
 			for(int i = 0; i != nindex; i++){
@@ -233,7 +233,7 @@ public class ArrayTable implements SipConstants {
 //		}
 		
 		public String toString(){
-			int max = AcesHacks.max_array_index;
+			int max = AcesHacks.max_rank;
 			StringBuilder sb = new StringBuilder();
 			sb.append(max);
 			sb.append('\n');
@@ -430,7 +430,7 @@ public class ArrayTable implements SipConstants {
 	int addEntry(IDec dec, int arraynindex, int type, int[] indarray, int scalarIndex) {
 		int index = nvars++;
 		if (dec != null) arrayBiMap.put(dec, index);
-		int max_array_index = AcesHacks.max_array_index;
+		int max_array_index = AcesHacks.max_rank;
 		Entry entry = new Entry(max_array_index, arraynindex, type, indarray, scalarIndex);
 		entries.add(entry);
 		return index;

@@ -1075,7 +1075,7 @@ if (root != null) {
             //
             case 92: {
                 setResult(
-                    new AssignStatement(getLeftIToken(), getRightIToken(),
+                    new AssignStatement(SialParser.this, getLeftIToken(), getRightIToken(),
                                         (IScalarOrBlockVar)getRhsSym(1),
                                         (IAssignOp)getRhsSym(2),
                                         (IExpression)getRhsSym(3))

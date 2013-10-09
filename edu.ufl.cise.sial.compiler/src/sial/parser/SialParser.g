@@ -342,6 +342,13 @@
 	--It would be better to have a comma separating the args
 	
 	Statement$AssignStatement ::=  ScalarOrBlockVar AssignOp Expression
+	/. boolean slice;
+	   boolean insert;
+	   public boolean isSlice(){return slice;}
+	   public void setSlice(boolean val){ slice = val; }
+	   public boolean isInsert(){return insert;}
+	   public void setInsert(boolean val){insert = val;}
+	 ./ 
 	
 	AssignOp$AssignOpEqual  ::=    '='
 	AssignOp$AssignOpPlus  ::=    '+='

@@ -70,8 +70,6 @@ public interface SialParsersym {
       TK_special = 83,
       TK_server_barrier = 22,
       TK_sip_barrier = 23,
-      TK_constant = 86,
-      TK_configure = 87,
       TK_section = 24,
       TK_endsection = 84,
       TK_print = 25,
@@ -89,7 +87,7 @@ public interface SialParsersym {
       TK_DOUBLELIT = 36,
       TK_EOL = 2,
       TK_STRINGLIT = 30,
-      TK_ERROR_TOKEN = 88;
+      TK_ERROR_TOKEN = 86;
 
     public final static String orderedTerminalSymbols[] = {
                  "",
@@ -178,8 +176,6 @@ public interface SialParsersym {
                  "special",
                  "endsection",
                  "EOF_TOKEN",
-                 "constant",
-                 "configure",
                  "ERROR_TOKEN"
              };
 

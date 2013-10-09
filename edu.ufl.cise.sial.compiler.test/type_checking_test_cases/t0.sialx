@@ -11,7 +11,7 @@ execute blocks_to_list a
 do i
 do j
 execute blocks_to_list a(i,j)
-execute blocks_to_list b a(i,j) 
+execute blocks_to_list b 
 enddo j
 enddo i
 

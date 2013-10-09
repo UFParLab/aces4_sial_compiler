@@ -3790,8 +3790,8 @@ import "common.sialx"
 #          Watson: Added this because LAMBDA needs these integrals
 #
      #IF  PROPERTY > 0.0
-         execute blocks_to_list  #VSpipi(p,i,p1,i1)
-         execute blocks_to_list  #Vpiqj(p,i,q,j)
+         execute blocks_to_list  VSpipi(p,i,p1,i1)
+         execute blocks_to_list  Vpiqj(p,i,q,j)
 
          execute blocks_to_list  Vaaii
          execute blocks_to_list  Viaai

@@ -17,8 +17,6 @@ public class TestTypeChecking {
 	
 	static String dir;
 
-
-	
 	private void runTypeCheckTest(String name, int numErrs) throws IOException {
         String dir =  System.getProperty("user.dir");
         System.out.println("dir: " + dir);
@@ -34,7 +32,11 @@ public class TestTypeChecking {
 		assertEquals(numErrs,SialCompiler.errs);
 	}
 	
-
+    @Test
+    public void subindex_pass() throws IOException{
+    	runTypeCheckTest("subindex_pass",0);
+    }
+    
 	@Test
 	public void t0() throws IOException {
 		runTypeCheckTest("t0", 0);
@@ -49,11 +51,6 @@ public class TestTypeChecking {
 	public void special_dec_fail() throws IOException {
 		runTypeCheckTest("special_dec_fail",1);
 	}
-
-//	@Test
-//	public void t1() throws IOException {
-//		runTest("t1","t1imports");
-//	}
 	
 	@Test
 	public void hello_world() throws IOException {

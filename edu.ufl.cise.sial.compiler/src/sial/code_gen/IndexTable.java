@@ -46,14 +46,14 @@ import com.google.common.collect.HashBiMap;
 public class IndexTable implements SipConstants, SialParsersym {
 
 	static class Entry {
-		int index_size;
-		int nsegments;
-		int current_seg;
-		int bseg;
+//		int index_size;
+//		int nsegments;
+//		int current_seg;
+		int bseg;  //also parent index for subindices
 		int eseg;
 		int index_type;
-		int next_seg;
-		int subindex_ptr;
+//		int next_seg;
+//		int subindex_ptr;  //TODO  implement this
 
 		Entry(int bseg, int eseg, int index_type) {
 			this.bseg = bseg;
@@ -76,7 +76,7 @@ public class IndexTable implements SipConstants, SialParsersym {
 			result = prime * result + bseg;
 			result = prime * result + eseg;
 			result = prime * result + index_type;
-			result = prime * result + subindex_ptr;
+//			result = prime * result + subindex_ptr;
 			return result;
 		}
 
@@ -100,8 +100,8 @@ public class IndexTable implements SipConstants, SialParsersym {
 				return false;
 			if (index_type != other.index_type)
 				return false;
-			if (subindex_ptr != other.subindex_ptr)
-				return false;
+//			if (subindex_ptr != other.subindex_ptr)
+//				return false;
 			return true;
 		}
 
@@ -116,16 +116,16 @@ public class IndexTable implements SipConstants, SialParsersym {
 			// subindex_ptr= input.readInt();
 		}
 
-		public void readExpanded(DataInput input) throws IOException {
-			index_size = input.readInt();
-			nsegments = input.readInt();
-			current_seg = input.readInt();
-			bseg = input.readInt();
-			eseg = input.readInt();
-			index_type = input.readInt();
-			next_seg = input.readInt();
-			subindex_ptr = input.readInt();
-		}
+//		public void readExpanded(DataInput input) throws IOException {
+//			index_size = input.readInt();
+//			nsegments = input.readInt();
+//			current_seg = input.readInt();
+//			bseg = input.readInt();
+//			eseg = input.readInt();
+//			index_type = input.readInt();
+//			next_seg = input.readInt();
+//			subindex_ptr = input.readInt();
+//		}
 
 		// @SuppressWarnings("unused")
 		// public void readExpanded(DataInput input) throws IOException{

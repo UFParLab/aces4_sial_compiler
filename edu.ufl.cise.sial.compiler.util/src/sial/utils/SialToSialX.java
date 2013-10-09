@@ -1,5 +1,10 @@
 package sial.utils;
 
+/** Converts SIAL programs to sialx programs. 
+ * @param name  if directory, convert all files with suffix .sial to .sialx files.  If file with .sial
+ *               suffix, convert that file.
+ */
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

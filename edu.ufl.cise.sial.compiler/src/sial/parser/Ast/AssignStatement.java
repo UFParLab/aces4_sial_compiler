@@ -1,5 +1,6 @@
 package sial.parser.Ast;
 
+import sial.parser.*;
 import lpg.runtime.*;
 
 import org.eclipse.imp.parser.IParser;
@@ -15,6 +16,9 @@ import org.eclipse.imp.parser.IParser;
  */
 public class AssignStatement extends ASTNode implements IStatement
 {
+    private SialParser environment;
+    public SialParser getEnvironment() { return environment; }
+
     private IScalarOrBlockVar _ScalarOrBlockVar;
     private IAssignOp _AssignOp;
     private IExpression _Expression;
@@ -23,13 +27,14 @@ public class AssignStatement extends ASTNode implements IStatement
     public IAssignOp getAssignOp() { return _AssignOp; }
     public IExpression getExpression() { return _Expression; }
 
-    public AssignStatement(IToken leftIToken, IToken rightIToken,
+    public AssignStatement(SialParser environment, IToken leftIToken, IToken rightIToken,
                            IScalarOrBlockVar _ScalarOrBlockVar,
                            IAssignOp _AssignOp,
                            IExpression _Expression)
     {
         super(leftIToken, rightIToken);
 
+        this.environment = environment;
         this._ScalarOrBlockVar = _ScalarOrBlockVar;
         ((ASTNode) _ScalarOrBlockVar).setParent(this);
         this._AssignOp = _AssignOp;
@@ -90,6 +95,12 @@ public class AssignStatement extends ASTNode implements IStatement
         }
         v.endVisit(this);
     }
-}
+ boolean slice;
+   boolean insert;
+   public boolean isSlice(){return slice;}
+   public void setSlice(boolean val){ slice = val; }
+   public boolean isInsert(){return insert;}
+   public void setInsert(boolean val){insert = val;}
+ }
 
 

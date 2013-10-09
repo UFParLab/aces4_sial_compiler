@@ -46,6 +46,7 @@ import sial.parser.Ast.DecList;
 import sial.parser.Ast.DeleteStatement;
 import sial.parser.Ast.DestroyStatement;
 import sial.parser.Ast.DimensionList;
+import sial.parser.Ast.BinOpMinus;
 //import sial.parser.Ast.DimensionListopt;
 import sial.parser.Ast.DoStatement;
 import sial.parser.Ast.DoStatementSubIndex;
@@ -1054,6 +1055,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		checkCompatibleBlocks(n, lhs, rhs);
 	}
 
+
 	private void checkCompatibleBlockWithTranspose(ASTNode n, DataBlock lhs,
 			DataBlock rhs) {
 		// check that indices on both sides match exactly, or are a permutation
@@ -1062,7 +1064,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		int lhsSize = lhsIndices.size();
 		int rhsSize = rhsIndices.size();
 		int minIndices = lhsSize < rhsSize ? lhsSize : rhsSize;
-		if (lhsSize == rhsSize) {// must be a permutation
+		if (lhsSize == rhsSize) {// must  be a permutation
+
 			for (int i = 0; i < lhsSize; i++) {
 				if (!check(contains(rhsIndices, lhsIndices.getIdentAt(i)), n,
 						"incompatible index lists"))
@@ -1307,8 +1310,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(ExecuteStatement n) {
 		IDec dec = n.getIdent().getDec();
-		check(dec instanceof SpecialDec, n, n.getIdent()
-				.toString() + " not declared as special instruction");
+		if (!check(dec instanceof SpecialDec, n, n.getIdent()
+				.toString() + " not declared as special instruction")) return;
 		int expected_args = ((SpecialDec)dec).getNumArgs();
 		int num_args = n.getArgList().size();
 		check (num_args == expected_args, n, 
@@ -1336,7 +1339,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 
-	/* checks that given indices have same type as the declaration */
+	/* checks that given indices have same type as the declaration, or be a subindex of the declared type */
 
 	@Override
 	public void endVisit(DataBlock n) {
@@ -1686,7 +1689,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			IdentList lhsIndices = ((DataBlock) lhs).getIndices();
 			if (isInt(expr) || isScalar(expr))
 				return;
-			if (expr instanceof DataBlockPrimary) {
+			if (expr instanceof DataBlockPrimary){
+//			   boolean isSlice = checkStrictSubOrEq((DataBlock) lhs,
+//						((DataBlockPrimary) expr).getDataBlock());
+			   boolean isSlice = hasDeclaredIndices( (DataBlock)lhs ) && isSubBlock(((DataBlockPrimary) expr).getDataBlock() );
+			   if (isSlice){ //lhs is subblock of rhs
+				   n.setSlice(true);
+				   return;
+			   }
+			   boolean isInsert = hasDeclaredIndices( ((DataBlockPrimary) expr).getDataBlock() ) && isSubBlock( (DataBlock)lhs );
+			   if (isInsert){ //rhs is subblock of lsh
+				   n.setInsert(true);
+				   return;
+			   }					
 				checkCompatibleBlockWithTranspose(n, (DataBlock) lhs,
 						((DataBlockPrimary) expr).getDataBlock());
 				return;
@@ -1788,7 +1803,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 						}
 						return;
 					}
-					if (binOp instanceof BinOpPlus) {
+					if (binOp instanceof BinOpPlus || binOp instanceof BinOpMinus) {
 						IdentList block1indices = block1.getIndices();
 						IdentList block2indices = block2.getIndices();
 						if (!check(lhsIndices.size() == block1indices.size()
@@ -1850,6 +1865,47 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			}
 			return;
 		}
+	}
+
+
+//	returns true if index1 is a subindex of index2
+	boolean isSubIndex(Ident index1, Ident index2){
+		IDec dec1 = index1.getDec();
+		IDec dec2 = index2.getDec();
+		return dec1 instanceof SubIndexDec && ((SubIndexDec)dec1).getParentIdent().getDec() == dec2;
+	}
+   
+	//returns true if given indices are same as declared
+	boolean hasDeclaredIndices(DataBlock block){
+		   IdentList indices = block.getIndices();
+		   IDec dec = block.getIdent().getDec();
+		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
+		   boolean hasDeclared = true;
+		   for (int i = 0; i < indices.size(); ++i){
+			   Ident declaredIdent = declaredIndices.getDimensionAt(i);
+			   Ident usedIdent = indices.getIdentAt(i);
+			   boolean same = declaredIdent.getName().equals(usedIdent.getName());
+			   hasDeclared = hasDeclared && same;
+		   }
+		   return hasDeclared;
+	}
+	
+	//returns true if there is at least one index that is a subindex of declared index and the rest are as declared
+	boolean isSubBlock(DataBlock block){
+		   IdentList indices = block.getIndices();
+		   IDec dec = block.getIdent().getDec();
+		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
+		   boolean isValid = true;
+		   boolean subBlock = false;
+		   for (int i = 0; i < indices.size(); ++i){
+			   Ident declaredIdent = declaredIndices.getDimensionAt(i);
+			   Ident usedIdent = indices.getIdentAt(i);
+			   boolean same = declaredIdent.getName().equals(usedIdent.getName());
+			   boolean isSub = !same && isSubIndex(usedIdent,declaredIdent);
+			   isValid = isValid & (same || isSub);
+			   subBlock = subBlock || isSub;
+		   }
+		   return isValid && subBlock;
 	}
 
 	// This is loose for now and allows int and scalars to be mixed
@@ -2042,7 +2098,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 	@Override
 	public void endVisit(PrintIndexStatement n){  
-		check(n.getIdent().getDec() instanceof IndexDec, n, 
+		check(n.getIdent().getDec() instanceof IndexDec || n.getIdent().getDec() instanceof SubIndexDec, n, 
 				"Argument to print_index statement must be an index variable");
 	}
 	

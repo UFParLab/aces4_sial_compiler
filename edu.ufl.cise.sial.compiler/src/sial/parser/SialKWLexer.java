@@ -5,7 +5,7 @@ import lpg.runtime.*;
 public class SialKWLexer extends SialKWLexerprs
 {
     private char[] inputChars;
-    private final int keywordKind[] = new int[62 + 1];
+    private final int keywordKind[] = new int[60 + 1];
 
     public int[] getKeywordKinds() { return keywordKind; }
 
@@ -366,64 +366,54 @@ public class SialKWLexer extends SialKWLexerprs
         keywordKind[50] = (SialParsersym.TK_sip_barrier);
 
         //
-        // Rule 51:  Keyword ::= c o n s t a n t
+        // Rule 51:  Keyword ::= s e c t i o n
         //
-        keywordKind[51] = (SialParsersym.TK_constant);
+        keywordKind[51] = (SialParsersym.TK_section);
 
         //
-        // Rule 52:  Keyword ::= c o n f i g u r e
+        // Rule 52:  Keyword ::= e n d s e c t i o n
         //
-        keywordKind[52] = (SialParsersym.TK_configure);
+        keywordKind[52] = (SialParsersym.TK_endsection);
 
         //
-        // Rule 53:  Keyword ::= s e c t i o n
+        // Rule 53:  Keyword ::= p r i n t
         //
-        keywordKind[53] = (SialParsersym.TK_section);
+        keywordKind[53] = (SialParsersym.TK_print);
 
         //
-        // Rule 54:  Keyword ::= e n d s e c t i o n
+        // Rule 54:  Keyword ::= p r i n t l n
         //
-        keywordKind[54] = (SialParsersym.TK_endsection);
+        keywordKind[54] = (SialParsersym.TK_println);
 
         //
-        // Rule 55:  Keyword ::= p r i n t
+        // Rule 55:  Keyword ::= p r i n t _ i n d e x
         //
-        keywordKind[55] = (SialParsersym.TK_print);
+        keywordKind[55] = (SialParsersym.TK_print_index);
 
         //
-        // Rule 56:  Keyword ::= p r i n t l n
+        // Rule 56:  Keyword ::= p r i n t _ s c a l a r
         //
-        keywordKind[56] = (SialParsersym.TK_println);
+        keywordKind[56] = (SialParsersym.TK_print_scalar);
 
         //
-        // Rule 57:  Keyword ::= p r i n t _ i n d e x
+        // Rule 57:  Keyword ::= s i p _ c o n s i s t e n t
         //
-        keywordKind[57] = (SialParsersym.TK_print_index);
+        keywordKind[57] = (SialParsersym.TK_sip_consistent);
 
         //
-        // Rule 58:  Keyword ::= p r i n t _ s c a l a r
+        // Rule 58:  Keyword ::= s c o p e d _ e x t e n t
         //
-        keywordKind[58] = (SialParsersym.TK_print_scalar);
+        keywordKind[58] = (SialParsersym.TK_scoped_extent);
 
         //
-        // Rule 59:  Keyword ::= s i p _ c o n s i s t e n t
+        // Rule 59:  Keyword ::= c o n t i g u o u s
         //
-        keywordKind[59] = (SialParsersym.TK_sip_consistent);
+        keywordKind[59] = (SialParsersym.TK_contiguous);
 
         //
-        // Rule 60:  Keyword ::= s c o p e d _ e x t e n t
+        // Rule 60:  Keyword ::= a u t o _ a l l o c a t e
         //
-        keywordKind[60] = (SialParsersym.TK_scoped_extent);
-
-        //
-        // Rule 61:  Keyword ::= c o n t i g u o u s
-        //
-        keywordKind[61] = (SialParsersym.TK_contiguous);
-
-        //
-        // Rule 62:  Keyword ::= a u t o _ a l l o c a t e
-        //
-        keywordKind[62] = (SialParsersym.TK_auto_allocate);
+        keywordKind[60] = (SialParsersym.TK_auto_allocate);
 
         for (int i = 0; i < keywordKind.length; i++)
         {

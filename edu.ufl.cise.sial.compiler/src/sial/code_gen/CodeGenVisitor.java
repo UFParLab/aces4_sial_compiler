@@ -183,13 +183,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		operandStack = new LinkedList<Integer>();
 		indexArrayStack = new LinkedList<int[]>();
 		backpatchInstructionStack = new LinkedList<Integer>();
-		defaultOneInd = new int[AcesHacks.max_array_index];
-		defaultUndefInd = new int[AcesHacks.max_array_index];
+		defaultOneInd = new int[AcesHacks.max_rank];
+		defaultUndefInd = new int[AcesHacks.max_rank];
 		for (int i = 0; i != defaultOneInd.length; i++) {
 			defaultOneInd[i] = 1;
 			defaultUndefInd[i] = -1;
 		}
-		defaultZeroInd = new int[AcesHacks.max_array_index];
+		defaultZeroInd = new int[AcesHacks.max_rank];
 
 	}
 
@@ -401,7 +401,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int indexTypeNum = AcesHacks.getTypeConstant("subindex");
 		IndexDec parentDec = (IndexDec) n.getParentIdent().getDec();
 		int parentIndex = indexTable.getIndex(parentDec);
-		indexTable.addEntry(n, parentIndex, 0, indexTypeNum);
+		int entry_id = indexTable.addEntry(n, parentIndex, 0, indexTypeNum);
 		return false;
 	}
 
@@ -585,7 +585,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
-		opTable.backpatchBranch(do_instruction);
+		opTable.backpatchBranch(do_instruction);  //packpatches the do instruction to add the pc of this endDo to "result_array" field 
 		opTable.addOptableEntry(enddo_op, ind, lineno(n.getEndIndex()));
 
 		// backpatch do instruction with address matching enddo. put is in the
@@ -597,33 +597,28 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(DoStatement n) { /* nop */
 	}
 
+	//This is the same as Do except that it has its own opcode and the instruction includes the slot of the parent index
 	@Override
 	public boolean visit(DoStatementSubIndex n) {
-		// //TODO implement DoStatementSubIndex
-		// // I think there is a bug in the original compiler
-		// assert false: "subindex do statement not yet implemented";
-		// //check this--it may not be anything close to correct
-		// int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
-		// int opTableIndex = opTable.addOptableEntry(do_op, ind,
-		// lineno(n));
-		// backpatchInstructionStack.push(opTableIndex);
-		// return true;
 		// this method visits children manually
 		// visit the loop variable ident to get its index
 		n.getStartIndex().accept(this);
+		// visit the parent loop variable ident to get its index
+		n.getStartParentIndex().accept(this);
 		int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
-		// replace ind[0] with (not fortran, for some reason) index of loop
-		// variable and bitwise or with in_index_mask
-		ind[0] = (operandStack.pop() + 1) | in_index_mask;
-		;
-		opTable.addOptableEntry(do_op, ind, lineno(n));
-		// visit remaining children (parent index is redunant and does not need
-		// to be visited)
+		//get index of parent loop var
+		int parent = operandStack.pop();
+		// replace ind[0] with index of loop variable
+		ind[0] = operandStack.pop(); 
+		int dosubindex_instruction = opTable.addOptableEntry(dosubindex_op, parent, 0, ind, lineno(n)); //the zero is put in "result_array" slot to reserve
+		                                                                                                 //space for backpatch. Parent goes in op1_array slot.                 
+		// visit remaining children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
-		opTable.addOptableEntry(enddo_op, ind, lineno(n.getEndIndex()));
+		opTable.backpatchBranch(dosubindex_instruction);  //packpatches the do instruction to add the pc of this endDo to "result_array" field 
+		opTable.addOptableEntry(enddosubindex_op, parent, 0, ind, lineno(n.getEndIndex()));  //parent in op_1 slot for consistency
 		return false;
 
 	}
@@ -633,17 +628,20 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	@Override
+	//ACES4 includes number of indices in instruction
 	public boolean visit(PardoStatement n) {
 		// visit children manually
 		n.getStartIndices().accept(this);
 		// the index array is on top of the indexArrayStack
+		int num_indices = n.getStartIndices().size();
 		int[] ind = indexArrayStack.pop();
-		opTable.addOptableEntry(pardo_op, ind, lineno(n));
+		int pardo_instruction = opTable.addOptableEntry(pardo_op, num_indices, 0, ind, lineno(n));
 		// visit children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
+		opTable.backpatchBranch(pardo_instruction); 
 		opTable.addOptableEntry(endpardo_op, ind, lineno(n.getEndIndices()));
 		return false;
 	}
@@ -1011,7 +1009,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int nindex = n.size();
 		// Get the index table entries from the stack and fill the ind array,
 		// converting to fortran indices
-		int[] ind = new int[AcesHacks.max_array_index];
+		int[] ind = new int[AcesHacks.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
 			ind[i] = operandStack.pop();
 		}
@@ -1054,7 +1052,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int nindex = n.size();
 		// get the index table entries from the stack and fill the ind array
 		// convert to fortran indices
-		int[] ind = new int[AcesHacks.max_array_index];
+		int[] ind = new int[AcesHacks.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
 			ind[i] = operandStack.pop() + 1;
 		}
@@ -1068,6 +1066,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	@Override
+	//TODO loc is ignored in ACES4.  clean up code
 	public void endVisit(RelationalExpression n) {
 		IUnaryExpression eleft = n.getUnaryExpressionLeft();
 		boolean eLeftHasDoubleType = (eleft instanceof IdentPrimary && ((IdentPrimary) eleft)
@@ -1421,10 +1420,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(AssignStatement n) {
-		// There some ugliness in this routine solely to match
-		// the current compiler. It really doesn't matter what order
-		// the redindex ops are generated in
-		// get index and indexArrays for rhs
+		// There some ugliness in this left over from needing to match
+		// the original aces3 compiler.
 		IExpression rhs = n.getExpression();
 		int expr1Index = 0;
 		int expr2Index = 0;
@@ -1470,8 +1467,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 				opTable.addOptableEntry(reindex_op, arrayTable.getNIndex(expr2Index), expr2Index,
 						expr2IndexArray, lineno(n));
 			}
-			opTable.addOptableEntry(assignment_op, expr2Index, lhsIndex,
-					defaultOneInd, lineno(n));
+			int opcode;
+			if (n.isInsert()){opcode = insert_op;}
+			else if (n.isSlice()){ opcode = slice_op;}
+			else opcode = assignment_op;
+			opTable.addOptableEntry(opcode, expr2Index, lhsIndex, defaultOneInd, lineno(n));
 			return;
 		}
 		if (!(rhs instanceof BinaryExpression)) {

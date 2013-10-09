@@ -1,7 +1,7 @@
-This it the GIT for the SIAL compiler sources.  
+Sources for the SIAL compiler
 
-On the HPC center, this is /home/basbas/compiler.git (or /home/basbas/compiler.git/edu.ufl.cise.sial.compiler)
-On pc-358, this is mirrored in the eclipse workspace in C:\sanders\sial_compiler_git\compiler\edu.ufl.cise.sial.compiler
+The compiler is generated with lpg
+
 
 
 To develop and run on the HPC center, load java 7
