@@ -1,5 +1,5 @@
 #DO NOT MODIFY THIS FILE.  
-#In the current implementation of the SIA, correct functioning of ACES depends on these definitions in this order.
+#In the current implementation of the SIA, correct functioning of ACESII depends on these definitions in this order.
 #If you accidently modify the file, delete it and it will be regenerated.
 
 sial aces_defs

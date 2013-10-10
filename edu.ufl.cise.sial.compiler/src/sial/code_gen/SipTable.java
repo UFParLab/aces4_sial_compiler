@@ -98,10 +98,6 @@ public class SipTable {
 		SpecialInstructionTable specialInstructionTable = SpecialInstructionTable.readSpecialInstructionTable(input);
 		if (verbose) System.out.println("reading string literals");
 		StringLiteralTable stringLiteralTable = StringLiteralTable.readStringLiteralTable(input);
-//		if (verbose) System.out.println("reading index symbols");
-//		indexTable.readSymbols(input);
-//		if (verbose) System.out.println("reading array symbols");
-//		arrayTable.readSymbols(input);
 		return new SipTable(header, indexTable, arrayTable, opTable, scalarTable, specialInstructionTable, stringLiteralTable);
 	}	
 	
@@ -130,15 +126,10 @@ public class SipTable {
 			"specialInstructionTable == null");
 		sb.append("\nstring literal table:\n");
 		sb.append(stringLiteralTable != null ? stringLiteralTable.toString(): "stringLiteralTable == null");
-//        sb.append("\nindex names:\n");
-//		sb.append(indexTable != null ? indexTable.symbolsFromInputFileToString(): "no index symbols, indexTable == null");
-//		sb.append("\narray names:\n");
-//		sb.append(arrayTable != null ? arrayTable.symbolsFromInputFileToString(): "no array symbols, arrayTable == null");
-//		sb.append('\n');
 		return sb.toString();
 	}
 
-	/** Creates a String reperesentaion of  this SipTable object.  Used for SipTable objects initialized by
+	/** Creates a String reperesentation of  this SipTable object.  Used for SipTable objects initialized by
 	 * the compiler.
 	 * 
 	 * @return A String representing the contents of the SipTable.
@@ -162,10 +153,6 @@ public class SipTable {
 			"specialInstructionTable == null");
 		sb.append("\nstring literal table:\n");
 		sb.append(stringLiteralTable != null ? stringLiteralTable.toString(): "stringLiteralTable == null");
-//        sb.append("\nindex names:\n");
-//		sb.append(indexTable != null ? indexTable.symbolsToString(): "no index symbols, indexTable == null");
-//		sb.append("\narray names:\n");
-//		sb.append(arrayTable != null ? arrayTable.symbolsToString(): "no array symbols, arrayTable == null");
 		sb.append('\n');
 		return sb.toString();
 	}

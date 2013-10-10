@@ -19,7 +19,7 @@ import java.util.List;
 
 import lpg.runtime.IAst;
 import lpg.runtime.IToken;
-import sial.code_gen.AcesHacks;
+import sial.code_gen.TypeConstantMap;
 import sial.parser.SialParsersym;
 import sial.parser.Ast.ASTNode;
 import sial.parser.Ast.ASTNodeToken;
@@ -324,7 +324,7 @@ public class ASTUtils implements SialParsersym{
     }
 
     public static int[] getContractedIndices(int[] a1, int[] a2) {
-    	if (a1 == null || a2 == null) return new int[AcesHacks.max_rank];
+    	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];
     	//size of interesection not more than smallest input array
     	int[] intersection = new int[ a1.length>=a2.length? a2.length : a1.length];
     	int count = 0;
@@ -345,7 +345,7 @@ public class ASTUtils implements SialParsersym{
     	//sort the nonzero elements
     	Arrays.sort(intersection,0,count);
     	//return, padding with zeros
-    	return Arrays.copyOf(intersection, AcesHacks.max_rank);
+    	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
 	}
     
 

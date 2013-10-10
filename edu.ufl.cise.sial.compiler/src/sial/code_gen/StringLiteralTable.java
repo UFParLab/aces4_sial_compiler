@@ -1,3 +1,8 @@
+/** This class stores string literals.  
+ * 
+ * String literals are case sensitive in SIAL
+ */
+
 package sial.code_gen;
 
 import java.io.EOFException;
@@ -9,10 +14,6 @@ import sial.io.SIADataOutput;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-//this class represents an array of function pointers that will be
-//filled in at runtime with the address of user provided super instructions.
-//The compiler uses the index number in execute statements.
-//Note that in constrast with other names in the programs, these are case sensitive.
 public class StringLiteralTable {
 	BiMap<String, Integer> literalBiMap; // maps special instruction names to
 											// the index in the function table
@@ -41,29 +42,7 @@ public class StringLiteralTable {
 		return literalBiMap.inverse().get(index);
 	}
 
-	// public int getIndex(String name){
-	// return specialBiMap.get(name.toLowerCase());
-	// }
 
-	// public Integer getIndex(String literal){
-	// Integer index = literalBiMap.get(literal);
-	// if (index == NULL){
-	// return
-	// }
-	//
-	// }
-
-	// public int addEntry(String name){
-	// if (nextIndex == nStringLiterals) nStringLiterals++;
-	// int index = nextIndex++;
-	// specialBiMap.put(name, index);
-	// return index;
-	// }
-
-	// public int addEntry(String literal){
-	// Integer index = specialBiMap.get(literal);
-	//
-	// }
 
 	int getAndAdd(String literal) {
 		Integer idx = literalBiMap.get(literal);

@@ -1,5 +1,9 @@
-//TODO  int table not in current runtime.  
-//TODO  cleanup junk left over from ACESIII compiler
+/** Manages information about arrays.  Arrays are identified in the sip by their position in the 
+ * array table.  For each array, the array table contains an entry with the rank, the type, the index
+ * used in its declaration (identified by its position in the index table).  Scalars are treated uniformly
+ * with arrays (they have rank zero).  Their values are stored in in the sip in a mutable data structure
+ * at a position indicated in the scalar_index field.
+ */
 
 package sial.code_gen;
 
@@ -19,40 +23,16 @@ import sial.parser.context.ASTUtils;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-/*  Structure of the array table.  Only nindex, array_type, index_array, scalar_index are set at compile time.
- typedef struct {
- f_int nindex;     //dimension of array
- f_int array_type; //type: scalar, int, served, distributed, etc.  Values in SipTypeConstants
- f_int numblks;
- f_int index_array[mx_array_index];  //each intry contains the index in the index array of the
- //corresponding index
- f_int index_range1[mx_array_index]; //in fortran, this is also index_original
- f_int index_range2[mx_array_index];
- f_int block_map;
- f_int scalar_index;         //if scalar, nindex = 0 and this is index into the scalar
- f_int create_flag;
- f_int put_flag;
- f_int prepare_flag;
- f_int current_blkndx;
- f_int block_list;
- f_int array_stack;
- f_int array_status;
- } array_table_entry_t;
- */
 
 public class ArrayTable implements SipConstants {
 
 	static public class Entry {
-		int nindex; // dimension of array
-		int array_type; // type: scalar, int, served, distributed, etc. Values
+		int rank; 
+		int array_type; // scalar, int, served, distributed, etc. Values
 						// in SipTypeConstants
-		int numblks;
-		int[] index_array; // each element contains the fortran index
-							// in the index array of the corresponding index
-//		int[] index_range1; // in fortran, this is also index_original
-//		int[] index_range2;
-//		int block_map;
-		int scalar_index; // if scalar or int, this is index into the scalar,
+		int[] index_array; // each element contains the position in the IndexTable of the
+		                   //corresponding index in the array declaration
+		int scalar_table_slot_or_server_priority; // if scalar or int, this is index into the scalar,
 							// int table.  If not, this indicates priority for
 		                    // for data servers.  Priority values are 
 		                    // distributed_array_priority and served_array_priority
@@ -60,25 +40,7 @@ public class ArrayTable implements SipConstants {
 		                    // temp arrays have value 0 here.  We may want 
 		                    //to enhance this later with more values, values
 		                    //that can be changed, etc.
-//		int create_flag;
-//		int put_flag;
-//		int prepare_flag;
-//		int current_blkndx;
-//		int block_list;
-//		int array_stack;
-//		int array_status;
-		
-//		@Override
-//		public boolean equals(Object other){
-//			if (this == other) return true;
-//			if (!(other instanceof Entry)) return false;
-//			Entry o = (Entry)other;
-//			//Only nindex, array_type, index_array, scalar_index are set at compile time.
-//			return nindex == o.nindex &&
-//				   array_type == o.array_type &&
-//			       Arrays.equals(index_array, o.index_array) &&
-//			       scalar_index == o.scalar_index;		
-//		}
+
 
 		/* (non-Javadoc)
 		 * @see java.lang.Object#hashCode()
@@ -89,8 +51,8 @@ public class ArrayTable implements SipConstants {
 			int result = 1;
 			result = prime * result + array_type;
 			result = prime * result + Arrays.hashCode(index_array);
-			result = prime * result + nindex;
-			result = prime * result + scalar_index;
+			result = prime * result + rank;
+			result = prime * result + scalar_table_slot_or_server_priority;
 			return result;
 		}
 
@@ -111,22 +73,20 @@ public class ArrayTable implements SipConstants {
 				return false;
 			if (!Arrays.equals(index_array, other.index_array))
 				return false;
-			if (nindex != other.nindex)
+			if (rank != other.rank)
 				return false;
-			if (scalar_index != other.scalar_index)
+			if (scalar_table_slot_or_server_priority != other.scalar_table_slot_or_server_priority)
 				return false;
 			return true;
 		}
 
 
-		Entry(int max_array_index, int arraynindex, int type, int[] indarray,
-				int scalarIndex) {
-			this.index_array = new int[max_array_index];
-//			this.index_range1 = new int[max_array_index];
-//			this.index_range2 = new int[max_array_index];
-			this.nindex = arraynindex;
-			this.array_type = type;
-			this.scalar_index = scalarIndex;
+		Entry(int max_rank, int rank, int array_type, int[] indarray,
+				int scalar_table_slot_or_server_priority) {
+			this.index_array = new int[max_rank];
+			this.rank = rank;
+			this.array_type = array_type;
+			this.scalar_table_slot_or_server_priority = scalar_table_slot_or_server_priority;
 			int i;
 			if (indarray == null) {  //item is scalar or int
 				i = 0;
@@ -136,111 +96,40 @@ public class ArrayTable implements SipConstants {
 				}
 			}
 			//set unused index_array elements to zero
-			for (int j = i; j != max_array_index; j++) {
+			for (int j = i; j != max_rank; j++) {
 				this.index_array[j] = 0;
 			}
 		}
 		
 
-//		protected Entry(int nindex, int array_type, int numblks,
-//				int[] index_array, int[] index_range1, int[] index_range2,
-//				int block_map, int scalar_index, int create_flag, int put_flag,
-//				int prepare_flag, int current_blkndx, int block_list,
-//				int array_stack, int array_status) {
-//			super();
-//			this.nindex = nindex;
-//			this.array_type = array_type;
-//			this.numblks = numblks;
-//			this.index_array = index_array;
-//			this.index_range1 = index_range1;
-//			this.index_range2 = index_range2;
-//			this.block_map = block_map;
-//			this.scalar_index = scalar_index;
-//			this.create_flag = create_flag;
-//			this.put_flag = put_flag;
-//			this.prepare_flag = prepare_flag;
-//			this.current_blkndx = current_blkndx;
-//			this.block_list = block_list;
-//			this.array_stack = array_stack;
-//			this.array_status = array_status;
-//		}
-
 		public Entry() {}
-
-//		void read(SIADataInput in) throws IOException {
-//			nindex = in.readInt(); // dimension of array
-//			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
-//							// in SipTypeConstants
-//			int max = AcesHacks.max_array_index;
-//			index_array = new int[max]; // each element contains the fortran index
-//								// in the index array of the corresponding index
-//			for(int i = 0; i != max; i++){
-//				index_array[i] = in.readInt();
-//			}
-//			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
-//								// int table
-//		}
 		
-		
-		//this version reads the aces4 format where only the defined indices are written
 		void read(SIADataInput in) throws IOException {
-			nindex = in.readInt(); // dimension of array
+			rank = in.readInt(); // dimension of array
 
-			int max = AcesHacks.max_rank;
+			int max = TypeConstantMap.max_rank;
 			index_array = new int[max]; // each element contains the fortran index
 								// in the index array of the corresponding index
-			for(int i = 0; i != nindex; i++){
+			for(int i = 0; i != rank; i++){
 				index_array[i] = in.readInt();
 			}
-			for (int i = nindex; i != max; i++){
+			for (int i = rank; i != max; i++){
 				index_array[i] = 0;
 			}
-			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
-			// in SipTypeConstants
-			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
-								// int table
+			array_type = in.readInt(); // type: served, distributed, etc. Values in SipTypeConstants
+			scalar_table_slot_or_server_priority = in.readInt(); // if scalar
+			                     //this is index into the Scalar Table, if distributed or served, this is
+								// the server priorty
 		}
 		
-//		void readExpanded(SIADataInput in) throws IOException {
-//			nindex = in.readInt(); // dimension of array
-//			array_type = in.readInt(); // type: scalar, int, served, distributed, etc. Values
-//							// in SipTypeConstants
-//			numblks = in.readInt();
-//			int max = AcesHacks.max_array_index;
-//			index_array = new int[max]; // each element contains the fortran index
-//								// in the index array of the corresponding index
-//			for(int i = 0; i != max; i++){
-//				index_array[i] = in.readInt();
-//			}
-//			index_range1 = new int[max]; // in fortran, this is also index_original
-//			for(int i = 0; i != max; i++){
-//				index_range1[i] = in.readInt();
-//			}
-//			index_range2 = new int[max];
-//			for(int i = 0; i != max; i++){
-//				index_range2[i] = in.readInt();
-//			}
-//			block_map = in.readInt();
-//			scalar_index = in.readInt(); // if scalar or int, this is index into the scalar,
-//								// int table
-//			create_flag = in.readInt();
-//			put_flag = in.readInt();
-//			prepare_flag = in.readInt();
-//			current_blkndx = in.readInt();
-//			block_list = in.readInt();
-//			array_stack = in.readInt();
-//			array_status = in.readInt();
-//		}
 		
 		public String toString(){
-			int max = AcesHacks.max_rank;
+			int max = TypeConstantMap.max_rank;
 			StringBuilder sb = new StringBuilder();
 			sb.append(max);
 			sb.append('\n');
-			sb.append(nindex); sb.append(',');
+			sb.append(rank); sb.append(',');
 			sb.append(array_type); sb.append(',');
-//			sb.append(numblks); sb.append(',');
-			
 			sb.append('[');
 			sb.append(index_array[0]);
 			for (int i = 1; i < max; i++){
@@ -248,126 +137,35 @@ public class ArrayTable implements SipConstants {
 				sb.append(index_array[i]);
 			}
 			sb.append("],");
-//			sb.append('[');
-//			sb.append(index_range1[0]);
-//			for (int i = 1; i < max; i++){
-//				sb.append(',');
-//				sb.append(index_range1[i]);
-//			}
-//			sb.append("],");
-//			sb.append('[');
-//			sb.append(index_range2[0]);
-//			for (int i = 1; i < max; i++){
-//				sb.append(',');
-//				sb.append(index_range2[i]);
-//			}
-//			sb.append("],");
-//			sb.append(block_map); sb.append(',');
-			sb.append(scalar_index); sb.append(',');
-//			sb.append(create_flag); sb.append(',');
-//			sb.append(put_flag); sb.append(',');
-//			sb.append(prepare_flag); sb.append(',');
-//			sb.append(current_blkndx); sb.append(',');
-//			sb.append(block_list); sb.append(',');
-//			sb.append(array_stack); sb.append(',');
-//			sb.append(array_status); 
+			sb.append(scalar_table_slot_or_server_priority); sb.append(',');
 			return sb.toString();
 		}
 		
-//		public String toStringExpanded(){
-//			int max = AcesHacks.max_array_index;
-//			StringBuilder sb = new StringBuilder();
-//			sb.append(nindex); sb.append(',');
-//			sb.append(array_type); sb.append(',');
-//			sb.append(numblks); sb.append(',');
-//			
-//			sb.append('[');
-//			sb.append(index_array[0]);
-//			for (int i = 1; i < max; i++){
-//				sb.append(',');
-//				sb.append(index_array[i]);
-//			}
-//			sb.append("],");
-//			sb.append('[');
-//			sb.append(index_range1[0]);
-//			for (int i = 1; i < max; i++){
-//				sb.append(',');
-//				sb.append(index_range1[i]);
-//			}
-//			sb.append("],");
-//			sb.append('[');
-//			sb.append(index_range2[0]);
-//			for (int i = 1; i < max; i++){
-//				sb.append(',');
-//				sb.append(index_range2[i]);
-//			}
-//			sb.append("],");
-//			sb.append(block_map); sb.append(',');
-//			sb.append(scalar_index); sb.append(',');
-//			sb.append(create_flag); sb.append(',');
-//			sb.append(put_flag); sb.append(',');
-//			sb.append(prepare_flag); sb.append(',');
-//			sb.append(current_blkndx); sb.append(',');
-//			sb.append(block_list); sb.append(',');
-//			sb.append(array_stack); sb.append(',');
-//			sb.append(array_status); 
-//			return sb.toString();
-//		}
+
 		public static Entry readEntry(SIADataInput in) throws IOException{
 			Entry entry = new Entry();
 			entry.read(in);
 			return entry;
 		}
 		
-//		public static Entry readExpandedEntry(SIADataInput in) throws IOException{
-//			Entry entry = new Entry();
-//			entry.readExpanded(in);
-//			return entry;
-//		}
 		void write(SIADataOutput out) throws IOException {
-			out.writeInt(nindex);
+			out.writeInt(rank);
 			//forloop added for aces4
-			for (int i = 0; i != nindex; i++) {
+			for (int i = 0; i != rank; i++) {
 				out.writeInt(index_array[i]);
 			}
 			out.writeInt(array_type);
-
-			out.writeInt(scalar_index); // if scalar or int, this is index into
-										// the scalar, int table
+			out.writeInt(scalar_table_slot_or_server_priority); 
 
 		} 
 		
-//		void writeExpanded(DataOutput out) throws IOException {
-//			out.writeInt(nindex);
-//			out.writeInt(array_type);
-//			out.writeInt(numblks);
-//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-//				out.writeInt(index_array[i]);
-//			}
-//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-//				out.writeInt(index_range1[i]);
-//			}
-//			for (int i = 0; i != AcesHacks.max_array_index; i++) {
-//				out.writeInt(index_range2[i]);
-//			}
-//			out.writeInt(block_map);
-//			out.writeInt(scalar_index); // if scalar or int, this is index into
-//										// the scalar, int table
-//			out.writeInt(create_flag);
-//			out.writeInt(put_flag);
-//			out.writeInt(prepare_flag);
-//			out.writeInt(current_blkndx);
-//			out.writeInt(block_list);
-//			out.writeInt(array_stack);
-//			out.writeInt(array_status);
-//		} 
 
 	}//end of class entry
 
 	BiMap<IDec, Integer> arrayBiMap; // maps declarations to
 									 // index in array table and vice versa
 	int nvars; // number of entries in the array table
-	ArrayList<Entry> entries;
+	ArrayList<Entry> entries;  //the array_table itself
 	ArrayList<String> symbols; //used only to read .siox file
 
 
@@ -386,37 +184,15 @@ public class ArrayTable implements SipConstants {
 		return sb.toString(); 
 	}
 	
-	public String toStringWithFortranIndices(){
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i != entries.size(); i++) {
-			int j = i+1;
-			sb.append(j<10 ? j + ":   " : (j<100 ? j + ":  ": (j<1000 ? j+": " : j+":")));
-			sb.append(entries.get(i).toString());
-			sb.append('\n');
-		}
-		return sb.toString();
-
-	}
-
-
-
-	public int getFortranIndex(IDec dec) {
-		return getIndex(dec) + 1;
-	}
 
 	public int getIndex(IDec dec) {
 		return arrayBiMap.get(dec);
 	}
 
-
-
-	public int getNIndex(int i) {
-		return entries.get(i).nindex;
+	public int getRank(int i) {
+		return entries.get(i).rank;
 	}
 
-	public int[] getIndexArray(int i) {
-		return entries.get(i).index_array;
-	}
 
 	int addScalarEntry(IDec dec, int attributes, int scalarIndex){
 		assert ((attributes & scalar_value_t) == scalar_value_t): "Illegal attribute for scalar entry in array table";
@@ -427,13 +203,13 @@ public class ArrayTable implements SipConstants {
 		return addEntry(dec, arraynindex, type, indarray, priority);
 	}
 
-	int addEntry(IDec dec, int arraynindex, int type, int[] indarray, int scalarIndex) {
-		int index = nvars++;
-		if (dec != null) arrayBiMap.put(dec, index);
-		int max_array_index = AcesHacks.max_rank;
-		Entry entry = new Entry(max_array_index, arraynindex, type, indarray, scalarIndex);
+	int addEntry(IDec dec, int rank, int array_type, int[] indarray, int scalar_table_slot_or_server_priority) {
+		int slot = nvars++;
+		if (dec != null) arrayBiMap.put(dec, slot);
+		int max_rank = TypeConstantMap.max_rank;
+		Entry entry = new Entry(max_rank, rank, array_type, indarray, scalar_table_slot_or_server_priority);
 		entries.add(entry);
-		return index;
+		return slot;
 	}
 	
 	int getNvars(){return nvars;}
@@ -472,23 +248,11 @@ public class ArrayTable implements SipConstants {
 	public int getIndexOfScalarEntry(int scalarTableIndex) {
 		//linear search.  Perhaps replace with something better
 		int i;
-		for (i = 0; i < entries.size() && entries.get(i).scalar_index != scalarTableIndex; i++);
+		for (i = 0; i < entries.size() && entries.get(i).scalar_table_slot_or_server_priority != scalarTableIndex; i++);
 		assert i<entries.size();
 		return i;
 	}
 
-	public int[] getIndexArrayAt(int identIndex) {
-		Entry e = entries.get(identIndex);
-		return  e.index_array;
-	}
-	
-
-	public boolean equalVals(Object other){
-		if (this == other) return true;
-		if (!(other instanceof ArrayTable))return false;
-		ArrayTable o = (ArrayTable)other;
-		return nvars == o.nvars && entries.equals(o.entries);
-	}
 	
 	public void writeSymbols(SIADataOutput output) throws IOException {
 		output.writeInt(nvars);
@@ -497,17 +261,9 @@ public class ArrayTable implements SipConstants {
 		for (int i = 0; i != nvars; i++){
 			IDec dec =  inverse.get(i);
 			String name;
-//			if (dec == null){ name = ""; }
-//			else if (dec instanceof ArrayDec){
-//				name = ((ArrayDec)dec).getName();
-//			}
-//			else if (dec instanceof ScalarDec){
-//				name = ((ScalarDec)dec).getName();
-//			}
-//			else { assert false: "Unexpected IDec type in ArrayTable";}
 			if (dec == null){  //scalar literals have a slot in the array table, but no declaration. 
 				//Look up their value and create a name.
-				int scalar_table_index = entries.get(i).scalar_index - 1; //this is a fortran index
+				int scalar_table_index = entries.get(i).scalar_table_slot_or_server_priority - 1; //this is a fortran index
 				double scalarValue = ScalarTable.global_scalars.get(scalar_table_index);
 				name = "SCALAR_LITERAL_" + scalarValue;
 			}

@@ -63,15 +63,6 @@ public class ScalarTable {
 	
 	public String toString(){  //currently shows only scalars,
 		                       //all ints are symbolic constants
-//		StringBuilder sb = new StringBuilder();
-//		sb.append("[");
-//		int size = scalars.size();
-//		assert size == nScalars : "mismatch between scalars.size() and nScalars";
-//		for (int i = 0; i < size; i++){
-//			sb.append(scalars.get(i) + (i<size-1?",":"")); 
-//		}
-//		sb.append("]");
-//		return sb.toString();	
 		StringBuilder sb = new StringBuilder();
 		sb.append(nScalars);
 		sb.append('\n');
@@ -82,24 +73,6 @@ public class ScalarTable {
 		return sb.toString();	
 	}
 	
-	public String toStringScalarWithFortranIndices(){  //currently shows only scalars,
-        //all ints are symbolic constants
-StringBuilder sb = new StringBuilder();
-int size = scalars.size();
-assert size == nScalars : "mismatch between scalars.size() and nScalars";
-BiMap<Integer, ScalarDec> names = scalarBiMap.inverse();
-for (int i = 0; i < size; i++){
-	int j = i+1;
-	sb.append(j<10 ? j + ":   " : (j<100 ? j + ":  ": (j<1000 ? j+": " : j+":")));
-	if (names.get(i) != null) sb.append(names.get(i).getName());
-	else sb.append("literal = ");
-	sb.append ("=");
-    sb.append(scalars.get(i)); 
-    sb.append('\n');
-}
-sb.append("]");
-return sb.toString();	
-}
 	
 	public String constantsToString(){  //symbolic constant names
 		 StringBuilder sb = new StringBuilder();
@@ -236,43 +209,27 @@ return sb.toString();
 	}
 	
 
-	//Only compares the array of scalars
-	//For now, this is changed to compare within epsilon
-	public  boolean equalVals(Object other){
-		if (this == other) return true;
-		if ( !(other instanceof ScalarTable)) return false;
-		ArrayList<Double> scalars1 = ((ScalarTable) other).scalars;
-		if ( ! (scalars.size() == scalars1.size())) return false;
-		return scalars.equals(((ScalarTable)other).scalars);
-		///		double EPSILON = 1.0e-323;		
-//		for (int i = 0; i < scalars.size(); i++){
-//			double d0 = scalars.get(i);
-//			double d1 = scalars1.get(i);
-//			if (d0 != d1){
-//				System.out.println(i + ": d0=" + Double.doubleToRawLongBits(d0) 
-//						+ " d1=" + Double.doubleToRawLongBits(d1));
-//				double diff = d0 - d1;
-//				if ( -EPSILON >= diff || diff >= EPSILON ) {
-//					System.out.println("comparison failed on " + i);
-//					return false;
-//				}
+//	//Only compares the array of scalars
+//	//For now, this is changed to compare within epsilon
+//	public  boolean equalVals(Object other){
+//		if (this == other) return true;
+//		if ( !(other instanceof ScalarTable)) return false;
+//		ArrayList<Double> scalars1 = ((ScalarTable) other).scalars;
+//		if ( ! (scalars.size() == scalars1.size())) return false;
+//		return scalars.equals(((ScalarTable)other).scalars);
+//	}
+//
+//	//prints symbolic constants with fortran index
+//	public String enumeratedConstantsToString() {
+//		 StringBuilder sb = new StringBuilder();
+//		 int size = intBiMap.size();
+//		 assert size == nConstants : "mismatch between intBiMap.size()=" + size +  " and nConstants=" + nConstants;
+//		 BiMap<Integer,String> names = intBiMap.inverse();
+//			for (int i = 0; i < size; i++){
+//				sb.append((i+1) + ": " + names.get(-i) + '\n'); 
 //			}
-//			
-//		}
-//		return true;
-	}
-
-	//prints symbolic constants with fortran index
-	public String enumeratedConstantsToString() {
-		 StringBuilder sb = new StringBuilder();
-		 int size = intBiMap.size();
-		 assert size == nConstants : "mismatch between intBiMap.size()=" + size +  " and nConstants=" + nConstants;
-		 BiMap<Integer,String> names = intBiMap.inverse();
-			for (int i = 0; i < size; i++){
-				sb.append((i+1) + ": " + names.get(-i) + '\n'); 
-			}
-		return sb.toString();
-	}
+//		return sb.toString();
+//	}
 
 
 }

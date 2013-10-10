@@ -4,6 +4,9 @@ import sial.parser.Ast.IndexDec;
 
 public interface SipConstants {
 	
+//TODO change this to get from command line and add consistency checking in the SioxReader
+public static final int max_rank = 6;  
+	
 //constants representing intent of special instruction arguments
 public final static int
 	sig_read = 1991,
@@ -18,16 +21,8 @@ public final static int
     mobindex_t = 1004,
     index_t = 1005,
     laindex_t = 1006,
-    subindex_t = 1007//,
-//    served_array_t = 201,
-//    static_array_t = 202,
-//    distributed_array_t = 203,
-//    temp_array_t =  204,
-//    scalar_value_t = 205,
-//    local_array_t =  206,
-//    dummy_array_type = 207,
-//    int_value_t = 208
-    ; //TODO  check this value, new type
+    subindex_t = 1007
+    ;
 
 
 //bit flags representing constants for new array attributes
@@ -61,18 +56,6 @@ public final static int
    distributed_array_priority = 2;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 //constants in .sio files
 public final static int
     magic = 70707,
@@ -80,8 +63,6 @@ public final static int
     release = 2,
     wild = 90909;
 
-//mask used by sip to recognize a subindex
-    int in_index_mask = 65536;
 
 //opcodes
 public final static int 

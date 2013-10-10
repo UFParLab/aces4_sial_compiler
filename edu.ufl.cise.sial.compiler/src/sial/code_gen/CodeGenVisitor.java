@@ -183,13 +183,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		operandStack = new LinkedList<Integer>();
 		indexArrayStack = new LinkedList<int[]>();
 		backpatchInstructionStack = new LinkedList<Integer>();
-		defaultOneInd = new int[AcesHacks.max_rank];
-		defaultUndefInd = new int[AcesHacks.max_rank];
+		defaultOneInd = new int[TypeConstantMap.max_rank];
+		defaultUndefInd = new int[TypeConstantMap.max_rank];
 		for (int i = 0; i != defaultOneInd.length; i++) {
 			defaultOneInd[i] = 1;
 			defaultUndefInd[i] = -1;
 		}
-		defaultZeroInd = new int[AcesHacks.max_rank];
+		defaultZeroInd = new int[TypeConstantMap.max_rank];
 
 	}
 
@@ -320,7 +320,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ArrayDec n) {
-		int arrayTypeNum = AcesHacks.getTypeConstant(n.getTypeName());
+		int arrayTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
 		int priority = 0;
 		if (arrayTypeNum == SipConstants.distributed_array_t) priority = SipConstants.distributed_array_priority;
 		else if (arrayTypeNum == SipConstants.served_array_t) priority = SipConstants.served_array_priority;
@@ -363,7 +363,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(IndexDec n) {
-		int indexTypeNum = AcesHacks.getTypeConstant(n.getTypeName());
+		int indexTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
 		int bseg, eseg;
 		IRangeVal range1 = n.getRange().getRangeValStart();
 		if (range1 instanceof IdentRangeVal) { // this must be a predefined int
@@ -398,10 +398,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(SubIndexDec n) {
-		int indexTypeNum = AcesHacks.getTypeConstant("subindex");
+		int indexTypeNum = TypeConstantMap.getTypeConstant("subindex");
 		IndexDec parentDec = (IndexDec) n.getParentIdent().getDec();
 		int parentIndex = indexTable.getIndex(parentDec);
-		int entry_id = indexTable.addEntry(n, parentIndex, 0, indexTypeNum);
+		indexTable.addEntry(n, parentIndex, 0, indexTypeNum);
 		return false;
 	}
 
@@ -437,8 +437,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ProcDec n) {
-		if (n.getCallSites().size() == 0 && !options.isEXPAND())
-			return false; // if the method is never called, don't generate code
+		if (n.getCallSites().size() == 0)
+			return false; // if the proc is never called, don't generate code
 							// for it.
 		int addr = opTable.nOps;
 		n.setAddr(addr);
@@ -784,8 +784,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int lhsIndex = operandStack.pop();
 		int[] rhsInd = indexArrayStack.pop();
 		int[] lhsInd = indexArrayStack.pop();
-		int rhsRank = arrayTable.getNIndex(rhsIndex);
-		int lhsRank = arrayTable.getNIndex(lhsIndex);
+		int rhsRank = arrayTable.getRank(rhsIndex);
+		int lhsRank = arrayTable.getRank(lhsIndex);
 		int opcode = 0;
 		if (n.getAssignOp() instanceof AssignOpEqual) {
 			opcode = put_replace_op;
@@ -808,7 +808,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(GetStatement n) {
 		int index = operandStack.pop();
 		int[] ind = indexArrayStack.pop();
-		int rank = arrayTable.getNIndex(index);
+		int rank = arrayTable.getRank(index);
 		opTable.addOptableEntry(reindex_op, rank, index, ind, lineno(n));
 		opTable.addOptableEntry(get_op, index, ind, lineno(n));
 	}
@@ -824,8 +824,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int lhsIndex = operandStack.pop();
 		int[] rhsInd = indexArrayStack.pop();
 		int[] lhsInd = indexArrayStack.pop();
-		int rhsRank = arrayTable.getNIndex(rhsIndex);
-		int lhsRank = arrayTable.getNIndex(lhsIndex);
+		int rhsRank = arrayTable.getRank(rhsIndex);
+		int lhsRank = arrayTable.getRank(lhsIndex);
 		int opcode = 0;
 		if (n.getAssignOp() instanceof AssignOpEqual) {
 			opcode = prepare_op;
@@ -849,7 +849,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		operandStack.pop(); // discard hint
 		int index = operandStack.pop();
 		int[] ind = indexArrayStack.pop();
-		int rank = arrayTable.getNIndex(index);
+		int rank = arrayTable.getRank(index);
 		opTable.addOptableEntry(reindex_op, rank, index, ind, lineno(n));
 		opTable.addOptableEntry(request_op, index, ind, lineno(n));
 	}
@@ -865,8 +865,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int lhsIndex = operandStack.pop();
 		int[] rhsInd = indexArrayStack.pop();
 		int[] lhsInd = indexArrayStack.pop();
-		int rhsRank = arrayTable.getNIndex(rhsIndex);
-		int lhsRank = arrayTable.getNIndex(lhsIndex);
+		int rhsRank = arrayTable.getRank(rhsIndex);
+		int lhsRank = arrayTable.getRank(lhsIndex);
 		opTable.addOptableEntry(reindex_op, lhsRank, lhsIndex, lhsInd, lineno(n));
 		opTable.addOptableEntry(reindex_op, rhsRank, rhsIndex, rhsInd, lineno(n));
 		opTable.addOptableEntry(prequest_op, rhsIndex, lhsIndex, defaultOneInd,
@@ -949,7 +949,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 				rank = 0;
 			} else if (arg instanceof DataBlockPrimary) {
 				array_table_slot = operandStack.pop();
-				rank = arrayTable.getNIndex(array_table_slot);
+				rank = arrayTable.getRank(array_table_slot);
 				ind = indexArrayStack.pop();
 			}
 			opTable.addOptableEntry(reindex_op, rank, array_table_slot, ind, lineno(n));  //array_table_slot goes in resultIndex slot of OptableEntry
@@ -1009,7 +1009,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int nindex = n.size();
 		// Get the index table entries from the stack and fill the ind array,
 		// converting to fortran indices
-		int[] ind = new int[AcesHacks.max_rank];
+		int[] ind = new int[TypeConstantMap.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
 			ind[i] = operandStack.pop();
 		}
@@ -1052,7 +1052,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int nindex = n.size();
 		// get the index table entries from the stack and fill the ind array
 		// convert to fortran indices
-		int[] ind = new int[AcesHacks.max_rank];
+		int[] ind = new int[TypeConstantMap.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
 			ind[i] = operandStack.pop() + 1;
 		}
@@ -1128,7 +1128,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int operand1 = operandStack.pop();
 		// AcesHack treat expressions in Where clauses differently
 		if (n.getParent() instanceof WhereClause) {
-			int whereOpCode = AcesHacks.whereCodes.get(n.getRelOp().getop()
+			int whereOpCode = TypeConstantMap.whereCodes.get(n.getRelOp().getop()
 					.getKind());
 			opTable.addOptableEntry(where_op, operand1, whereOpCode, operand2,
 					defaultOneInd, lineno(n));
@@ -1459,12 +1459,12 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 				& !(rhs instanceof BinaryExpression)) {
 			// assignment is of the form x = e
 			if (lhsIndexArray != null) {
-				int lhsRank = arrayTable.getNIndex(lhsIndex);
+				int lhsRank = arrayTable.getRank(lhsIndex);
 				opTable.addOptableEntry(reindex_op, lhsRank, lhsIndex, lhsIndexArray,
 						lineno(n));
 			}
 			if (expr2IndexArray != null) {				
-				opTable.addOptableEntry(reindex_op, arrayTable.getNIndex(expr2Index), expr2Index,
+				opTable.addOptableEntry(reindex_op, arrayTable.getRank(expr2Index), expr2Index,
 						expr2IndexArray, lineno(n));
 			}
 			int opcode;
@@ -1485,15 +1485,15 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		// this will do the same instruction twice for +=, etc.
 		// it is left that way for now to match the current compiler
 		if (lhsIndexArray != null) {
-			opTable.addOptableEntry(reindex_op, arrayTable.getNIndex(lhsIndex),lhsIndex, lhsIndexArray,
+			opTable.addOptableEntry(reindex_op, arrayTable.getRank(lhsIndex),lhsIndex, lhsIndexArray,
 					lineno(n));
 		}
 		if (expr1IndexArray != null) {
-			opTable.addOptableEntry(reindex_op, arrayTable.getNIndex(expr1Index), expr1Index, expr1IndexArray,
+			opTable.addOptableEntry(reindex_op, arrayTable.getRank(expr1Index), expr1Index, expr1IndexArray,
 					lineno(n));
 		}
 		if (expr2IndexArray != null) {
-			opTable.addOptableEntry(reindex_op, arrayTable.getNIndex(expr2Index), expr2Index, expr2IndexArray,
+			opTable.addOptableEntry(reindex_op, arrayTable.getRank(expr2Index), expr2Index, expr2IndexArray,
 					lineno(n));
 		}
 		int opcode = getAssignOpcode(assignOp, binOp);

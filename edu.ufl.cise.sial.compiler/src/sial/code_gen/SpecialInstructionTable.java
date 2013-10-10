@@ -1,3 +1,9 @@
+/** This class represents an array of function pointers that will be
+ * filled in at runtime with the address of user provided super instructions.
+ * The compiler uses the position in the array to identify in structions in execute statements.
+ * 
+ * Note that in constrast with other names in the programs, these are case sensitive.
+ */
 package sial.code_gen;
 
 import java.io.EOFException;
@@ -9,10 +15,7 @@ import sial.io.SIADataOutput;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-//this class represents an array of function pointers that will be
-//filled in at runtime with the address of user provided super instructions.
-//The compiler uses the index number in execute statements.
-//Note that in constrast with other names in the programs, these are case sensitive.
+
 public class SpecialInstructionTable {
 	BiMap<String, Integer> specialBiMap; // maps special instruction names to
 											// the index in the function table
@@ -39,10 +42,6 @@ public class SpecialInstructionTable {
 	public String getName(int index) {
 		return specialBiMap.inverse().get(index);
 	}
-
-	// public int getIndex(String name){
-	// return specialBiMap.get(name.toLowerCase());
-	// }
 
 	public int getIndex(String name) {
 		return specialBiMap.get(name);
@@ -78,13 +77,10 @@ public class SpecialInstructionTable {
 
 	public void read(SIADataInput input) throws IOException {
 		int n = input.readInt();
-//		System.out.println("nSpecials = " + nSpecials);
 		for (int i = 0; i != n; i++) {
 			try {
 				String s = input.readString();
-				// System.out.println(s);
 				addEntry(s);
-				// addEntry(input.readString());
 			} catch (EOFException e) {
 				System.err
 						.println("EOF exception int SpecialInstructionTable read with i="

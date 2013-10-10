@@ -19,6 +19,8 @@ import static java.lang.System.out;
  * Note that PATH is an instance of a SialPath class, which manages this value.
  * 
  * OUTPUT_DIR and INPUT_FILE_OR_DIR are stored as File object.
+ * 
+ * Note:  these options should work, but have not been tested with aces4.
  */
 
 public// TODO check default value for OUTPUT_DIR. null or "".
@@ -26,14 +28,10 @@ class CommandLine {
 	private boolean BIG_ENDIAN = false;
 	private boolean VERBOSE = false;
 	private boolean NO_GENERATE = false; // if true, only check. Do not generate code.
-	private boolean EXPAND = false; // if true, generate expanded object files
-									// with 0's.
 	boolean ACES = true; // this is used with aces
 	private String SUFFIX = "sialx"; // when given a directory, process files with this
 								// suffix
 	private SialPath PATH; // where to look for imported files
-	// File OUTPUT_DIR; //where to put generated file
-	// File INPUT_FILE; //input file or directory
 	private Path OUTPUT_DIR;
 	private Path INPUT_FILE;
 
@@ -55,9 +53,7 @@ class CommandLine {
 					setNO_GENERATE(true);
 				else if (args[i].equals("-verbose") || args[i].equals("-v"))
 					setVERBOSE(true);
-				else if (args[i].equals("-expand") || args[i].equals("-e")) {
-					setEXPAND(true);
-				} else if (args[i].equals("-sialPath") || args[i].equals("-sp")) {
+				else if (args[i].equals("-sialPath") || args[i].equals("-sp")) {
 					++i;
 					if (i >= args.length) {
 						err.println("java SialCompiler [options] fileOrDir\n"
@@ -77,28 +73,13 @@ class CommandLine {
 					assert getSUFFIX().equals("sialx");
 				} else if (args[i].equals("-outputDir") || args[i].equals("-o")) {
 					setOUTPUT_DIR(Paths.get(args[++i]));
-					// OUTPUT_DIR = (new File(args[++i])).getCanonicalFile();
-					// if (!OUTPUT_DIR.exists()) { // output directory doesn't
-					// // exist, create it
-					// assert (OUTPUT_DIR.mkdir()) :
-					// "unable to create output directory "
-					// + OUTPUT_DIR;
-					// } else if (!OUTPUT_DIR.isDirectory()) {
-					// assert false : "output directory is not a directory";
-					// }
 
 				} else if (args[i].equals("-help") || args[i].equals("-h")) {
 					out.println("java [options] fileOrDir\n"
 							+ "-b, -bigEndian :  generate output in big Endian format\n"
 							+ "-n, -noGenerate     :  do not generate and write .sio file\n"
 							+ "-v, -verbose      :  verbose output\n"
-							// +
-							+ "-e, -expand     :  generates sio file in expanded form like the original compiler\n"
 							+ "-sp [pathlist], -sialpath [pathlist] : specify paths to look for imported files.  Paths are separated with colon"
-					// +
-					// "-o [directory], -outputDir  [directory] : specify directory for generated .siox files"
-					// +
-					// "\nIf fileOrDir is a directory, all \".sial\" files will be processed.\n"
 					);
 					System.exit(0);
 				}
@@ -121,13 +102,7 @@ class CommandLine {
 		// creates options with default values. For IDE.
 	}
 
-	public void setEXPAND(boolean eXPAND) {
-		EXPAND = eXPAND;
-	}
 
-	public boolean isEXPAND() {
-		return EXPAND;
-	}
 
 	@Override
 	public String toString() {
@@ -135,7 +110,6 @@ class CommandLine {
 		sb.append("BIG_ENDIAN: " + isBIG_ENDIAN());
 		sb.append("\nVERBOSE: " + isVERBOSE());
 		sb.append("\nNO_GENERATE: " + isNO_GENERATE());
-		sb.append("\nEXPAND: " + EXPAND);
 		sb.append("\nACES: " + ACES);
 		sb.append("\nSUFFIX: " + getSUFFIX());
 		sb.append("\nPATH: " + getPATH());
