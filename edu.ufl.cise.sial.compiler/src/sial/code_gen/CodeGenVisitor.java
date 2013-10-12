@@ -1032,7 +1032,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(AllocIndexWildCard n) {
-		operandStack.push(wild - 1); // will be incremented when
+		operandStack.push(wild); // will be incremented when
 										// inserted in optable.
 		return false;
 	}
@@ -1051,10 +1051,9 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		// construct the index array
 		int nindex = n.size();
 		// get the index table entries from the stack and fill the ind array
-		// convert to fortran indices
 		int[] ind = new int[TypeConstantMap.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
-			ind[i] = operandStack.pop() + 1;
+			ind[i] = operandStack.pop();
 		}
 		;
 		indexArrayStack.push(ind);
