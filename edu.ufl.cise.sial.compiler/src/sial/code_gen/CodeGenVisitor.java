@@ -112,6 +112,7 @@ import sial.parser.Ast.WhereClause;
 import sial.parser.Ast.WhereClauseList;
 import sial.parser.context.ASTUtils;
 
+/** Visits AST and generates code for the SIAL program */
 public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		SipConstants {
 
@@ -127,11 +128,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	SpecialInstructionTable specialInstructionTable;
 	StringLiteralTable stringLiteralTable;
 
-	int floatScratchPadIndex = 1000; // this is for compatibility with the
-										// existing
-										// compiler.
-	private int intScratchPadIndex = 1000; // this is for compatibility with the
-	// existing compiler.
+	int floatScratchPadIndex = 1000; // this is left over from the ACESIII compiler and should be removed
+	private int intScratchPadIndex = 1000; // this is left over from the ACESIII compiler and should be removed
 
 	HashSet<Sial> visitedAstCache; // includes asts that have already been
 									// translated
@@ -208,8 +206,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		}
 		visitedAstCache.add(n);
 		this.ast = n;
-		// add initial instruction: jump to optable instruction 1 (which is 2 in
-		// fortran)
+		// add initial instruction: jump to optable instruction 1 
 		if (opTable.nOps == 0) { // this is program main program being compiled.
 									// insert the jump instruction to the value
 									// needed for an empty program.
@@ -223,11 +220,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(Sial n) {
-		// // create header now that table sizes are known
-		// // this will be done multiple times, but the last one
-		// // is the one we want, so we won't bother checking.
-		// sipTable.header.setValues(indexTable.n_index_table_sip,
-		// arrayTable.nvars, opTable.nOps, scalarTable.nScalars);
 	}
 
 	@Override
@@ -284,7 +276,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ScalarDec n) {
-		// int index = scalarTable.addScalarFortranIndex(n);
 		int attribute = scalar_value_t;
 		if (ASTUtils.isPredefined(n)) {
 			attribute = attribute | attr_predefined;
@@ -292,9 +283,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int index = scalarTable.addScalar(n); // Aces4
 
 		arrayTable.addScalarEntry(n, attribute, index);
-		// System.out.println("visit(ScalarDec; array_slot=" + arra_slot +
-		// ", attribute = " + attribute + "scalarslot=" +
-		// scalar_slot);
 		return false;
 	}
 
@@ -329,8 +317,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int[] indarray = new int[arraynindex];
 		for (int i = 0; i != arraynindex; i++) {
 			IDec indexIDec = dimensions.getDimensionAt(i).getDec();
-			// indarray[i] = indexTable.getFortranIndex(indexIDec); //we're not
-			// aces3 anymore
 			indarray[i] = indexTable.getIndex(indexIDec);
 		}
 		arrayTable.addArrayEntry(n, arraynindex, arrayTypeNum, indarray, priority);
@@ -523,12 +509,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ServerBarrierStatement n) {
-		// AcesHack for now, this is treated as an
-		// "execute aceshack_server_barrier" instruction
-		// The ServerBarrier object holds the SpecialDec
-		int functionAddr = ((SpecialDec) n.getDec()).getAddr();
-		opTable.addOptableEntry(user_sub_op, noArgExecuteArg, defaultZeroInd,
-				functionAddr, lineno(n));
+		opTable.addOptableEntry(server_barrier_op, 
+				defaultZeroInd,  lineno(n));
 		return false;
 	}
 
@@ -537,39 +519,34 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	}
 
 	public boolean visit(SipBarrierStatement n) {
-		// AcesHack for now, this is treated as an
-		// "execute aceshack_sip_barrier" instruction
-		// The ServerBarrier object holds the SpecialDec , which was set by the
-		// TypeCheckVisitor
-		int functionAddr = ((SpecialDec) n.getDec()).getAddr();
 		Ident identOpt = n.getIdentOpt();
 		if (identOpt == null) {
-			opTable.addOptableEntry(user_sub_op, noArgExecuteArg,
-					defaultZeroInd, functionAddr, lineno(n));
-		} else
-			assert false : "arguments for barriers not supported";
-		return false;
+		opTable.addOptableEntry(sip_barrier_op, 
+				defaultZeroInd,  lineno(n));
+	} else
+		assert false : "arguments for barriers not supported";
+	return false;		
 	}
 
 	@Override
 	public void endVisit(SipBarrierStatement n) { /* nop */
 	}
 
-	@Override
-	public boolean visit(Section n) { /* visit children */
-		return true;
-	}
+//	@Override
+//	public boolean visit(Section n) { /* visit children */
+//		return true;
+//	}
 
-	@Override
-	public void endVisit(Section n) { // AcesHack for now, this is treated as an
-										// "execute aceshack_server_barrier"
-										// instruction
-		// The Section object holds the SpecialDec, which was set by the
-		// TypeCheckVisitor
-		int functionAddr = ((SpecialDec) n.getDec()).getAddr();
-		opTable.addOptableEntry(user_sub_op, noArgExecuteArg, defaultZeroInd,
-				functionAddr, lineno(n));
-	}
+//	@Override
+//	public void endVisit(Section n) { // AcesHack for now, this is treated as an
+//										// "execute aceshack_server_barrier"
+//										// instruction
+//		// The Section object holds the SpecialDec, which was set by the
+//		// TypeCheckVisitor
+//		int functionAddr = ((SpecialDec) n.getDec()).getAddr();
+//		opTable.addOptableEntry(user_sub_op, noArgExecuteArg, defaultZeroInd,
+//				functionAddr, lineno(n));
+//	}
 
 	@Override
 	public boolean visit(DoStatement n) {
@@ -668,7 +645,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(CycleStatement n) {
-		// TODO test this
+		// TODO test this and change TypeCheckVisitor to allow it
 		int index = operandStack.pop();
 		opTable.addOptableEntry(cycle_op, index, defaultOneInd, lineno(n));
 	}
@@ -891,48 +868,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		return true;
 	}
 
-	// @Override
-	// public void endVisit(ExecuteStatement n) {
-	// ArgList args = n.getArgList();
-	// int resultIndex = noArgExecuteArg;
-	// int op1Index = noArgExecuteArg;
-	// int op2Index = noArgExecuteArg;
-	// int[] ind = defaultZeroInd;
-	// if (args.size() == 1) {
-	// IArg arg = args.getArgAt(0);
-	// if (arg instanceof IdentPrimary) {
-	// resultIndex = operandStack.pop();
-	// }
-	// if (arg instanceof DataBlockPrimary) {
-	// resultIndex = operandStack.pop();
-	// ind = indexArrayStack.pop();
-	// opTable.addOptableEntry(reindex_op, resultIndex, ind, lineno(n));
-	// }
-	// } else if (args.size() == 2) {
-	// IArg arg1 = args.getArgAt(0);
-	// IArg arg2 = args.getArgAt(1);
-	// op1Index = operandStack.pop();
-	// resultIndex = operandStack.pop();
-	// if (arg2 instanceof DataBlockPrimary) {
-	// ind = indexArrayStack.pop();
-	// }
-	// if (arg1 instanceof DataBlockPrimary) {
-	// ind = indexArrayStack.pop();
-	// }
-	// } else if (args.size()==3){
-	// assert false: "execute with 3 args not implemented";
-	// }
-	// int functionAddr = operandStack.pop();
-	// if (n.getIdent().getName().equals("compute_integrals")) {
-	// // special case compute_integrals for now
-	// // TODO eventually fix this
-	// opTable.addOptableEntry(compute_integrals_op, op1Index, op2Index,
-	// resultIndex, ind, lineno(n));
-	// return;
-	// }
-	// opTable.addOptableEntry(user_sub_op, op1Index, op2Index, resultIndex,
-	// ind, functionAddr, lineno(n));
-	// }
 
 	@Override
 	public void endVisit(ExecuteStatement n) {
@@ -952,6 +887,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 				rank = arrayTable.getRank(array_table_slot);
 				ind = indexArrayStack.pop();
 			}
+			//If this is an array, with rank 0, it is a static or contiguous array without a block selector.
 			opTable.addOptableEntry(reindex_op, rank, array_table_slot, ind, lineno(n));  //array_table_slot goes in resultIndex slot of OptableEntry
 		}
 		int functionAddr = operandStack.pop();
@@ -1416,6 +1352,18 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public boolean visit(AssignStatement n) { /* visit children */
 		return true;
 	}
+	
+//	@Override
+//	public void endVisit(AssignStatement n){
+//		/* There are several cases
+//		      a(..) = b(..) op c(..)
+//		      a = b op c
+//		      a(..) = b(..)  which may be slice or insert
+//		      a += b
+//		      a -= b
+//		      a *= b
+//		      */
+//	}
 
 	@Override
 	public void endVisit(AssignStatement n) {
@@ -1529,7 +1477,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		if (assignOp instanceof AssignOpMinus)
 			return subtract_op;
 		if (assignOp instanceof AssignOpStar)
-			return contraction_op;
+			return self_multiply_op;
 		assert false : "Bug in type checking of assignment statements";
 		return -1;
 	}
@@ -1589,9 +1537,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(PersistentModifier n) { /* nop */
 	}
 
-	// public boolean visit(DimensionListopt n) { /* visit children */ return
-	// true; }
-	// public void endVisit(DimensionListopt n) { /* nop */ }
 
 	@Override
 	public boolean visit(ArgList n) { /* visit children */

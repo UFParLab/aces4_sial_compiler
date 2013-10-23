@@ -40,11 +40,11 @@ public interface Visitor extends IAstVisitor
     boolean visit(PersistentModifier n);
     void endVisit(PersistentModifier n);
 
-    boolean visit(ScopedExtent n);
-    void endVisit(ScopedExtent n);
+    boolean visit(ScopedExtentModifier n);
+    void endVisit(ScopedExtentModifier n);
 
-    boolean visit(Contiguous n);
-    void endVisit(Contiguous n);
+    boolean visit(ContiguousModifier n);
+    void endVisit(ContiguousModifier n);
 
     boolean visit(Auto_AllocateModifier n);
     void endVisit(Auto_AllocateModifier n);

@@ -13,11 +13,11 @@ import org.eclipse.imp.parser.IParser;
  *<li>Rule 18:  Modifier ::= scoped_extent
  *</b>
  */
-public class ScopedExtent extends ASTNodeToken implements IModifier
+public class ScopedExtentModifier extends ASTNodeToken implements IModifier
 {
     public IToken getscoped_extent() { return leftIToken; }
 
-    public ScopedExtent(IToken token) { super(token); initialize(); }
+    public ScopedExtentModifier(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

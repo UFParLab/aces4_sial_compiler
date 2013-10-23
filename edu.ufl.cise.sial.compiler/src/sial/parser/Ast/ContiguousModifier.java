@@ -13,11 +13,11 @@ import org.eclipse.imp.parser.IParser;
  *<li>Rule 19:  Modifier ::= contiguous
  *</b>
  */
-public class Contiguous extends ASTNodeToken implements IModifier
+public class ContiguousModifier extends ASTNodeToken implements IModifier
 {
     public IToken getcontiguous() { return leftIToken; }
 
-    public Contiguous(IToken token) { super(token); initialize(); }
+    public ContiguousModifier(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

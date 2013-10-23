@@ -126,8 +126,8 @@
     Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
     Modifier$PredefinedModifier ::= 'predefined'
     Modifier$PersistentModifier ::= 'persistent'
-	Modifier$ScopedExtent ::= 'scoped_extent'
-	Modifier$Contiguous ::= 'contiguous'
+	Modifier$ScopedExtentModifier ::= 'scoped_extent'
+	Modifier$ContiguousModifier ::= 'contiguous'
 	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
 
 	 

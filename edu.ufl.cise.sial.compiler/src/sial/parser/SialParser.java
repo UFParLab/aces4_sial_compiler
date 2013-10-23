@@ -380,7 +380,7 @@ if (root != null) {
             //
             case 18: {
                 setResult(
-                    new ScopedExtent(getRhsIToken(1))
+                    new ScopedExtentModifier(getRhsIToken(1))
                 );
                 break;
             }
@@ -389,7 +389,7 @@ if (root != null) {
             //
             case 19: {
                 setResult(
-                    new Contiguous(getRhsIToken(1))
+                    new ContiguousModifier(getRhsIToken(1))
                 );
                 break;
             }

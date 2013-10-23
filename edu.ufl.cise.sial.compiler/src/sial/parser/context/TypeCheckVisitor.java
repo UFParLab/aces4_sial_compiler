@@ -1,10 +1,10 @@
-//TODO ??  x /= y is not a legal operator in current compiler (not sure why not)
-
 package sial.parser.context;
 
 import static sial.parser.context.ASTUtils.getIntVal;
+import static sial.parser.context.ASTUtils.getEnclosingProc;
 import static sial.parser.context.ASTUtils.isConstant;
 import static sial.parser.context.ASTUtils.isPredefined;
+import static sial.parser.context.ASTUtils.isStaticOrContiguousArray;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,7 +47,6 @@ import sial.parser.Ast.DeleteStatement;
 import sial.parser.Ast.DestroyStatement;
 import sial.parser.Ast.DimensionList;
 import sial.parser.Ast.BinOpMinus;
-//import sial.parser.Ast.DimensionListopt;
 import sial.parser.Ast.DoStatement;
 import sial.parser.Ast.DoStatementSubIndex;
 import sial.parser.Ast.DoubleLitPrimary;
@@ -55,6 +54,7 @@ import sial.parser.Ast.ExecuteStatement;
 import sial.parser.Ast.ExitStatement;
 import sial.parser.Ast.GetStatement;
 import sial.parser.Ast.IAllocIndex;
+import sial.parser.Ast.IArg;
 import sial.parser.Ast.IAssignOp;
 import sial.parser.Ast.IBinOp;
 import sial.parser.Ast.IDec;
@@ -111,6 +111,7 @@ import sial.parser.context.AcesRangeChecks;
 import sial.parser.context.AmbiguousNameException;
 import sial.parser.context.SymbolTable;
 
+/** Performs type checking on SIAL programs*/
 public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, SipConstants {
 
 	SymbolTable symbolTable;
@@ -132,24 +133,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	public List<IDec> constants = new ArrayList<IDec>();
-	// public List<IDec> predefined = new ArrayList<IDec>();
-	// public List<IDec> persistent = new ArrayList<IDec>();
-	// public List<IDec> specialList = new ArrayList<IDec>();
-
-//	public List<DataBlock> checkCallSiteList = new ArrayList<DataBlock>();
-
-	// private int specialIndex; //next special index
 
 	public TypeCheckVisitor(SialParser parser) {
 		this.parser = parser;
 	}
 
-	// find and return appropriate declaration of given ident. Sets the dec
-	// field of the ident.
-	// the lookup function will throw an AmgiguousNameException if this ident is
-	// unqualified and defined in
-	// multiple imported files.
-	// This does not catch that exception, which must be handled by the caller
+
+	/** Finds and returns the declaration of the given Ident, and sets the Ident's dec field.
+	 * If the ident is unqualified and defined in multiple imported files, this will throw an
+	 * AmbiguousNameException.
+	 * @param s the Ident to look up 
+	 * @return  the IDec representing the declaration of s
+	 * @throws AmbiguousNameException
+	 */
 	private IDec findAndSetDec(Ident s) throws AmbiguousNameException {
 		assert s != null : "findDec with null argument";
 		String name = s.getName();
@@ -158,6 +154,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return dec;
 	}
 
+	/** Finds and returns the declaration of the given IdentPrimary (which is an identifier
+	 * used in an expression), and sets the IdentPrimary's dec field.
+	 * If the ident is unqualified and defined in multiple imported files, this will throw an
+	 * AmbiguousNameException.
+	 * @param s the IdentPrimary to look up 
+	 * @return  the IDec representing the declaration of s
+	 * @throws AmbiguousNameException
+	 */
 	private IDec findAndSetDec(IdentPrimary s) throws AmbiguousNameException {
 		assert s != null : "findDec with null argument";
 		String name = s.getName();
@@ -166,36 +170,29 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return dec;
 	}
 
-	// Serverbarrier is currently implemented as if it were
-	// "execute aceshack_server_barrier"
-	private IDec findAndSetDec(ServerBarrierStatement n) {
-		assert n != null : "findDec with null argument";
-		try {
-			String name = "aceshack_server_barrier";
-			IDec dec = symbolTable.lookup(name);
-			n.setDec(dec);
-			return dec;
-		} catch (AmbiguousNameException e) {
-			emitError(n, e.getMessage());
-			return null;
-		}
-	}
 
-	// The end of a section creates an implicit server barrier, which is treated the same as ServerBarrierStatement
-	// "execute aceshack_server_barrier"
-	private IDec findAndSetDec(Section n) {
-		assert n != null : "findDec with null argument";
-		try {
-			String name = "aceshack_server_barrier";
-			IDec dec = symbolTable.lookup(name);
-			n.setDec(dec);
-			return dec;
-		} catch (AmbiguousNameException e) {
-			emitError(n, e.getMessage());
-			return null;
-		}
-	}
-	
+//This is obsolete code for language element sections.  Needs to be revisited if sections are supported
+//	// The end of a section creates an implicit server barrier, which is treated the same as ServerBarrierStatement
+//	// "execute aceshack_server_barrier"
+//	private IDec findAndSetDec(Section n) {
+//		assert n != null : "findDec with null argument";
+//		try {
+//			String name = "aceshack_server_barrier";
+//			IDec dec = symbolTable.lookup(name);
+//			n.setDec(dec);
+//			return dec;
+//		} catch (AmbiguousNameException e) {
+//			emitError(n, e.getMessage());
+//			return null;
+//		}
+//	}
+
+	/** Finds and returns the declaration of the given AllocIndexIdent and sets its dec field.
+	 * If the ident is unqualified and defined in multiple imported files, this will give an error.
+	 * @param s the IdentPrimary to look up 
+	 * @return  the IDec representing the declaration of s
+	 * @throws AmbiguousNameException
+	 */
 	private IDec findAndSetDec(AllocIndexIdent s) {
 		assert s != null : "findDec with null argument";
 		try {
@@ -209,21 +206,17 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 	}
 
-	// Sipbarrier is currently implemented as if it were
-	// "execute aceshack_sip_barrier"
-	private IDec findAndSetDec(SipBarrierStatement n) {
-		assert n != null : "findDec with null argument";
-		try {
-			String name = "aceshack_sip_barrier";
-			IDec dec = symbolTable.lookup(name);
-			n.setDec(dec);
-			return dec;
-		} catch (AmbiguousNameException e) {
-			emitError(n, e.getMessage());
-			return null;
-		}
-	}
 
+	/**
+	 * Finds and returns the declaration of the given IdentRangeVal and sets its
+	 * dec field. If the ident is unqualified and defined in multiple imported
+	 * files, this will give an error.
+	 * 
+	 * @param s
+	 *            the IdentPrimary to look up
+	 * @return the IDec representing the declaration of s
+	 * @throws AmbiguousNameException
+	 */
 	private IDec findAndSetDec(IdentRangeVal s) {
 		try {
 			String name = s.getName();
@@ -252,6 +245,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		parser.emitError(node, message);
 	}
 
+/**
+ * Convenience function for managing error checks.  If the condition is false, an error message is printed.
+ * For the most part, the typing rules of the language are embedded in calls to check statements.
+ * @param condition  The condition to evaluate
+ * @param n The current ASTNode
+ * @param msg  The Error message to report
+ * @return whether the condition holds or not
+ */
 	boolean check(boolean condition, ASTNode n, String msg) {
 		if (condition)
 			return true;
@@ -346,8 +347,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	/* scalar declaration */
 	@Override
 	public boolean visit(ScalarDec n) {
-//		check(!isConstant(n), n,
-//				"Scalar symbolic constants are not yet implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
@@ -498,7 +497,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	public boolean visit(IdentRangeVal n) {
 		IDec dec = findAndSetDec(n);
 		check(dec instanceof IntDec, n, n.getName() + " not declared");
-		check(ASTUtils.isPredefined(dec), n, n.getName() + " must be predefined");
+		check(isPredefined(dec), n, n.getName() + " must be predefined");
 		return false;
 	}
 
@@ -511,7 +510,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		String name = n.getName();
 		check(symbolTable.insert(name, n), n.getIdent(),
 				"Duplicate declaration of " + name);
-		check( ASTUtils.getEnclosingProc(n) == null, n, "nested procedures are not allowed");
+		check( getEnclosingProc(n) == null, n, "nested procedures are not allowed");
 		// visit children
 		return true;
 	}
@@ -617,10 +616,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(ServerBarrierStatement n) {
-		IDec dec = findAndSetDec(n);
-		check(dec != null,
-				n,
-				"current implementation requires declaration of special aces_hacks_server_barrier");
+//		IDec dec = findAndSetDec(n);
+//		check(dec != null,
+//				n,
+//				"current implementation requires declaration of special aces_hacks_server_barrier");
 		return false;
 	}
 
@@ -632,10 +631,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(SipBarrierStatement n) {
-		IDec dec = findAndSetDec(n);
-		check(dec != null,
-				n,
-				"current implementation requires declaration of special instruction aceshacks_sip_barrier");
 		return false;
 	}
 
@@ -702,7 +697,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	public boolean visit(PardoStatement n) {
 		check(!inpardo, n, "pardo nested inside another pardo");
 		inpardo = true;
-		procsContainingPardo.add(ASTUtils.getEnclosingProc(n)); //adds null if not in proc
+		procsContainingPardo.add(getEnclosingProc(n)); //adds null if not in proc
 		IdentList startIndices = n.getStartIndices();
 		check(startIndices != null && startIndices.size() > 0, n,
 				"missing indices in pardo statement");
@@ -734,13 +729,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 	
-	@Override
-	public void endVisit(Section n){
-		IDec dec = findAndSetDec(n);
-		check(dec != null,
-				n,
-				"current implementation requires declaration of special aces_hacks_server_barrier");
-	}
+//	@Override
+//	public void endVisit(Section n){
+//		IDec dec = findAndSetDec(n);
+//		check(dec != null,
+//				n,
+//				"current implementation requires declaration of special aces_hacks_server_barrier");
+//	}
 
 
 	@Override
@@ -754,7 +749,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(CycleStatement n) {
-		check(false, n, "cycle statement not yet implemented");
+		check(false, n, "cycle statement not implemented");
 		return false;
 	}
 
@@ -1379,73 +1374,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 					+ "have incompatible types"))
 				return;
 		}
-		// TODO if not found and inside proc, look for call sites
-//		for (int i = 0; i < indices.size(); i++) {
-//			Ident indexIdent = indices.getIdentAt(i);
-//			IAst node = n;
-//			boolean found = false;
-//			while (!found && node != null && !(node instanceof ProcDec)
-//					&& !(node instanceof Program)) {
-//				node = node.getParent();
-//				if (node instanceof DoStatement) {
-//					found = ((DoStatement) node).getStartIndex().getName()
-//							.equals(indexIdent.getName());
-//				} else if (node instanceof DoStatementSubIndex) {
-//					found = ((DoStatementSubIndex) node).getStartIndex()
-//							.getName().equals(indexIdent.getName());
-//				} else if (node instanceof PardoStatement) {
-//					IdentList pardoIndices = ((PardoStatement) node)
-//							.getStartIndices();
-//					found = contains(pardoIndices, indexIdent);
-//				}
-//			}
-//			if (found)
-//				continue;
-//			if (node instanceof ProcDec) {
-//				// add this datablock to list to check call sites
-//				checkCallSiteList.add(n);
-//				return;
-//				// //find all calls in prog and see if defined in that context
-//				// ArrayList<CallStatement> callSites = (new
-//				// CollectCallSiteVisitor(ASTUtils.getRoot(node),
-//				// (ProcDec)node)).getCallSites();
-//				// boolean definedAtAllCallSites = true;
-//				// for (CallStatement site : callSites){
-//				// IAst tmp = site;
-//				// boolean foundDef = false;
-//				// while (!foundDef && node != null && !(node instanceof
-//				// ProcDec) && ! (node instanceof Program)){
-//				// node = node.getParent();
-//				// if (node instanceof DoStatement){
-//				// foundDef =
-//				// ((DoStatement)
-//				// node).getStartIndex().getName().equals(indexIdent.getName());
-//				// }
-//				// else if (node instanceof DoStatementSubIndex) {
-//				// foundDef =
-//				// ((DoStatementSubIndex)
-//				// node).getStartIndex().getName().equals(indexIdent.getName());
-//				// }
-//				// else if (node instanceof PardoStatement) {
-//				// IdentList pardoIndices = ((PardoStatement)
-//				// node).getStartIndices();
-//				// found = contains( pardoIndices,indexIdent);
-//				// }
-//				// } check(foundDef, n, indexIdent.getName() +
-//				// " not defined in this scope or in calling routine");
-//				// }
-//
-//			} else
-//				check(found, n, indexIdent.getName()
-//						+ " not defined in this scope");
-//		}
 	}
 
-	// public static Sial getRoot(IAst node){
-	// while (node != null && !(node instanceof Sial))
-	// node= node.getParent();
-	// return (Sial) node;
-	// }
 
 	@Override
 	public boolean visit(IdentList n) { /* visit children */
@@ -1644,26 +1574,42 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 
+	/** These are the special superinstruction that take non-static array arguments without a block selector 
+	 * 	blocks_to_list
+	 *  list_to_blocks
+	 *  array_copy
+	 *  */
+	boolean nonstatic_noselector_array_allowed(ArgList n){
+		String instruction_name  = ((ExecuteStatement) n.getParent()).getIdent().getName();
+		if (instruction_name.equals("blocks_to_list")) return true;
+		if (instruction_name.equals("list_to_blocks")) return true;
+		if (instruction_name.equals("array_copy")) return true;
+		return false;
+	}
+	
+//  This version gives an error if superinstruction called with implicit selector	
 	@Override
 	public void endVisit(ArgList n) {
-		// TODO Later check type against some sort of declaration
+		// if an argument is an IdentPrimary, it must either be a scalar or a static array
+		for (int i = 0; i < n.size(); ++i){
+			IArg arg = n.getArgAt(i);
+			if (arg instanceof IdentPrimary){
+				IdentPrimary idparg = (IdentPrimary)arg;
+				IDec dec = idparg.getDec();
+				if (dec instanceof ArrayDec){
+					check(isStaticOrContiguousArray(dec) || nonstatic_noselector_array_allowed(n), idparg, 
+							"execute " + ((ExecuteStatement) n.getParent()).getIdent().getName() +
+							" has array argument " + idparg.getName() + " which is neither static nor contigous");
+				}
+			}
+		}
 	}
+	
 
 	@Override
 	public boolean visit(AssignStatement n) { /* visit children */
 		return true;
 	}
-
-	// *<li>DataBlock
-	// *<li>BinaryExpression
-	// *<li>NegatedUnary
-	// *<li>IntLitPrimary
-	// *<li>DoubleLitPrimary
-	// *<li>IdentPrimary
-	// *<li>DataBlockPrimary
-	// *<li>StringLitPrimary
-	// *<li>StringLiteral
-	// *<li>Ident
 
 	@Override
 	public void endVisit(AssignStatement n) {
@@ -1714,63 +1660,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				BinaryExpression binExpr = (BinaryExpression) expr;
 				IUnaryExpression expr1 = binExpr.getExpr1();
 				IUnaryExpression expr2 = binExpr.getExpr2();
-//<<<<<<< .mine
-//				
-//		 		DataBlock block1 = null;
-//		 		DataBlock block2 = null;
-//		 		if (expr1 instanceof DataBlockPrimary ){ 
-//		 			block1 = ((DataBlockPrimary)expr1).getDataBlock();
-//		 			}
-//		 		if (expr2 instanceof DataBlockPrimary ){ 
-//		 			block2 = ((DataBlockPrimary)expr2).getDataBlock();
-//		 		}
-//		 		if (block1 != null && block2 != null){
-//				IBinOp binOp = binExpr.getBinOp();
-//		    	 if (binOp instanceof BinOpStar || binOp instanceof BinOpTensor){ //rhs is a contraction or tensor
-//		    		 ArrayList<Ident> exprIndices = getContractionResultIndices(block1,block2);
-//		    		 int exprIndicesSize = exprIndices.size();
-//		    		 ArrayList<String> names = new ArrayList(exprIndicesSize);
-//		    		 for (int i = 0; i < exprIndicesSize; i++){
-//		    			 names.add(exprIndices.get(i).getName());
-//		    		 }
-//		    		 if (!check( lhsIndices.size() == exprIndices.size() , n, "left and right sides have different dimensions"))
-//		    			 return;
-//		    		 for (int i= 0; i < lhsIndices.size(); i++){
-//		    			 String lhsIndexName = lhsIndices.getIdentAt(i).getName();
-//		    			 if (!check(names.contains(lhsIndexName), n, "indices do not match on left and right hand sides"))
-//		    				 return;
-//		    		 	 
-//		    		 }
-//		    	 return;	 
-//		    	 }
-//		    	 if (binOp instanceof BinOpPlus){
-//		    		 IdentList block1indices = block1.getIndices();
-//		    		 IdentList block2indices = block2.getIndices();
-//		    		 if (!check( lhsIndices.size() == block1indices.size() && lhsIndices.size()== block2indices.size() ,n,
-//		    				 "number of indices does not match")) 
-//		    				 return;
-//		    		 for (int i= 0; i < lhsIndices.size(); i++){
-//		    			 String lhsIndexName = lhsIndices.getIdentAt(i).getName();
-//		    			 String block1IndexName = block1indices.getIdentAt(i).getName();
-//		    			 String block2IndexName = block2indices.getIdentAt(i).getName();
-//		    			 if (!check(lhsIndexName.equals(block1IndexName) && lhsIndexName.equals(block2IndexName), n, "indices do not match"))
-//		    				 return; 
-//		    	 }
-//		    		 return;
-//		    	 
-//		     }
-//		 		}
-//		 		else if (expr1 instanceof DataBlockPrimary){
-//					checkCompatibleBlocks(n, (DataBlock)lhs, ((DataBlockPrimary) expr1).getDataBlock());
-//					return;
-//		 		}
-//		 		else if (expr2 instanceof DataBlockPrimary){
-//					 checkCompatibleBlocks(n, (DataBlock)lhs, ((DataBlockPrimary) expr2).getDataBlock());
-//					 return;
-//		 		}
-//		    	 assert false: n.toString();
-//		     }
-//=======
+
 				if (expr1 instanceof DataBlockPrimary
 						&& expr2 instanceof DataBlockPrimary) {
 					DataBlock block1 = ((DataBlockPrimary) expr1)
@@ -1798,8 +1688,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 							if (!check(names.contains(lhsIndexName), n,
 									"indices do not match on left and right hand sides"))
 								return;
-//>>>>>>> .r370
-
 						}
 						return;
 					}
@@ -1879,6 +1767,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	boolean hasDeclaredIndices(DataBlock block){
 		   IdentList indices = block.getIndices();
 		   IDec dec = block.getIdent().getDec();
+		   if (dec == null) return false;
 		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
 		   boolean hasDeclared = true;
 		   for (int i = 0; i < indices.size(); ++i){
@@ -1894,6 +1783,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	boolean isSubBlock(DataBlock block){
 		   IdentList indices = block.getIndices();
 		   IDec dec = block.getIdent().getDec();
+		   if (dec == null) return false;  //this ident wasn't declared.  This avoids null pointer exception, error found elsewhere.
 		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
 		   boolean isValid = true;
 		   boolean subBlock = false;
@@ -1940,24 +1830,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				&& binaryIsInt((BinaryExpression) expr);
 	}
 
-	// BinOp$BinOpStar ::= '*'
-	// BinOp$BinOpDiv ::= '/'
-	// BinOp$BinOpPlus ::= '+'
-	// BinOp$BinOpMinus ::= '-'
-	// BinOp$BinOpTensor ::= '^'
 
 	private boolean binaryIsInt(BinaryExpression expr) {
 		IUnaryExpression expr1 = expr.getExpr1();
 		IUnaryExpression expr2 = expr.getExpr2();
 		IBinOp op = expr.getBinOp();
 		return (isInt(expr1) && isInt(expr2) && !(op instanceof BinOpTensor));
-		// } else if (expr1 instanceof DataBlockPrimary
-		// && expr2 instanceof DataBlockPrimary && op instanceof BinOpStar) {
-		// return getContractionResultIndices(
-		// ((DataBlockPrimary) expr1).getDataBlock(),
-		// ((DataBlockPrimary) expr2).getDataBlock()).size() == 0;
-		// }
-		// return false;
 	}
 
 	private boolean isScalar(IExpression expr) {
@@ -2035,15 +1913,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(RelOp n) { /* nop */
 	}
-
-//	@Override
-//	public boolean visit(DimensionListopt n) {/* visit children */
-//		return true;
-//	}
-//
-//	@Override
-//	public void endVisit(DimensionListopt n) { /* nop, checked in parent */
-//	}
 
 	@Override
 	public boolean visit(AllocIndexListopt n) { /* visit children */

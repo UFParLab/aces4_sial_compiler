@@ -1,0 +1,1052 @@
+<html>
+<body>
+<h1>Syntax for SialParser.g Language</h1>
+<hr>
+<hr>
+<table border=1 width="100%" cellpadding="3" cellspacing="0">
+    <thead><tr bgcolor="#ccccff"><td><b>Non-terminal</b></td><td><b>Description</b></td><td><b>Rules</b></td></tr></thead>
+  <tbody>
+  <tr>
+    <td width="10%"><a name="AllocIndex"><b>AllocIndex</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="AllocIndexList"><b>AllocIndexList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#AllocIndex">AllocIndex</a></p>
+      <p><a href="#AllocIndexList">AllocIndexList</a> ',' <a href="#AllocIndex">AllocIndex</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="AllocIndexListopt"><b>AllocIndexListopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p>'(' <a href="#AllocIndexList">AllocIndexList</a> ')'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Arg"><b>Arg</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Primary">Primary</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ArgList"><b>ArgList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#ArgList">ArgList</a> <a href="#Arg">Arg</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ArrayDec"><b>ArrayDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Modifiersopt">Modifiersopt</a> <a href="#ArrayKind">ArrayKind</a> <a href="#Ident">Ident</a> '(' <a href="#DimensionList">DimensionList</a> ')'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ArrayKind"><b>ArrayKind</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>static</p>
+      <p>temp</p>
+      <p>local</p>
+      <p>distributed</p>
+      <p>served</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="AssignOp"><b>AssignOp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*='</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="BinOp"><b>BinOp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'^'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="BinaryExpression"><b>BinaryExpression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#BinOp">BinOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="DataBlock"><b>DataBlock</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a> '(' <a href="#Indices">Indices</a> ')'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Dec"><b>Dec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#ScalarDec">ScalarDec</a></p>
+      <p><a href="#ArrayDec">ArrayDec</a></p>
+      <p><a href="#IndexDec">IndexDec</a></p>
+      <p><a href="#SubIndexDec">SubIndexDec</a></p>
+      <p><a href="#IntDec">IntDec</a></p>
+      <p><a href="#ProcDec">ProcDec</a></p>
+      <p><a href="#SpecialDec">SpecialDec</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="DecList"><b>DecList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#DecList">DecList</a> <a href="#Dec">Dec</a> <a href="#EOLs">EOLs</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Dimension"><b>Dimension</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="DimensionList"><b>DimensionList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Dimension">Dimension</a></p>
+      <p><a href="#DimensionList">DimensionList</a> ',' <a href="#Dimension">Dimension</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="EOLs"><b>EOLs</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>SINGLE_LINE_COMMENT</p>
+      <p>EOL</p>
+      <p><a href="#EOLs">EOLs</a> EOL</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="EOLsopt"><b>EOLsopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#EOLs">EOLs</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Expression"><b>Expression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#UnaryExpression">UnaryExpression</a></p>
+      <p><a href="#BinaryExpression">BinaryExpression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Ident"><b>Ident</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>IDENTIFIER</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IdentOpt"><b>IdentOpt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+      <p>%empty</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ImportProg"><b>ImportProg</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>import STRINGLIT <a href="#EOLs">EOLs</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ImportProgList"><b>ImportProgList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#ImportProgList">ImportProgList</a> <a href="#ImportProg">ImportProg</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexDec"><b>IndexDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Modifiersopt">Modifiersopt</a> <a href="#IndexKind">IndexKind</a> <a href="#Ident">Ident</a> = <a href="#Range">Range</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexKind"><b>IndexKind</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>aoindex</p>
+      <p>moindex</p>
+      <p>moaindex</p>
+      <p>mobindex</p>
+      <p>index</p>
+      <p>laindex</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Indices"><b>Indices</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+      <p><a href="#Indices">Indices</a> ',' <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IntDec"><b>IntDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Modifiersopt">Modifiersopt</a> int <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Keyword"><b>Keyword</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>s i a l</p>
+      <p>e n d s i a l</p>
+      <p>p r o c</p>
+      <p>e n d p r o c</p>
+      <p>r e t u r n</p>
+      <p>c a l l</p>
+      <p>p a r d o</p>
+      <p>e n d p a r d o</p>
+      <p>d o</p>
+      <p>i n</p>
+      <p>e n d d o</p>
+      <p>c y c l e</p>
+      <p>e x i t</p>
+      <p>i f</p>
+      <p>e l s e</p>
+      <p>e n d i f</p>
+      <p>p u t</p>
+      <p>g e t</p>
+      <p>p r e p a r e</p>
+      <p>r e q u e s t</p>
+      <p>p r e q u e s t</p>
+      <p>c o l l e c t i v e</p>
+      <p>e x e c u t e</p>
+      <p>a o i n d e x</p>
+      <p>m o i n d e x</p>
+      <p>m o a i n d e x</p>
+      <p>m o b i n d e x</p>
+      <p>i n d e x</p>
+      <p>l a i n d e x</p>
+      <p>s u b i n d e x</p>
+      <p>o f</p>
+      <p>s c a l a r</p>
+      <p>s t a t i c</p>
+      <p>t e m p</p>
+      <p>l o c a l</p>
+      <p>d i s t r i b u t e d</p>
+      <p>s e r v e d</p>
+      <p>c r e a t e</p>
+      <p>a l l o c a t e</p>
+      <p>d e l e t e</p>
+      <p>d e a l l o c a t e</p>
+      <p>d e s t r o y</p>
+      <p>w h e r e</p>
+      <p>i m p o r t</p>
+      <p>i n t</p>
+      <p>p r e d e f i n e d</p>
+      <p>p e r s i s t e n t</p>
+      <p>s p e c i a l</p>
+      <p>s e r v e r _ b a r r i e r</p>
+      <p>s i p _ b a r r i e r</p>
+      <p>s e c t i o n</p>
+      <p>e n d s e c t i o n</p>
+      <p>p r i n t</p>
+      <p>p r i n t l n</p>
+      <p>p r i n t _ i n d e x</p>
+      <p>p r i n t _ s c a l a r</p>
+      <p>s i p _ c o n s i s t e n t</p>
+      <p>s c o p e d _ e x t e n t</p>
+      <p>c o n t i g u o u s</p>
+      <p>a u t o _ a l l o c a t e</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Modifier"><b>Modifier</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'auto_allocate'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Modifiers"><b>Modifiers</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Modifier">Modifier</a></p>
+      <p><a href="#Modifiers">Modifiers</a> <a href="#Modifier">Modifier</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Modifiersopt"><b>Modifiersopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#Modifiers">Modifiers</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="NotDQ"><b>NotDQ</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#letter">letter</a></p>
+      <p><a href="#digit">digit</a></p>
+      <p><a href="#specialNotDQ">specialNotDQ</a></p>
+      <p><a href="#whiteChar">whiteChar</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Primary"><b>Primary</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#StringLiteral">StringLiteral</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ProcDec"><b>ProcDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>proc <a href="#Ident">Ident</a> <a href="#EOLs">EOLs</a> <a href="#StatementList">StatementList</a> endproc <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Program"><b>Program</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>sial <a href="#Ident">Ident</a> <a href="#EOLs">EOLs</a> <a href="#DecList">DecList</a> <a href="#StatementList">StatementList</a> endsial <a href="#Ident">Ident</a> <a href="#EOLsopt">EOLsopt</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Range"><b>Range</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#RangeVal">RangeVal</a> ',' <a href="#RangeVal">RangeVal</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="RangeVal"><b>RangeVal</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="RelOp"><b>RelOp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'&lt;'</p>
+      <p>'&gt;'</p>
+      <p>'&lt;='</p>
+      <p>'&gt;='</p>
+      <p>'=='</p>
+      <p>'!='</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="RelationalExpression"><b>RelationalExpression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#RelOp">RelOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="SLBody"><b>SLBody</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#SLBody">SLBody</a> <a href="#NotDQ">NotDQ</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ScalarDec"><b>ScalarDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Modifiersopt">Modifiersopt</a> scalar <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ScalarOrBlockVar"><b>ScalarOrBlockVar</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+      <p><a href="#DataBlock">DataBlock</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Sial"><b>Sial</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#EOLsopt">EOLsopt</a> <a href="#ImportProgList">ImportProgList</a> <a href="#Program">Program</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="SpecialDec"><b>SpecialDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Statement"><b>Statement</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#ScalarOrBlockVar">ScalarOrBlockVar</a> <a href="#AssignOp">AssignOp</a> <a href="#Expression">Expression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="StatementList"><b>StatementList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#StatementList">StatementList</a> <a href="#Statement">Statement</a> <a href="#EOLs">EOLs</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="StringLiteral"><b>StringLiteral</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>STRINGLIT</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="SubIndexDec"><b>SubIndexDec</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>subindex <a href="#Ident">Ident</a> of <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Token"><b>Token</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#identifier">identifier</a></p>
+      <p><a href="#intlit">intlit</a></p>
+      <p><a href="#doublelit">doublelit</a></p>
+      <p><a href="#stringlit">stringlit</a></p>
+      <p><a href="#white">white</a></p>
+      <p><a href="#slc">slc</a></p>
+      <p>','</p>
+      <p>'+'</p>
+      <p>'-'</p>
+      <p>'/'</p>
+      <p>'*'</p>
+      <p>'^'</p>
+      <p>'('</p>
+      <p>')'</p>
+      <p>'&gt;'</p>
+      <p>'&gt;' '='</p>
+      <p>'&lt;'</p>
+      <p>'&lt;' '='</p>
+      <p>'=' '='</p>
+      <p>'!' '='</p>
+      <p>'='</p>
+      <p>'+' '='</p>
+      <p>'-' '='</p>
+      <p>'*' '='</p>
+      <p><a href="#eol">eol</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="UnaryExpression"><b>UnaryExpression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'-' <a href="#Primary">Primary</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="WhereClause"><b>WhereClause</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>where <a href="#RelationalExpression">RelationalExpression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="WhereClauseList"><b>WhereClauseList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#WhereClauseList">WhereClauseList</a> <a href="#WhereClause">WhereClause</a> <a href="#EOLs">EOLs</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="aA"><b>aA</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>a</p>
+      <p>A</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="bB"><b>bB</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>b</p>
+      <p>B</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="cC"><b>cC</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>c</p>
+      <p>C</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="dD"><b>dD</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>d</p>
+      <p>D</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="digit"><b>digit</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>0</p>
+      <p>1</p>
+      <p>2</p>
+      <p>3</p>
+      <p>4</p>
+      <p>5</p>
+      <p>6</p>
+      <p>7</p>
+      <p>8</p>
+      <p>9</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="doublelit"><b>doublelit</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#intlit">intlit</a> '.'</p>
+      <p><a href="#intlit">intlit</a> '.' <a href="#intlit">intlit</a></p>
+      <p>'.' <a href="#intlit">intlit</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="eE"><b>eE</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>e</p>
+      <p>E</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="eol"><b>eol</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>LF</p>
+      <p>CR</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="fF"><b>fF</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>f</p>
+      <p>F</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="gG"><b>gG</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>g</p>
+      <p>G</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="hH"><b>hH</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>h</p>
+      <p>H</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="iI"><b>iI</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>i</p>
+      <p>I</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="identifier"><b>identifier</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#letter">letter</a></p>
+      <p><a href="#identifier">identifier</a> <a href="#letter">letter</a></p>
+      <p><a href="#identifier">identifier</a> <a href="#digit">digit</a></p>
+      <p><a href="#identifier">identifier</a> '_'</p>
+      <p><a href="#identifier">identifier</a> '.'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="intlit"><b>intlit</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#digit">digit</a></p>
+      <p><a href="#intlit">intlit</a> <a href="#digit">digit</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="jJ"><b>jJ</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>j</p>
+      <p>J</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="kK"><b>kK</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>k</p>
+      <p>K</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="lL"><b>lL</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>l</p>
+      <p>L</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="letter"><b>letter</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#aA">aA</a></p>
+      <p><a href="#bB">bB</a></p>
+      <p><a href="#cC">cC</a></p>
+      <p><a href="#dD">dD</a></p>
+      <p><a href="#eE">eE</a></p>
+      <p><a href="#fF">fF</a></p>
+      <p><a href="#gG">gG</a></p>
+      <p><a href="#hH">hH</a></p>
+      <p><a href="#iI">iI</a></p>
+      <p><a href="#jJ">jJ</a></p>
+      <p><a href="#kK">kK</a></p>
+      <p><a href="#lL">lL</a></p>
+      <p><a href="#mM">mM</a></p>
+      <p><a href="#nN">nN</a></p>
+      <p><a href="#oO">oO</a></p>
+      <p><a href="#pP">pP</a></p>
+      <p><a href="#qQ">qQ</a></p>
+      <p><a href="#rR">rR</a></p>
+      <p><a href="#sS">sS</a></p>
+      <p><a href="#tT">tT</a></p>
+      <p><a href="#uU">uU</a></p>
+      <p><a href="#vV">vV</a></p>
+      <p><a href="#wW">wW</a></p>
+      <p><a href="#xX">xX</a></p>
+      <p><a href="#yY">yY</a></p>
+      <p><a href="#zZ">zZ</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="mM"><b>mM</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>m</p>
+      <p>M</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="nN"><b>nN</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>n</p>
+      <p>N</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="notEOL"><b>notEOL</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#letter">letter</a></p>
+      <p><a href="#digit">digit</a></p>
+      <p><a href="#special">special</a></p>
+      <p><a href="#whiteChar">whiteChar</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="oO"><b>oO</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>o</p>
+      <p>O</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="pP"><b>pP</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>p</p>
+      <p>P</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="qQ"><b>qQ</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>q</p>
+      <p>Q</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="rR"><b>rR</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>r</p>
+      <p>R</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="sS"><b>sS</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>s</p>
+      <p>S</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="slc"><b>slc</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'#'</p>
+      <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="special"><b>special</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#specialNotDQ">specialNotDQ</a></p>
+      <p>'&quot;'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="specialNotDQ"><b>specialNotDQ</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'+'</p>
+      <p>'-'</p>
+      <p>'('</p>
+      <p>')'</p>
+      <p>'!'</p>
+      <p>'@'</p>
+      <p>'`'</p>
+      <p>'~'</p>
+      <p>'.'</p>
+      <p>'%'</p>
+      <p>'&amp;'</p>
+      <p>'^'</p>
+      <p>':'</p>
+      <p>';'</p>
+      <p>&quot;'&quot;</p>
+      <p>'\'</p>
+      <p>'|'</p>
+      <p>'{'</p>
+      <p>'}'</p>
+      <p>'['</p>
+      <p>']'</p>
+      <p>'?'</p>
+      <p>','</p>
+      <p>'&lt;'</p>
+      <p>'&gt;'</p>
+      <p>'='</p>
+      <p>'#'</p>
+      <p>'*'</p>
+      <p>'_'</p>
+      <p>'/'</p>
+      <p>'$'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="stringlit"><b>stringlit</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'&quot;' <a href="#SLBody">SLBody</a> '&quot;'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="tT"><b>tT</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>t</p>
+      <p>T</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="uU"><b>uU</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>u</p>
+      <p>U</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="vV"><b>vV</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>v</p>
+      <p>V</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="wW"><b>wW</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>w</p>
+      <p>W</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="white"><b>white</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#whiteChar">whiteChar</a></p>
+      <p><a href="#white">white</a> <a href="#whiteChar">whiteChar</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="whiteChar"><b>whiteChar</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>Space</p>
+      <p>HT</p>
+      <p>FF</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="xX"><b>xX</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>x</p>
+      <p>X</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="yY"><b>yY</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>y</p>
+      <p>Y</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="zZ"><b>zZ</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>z</p>
+      <p>Z</p>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

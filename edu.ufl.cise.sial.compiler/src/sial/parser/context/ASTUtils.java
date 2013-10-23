@@ -6,6 +6,7 @@ package sial.parser.context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static sial.code_gen.SipConstants.static_array_t;
 
 
 //import org.eclipse.core.runtime.IPath;
@@ -25,6 +26,7 @@ import sial.parser.Ast.ASTNode;
 import sial.parser.Ast.ASTNodeToken;
 import sial.parser.Ast.ArrayDec;
 import sial.parser.Ast.ConstantModifier;
+import sial.parser.Ast.ContiguousModifier;
 import sial.parser.Ast.IASTNodeToken;
 import sial.parser.Ast.IDec;
 import sial.parser.Ast.IRangeVal;
@@ -43,18 +45,27 @@ import sial.parser.Ast.SubIndexDec;
 public class ASTUtils implements SialParsersym{
 	private ASTUtils(){}
 	
+	/** returns the root of the AST containing the given IAst node */
 	public static Sial getRoot(IAst node){
         while (node != null && !(node instanceof Sial))
             node= node.getParent();
         return (Sial) node;
     }
 	
+	/** returns the root of the AST containing the given IDec */
+	public static Sial getRoot(IDec dec){
+		return getRoot( (IAst)dec);
+    }
+	
+	/** returns the AST node declaring the enclosing program of the given node, or null if not in a procedure */
 	public static Program getEnclosingProgram(IAst node){
         while (node != null && !(node instanceof Program))
             node= node.getParent();
         return (Program) node;
     }
 	
+	
+	/** returns the AST node declaring the enclosing procedure of the given node, or null if not in a procedure */
 	public static ProcDec getEnclosingProc(IAst node){
 		IAst tnode = node.getParent();
 		while (tnode != null && !(tnode instanceof ProcDec))
@@ -62,9 +73,8 @@ public class ASTUtils implements SialParsersym{
 		return (ProcDec) tnode;
 	}
 	
-	public static Sial getRoot(IDec dec){
-		return getRoot( (IAst)dec);
-    }
+	
+
 	
     public static String stripName(String rawId) {
         int idx= rawId.indexOf('$');
@@ -72,143 +82,38 @@ public class ASTUtils implements SialParsersym{
         return (idx >= 0) ? rawId.substring(0, idx) : rawId;
     }
 
-    
-//TODO if needed, move to ide specific package
-//    //returns names of imported files
-//    //we are importing files, not including them, so
-//    //we do not collect names of files imported by imports.
-//    //this is different than LPG's included files
-//    protected static List<String> collectImportedFiles(Sial root, ICompilationUnit refUnit){
-//    	List<String> result = new ArrayList<String>();
-//    	ImportProgList imports = root.getImportProgList();
-//    	for (int i=0; i != imports.size(); i++){
-//    		ImportProg imported = imports.getImportProgAt(i);
-//    		String fileName = getStringVal(imported.getSTRINGLIT());
-//    		System.out.println("STRINGLIT: " + imported.getSTRINGLIT() + " file name: "
-//    		 + fileName);
-//    		result.add(fileName);
-//    	}
-//    	return result;
-//    }
-    
-    //finds definition by looking in imported files.  Should
-    //only be called after lookup in own symbol table has failed
-    //TODO recondsider return type
-//    public static Object findDefOf(IASTNodeToken s, Sial root, ICompilationUnit refUnit, IProgressMonitor monitor){
-//    	String id = stripName(s.toString());
-//    	List<String> importedFiles = collectImportedFiles(root, refUnit);
-//    	for( String fileName: importedFiles){
-//    		Sial importedRoot = (Sial) findAndParseSourceFile(refUnit.getProject(),refUnit.getPath(),fileName, monitor);
-//    		if (importedRoot != null){
-//    			//TODO  consider types stored in SymbolTable
-//    			//and the type here.  Should it be a Dec?
-//    			ASTNode decl = (ASTNode) importedRoot.getSymbolTable().lookup(id);
-//    			if (decl != null) return decl;
-//    		}
-//    	}
-//    	return null;
-//    }
-    
-    
-    //TODO consider return type of this (and above) and
-    //type stored in symbol table
-//    public static Object findDefOf(IASTNodeToken s, Sial root, IParseController parseController){
-//    	String id = stripName(s.toString());
-//    	ASTNode decl = (ASTNode) root.getSymbolTable().get(id);
-//    	if (decl == null){
-//    		assert ((ASTNodeToken) s).getParent() != decl: 
-//    			"token was own decl, see line 165 in org.eclipse.imp.lpg.parser.ASTUtils";
-//    	
-//    	//now look in imported files
-//    	Object def = findDefOf(s, root, 
-//    			ModelFactory.open(parseController.getPath(),parseController.getProject()),//creates an ICompilationUnit
-//    					new NullProgressMonitor());
-//    	return def;
-//    	}
-//    	return decl;
-//    }
-    
-    
-    
 
-//	private static Object findAndParseSourceFile(ISourceProject project,
-//			IPath path, String fileName, IProgressMonitor monitor) {
-//		ICompilationUnit unit = lookupSourceFile(project, path, fileName);
-//		if (unit != null)
-//			return unit.getAST(null, monitor);
-//		return null;
-//	}
-
-	
-//	private static ICompilationUnit lookupSourceFile(ISourceProject project,
-//			IPath refLocation, String filePath) {
-//        // Can an ICompilationUnit refer to non-existent cu???
-//
-//        // First try to find the file relative to the referencing location
-//        ICompilationUnit icu= ModelFactory.open(project.getRawProject()
-//                .getFile(
-//                        refLocation.removeFirstSegments(1)
-//                                .removeLastSegments(1).append(filePath)),
-//                project);
-//
-//        if (icu == null)
-//            icu= ModelFactory.open(new Path(filePath), project);
-//
-//        return icu;
-//	}
-    
+    /** returns the in value of the gien IRangeVal, which is required to be an int literal */
 	public static int getIntVal(IRangeVal range1){
 		assert range1.getLeftIToken().getKind()== TK_INTLIT: range1.toString();
 		String text = range1.toString();
 		return Integer.parseInt(text);
 	}
 	
+	/** returns the int value of the given IToken, which is required to an int literal*/
 	public static int getIntVal(IToken intlit) {
 		assert intlit.getKind()== TK_INTLIT;
 		String text = intlit.toString();
 		return Integer.parseInt(text);
 	}
 	
+	/** returns the double value of the given AstNode, which is required to be double literal*/
 	public static double getDoubleVal(ASTNodeToken node){
 		assert node.getIToken().getKind() == TK_DOUBLELIT;
 		String text = node.toString();
 		return Double.parseDouble(text);	
 	}
 	
+	
+	/** returns the double value of the given IToken, which is required to be a double literal */
 	public static double getDoubleVal(IToken token){
 		assert token.getKind() == TK_DOUBLELIT || token.getKind() == TK_INTLIT;
 		String text = token.toString();
 		return Double.parseDouble(text);	
 	}
 	
-//	//this removes the quotes, handles escape chars, etc. for String literals    
-//	public static String getStringVal(String text){
-//		char[] chars = text.toCharArray();
-//		StringBuilder builder = new StringBuilder();
-//		assert chars[0] == '"':"Malformed string literal" ;
-//		assert chars[chars.length-1] == '"': "Malformed string literal" ;
-//        int i = 1;
-//		for (i=1; i< chars.length-1; i++)
-//		{  char curr = chars[i];
-//		//maybe do this later
-////		   if (curr == '\\'){//the next char is escape
-////			   char escape = chars[++i];
-////		       switch (escape){
-////		       case 't' : curr = '\t'; break;
-////		       case 'b' : curr = '\b'; break;
-////		       case  'n' : curr = '\n'; break;
-////		       case  'r' : curr = '\r'; break;
-////		       case  'f' : curr = '\f'; break;
-////		       case	 '\\' : curr = '\\'; break;
-////		       case   '"' : curr = '"'; break;
-////		       default: assert false: "malformed string literal";
-////		       }
-////		   }
-//		   builder.append(curr);
-//		}
-//		   return builder.toString();
-//	}
 	
+	/** returns a String containing the  qualified name for this declaration */
 	public static String getQualifiedName(IDec dec) {
 		StringBuilder sb = new StringBuilder();
 		Sial declaringProgram = ASTUtils.getRoot(dec);
@@ -226,18 +131,18 @@ public class ASTUtils implements SialParsersym{
 		else if (dec instanceof SubIndexDec) name = ((SubIndexDec) dec).getName();
 		else assert false: "getQualifiedName does not support type of dec" + dec;
 		sb.append (name);
-//		System.out.println("getQualifiedName: " +declaringProgram.getProgram().getStartName() + "." + name);
 		return sb.toString();
 	}
 	
-	//this removes the quotes, handles escape chars, etc. for String literals
+	/** returns the string value of this Token, which is required to be a string literal */
 	public static String getStringVal(ASTNodeToken node){
 		assert node.getIToken().getKind() == TK_STRINGLIT;
 		String text = node.toString();
 		return getStringVal(text);
 	}
 	
-	//this removes the quotes, handles escape chars, etc. for String literals
+	/** removes the quotes etc. for String literals.  Currently, escaped characters
+	 * not supported. */
 	public static String getStringVal(String text) {
 		char[] chars = text.toCharArray();
 		StringBuilder builder = new StringBuilder();
@@ -266,7 +171,7 @@ public class ASTUtils implements SialParsersym{
 	}
 
 
-	/*  Checks for declaration modifiers */
+	/**  Indicates whether given Idec has the constant modifier */
     public static boolean isConstant(IDec n){
     	List modifiers = null;
     	if (n instanceof ScalarDec)
@@ -277,14 +182,27 @@ public class ASTUtils implements SialParsersym{
     		modifiers = ((IntDec) n).getModifiersopt().getList();
     	else if (n instanceof ArrayDec)
     		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-    	else if (n instanceof ScalarDec)
-    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
     	if (modifiers== null || modifiers.isEmpty()) return false;
     	for( Object m: modifiers){
     		if (m instanceof ConstantModifier) return true;
     	}
     	return false;
     }	
+    
+    /** returns true if the given IDec is an array, and is static or contiguous */
+    public static boolean isStaticOrContiguousArray(IDec n){
+    	if (n instanceof ArrayDec){
+    		ArrayDec arrayDec = (ArrayDec)n;
+    		if (arrayDec.getArrayKind().toString().equals("static")) return true;
+    		//check for contiguous declaration
+    		List modifiers = arrayDec.getModifiersopt().getList();
+        	for( Object m: modifiers){
+        		if (m instanceof ContiguousModifier) return true;
+        	}
+    	}
+    	return false;
+    }	    
+    
     
     public static boolean isPredefined(IDec n){
     	List modifiers = null;

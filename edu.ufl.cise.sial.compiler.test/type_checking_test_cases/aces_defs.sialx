@@ -1,10 +1,5 @@
-#DO NOT MODIFY THIS FILE.  
-#In the current implementation of the SIA, correct functioning of ACESII depends on these definitions in this order.
-#If you accidently modify the file, delete it and it will be regenerated.
-
 sial aces_defs
 
-#These values are inserted into the sip's symbolic__table.
 predefined  int norb #total number of atomic orbital segments 
 predefined  int nocc  # number of occupied molecular orbital segments (no spin)
 predefined  int nvirt # number of unoccupied or virtual orbital segments (no spin)
@@ -246,7 +241,7 @@ special set_ijk_aaa
 special stripi
 special sum_64ss
 special set_ijk_aab
-special get_my_rank
+special get_my_rank w
 special broadcast_array
 special checkpoint
 special get_restart_status

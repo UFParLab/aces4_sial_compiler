@@ -7,12 +7,6 @@ public interface SipConstants {
 //TODO change this to get from command line and add consistency checking in the SioxReader
 public static final int max_rank = 6;  
 	
-//constants representing intent of special instruction arguments
-public final static int
-	sig_read = 1991,
-    sig_write = 1992,
-    sig_update = 1993;
-	
 //type constants
 public final static int 
 	aoindex_t = 1001,
@@ -137,5 +131,7 @@ public final static int
 	enddosubindex_op = 183,
 	slice_op = 184,
 	insert_op = 185,
-	last_opcode    = insert_op;
+	sip_barrier_op = 186,
+	server_barrier_op = 187,
+	last_opcode    = server_barrier_op;
 }

@@ -631,7 +631,7 @@ import "aces_defs.sialx"
            REQUEST                     Vpiqj(b,j,a,i) j  
            Taibj(a,i,b,j)            = Vpiqj(b,j,a,i)
            Taibj(a,i,b,j)           += Vpiqj(a,i,b,j)
-           execute energy_denominator  Taibj 
+           execute energy_denominator  Taibj(a,i,b,j) 
            Taibj(a,i,b,j)           *= 0.5  
            PREPARE T2old_ab(a,i,b,j) = Taibj(a,i,b,j)  
            PREPARE D0aibj(a,i,b,j)   = Taibj(a,i,b,j)  

@@ -1722,7 +1722,7 @@ import "common.sialx"
             Taibj(a,i,b,j)          += T2new_ab(a,i,b,j)
             T1aibj(a,i,b,j)         += T2old_ab(a,i,b,j)
 
-            execute energy_denominator Taibj
+            execute energy_denominator Taibj(a,i,b,j)
             T1aibj(a,i,b,j) -= Taibj(a,i,b,j)
             T1aibj(a,i,b,j) *= -0.5
 #
@@ -1756,7 +1756,7 @@ import "common.sialx"
             Taibj(a,i,b,j)           = T2new_ab(b,j,a,i)
             Taibj(a,i,b,j)          += T2new_ab(a,i,b,j)
             Taibj(a,i,b,j)          *= 0.5  
-            execute energy_denominator Taibj
+            execute energy_denominator Taibj(a,i,b,j)
             PREPARE T2old_ab(a,i,b,j)    = Taibj(a,i,b,j)
 #
       ENDPARDO b, a, j, i
@@ -1777,7 +1777,7 @@ import "common.sialx"
             GET                t1a_old(a,i) 
             tai(a,i)         = t1a_new(a,i) 
             t1ai(a,i)        = t1a_old(a,i) 
-            execute energy_denominator tai 
+            execute energy_denominator tai(a,i) 
            #PUT t1a_old(a,i) = tai(a,i) 
             tai(a,i)        -= t1ai(a,i) 
 #
@@ -1809,7 +1809,7 @@ import "common.sialx"
 #
             GET                t1a_new(a,i) 
             tai(a,i)         = t1a_new(a,i) 
-            execute energy_denominator tai 
+            execute energy_denominator tai(a,i)
             PUT t1a_old(a,i) = tai(a,i) 
 #
       ENDPARDO a, i 

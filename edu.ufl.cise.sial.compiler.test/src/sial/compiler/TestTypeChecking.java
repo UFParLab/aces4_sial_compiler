@@ -114,7 +114,7 @@ public class TestTypeChecking {
 	
 	@Test
 	public void rccsd_rhf_modularPass() throws IOException{
-		runTypeCheckTest("rccsd_rhf_modular",0);
+		runTypeCheckTest("rccsd_rhf_modular",4);
 	}
 	
 	@Test
@@ -126,6 +126,15 @@ public class TestTypeChecking {
 	public void nested_pardo() throws IOException{
 		runTypeCheckTest("nested_pardo",1);
 	}
+	
+	@Test
+	public void scf_rhf_coreh() throws IOException{
+		runTypeCheckTest("scf_rhf_coreh",0);
+}
+	@Test
+	public void scf_tmp() throws IOException{
+		runTypeCheckTest("scf_tmp",686);  //this has a serious error in the imported defs file. Mainly this should avoid throwing a null pointer exception
+}
 	
 	
 }

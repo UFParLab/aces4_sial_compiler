@@ -348,8 +348,8 @@ Rules:
 15     Modifier$Sip_ConsistentModifier ::= sip_consistent
 16     Modifier$PredefinedModifier ::= predefined
 17     Modifier$PersistentModifier ::= persistent
-18     Modifier$ScopedExtent ::= scoped_extent
-19     Modifier$Contiguous ::= contiguous
+18     Modifier$ScopedExtentModifier ::= scoped_extent
+19     Modifier$ContiguousModifier ::= contiguous
 20     Modifier$Auto_AllocateModifier ::= auto_allocate
 21     DecList$$Dec ::= $Empty
 22               | DecList Dec EOLs $
