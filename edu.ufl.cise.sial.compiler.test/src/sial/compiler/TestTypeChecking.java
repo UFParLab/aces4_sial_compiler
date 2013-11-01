@@ -136,5 +136,8 @@ public class TestTypeChecking {
 		runTypeCheckTest("scf_tmp",686);  //this has a serious error in the imported defs file. Mainly this should avoid throwing a null pointer exception
 }
 	
-	
+	@Test
+	public void fill_sequential() throws IOException{
+		runTypeCheckTest("fill_sequential",0);  
+	}
 }

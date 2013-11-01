@@ -248,7 +248,7 @@ public class ArrayTable implements SipConstants {
 	public int getIndexOfScalarEntry(int scalarTableIndex) {
 		//linear search.  Perhaps replace with something better
 		int i;
-		for (i = 0; i < entries.size() && entries.get(i).scalar_table_slot_or_server_priority != scalarTableIndex; i++);
+		for (i = 0; i < entries.size() && (entries.get(i).scalar_table_slot_or_server_priority != scalarTableIndex || entries.get(i).array_type != scalar_value_t); i++);
 		assert i<entries.size();
 		return i;
 	}

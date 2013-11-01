@@ -124,9 +124,9 @@ public class ScalarTable {
 		return addScalar(dec, value, nScalars);
 	}
 	
-	int addScalarFortranIndex(ScalarDec dec){
-		return addScalar(dec) + 1;
-	}
+//	int addScalarFortranIndex(ScalarDec dec){
+//		return addScalar(dec) + 1;
+//	}
 	
 	//AcesHack: constants go in the special constant array in the sip
 	//currently they cannot be given a value when assigned.
@@ -150,9 +150,9 @@ public class ScalarTable {
 		return index;
 	}
 	
-	int addDoubleLiteralFortranIndex(double value){
-		return addDoubleLiteral(value)+1;
-	}
+//	int addDoubleLiteralFortranIndex(double value){
+//		return addDoubleLiteral(value)+1;
+//	}
 
 	// AcesHack: convert the int to a double and treat as double literal
 	int addIntLiteral(int value) {
