@@ -33,6 +33,12 @@ package sial.parser.Ast;
  *<li>PrintScalarStatement
  *<li>ExecuteStatement
  *<li>AssignStatement
+ *<li>GpuOn
+ *<li>GpuOff
+ *<li>GpuAllocate
+ *<li>GpuFree
+ *<li>GpuPut
+ *<li>GpuGet
  *</ul>
  *</b>
  */

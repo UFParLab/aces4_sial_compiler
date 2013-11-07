@@ -53,6 +53,12 @@ import sial.parser.Ast.DoubleLitPrimary;
 import sial.parser.Ast.ExecuteStatement;
 import sial.parser.Ast.ExitStatement;
 import sial.parser.Ast.GetStatement;
+import sial.parser.Ast.GpuAllocate;
+import sial.parser.Ast.GpuFree;
+import sial.parser.Ast.GpuGet;
+import sial.parser.Ast.GpuOff;
+import sial.parser.Ast.GpuOn;
+import sial.parser.Ast.GpuPut;
 import sial.parser.Ast.IAllocIndex;
 import sial.parser.Ast.IArg;
 import sial.parser.Ast.IAssignOp;
@@ -111,8 +117,9 @@ import sial.parser.context.AcesRangeChecks;
 import sial.parser.context.AmbiguousNameException;
 import sial.parser.context.SymbolTable;
 
-/** Performs type checking on SIAL programs*/
-public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, SipConstants {
+/** Performs type checking on SIAL programs */
+public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
+		SipConstants {
 
 	SymbolTable symbolTable;
 	SialParser parser;
@@ -138,12 +145,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		this.parser = parser;
 	}
 
-
-	/** Finds and returns the declaration of the given Ident, and sets the Ident's dec field.
-	 * If the ident is unqualified and defined in multiple imported files, this will throw an
-	 * AmbiguousNameException.
-	 * @param s the Ident to look up 
-	 * @return  the IDec representing the declaration of s
+	/**
+	 * Finds and returns the declaration of the given Ident, and sets the
+	 * Ident's dec field. If the ident is unqualified and defined in multiple
+	 * imported files, this will throw an AmbiguousNameException.
+	 * 
+	 * @param s
+	 *            the Ident to look up
+	 * @return the IDec representing the declaration of s
 	 * @throws AmbiguousNameException
 	 */
 	private IDec findAndSetDec(Ident s) throws AmbiguousNameException {
@@ -154,12 +163,15 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return dec;
 	}
 
-	/** Finds and returns the declaration of the given IdentPrimary (which is an identifier
-	 * used in an expression), and sets the IdentPrimary's dec field.
-	 * If the ident is unqualified and defined in multiple imported files, this will throw an
-	 * AmbiguousNameException.
-	 * @param s the IdentPrimary to look up 
-	 * @return  the IDec representing the declaration of s
+	/**
+	 * Finds and returns the declaration of the given IdentPrimary (which is an
+	 * identifier used in an expression), and sets the IdentPrimary's dec field.
+	 * If the ident is unqualified and defined in multiple imported files, this
+	 * will throw an AmbiguousNameException.
+	 * 
+	 * @param s
+	 *            the IdentPrimary to look up
+	 * @return the IDec representing the declaration of s
 	 * @throws AmbiguousNameException
 	 */
 	private IDec findAndSetDec(IdentPrimary s) throws AmbiguousNameException {
@@ -170,27 +182,32 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return dec;
 	}
 
+	// This is obsolete code for language element sections. Needs to be
+	// revisited if sections are supported
+	// // The end of a section creates an implicit server barrier, which is
+	// treated the same as ServerBarrierStatement
+	// // "execute aceshack_server_barrier"
+	// private IDec findAndSetDec(Section n) {
+	// assert n != null : "findDec with null argument";
+	// try {
+	// String name = "aceshack_server_barrier";
+	// IDec dec = symbolTable.lookup(name);
+	// n.setDec(dec);
+	// return dec;
+	// } catch (AmbiguousNameException e) {
+	// emitError(n, e.getMessage());
+	// return null;
+	// }
+	// }
 
-//This is obsolete code for language element sections.  Needs to be revisited if sections are supported
-//	// The end of a section creates an implicit server barrier, which is treated the same as ServerBarrierStatement
-//	// "execute aceshack_server_barrier"
-//	private IDec findAndSetDec(Section n) {
-//		assert n != null : "findDec with null argument";
-//		try {
-//			String name = "aceshack_server_barrier";
-//			IDec dec = symbolTable.lookup(name);
-//			n.setDec(dec);
-//			return dec;
-//		} catch (AmbiguousNameException e) {
-//			emitError(n, e.getMessage());
-//			return null;
-//		}
-//	}
-
-	/** Finds and returns the declaration of the given AllocIndexIdent and sets its dec field.
-	 * If the ident is unqualified and defined in multiple imported files, this will give an error.
-	 * @param s the IdentPrimary to look up 
-	 * @return  the IDec representing the declaration of s
+	/**
+	 * Finds and returns the declaration of the given AllocIndexIdent and sets
+	 * its dec field. If the ident is unqualified and defined in multiple
+	 * imported files, this will give an error.
+	 * 
+	 * @param s
+	 *            the IdentPrimary to look up
+	 * @return the IDec representing the declaration of s
 	 * @throws AmbiguousNameException
 	 */
 	private IDec findAndSetDec(AllocIndexIdent s) {
@@ -205,7 +222,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			return null;
 		}
 	}
-
 
 	/**
 	 * Finds and returns the declaration of the given IdentRangeVal and sets its
@@ -245,14 +261,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		parser.emitError(node, message);
 	}
 
-/**
- * Convenience function for managing error checks.  If the condition is false, an error message is printed.
- * For the most part, the typing rules of the language are embedded in calls to check statements.
- * @param condition  The condition to evaluate
- * @param n The current ASTNode
- * @param msg  The Error message to report
- * @return whether the condition holds or not
- */
+	/**
+	 * Convenience function for managing error checks. If the condition is
+	 * false, an error message is printed. For the most part, the typing rules
+	 * of the language are embedded in calls to check statements.
+	 * 
+	 * @param condition
+	 *            The condition to evaluate
+	 * @param n
+	 *            The current ASTNode
+	 * @param msg
+	 *            The Error message to report
+	 * @return whether the condition holds or not
+	 */
 	boolean check(boolean condition, ASTNode n, String msg) {
 		if (condition)
 			return true;
@@ -378,7 +399,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	/* array declaration */
 	@Override
 	public boolean visit(ArrayDec n) {
-//		check(!isConstant(n), n, "Constant arrays are not implemented");
+		// check(!isConstant(n), n, "Constant arrays are not implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
@@ -451,7 +472,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		String name = n.getName();
 		if (!check(symbolTable.insert(name, n), id, "Duplicate declaration of "
 				+ name))
-				return false;
+			return false;
 		// check that parent index is 1) already declared and 2) is an index
 		// type
 		Ident parentId = n.getParentIdent();
@@ -470,7 +491,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	@Override
-	public void endVisit(SubIndexDec n) { /*nop*/
+	public void endVisit(SubIndexDec n) { /* nop */
 	}
 
 	@Override
@@ -510,7 +531,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		String name = n.getName();
 		check(symbolTable.insert(name, n), n.getIdent(),
 				"Duplicate declaration of " + name);
-		check( getEnclosingProc(n) == null, n, "nested procedures are not allowed");
+		check(getEnclosingProc(n) == null, n,
+				"nested procedures are not allowed");
 		// visit children
 		return true;
 	}
@@ -523,30 +545,35 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				"mismatched names at beginning and end of procedure");
 	}
 
-	//special instructions can only be declared once.  No qualification is possible
+	// special instructions can only be declared once. No qualification is
+	// possible
 	@Override
 	public boolean visit(SpecialDec n) {
 		String name = n.getName();
 		check(symbolTable.insert(name, n), n, "Duplicate declaration of "
 				+ name);
 		Ident signature = n.getSignature();
-		if (signature == null){
+		if (signature == null) {
 			n.setNumArgs(0);
-		}
-		else {
-			String args = signature.getName(); // lower case version of string that was given as signature
+		} else {
+			String args = signature.getName(); // lower case version of string
+												// that was given as signature
 			int numArgs = args.length();
-			for (int i = 0; i < numArgs; ++i){
+			for (int i = 0; i < numArgs; ++i) {
 				char intent_val = args.charAt(i);
-				switch(intent_val){
-				case 'r': case 'w': case 'u': break; //there are the legal options
+				switch (intent_val) {
+				case 'r':
+				case 'w':
+				case 'u':
+					break; // there are the legal options
 				default:
-					check(false, n, "Illegal character " + intent_val  + " in special instruction signature descriptor");
+					check(false, n, "Illegal character " + intent_val
+							+ " in special instruction signature descriptor");
 				}
 			}
 			n.setNumArgs(numArgs);
 		}
-		return false;  //don't visit children
+		return false; // don't visit children
 	}
 
 	@Override
@@ -568,19 +595,25 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	@Override
-	public void endVisit(WhereClause n) { /*At least one argument must be an index.  Together with type checking of relational statement, this implies the other is an int*/
+	public void endVisit(WhereClause n) { /*
+										 * At least one argument must be an
+										 * index. Together with type checking of
+										 * relational statement, this implies
+										 * the other is an int
+										 */
 		RelationalExpression e = n.getRelationalExpression();
 		IUnaryExpression eleft = e.getUnaryExpressionLeft();
 		IUnaryExpression eright = e.getUnaryExpressionRight();
 		boolean eLeftIsIndex = eleft instanceof IdentPrimary
-				&& (((IdentPrimary) eleft).getDec() instanceof IndexDec || ((IdentPrimary) eleft).getDec() instanceof SubIndexDec);
+				&& (((IdentPrimary) eleft).getDec() instanceof IndexDec || ((IdentPrimary) eleft)
+						.getDec() instanceof SubIndexDec);
 		boolean eRightIsIndex = eright instanceof IdentPrimary
-				&& (((IdentPrimary) eright).getDec() instanceof IndexDec || ((IdentPrimary) eright).getDec() instanceof SubIndexDec);
-	    check( (eLeftIsIndex || eRightIsIndex), n, "At least one argument in a where clause must be an index");
+				&& (((IdentPrimary) eright).getDec() instanceof IndexDec || ((IdentPrimary) eright)
+						.getDec() instanceof SubIndexDec);
+		check((eLeftIsIndex || eRightIsIndex), n,
+				"At least one argument in a where clause must be an index");
 	}
 
-	
-	
 	@Override
 	public boolean visit(WhereClauseList n) { /* visit children */
 		return true;
@@ -601,7 +634,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		check(dec instanceof ProcDec, n, n.getIdent().toString()
 				+ " not declared as proc");
 		((ProcDec) dec).getCallSites().add(n);
-		check( !inpardo || !procsContainingPardo.contains(dec), n, 
+		check(!inpardo || !procsContainingPardo.contains(dec), n,
 				"Procedure containing a pardo is being called from inside a pardo");
 	}
 
@@ -616,18 +649,16 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(ServerBarrierStatement n) {
-//		IDec dec = findAndSetDec(n);
-//		check(dec != null,
-//				n,
-//				"current implementation requires declaration of special aces_hacks_server_barrier");
+		// IDec dec = findAndSetDec(n);
+		// check(dec != null,
+		// n,
+		// "current implementation requires declaration of special aces_hacks_server_barrier");
 		return false;
 	}
 
 	@Override
 	public void endVisit(ServerBarrierStatement n) { /* nop */
 	}
-	
-
 
 	@Override
 	public boolean visit(SipBarrierStatement n) {
@@ -692,12 +723,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	boolean inpardo = false;
 	Set<ProcDec> procsContainingPardo = new HashSet<ProcDec>();
-	
+
 	@Override
 	public boolean visit(PardoStatement n) {
 		check(!inpardo, n, "pardo nested inside another pardo");
 		inpardo = true;
-		procsContainingPardo.add(getEnclosingProc(n)); //adds null if not in proc
+		procsContainingPardo.add(getEnclosingProc(n)); // adds null if not in
+														// proc
 		IdentList startIndices = n.getStartIndices();
 		check(startIndices != null && startIndices.size() > 0, n,
 				"missing indices in pardo statement");
@@ -710,33 +742,37 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		IdentList startIdents = n.getStartIndices();
 		IdentList endIdents = n.getEndIndices();
 		inpardo = false;
-		if (!check(startIdents.size() == endIdents.size(), n, "unmatched indices at beginning and end of pardo"))
+		if (!check(startIdents.size() == endIdents.size(), n,
+				"unmatched indices at beginning and end of pardo"))
 			return;
-		for (int i = 0; i < n.getStartIndices().size(); i++){
-			if (! check( startIdents.getIdentAt(i).getName().equals(endIdents.getIdentAt(i).getName()), n, "unmatched indices at beginning and end of pardo"))
+		for (int i = 0; i < n.getStartIndices().size(); i++) {
+			if (!check(
+					startIdents.getIdentAt(i).getName()
+							.equals(endIdents.getIdentAt(i).getName()), n,
+					"unmatched indices at beginning and end of pardo"))
 				return;
 		}
 	}
 
-//TODO add check that pardos are independent
+	// TODO add check that pardos are independent
 	@Override
-    public boolean visit(Section n){
-		//all statements must be pardo statements
+	public boolean visit(Section n) {
+		// all statements must be pardo statements
 		List statements = n.getStatementList().getList();
-		for (Object s: statements){
-			check( (s instanceof PardoStatement), (ASTNode)s, "illegal statement in section, must be a pardo");
+		for (Object s : statements) {
+			check((s instanceof PardoStatement), (ASTNode) s,
+					"illegal statement in section, must be a pardo");
 		}
 		return true;
 	}
-	
-//	@Override
-//	public void endVisit(Section n){
-//		IDec dec = findAndSetDec(n);
-//		check(dec != null,
-//				n,
-//				"current implementation requires declaration of special aces_hacks_server_barrier");
-//	}
 
+	// @Override
+	// public void endVisit(Section n){
+	// IDec dec = findAndSetDec(n);
+	// check(dec != null,
+	// n,
+	// "current implementation requires declaration of special aces_hacks_server_barrier");
+	// }
 
 	@Override
 	public boolean visit(ExitStatement n) { /* nothing to check */
@@ -1050,7 +1086,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		checkCompatibleBlocks(n, lhs, rhs);
 	}
 
-
 	private void checkCompatibleBlockWithTranspose(ASTNode n, DataBlock lhs,
 			DataBlock rhs) {
 		// check that indices on both sides match exactly, or are a permutation
@@ -1059,7 +1094,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		int lhsSize = lhsIndices.size();
 		int rhsSize = rhsIndices.size();
 		int minIndices = lhsSize < rhsSize ? lhsSize : rhsSize;
-		if (lhsSize == rhsSize) {// must  be a permutation
+		if (lhsSize == rhsSize) {// must be a permutation
 
 			for (int i = 0; i < lhsSize; i++) {
 				if (!check(contains(rhsIndices, lhsIndices.getIdentAt(i)), n,
@@ -1255,13 +1290,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			return;
 		}
 		// check that indices on both sides have compatible types.
-		// this means that the indices are identical until some point where the lhs indices change to 
-		//  something of index type
-		//  example  T(a,b,i,j) = S(a,b,c,d) where i and j are declared index.
+		// this means that the indices are identical until some point where the
+		// lhs indices change to
+		// something of index type
+		// example T(a,b,i,j) = S(a,b,c,d) where i and j are declared index.
 		IdentList lhsIndices = lhs.getIndices();
 		IdentList rhsIndices = rhs.getIndices();
 		if (!check(lhsIndices.size() == rhsIndices.size(), n,
-				"index lists do not have the same size")){
+				"index lists do not have the same size")) {
 			return;
 		}
 
@@ -1305,13 +1341,15 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(ExecuteStatement n) {
 		IDec dec = n.getIdent().getDec();
-		if (!check(dec instanceof SpecialDec, n, n.getIdent()
-				.toString() + " not declared as special instruction")) return;
-		int expected_args = ((SpecialDec)dec).getNumArgs();
+		if (!check(dec instanceof SpecialDec, n, n.getIdent().toString()
+				+ " not declared as special instruction"))
+			return;
+		int expected_args = ((SpecialDec) dec).getNumArgs();
 		int num_args = n.getArgList().size();
-		check (num_args == expected_args, n, 
-				"execute  " + n.getIdent() + " has "+num_args+" arguments but expects " + expected_args);
-		}
+		check(num_args == expected_args, n, "execute  " + n.getIdent()
+				+ " has " + num_args + " arguments but expects "
+				+ expected_args);
+	}
 
 	@Override
 	public boolean visit(DestroyStatement n) { /* visit children */
@@ -1334,7 +1372,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 
-	/* checks that given indices have same type as the declaration, or be a subindex of the declared type */
+	/*
+	 * checks that given indices have same type as the declaration, or be a
+	 * subindex of the declared type
+	 */
 
 	@Override
 	public void endVisit(DataBlock n) {
@@ -1375,7 +1416,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				return;
 		}
 	}
-
 
 	@Override
 	public boolean visit(IdentList n) { /* visit children */
@@ -1422,30 +1462,39 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public void endVisit(RelationalExpression n) {
-        IUnaryExpression eleft = n.getUnaryExpressionLeft();
-        IUnaryExpression eright = n.getUnaryExpressionRight();
-        boolean eLeftHasDoubleType = (eleft instanceof IdentPrimary && ((IdentPrimary)eleft).getDec() instanceof ScalarDec) 
-        		|| (eleft instanceof DoubleLitPrimary) 
-        		|| ((eleft instanceof NegatedUnary) && (((NegatedUnary)eleft).getPrimary() instanceof DoubleLitPrimary));
-        //has Int type if index, subindex, int, or pos or neg int literal
-        boolean eLeftHasIntType = (eleft instanceof IdentPrimary 
-        		    &&  (((IdentPrimary)eleft).getDec() instanceof IntDec || ((IdentPrimary)eleft).getDec() instanceof IndexDec || ((IdentPrimary)eleft).getDec() instanceof SubIndexDec))
-        		|| (eleft instanceof IntLitPrimary)
-        		|| ((eleft instanceof NegatedUnary) && (((NegatedUnary)eleft).getPrimary() instanceof IntLitPrimary));	
-        boolean eRightHasDoubleType = (eright instanceof IdentPrimary && ((IdentPrimary)eright).getDec() instanceof ScalarDec) 
-        		|| (eright instanceof DoubleLitPrimary) 
-        		|| ((eright instanceof NegatedUnary) && (((NegatedUnary)eright).getPrimary() instanceof DoubleLitPrimary));
-        boolean eRightHasIntType = (eright instanceof IdentPrimary 
-        		   && (((IdentPrimary)eright).getDec() instanceof IntDec || ((IdentPrimary)eright).getDec() instanceof IndexDec || ((IdentPrimary)eright).getDec() instanceof SubIndexDec))
-        		|| (eright instanceof IntLitPrimary)
-        		|| ((eright instanceof NegatedUnary) && (((NegatedUnary)eright).getPrimary() instanceof IntLitPrimary));	
-        check( (eLeftHasDoubleType && eRightHasDoubleType) || (eLeftHasIntType && eRightHasIntType), n, 
-        		"Both operands of relational expression must have same type, which must be int or scalar");
+		IUnaryExpression eleft = n.getUnaryExpressionLeft();
+		IUnaryExpression eright = n.getUnaryExpressionRight();
+		boolean eLeftHasDoubleType = (eleft instanceof IdentPrimary && ((IdentPrimary) eleft)
+				.getDec() instanceof ScalarDec)
+				|| (eleft instanceof DoubleLitPrimary)
+				|| ((eleft instanceof NegatedUnary) && (((NegatedUnary) eleft)
+						.getPrimary() instanceof DoubleLitPrimary));
+		// has Int type if index, subindex, int, or pos or neg int literal
+		boolean eLeftHasIntType = (eleft instanceof IdentPrimary && (((IdentPrimary) eleft)
+				.getDec() instanceof IntDec
+				|| ((IdentPrimary) eleft).getDec() instanceof IndexDec || ((IdentPrimary) eleft)
+					.getDec() instanceof SubIndexDec))
+				|| (eleft instanceof IntLitPrimary)
+				|| ((eleft instanceof NegatedUnary) && (((NegatedUnary) eleft)
+						.getPrimary() instanceof IntLitPrimary));
+		boolean eRightHasDoubleType = (eright instanceof IdentPrimary && ((IdentPrimary) eright)
+				.getDec() instanceof ScalarDec)
+				|| (eright instanceof DoubleLitPrimary)
+				|| ((eright instanceof NegatedUnary) && (((NegatedUnary) eright)
+						.getPrimary() instanceof DoubleLitPrimary));
+		boolean eRightHasIntType = (eright instanceof IdentPrimary && (((IdentPrimary) eright)
+				.getDec() instanceof IntDec
+				|| ((IdentPrimary) eright).getDec() instanceof IndexDec || ((IdentPrimary) eright)
+					.getDec() instanceof SubIndexDec))
+				|| (eright instanceof IntLitPrimary)
+				|| ((eright instanceof NegatedUnary) && (((NegatedUnary) eright)
+						.getPrimary() instanceof IntLitPrimary));
+		check((eLeftHasDoubleType && eRightHasDoubleType)
+				|| (eLeftHasIntType && eRightHasIntType),
+				n,
+				"Both operands of relational expression must have same type, which must be int or scalar");
 	}
 
-
-
-	
 	@Override
 	public boolean visit(BinaryExpression n) {/* visit children */
 		// type checking of binary expressions done in AssignmentStatement
@@ -1457,7 +1506,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	@Override
-	public boolean visit(NegatedUnary n) {/* visit child*/
+	public boolean visit(NegatedUnary n) {/* visit child */
 		return true;
 	}
 
@@ -1540,14 +1589,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	public void endVisit(ModifierList n) { /* nop */
 	}
 
-//	@Override
-//	public boolean visit(ConstantModifier n) { /* nothing to check */
-//		return false;
-//	}
-//
-//	@Override
-//	public void endVisit(ConstantModifier n) { /* nop */
-//	}
+	// @Override
+	// public boolean visit(ConstantModifier n) { /* nothing to check */
+	// return false;
+	// }
+	//
+	// @Override
+	// public void endVisit(ConstantModifier n) { /* nop */
+	// }
 
 	@Override
 	public boolean visit(PredefinedModifier n) { /* nothing to check */
@@ -1574,37 +1623,46 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 
-	/** These are the special superinstruction that take non-static array arguments without a block selector 
-	 * 	blocks_to_list
-	 *  list_to_blocks
-	 *  array_copy
-	 *  */
-	boolean nonstatic_noselector_array_allowed(ArgList n){
-		String instruction_name  = ((ExecuteStatement) n.getParent()).getIdent().getName();
-		if (instruction_name.equals("blocks_to_list")) return true;
-		if (instruction_name.equals("list_to_blocks")) return true;
-		if (instruction_name.equals("array_copy")) return true;
+	/**
+	 * These are the special superinstruction that take non-static array
+	 * arguments without a block selector blocks_to_list list_to_blocks
+	 * array_copy
+	 * */
+	boolean nonstatic_noselector_array_allowed(ArgList n) {
+		String instruction_name = ((ExecuteStatement) n.getParent()).getIdent()
+				.getName();
+		if (instruction_name.equals("blocks_to_list"))
+			return true;
+		if (instruction_name.equals("list_to_blocks"))
+			return true;
+		if (instruction_name.equals("array_copy"))
+			return true;
 		return false;
 	}
-	
-//  This version gives an error if superinstruction called with implicit selector	
+
+	// This version gives an error if superinstruction called with implicit
+	// selector
 	@Override
 	public void endVisit(ArgList n) {
-		// if an argument is an IdentPrimary, it must either be a scalar or a static array
-		for (int i = 0; i < n.size(); ++i){
+		// if an argument is an IdentPrimary, it must either be a scalar or a
+		// static array
+		for (int i = 0; i < n.size(); ++i) {
 			IArg arg = n.getArgAt(i);
-			if (arg instanceof IdentPrimary){
-				IdentPrimary idparg = (IdentPrimary)arg;
+			if (arg instanceof IdentPrimary) {
+				IdentPrimary idparg = (IdentPrimary) arg;
 				IDec dec = idparg.getDec();
-				if (dec instanceof ArrayDec){
-					check(isStaticOrContiguousArray(dec) || nonstatic_noselector_array_allowed(n), idparg, 
-							"execute " + ((ExecuteStatement) n.getParent()).getIdent().getName() +
-							" has array argument " + idparg.getName() + " which is neither static nor contigous");
+				if (dec instanceof ArrayDec) {
+					check(isStaticOrContiguousArray(dec)
+							|| nonstatic_noselector_array_allowed(n), idparg,
+							"execute "
+									+ ((ExecuteStatement) n.getParent())
+											.getIdent().getName()
+									+ " has array argument " + idparg.getName()
+									+ " which is neither static nor contigous");
 				}
 			}
 		}
 	}
-	
 
 	@Override
 	public boolean visit(AssignStatement n) { /* visit children */
@@ -1614,7 +1672,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(AssignStatement n) {
 		IScalarOrBlockVar lhs = n.getScalarOrBlockVar();
-//		IAssignOp op = n.getAssignOp();
+		// IAssignOp op = n.getAssignOp();
 		IExpression expr = n.getExpression();
 		if (lhs instanceof Ident) {
 			if (isInt(expr)) {
@@ -1635,19 +1693,21 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			IdentList lhsIndices = ((DataBlock) lhs).getIndices();
 			if (isInt(expr) || isScalar(expr))
 				return;
-			if (expr instanceof DataBlockPrimary){
-//			   boolean isSlice = checkStrictSubOrEq((DataBlock) lhs,
-//						((DataBlockPrimary) expr).getDataBlock());
-			   boolean isSlice = hasDeclaredIndices( (DataBlock)lhs ) && isSubBlock(((DataBlockPrimary) expr).getDataBlock() );
-			   if (isSlice){ //lhs is subblock of rhs
-				   n.setSlice(true);
-				   return;
-			   }
-			   boolean isInsert = hasDeclaredIndices( ((DataBlockPrimary) expr).getDataBlock() ) && isSubBlock( (DataBlock)lhs );
-			   if (isInsert){ //rhs is subblock of lsh
-				   n.setInsert(true);
-				   return;
-			   }					
+			if (expr instanceof DataBlockPrimary) {
+				// boolean isSlice = checkStrictSubOrEq((DataBlock) lhs,
+				// ((DataBlockPrimary) expr).getDataBlock());
+				boolean isSlice = hasDeclaredIndices((DataBlock) lhs)
+						&& isSubBlock(((DataBlockPrimary) expr).getDataBlock());
+				if (isSlice) { // lhs is subblock of rhs
+					n.setSlice(true);
+					return;
+				}
+				boolean isInsert = hasDeclaredIndices(((DataBlockPrimary) expr)
+						.getDataBlock()) && isSubBlock((DataBlock) lhs);
+				if (isInsert) { // rhs is subblock of lsh
+					n.setInsert(true);
+					return;
+				}
 				checkCompatibleBlockWithTranspose(n, (DataBlock) lhs,
 						((DataBlockPrimary) expr).getDataBlock());
 				return;
@@ -1691,7 +1751,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 						}
 						return;
 					}
-					if (binOp instanceof BinOpPlus || binOp instanceof BinOpMinus) {
+					if (binOp instanceof BinOpPlus
+							|| binOp instanceof BinOpMinus) {
 						IdentList block1indices = block1.getIndices();
 						IdentList block2indices = block2.getIndices();
 						if (!check(lhsIndices.size() == block1indices.size()
@@ -1755,47 +1816,51 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 	}
 
-
-//	returns true if index1 is a subindex of index2
-	boolean isSubIndex(Ident index1, Ident index2){
+	// returns true if index1 is a subindex of index2
+	boolean isSubIndex(Ident index1, Ident index2) {
 		IDec dec1 = index1.getDec();
 		IDec dec2 = index2.getDec();
-		return dec1 instanceof SubIndexDec && ((SubIndexDec)dec1).getParentIdent().getDec() == dec2;
+		return dec1 instanceof SubIndexDec
+				&& ((SubIndexDec) dec1).getParentIdent().getDec() == dec2;
 	}
-   
-	//returns true if given indices are same as declared
-	boolean hasDeclaredIndices(DataBlock block){
-		   IdentList indices = block.getIndices();
-		   IDec dec = block.getIdent().getDec();
-		   if (dec == null) return false;
-		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
-		   boolean hasDeclared = true;
-		   for (int i = 0; i < indices.size(); ++i){
-			   Ident declaredIdent = declaredIndices.getDimensionAt(i);
-			   Ident usedIdent = indices.getIdentAt(i);
-			   boolean same = declaredIdent.getName().equals(usedIdent.getName());
-			   hasDeclared = hasDeclared && same;
-		   }
-		   return hasDeclared;
+
+	// returns true if given indices are same as declared
+	boolean hasDeclaredIndices(DataBlock block) {
+		IdentList indices = block.getIndices();
+		IDec dec = block.getIdent().getDec();
+		if (dec == null)
+			return false;
+		DimensionList declaredIndices = ((ArrayDec) dec).getDimensionList();
+		boolean hasDeclared = true;
+		for (int i = 0; i < indices.size(); ++i) {
+			Ident declaredIdent = declaredIndices.getDimensionAt(i);
+			Ident usedIdent = indices.getIdentAt(i);
+			boolean same = declaredIdent.getName().equals(usedIdent.getName());
+			hasDeclared = hasDeclared && same;
+		}
+		return hasDeclared;
 	}
-	
-	//returns true if there is at least one index that is a subindex of declared index and the rest are as declared
-	boolean isSubBlock(DataBlock block){
-		   IdentList indices = block.getIndices();
-		   IDec dec = block.getIdent().getDec();
-		   if (dec == null) return false;  //this ident wasn't declared.  This avoids null pointer exception, error found elsewhere.
-		   DimensionList declaredIndices = ((ArrayDec)dec).getDimensionList();
-		   boolean isValid = true;
-		   boolean subBlock = false;
-		   for (int i = 0; i < indices.size(); ++i){
-			   Ident declaredIdent = declaredIndices.getDimensionAt(i);
-			   Ident usedIdent = indices.getIdentAt(i);
-			   boolean same = declaredIdent.getName().equals(usedIdent.getName());
-			   boolean isSub = !same && isSubIndex(usedIdent,declaredIdent);
-			   isValid = isValid & (same || isSub);
-			   subBlock = subBlock || isSub;
-		   }
-		   return isValid && subBlock;
+
+	// returns true if there is at least one index that is a subindex of
+	// declared index and the rest are as declared
+	boolean isSubBlock(DataBlock block) {
+		IdentList indices = block.getIndices();
+		IDec dec = block.getIdent().getDec();
+		if (dec == null)
+			return false; // this ident wasn't declared. This avoids null
+							// pointer exception, error found elsewhere.
+		DimensionList declaredIndices = ((ArrayDec) dec).getDimensionList();
+		boolean isValid = true;
+		boolean subBlock = false;
+		for (int i = 0; i < indices.size(); ++i) {
+			Ident declaredIdent = declaredIndices.getDimensionAt(i);
+			Ident usedIdent = indices.getIdentAt(i);
+			boolean same = declaredIdent.getName().equals(usedIdent.getName());
+			boolean isSub = !same && isSubIndex(usedIdent, declaredIdent);
+			isValid = isValid & (same || isSub);
+			subBlock = subBlock || isSub;
+		}
+		return isValid && subBlock;
 	}
 
 	// This is loose for now and allows int and scalars to be mixed
@@ -1830,7 +1895,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				&& binaryIsInt((BinaryExpression) expr);
 	}
 
-
 	private boolean binaryIsInt(BinaryExpression expr) {
 		IUnaryExpression expr1 = expr.getExpr1();
 		IUnaryExpression expr2 = expr.getExpr2();
@@ -1844,18 +1908,18 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 						.getDec() instanceof ScalarDec)
 				|| (expr instanceof NegatedUnary)
 				&& isScalar(((NegatedUnary) expr).getPrimary())
-				|| (expr instanceof DataBlockPrimary) 
-				&& isDataBlockScalar((DataBlockPrimary) expr)
-				;
+				|| (expr instanceof DataBlockPrimary)
+				&& isDataBlockScalar((DataBlockPrimary) expr);
 	}
 
-	//a Data block has a scalar value when all of its indices are simple
-    private boolean isDataBlockScalar(DataBlockPrimary expr) {
+	// a Data block has a scalar value when all of its indices are simple
+	private boolean isDataBlockScalar(DataBlockPrimary expr) {
 		IdentList indices = expr.getDataBlock().getIndices();
 		boolean allSimple = true;
-		for (int i = 0; i < indices.size() && allSimple; i++){
+		for (int i = 0; i < indices.size() && allSimple; i++) {
 			IDec dec = indices.getIdentAt(i).getDec();
-			allSimple &= (dec instanceof IndexDec) && ( ((IndexDec)dec).getTypeName().equals("index"));
+			allSimple &= (dec instanceof IndexDec)
+					&& (((IndexDec) dec).getTypeName().equals("index"));
 		}
 		return allSimple;
 	}
@@ -1888,13 +1952,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		for (int i = 0; i < ind2Size; i++) {
 			Ident id = ind2.getIdentAt(i);
-			if (!contains(SharedInd,id))
+			if (!contains(SharedInd, id))
 				UnsharedInd.add(id);
 		}
 		return UnsharedInd;
 
 	}
-	
 
 	private boolean contains(ArrayList<Ident> list, Ident ident) {
 		String name = ident.getName();
@@ -1905,6 +1968,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		return result;
 	}
+
 	@Override
 	public boolean visit(RelOp n) { /* nothing to do */
 		return false;
@@ -1936,7 +2000,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(StringLiteral n) {
-		// TODO upgrade this--for now, don't visit the children of a PrintStatement or PrintlnStatement, so don't need to check here.
+		// TODO upgrade this--for now, don't visit the children of a
+		// PrintStatement or PrintlnStatement, so don't need to check here.
 		check(n.getParent() instanceof ImportProg, n,
 				"String literals may only appear in import, print, and println statements");
 		return true;
@@ -1945,40 +2010,154 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(StringLiteral n) { /* nop */
 	}
-	
+
 	@Override
-	public boolean visit(PrintStatement n){  /* don't visit children */
-		return false;	
-	}	@Override
-	public void endVisit(PrintStatement n){  /* nop */
+	public boolean visit(PrintStatement n) { /* don't visit children */
+		return false;
 	}
-	
+
 	@Override
-	public boolean visit(PrintlnStatement n){  /* don't visit children */
-		return false;	
+	public void endVisit(PrintStatement n) { /* nop */
 	}
+
 	@Override
-	public void endVisit(PrintlnStatement n){  /* nop */
+	public boolean visit(PrintlnStatement n) { /* don't visit children */
+		return false;
 	}
-	
+
 	@Override
-	public boolean visit(PrintIndexStatement n){  /* don't visit children */
-		return true;	
+	public void endVisit(PrintlnStatement n) { /* nop */
 	}
+
 	@Override
-	public void endVisit(PrintIndexStatement n){  
-		check(n.getIdent().getDec() instanceof IndexDec || n.getIdent().getDec() instanceof SubIndexDec, n, 
+	public boolean visit(PrintIndexStatement n) { /* don't visit children */
+		return true;
+	}
+
+	@Override
+	public void endVisit(PrintIndexStatement n) {
+		check(n.getIdent().getDec() instanceof IndexDec
+				|| n.getIdent().getDec() instanceof SubIndexDec, n,
 				"Argument to print_index statement must be an index variable");
 	}
-	
+
 	@Override
-	public boolean visit(PrintScalarStatement n){  /* don't visit children */
-		return true;	
+	public boolean visit(PrintScalarStatement n) { /* don't visit children */
+		return true;
 	}
+
 	@Override
-	public void endVisit(PrintScalarStatement n){ 
-		check(n.getIdent().getDec() instanceof ScalarDec, n, 
+	public void endVisit(PrintScalarStatement n) {
+		check(n.getIdent().getDec() instanceof ScalarDec, n,
 				"Argument to print_index statement must be an scalar variable");
 	}
+
+	@Override
+	public boolean visit(GpuOn n) { /* no children */
+		return false;
+	}
+
+	@Override
+	public void endVisit(GpuOn n) {
+		/* nop */
+	}
+
+	@Override
+	public boolean visit(GpuOff n) { /* no children */
+		return false;
+	}
+
+	@Override
+	public void endVisit(GpuOff n) {
+		/* nop */
+	}
+
+	@Override
+	public boolean visit(GpuAllocate n) { /* visit children */
+		return true;
+	}
+
+	@Override
+	public void endVisit(GpuAllocate n) {
+		IPrimary arg = n.getPrimary();
+		if (arg instanceof IdentPrimary) {
+			IdentPrimary idparg = (IdentPrimary) arg;
+			IDec dec = idparg.getDec();
+			if (dec instanceof ArrayDec) {
+				check(isStaticOrContiguousArray(dec)
+						, idparg,
+						"gpu_allocate has whole array argument " + idparg.getName()
+								+ " which is neither static nor contigous");
+			}
+			return;
+		}
+		check (arg instanceof DataBlockPrimary, n, "gpu_allocate argument must be array");
+	}
 	
+	
+	@Override
+	public boolean visit(GpuFree n) { /* visit children */
+		return true;
+	}
+
+	@Override
+	public void endVisit(GpuFree n) {
+		IPrimary arg = n.getPrimary();
+		if (arg instanceof IdentPrimary) {
+			IdentPrimary idparg = (IdentPrimary) arg;
+			IDec dec = idparg.getDec();
+			if (dec instanceof ArrayDec) {
+				check(isStaticOrContiguousArray(dec)
+						, n,
+						"gpu_free has whole array argument " + idparg.getName()
+								+ " which is neither static nor contigous");
+			}
+			return;
+		}
+		check (arg instanceof DataBlockPrimary, n, "gpu_free argument must be array");
+	}
+
+	@Override
+	public boolean visit(GpuPut n) { /* visit children */
+		return true;
+	}
+
+	@Override
+	public void endVisit(GpuPut n) {
+		IPrimary arg = n.getPrimary();
+		if (arg instanceof IdentPrimary) {
+			IdentPrimary idparg = (IdentPrimary) arg;
+			IDec dec = idparg.getDec();
+			if (dec instanceof ArrayDec) {
+				check(isStaticOrContiguousArray(dec)
+						, n,
+						"gpu_put has whole array argument " + idparg.getName()
+								+ " which is neither static nor contigous");
+			}
+			return;
+		}
+		check (arg instanceof DataBlockPrimary, n, "gpu_put argument must be array");
+	}
+
+	@Override
+	public boolean visit(GpuGet n) { /* visit children */
+		return true;
+	}
+
+	@Override
+	public void endVisit(GpuGet n) {
+		IPrimary arg = n.getPrimary();
+		if (arg instanceof IdentPrimary) {
+			IdentPrimary idparg = (IdentPrimary) arg;
+			IDec dec = idparg.getDec();
+			if (dec instanceof ArrayDec) {
+				check(isStaticOrContiguousArray(dec)
+						, n,
+						"gpu_get has whole array argument " + idparg.getName()
+								+ " which is neither static nor contigous");
+			}
+			return;
+		}
+		check (arg instanceof DataBlockPrimary, n, "gpu_get argument must be array");
+	}
 }

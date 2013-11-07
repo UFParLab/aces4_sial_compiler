@@ -133,5 +133,11 @@ public final static int
 	insert_op = 185,
 	sip_barrier_op = 186,
 	server_barrier_op = 187,
-	last_opcode    = server_barrier_op;
+	gpu_on_op = 188,
+	gpu_off_op = 189,
+	gpu_allocate_op= 190,
+	gpu_free_op = 191,
+	gpu_put_op = 192,
+	gpu_get_op = 193,
+	last_opcode    = gpu_get_op;
 }

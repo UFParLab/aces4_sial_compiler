@@ -76,6 +76,12 @@ sip_consistent
 scoped_extent
 contiguous
 auto_allocate
+gpu_on
+gpu_off
+gpu_allocate
+gpu_free
+gpu_put
+gpu_get
 
 %End
 
@@ -160,5 +166,10 @@ auto_allocate
         | s c o p e d _ e x t e n t	 /.$setResult($_scoped_extent);./
         | c o n t i g u o u s  /.$setResult($_contiguous);./
         | a u t o _ a l l o c a t e   /.$setResult($_auto_allocate);./ 			
-												   											  
+		| g p u _ o n  /.$setResult($_gpu_on);./
+	    | g p u _ o f f   /.$setResult($_gpu_off);./					
+	    | g p u _ a l l o c a t e   /.$setResult($_gpu_allocate);./				
+	    | g p u _ f r e e  /.$setResult($_gpu_free);./
+		| g p u _ g e t  /.$setResult($_gpu_get);./
+		| g p u _ p u t  /.$setResult($_gpu_put);./												   											  
 %End

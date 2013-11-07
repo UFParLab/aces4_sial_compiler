@@ -193,6 +193,24 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(AssignStatement n) { unimplementedVisitor("visit(AssignStatement)"); return true; }
     public void endVisit(AssignStatement n) { unimplementedVisitor("endVisit(AssignStatement)"); }
 
+    public boolean visit(GpuOn n) { unimplementedVisitor("visit(GpuOn)"); return true; }
+    public void endVisit(GpuOn n) { unimplementedVisitor("endVisit(GpuOn)"); }
+
+    public boolean visit(GpuOff n) { unimplementedVisitor("visit(GpuOff)"); return true; }
+    public void endVisit(GpuOff n) { unimplementedVisitor("endVisit(GpuOff)"); }
+
+    public boolean visit(GpuAllocate n) { unimplementedVisitor("visit(GpuAllocate)"); return true; }
+    public void endVisit(GpuAllocate n) { unimplementedVisitor("endVisit(GpuAllocate)"); }
+
+    public boolean visit(GpuFree n) { unimplementedVisitor("visit(GpuFree)"); return true; }
+    public void endVisit(GpuFree n) { unimplementedVisitor("endVisit(GpuFree)"); }
+
+    public boolean visit(GpuPut n) { unimplementedVisitor("visit(GpuPut)"); return true; }
+    public void endVisit(GpuPut n) { unimplementedVisitor("endVisit(GpuPut)"); }
+
+    public boolean visit(GpuGet n) { unimplementedVisitor("visit(GpuGet)"); return true; }
+    public void endVisit(GpuGet n) { unimplementedVisitor("endVisit(GpuGet)"); }
+
     public boolean visit(AssignOpEqual n) { unimplementedVisitor("visit(AssignOpEqual)"); return true; }
     public void endVisit(AssignOpEqual n) { unimplementedVisitor("endVisit(AssignOpEqual)"); }
 
@@ -333,6 +351,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ArgList) return visit((ArgList) n);
         else if (n instanceof ExecuteStatement) return visit((ExecuteStatement) n);
         else if (n instanceof AssignStatement) return visit((AssignStatement) n);
+        else if (n instanceof GpuOn) return visit((GpuOn) n);
+        else if (n instanceof GpuOff) return visit((GpuOff) n);
+        else if (n instanceof GpuAllocate) return visit((GpuAllocate) n);
+        else if (n instanceof GpuFree) return visit((GpuFree) n);
+        else if (n instanceof GpuPut) return visit((GpuPut) n);
+        else if (n instanceof GpuGet) return visit((GpuGet) n);
         else if (n instanceof AssignOpEqual) return visit((AssignOpEqual) n);
         else if (n instanceof AssignOpPlus) return visit((AssignOpPlus) n);
         else if (n instanceof AssignOpMinus) return visit((AssignOpMinus) n);
@@ -422,6 +446,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ArgList) endVisit((ArgList) n);
         else if (n instanceof ExecuteStatement) endVisit((ExecuteStatement) n);
         else if (n instanceof AssignStatement) endVisit((AssignStatement) n);
+        else if (n instanceof GpuOn) endVisit((GpuOn) n);
+        else if (n instanceof GpuOff) endVisit((GpuOff) n);
+        else if (n instanceof GpuAllocate) endVisit((GpuAllocate) n);
+        else if (n instanceof GpuFree) endVisit((GpuFree) n);
+        else if (n instanceof GpuPut) endVisit((GpuPut) n);
+        else if (n instanceof GpuGet) endVisit((GpuGet) n);
         else if (n instanceof AssignOpEqual) endVisit((AssignOpEqual) n);
         else if (n instanceof AssignOpPlus) endVisit((AssignOpPlus) n);
         else if (n instanceof AssignOpMinus) endVisit((AssignOpMinus) n);

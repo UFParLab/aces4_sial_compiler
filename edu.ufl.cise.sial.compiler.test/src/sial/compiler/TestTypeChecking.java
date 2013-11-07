@@ -140,4 +140,10 @@ public class TestTypeChecking {
 	public void fill_sequential() throws IOException{
 		runTypeCheckTest("fill_sequential",0);  
 	}
+	
+	@Test
+	public void gpu_ops() throws IOException{
+		runTypeCheckTest("gpu_ops",0);
+	}
+	
 }

@@ -313,6 +313,12 @@ Terminals:
     scoped_extent
     contiguous
     auto_allocate
+    gpu_on
+    gpu_off
+    gpu_allocate
+    gpu_free
+    gpu_put
+    gpu_get
     EOF_TOKEN
     SINGLE_LINE_COMMENT
     IDENTIFIER
@@ -423,45 +429,51 @@ Rules:
 90               | ArgList Arg
 91     Statement$ExecuteStatement ::= execute $ Ident ArgList
 92     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
-93     AssignOp$AssignOpEqual ::= =
-94     AssignOp$AssignOpPlus ::= +=
-95     AssignOp$AssignOpMinus ::= -=
-96     AssignOp$AssignOpStar ::= *=
-97     ScalarOrBlockVar ::= Ident
-98                        | DataBlock
-99     DataBlock ::= Ident ( $ Indices ) $
-100    Indices$$Ident ::= Ident
-101              | Indices , $ Ident
-102    AllocIndex$AllocIndexIdent ::= Ident
-103    AllocIndex$AllocIndexWildCard ::= * $
-104    AllocIndexList$$AllocIndex ::= AllocIndex
-105                     | AllocIndexList , $ AllocIndex
-106    AllocIndexListopt ::= $Empty
-107                        | ( AllocIndexList )
-108    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
-109    RelOp$RelOp ::= < $op
-110            | > $op
-111            | <= $op
-112            | >= $op
-113            | == $op
-114            | != $op
-115    Expression ::= UnaryExpression $UnaryExpression
-116                 | BinaryExpression $BinaryExpression
-117    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
-118    BinOp$BinOpStar ::= *
-119    BinOp$BinOpDiv ::= /
-120    BinOp$BinOpPlus ::= +
-121    BinOp$BinOpMinus ::= -
-122    BinOp$BinOpTensor ::= ^
-123    UnaryExpression ::= Primary
-124    UnaryExpression$NegatedUnary ::= - $ Primary
-125    Primary$IntLitPrimary ::= INTLIT
-126    Primary$DoubleLitPrimary ::= DOUBLELIT
-127    Primary$IdentPrimary ::= Ident
-128    Primary$DataBlockPrimary ::= DataBlock
-129    Primary$StringLitPrimary ::= StringLiteral
-130    StringLiteral ::= STRINGLIT
-131    Ident ::= IDENTIFIER
+93     Statement$GpuOn ::= gpu_on $
+94     Statement$GpuOff ::= gpu_off $
+95     Statement$GpuAllocate ::= gpu_allocate $ Primary
+96     Statement$GpuFree ::= gpu_free $ Primary
+97     Statement$GpuPut ::= gpu_put $ Primary
+98     Statement$GpuGet ::= gpu_get $ Primary
+99     AssignOp$AssignOpEqual ::= =
+100    AssignOp$AssignOpPlus ::= +=
+101    AssignOp$AssignOpMinus ::= -=
+102    AssignOp$AssignOpStar ::= *=
+103    ScalarOrBlockVar ::= Ident
+104                       | DataBlock
+105    DataBlock ::= Ident ( $ Indices ) $
+106    Indices$$Ident ::= Ident
+107              | Indices , $ Ident
+108    AllocIndex$AllocIndexIdent ::= Ident
+109    AllocIndex$AllocIndexWildCard ::= * $
+110    AllocIndexList$$AllocIndex ::= AllocIndex
+111                     | AllocIndexList , $ AllocIndex
+112    AllocIndexListopt ::= $Empty
+113                        | ( AllocIndexList )
+114    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
+115    RelOp$RelOp ::= < $op
+116            | > $op
+117            | <= $op
+118            | >= $op
+119            | == $op
+120            | != $op
+121    Expression ::= UnaryExpression $UnaryExpression
+122                 | BinaryExpression $BinaryExpression
+123    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
+124    BinOp$BinOpStar ::= *
+125    BinOp$BinOpDiv ::= /
+126    BinOp$BinOpPlus ::= +
+127    BinOp$BinOpMinus ::= -
+128    BinOp$BinOpTensor ::= ^
+129    UnaryExpression ::= Primary
+130    UnaryExpression$NegatedUnary ::= - $ Primary
+131    Primary$IntLitPrimary ::= INTLIT
+132    Primary$DoubleLitPrimary ::= DOUBLELIT
+133    Primary$IdentPrimary ::= Ident
+134    Primary$DataBlockPrimary ::= DataBlock
+135    Primary$StringLitPrimary ::= StringLiteral
+136    StringLiteral ::= STRINGLIT
+137    Ident ::= IDENTIFIER
 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
@@ -548,6 +560,12 @@ sip_consistent ::= sip_consistent
 scoped_extent ::= scoped_extent
 contiguous ::= contiguous
 auto_allocate ::= auto_allocate
+gpu_on ::= gpu_on
+gpu_off ::= gpu_off
+gpu_allocate ::= gpu_allocate
+gpu_free ::= gpu_free
+gpu_put ::= gpu_put
+gpu_get ::= gpu_get
 EOF_TOKEN ::= EOF_TOKEN
 SINGLE_LINE_COMMENT ::= SINGLE_LINE_COMMENT
 IDENTIFIER ::= IDENTIFIER
