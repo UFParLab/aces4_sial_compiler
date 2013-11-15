@@ -1669,25 +1669,48 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		return true;
 	}
 
+	boolean allIndicesSimple(DataBlock datablock){
+		IdentList indices = datablock.getIndices();
+		for (int i = 0; i < indices.size(); ++i){
+			Ident ind = indices.getIdentAt(i);
+			IDec dec = ind.getDec();
+			if (! (dec instanceof IndexDec && ((IndexDec)dec).getIndexKind().getIToken().getKind()==TK_index)){
+				return false;
+			}
+		}
+		return true;
+	}
 	@Override
 	public void endVisit(AssignStatement n) {
 		IScalarOrBlockVar lhs = n.getScalarOrBlockVar();
 		// IAssignOp op = n.getAssignOp();
 		IExpression expr = n.getExpression();
 		if (lhs instanceof Ident) {
-			if (isInt(expr)) {
-				check(((Ident) lhs).getDec() instanceof IntDec
-						|| ((Ident) lhs).getDec() instanceof ScalarDec, n,
-						"incompatible types in assignment");
-			} else if (isScalar(expr)) {
-				check(((Ident) lhs).getDec() instanceof ScalarDec, n,
-						"incompatible types in assignment");
-			} else if (expr instanceof BinaryExpression) {
-				check(binaryIsInt((BinaryExpression) expr)
-						|| binaryIsScalar((BinaryExpression) expr), n,
-						"right hand side ");
-
-			}
+//			if (isInt(expr)) {
+//				check(((Ident) lhs).getDec() instanceof IntDec
+//						|| ((Ident) lhs).getDec() instanceof ScalarDec, n,
+//						"incompatible types in assignment");
+//			} else if (isScalar(expr)) {
+//				check(((Ident) lhs).getDec() instanceof ScalarDec, n,
+//						"incompatible types in assignment");
+//			} else if (expr instanceof BinaryExpression) {
+//				check(binaryIsInt((BinaryExpression) expr)
+//						|| binaryIsScalar((BinaryExpression) expr), n,
+//						"right hand side ");
+//
+//			}
+			//lhs is an int, and rhs has int type
+			IDec dec = ((Ident) lhs).getDec();
+			boolean isIntExpr = isInt(expr);
+			boolean isScalarExpr = isScalar(expr);
+			boolean binaryIsIntVal = expr instanceof BinaryExpression && binaryIsInt((BinaryExpression) expr);
+			boolean binaryIsScalarVal = expr instanceof BinaryExpression && binaryIsScalar((BinaryExpression) expr);
+			boolean blockIsScalar = (expr instanceof DataBlock && allIndicesSimple((DataBlock) expr))
+					               || (expr instanceof DataBlockPrimary && allIndicesSimple(((DataBlockPrimary)expr).getDataBlock()));
+			if (dec instanceof IntDec && (isIntExpr || binaryIsIntVal || isScalarExpr)) return;
+			if (dec instanceof ScalarDec && (isIntExpr || binaryIsIntVal || isScalarExpr || binaryIsScalarVal || blockIsScalar)) return;
+		    check(false,n,"incompatible types on left and right side of assignment");
+	
 		} else { // (lhs instanceof DataBlock)
 
 			IdentList lhsIndices = ((DataBlock) lhs).getIndices();

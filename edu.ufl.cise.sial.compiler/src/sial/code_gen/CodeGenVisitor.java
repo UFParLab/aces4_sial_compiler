@@ -1483,8 +1483,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 					expr2Index, expr2IndexArray, lineno(n));
 		}
 		int opcode = getAssignOpcode(assignOp, binOp);
-		// AcesHack the next statement is to match the current compiler
-		// it is probably not necessary, but I haven't checked the sip code.
+		// AcesHack the next statement is to match the old aces3 compiler
+		// Need to check if it is still needed
 		int[] ind;
 		if (opcode == contraction_op)
 			ind = getContractedIndices(expr1IndexArray, expr2IndexArray);

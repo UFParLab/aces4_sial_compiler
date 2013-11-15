@@ -133,7 +133,9 @@ public class TestTypeChecking {
 }
 	@Test
 	public void scf_tmp() throws IOException{
-		runTypeCheckTest("scf_tmp",686);  //this has a serious error in the imported defs file. Mainly this should avoid throwing a null pointer exception
+		runTypeCheckTest("scf_tmp",691);  
+		//this has a serious error in the imported defs file. 
+		//Mainly this should avoid throwing a null pointer exception
 }
 	
 	@Test
@@ -144,6 +146,16 @@ public class TestTypeChecking {
 	@Test
 	public void gpu_ops() throws IOException{
 		runTypeCheckTest("gpu_ops",0);
+	}
+	
+	@Test
+	public void assignments_pass() throws IOException{
+		runTypeCheckTest("assignments_pass",0);
+	}
+	
+	@Test
+	public void assignments_fail() throws IOException{
+		runTypeCheckTest("assignments_fail",1);
 	}
 	
 }
