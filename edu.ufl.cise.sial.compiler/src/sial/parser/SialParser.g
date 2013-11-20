@@ -350,9 +350,12 @@
 	   public void setInsert(boolean val){insert = val;}
 	 ./ 
 	 
-	 --GPU related statements
-	 Statement$GpuOn ::= gpu_on$
-	 Statement$GpuOff ::= gpu_off$
+	 
+
+	 Statement$GpuStatement ::= gpu_on$ EOLs$
+	 StatementList
+	 gpu_off$
+	 
 	 Statement$GpuAllocate ::= gpu_allocate$ Primary
 	 Statement$GpuFree ::= gpu_free$ Primary
 	 Statement$GpuPut ::= gpu_put$ Primary

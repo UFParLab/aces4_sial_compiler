@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 109:  AllocIndex ::= *$
+ *<li>Rule 108:  AllocIndex ::= *$
  *</b>
  */
 public class AllocIndexWildCard extends ASTNodeToken implements IAllocIndex

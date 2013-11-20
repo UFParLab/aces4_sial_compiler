@@ -190,11 +190,8 @@ public interface Visitor extends IAstVisitor
     boolean visit(AssignStatement n);
     void endVisit(AssignStatement n);
 
-    boolean visit(GpuOn n);
-    void endVisit(GpuOn n);
-
-    boolean visit(GpuOff n);
-    void endVisit(GpuOff n);
+    boolean visit(GpuStatement n);
+    void endVisit(GpuStatement n);
 
     boolean visit(GpuAllocate n);
     void endVisit(GpuAllocate n);

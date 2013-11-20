@@ -429,51 +429,50 @@ Rules:
 90               | ArgList Arg
 91     Statement$ExecuteStatement ::= execute $ Ident ArgList
 92     Statement$AssignStatement ::= ScalarOrBlockVar AssignOp Expression
-93     Statement$GpuOn ::= gpu_on $
-94     Statement$GpuOff ::= gpu_off $
-95     Statement$GpuAllocate ::= gpu_allocate $ Primary
-96     Statement$GpuFree ::= gpu_free $ Primary
-97     Statement$GpuPut ::= gpu_put $ Primary
-98     Statement$GpuGet ::= gpu_get $ Primary
-99     AssignOp$AssignOpEqual ::= =
-100    AssignOp$AssignOpPlus ::= +=
-101    AssignOp$AssignOpMinus ::= -=
-102    AssignOp$AssignOpStar ::= *=
-103    ScalarOrBlockVar ::= Ident
-104                       | DataBlock
-105    DataBlock ::= Ident ( $ Indices ) $
-106    Indices$$Ident ::= Ident
-107              | Indices , $ Ident
-108    AllocIndex$AllocIndexIdent ::= Ident
-109    AllocIndex$AllocIndexWildCard ::= * $
-110    AllocIndexList$$AllocIndex ::= AllocIndex
-111                     | AllocIndexList , $ AllocIndex
-112    AllocIndexListopt ::= $Empty
-113                        | ( AllocIndexList )
-114    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
-115    RelOp$RelOp ::= < $op
-116            | > $op
-117            | <= $op
-118            | >= $op
-119            | == $op
-120            | != $op
-121    Expression ::= UnaryExpression $UnaryExpression
-122                 | BinaryExpression $BinaryExpression
-123    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
-124    BinOp$BinOpStar ::= *
-125    BinOp$BinOpDiv ::= /
-126    BinOp$BinOpPlus ::= +
-127    BinOp$BinOpMinus ::= -
-128    BinOp$BinOpTensor ::= ^
-129    UnaryExpression ::= Primary
-130    UnaryExpression$NegatedUnary ::= - $ Primary
-131    Primary$IntLitPrimary ::= INTLIT
-132    Primary$DoubleLitPrimary ::= DOUBLELIT
-133    Primary$IdentPrimary ::= Ident
-134    Primary$DataBlockPrimary ::= DataBlock
-135    Primary$StringLitPrimary ::= StringLiteral
-136    StringLiteral ::= STRINGLIT
-137    Ident ::= IDENTIFIER
+93     Statement$GpuStatement ::= gpu_on $ EOLs $ StatementList gpu_off $
+94     Statement$GpuAllocate ::= gpu_allocate $ Primary
+95     Statement$GpuFree ::= gpu_free $ Primary
+96     Statement$GpuPut ::= gpu_put $ Primary
+97     Statement$GpuGet ::= gpu_get $ Primary
+98     AssignOp$AssignOpEqual ::= =
+99     AssignOp$AssignOpPlus ::= +=
+100    AssignOp$AssignOpMinus ::= -=
+101    AssignOp$AssignOpStar ::= *=
+102    ScalarOrBlockVar ::= Ident
+103                       | DataBlock
+104    DataBlock ::= Ident ( $ Indices ) $
+105    Indices$$Ident ::= Ident
+106              | Indices , $ Ident
+107    AllocIndex$AllocIndexIdent ::= Ident
+108    AllocIndex$AllocIndexWildCard ::= * $
+109    AllocIndexList$$AllocIndex ::= AllocIndex
+110                     | AllocIndexList , $ AllocIndex
+111    AllocIndexListopt ::= $Empty
+112                        | ( AllocIndexList )
+113    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
+114    RelOp$RelOp ::= < $op
+115            | > $op
+116            | <= $op
+117            | >= $op
+118            | == $op
+119            | != $op
+120    Expression ::= UnaryExpression $UnaryExpression
+121                 | BinaryExpression $BinaryExpression
+122    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
+123    BinOp$BinOpStar ::= *
+124    BinOp$BinOpDiv ::= /
+125    BinOp$BinOpPlus ::= +
+126    BinOp$BinOpMinus ::= -
+127    BinOp$BinOpTensor ::= ^
+128    UnaryExpression ::= Primary
+129    UnaryExpression$NegatedUnary ::= - $ Primary
+130    Primary$IntLitPrimary ::= INTLIT
+131    Primary$DoubleLitPrimary ::= DOUBLELIT
+132    Primary$IdentPrimary ::= Ident
+133    Primary$DataBlockPrimary ::= DataBlock
+134    Primary$StringLitPrimary ::= StringLiteral
+135    StringLiteral ::= STRINGLIT
+136    Ident ::= IDENTIFIER
 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
@@ -637,6 +636,7 @@ Statement ::= do Ident EOLs WhereClauseList StatementList  .enddo Ident
 Statement ::= if RelationalExpression EOLs StatementList  .endif 
 Statement ::= if RelationalExpression EOLs StatementList  .else EOLs 
               StatementList endif 
+Statement ::= gpu_on EOLs StatementList  .gpu_off 
 Statement ::= section EOLs StatementList  .endsection 
 StatementList ::= StatementList Statement  .EOLs 
 

@@ -56,9 +56,8 @@ import sial.parser.Ast.GetStatement;
 import sial.parser.Ast.GpuAllocate;
 import sial.parser.Ast.GpuFree;
 import sial.parser.Ast.GpuGet;
-import sial.parser.Ast.GpuOff;
-import sial.parser.Ast.GpuOn;
 import sial.parser.Ast.GpuPut;
+import sial.parser.Ast.GpuStatement;
 import sial.parser.Ast.IAllocIndex;
 import sial.parser.Ast.IArg;
 import sial.parser.Ast.IAssignOp;
@@ -2074,26 +2073,38 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		check(n.getIdent().getDec() instanceof ScalarDec, n,
 				"Argument to print_index statement must be an scalar variable");
 	}
-
+	
+	
+	//TODO  Add type checking for Gpu statements
 	@Override
-	public boolean visit(GpuOn n) { /* no children */
-		return false;
+	public boolean visit(GpuStatement n){
+		return true;
 	}
-
+	
 	@Override
-	public void endVisit(GpuOn n) {
+	public void endVisit(GpuStatement n){
 		/* nop */
 	}
 
-	@Override
-	public boolean visit(GpuOff n) { /* no children */
-		return false;
-	}
-
-	@Override
-	public void endVisit(GpuOff n) {
-		/* nop */
-	}
+//	@Override
+//	public boolean visit(GpuOn n) { /* no children */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(GpuOn n) {
+//		/* nop */
+//	}
+//
+//	@Override
+//	public boolean visit(GpuOff n) { /* no children */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(GpuOff n) {
+//		/* nop */
+//	}
 
 	@Override
 	public boolean visit(GpuAllocate n) { /* visit children */

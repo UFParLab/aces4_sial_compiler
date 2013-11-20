@@ -51,8 +51,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>PrintScalarStatement
  *<li>ExecuteStatement
  *<li>AssignStatement
- *<li>GpuOn
- *<li>GpuOff
+ *<li>GpuStatement
  *<li>GpuAllocate
  *<li>GpuFree
  *<li>GpuPut

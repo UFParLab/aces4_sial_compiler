@@ -149,6 +149,16 @@ public class TestTypeChecking {
 	}
 	
 	@Test
+	public void gpu_ops_fail1() throws IOException{
+		runTypeCheckTest("gpu_ops_fail1",1);
+	}
+	
+	@Test
+	public void gpu_ops_fail2() throws IOException{
+		runTypeCheckTest("gpu_ops_fail2",3);
+	}
+	
+	@Test
 	public void assignments_pass() throws IOException{
 		runTypeCheckTest("assignments_pass",0);
 	}

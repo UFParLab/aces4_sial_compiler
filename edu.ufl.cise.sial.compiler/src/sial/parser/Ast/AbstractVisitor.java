@@ -193,11 +193,8 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(AssignStatement n) { unimplementedVisitor("visit(AssignStatement)"); return true; }
     public void endVisit(AssignStatement n) { unimplementedVisitor("endVisit(AssignStatement)"); }
 
-    public boolean visit(GpuOn n) { unimplementedVisitor("visit(GpuOn)"); return true; }
-    public void endVisit(GpuOn n) { unimplementedVisitor("endVisit(GpuOn)"); }
-
-    public boolean visit(GpuOff n) { unimplementedVisitor("visit(GpuOff)"); return true; }
-    public void endVisit(GpuOff n) { unimplementedVisitor("endVisit(GpuOff)"); }
+    public boolean visit(GpuStatement n) { unimplementedVisitor("visit(GpuStatement)"); return true; }
+    public void endVisit(GpuStatement n) { unimplementedVisitor("endVisit(GpuStatement)"); }
 
     public boolean visit(GpuAllocate n) { unimplementedVisitor("visit(GpuAllocate)"); return true; }
     public void endVisit(GpuAllocate n) { unimplementedVisitor("endVisit(GpuAllocate)"); }
@@ -351,8 +348,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ArgList) return visit((ArgList) n);
         else if (n instanceof ExecuteStatement) return visit((ExecuteStatement) n);
         else if (n instanceof AssignStatement) return visit((AssignStatement) n);
-        else if (n instanceof GpuOn) return visit((GpuOn) n);
-        else if (n instanceof GpuOff) return visit((GpuOff) n);
+        else if (n instanceof GpuStatement) return visit((GpuStatement) n);
         else if (n instanceof GpuAllocate) return visit((GpuAllocate) n);
         else if (n instanceof GpuFree) return visit((GpuFree) n);
         else if (n instanceof GpuPut) return visit((GpuPut) n);
@@ -446,8 +442,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ArgList) endVisit((ArgList) n);
         else if (n instanceof ExecuteStatement) endVisit((ExecuteStatement) n);
         else if (n instanceof AssignStatement) endVisit((AssignStatement) n);
-        else if (n instanceof GpuOn) endVisit((GpuOn) n);
-        else if (n instanceof GpuOff) endVisit((GpuOff) n);
+        else if (n instanceof GpuStatement) endVisit((GpuStatement) n);
         else if (n instanceof GpuAllocate) endVisit((GpuAllocate) n);
         else if (n instanceof GpuFree) endVisit((GpuFree) n);
         else if (n instanceof GpuPut) endVisit((GpuPut) n);

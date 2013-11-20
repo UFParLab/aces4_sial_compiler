@@ -1,0 +1,7 @@
+org.eclipse.imp.parser
+sial.code_gen
+sial.compiler
+sial.io
+sial.parser
+sial.parser.Ast
+sial.parser.context

@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 101:  AssignOp ::= -=
+ *<li>Rule 100:  AssignOp ::= -=
  *</b>
  */
 public class AssignOpMinus extends ASTNodeToken implements IAssignOp

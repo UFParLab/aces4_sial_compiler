@@ -59,9 +59,8 @@ import sial.parser.Ast.GetStatement;
 import sial.parser.Ast.GpuAllocate;
 import sial.parser.Ast.GpuFree;
 import sial.parser.Ast.GpuGet;
-import sial.parser.Ast.GpuOff;
-import sial.parser.Ast.GpuOn;
 import sial.parser.Ast.GpuPut;
+import sial.parser.Ast.GpuStatement;
 import sial.parser.Ast.IArg;
 import sial.parser.Ast.IAssignOp;
 import sial.parser.Ast.IBinOp;
@@ -1737,26 +1736,37 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		opTable.addOptableEntry(print_scalar_op, scalarIndex, defaultZeroInd,
 				lineno(n));
 	}
-
+	
 	@Override
-	public boolean visit(GpuOn n) { /* no children */
-		return false;
-	}
-
-	@Override
-	public void endVisit(GpuOn n) {
+	public boolean visit(GpuStatement n){
 		opTable.addOptableEntry(gpu_on_op, defaultZeroInd, lineno(n));
+		return true;
 	}
-
+	
 	@Override
-	public boolean visit(GpuOff n) { /* no children */
-		return false;
-	}
-
-	@Override
-	public void endVisit(GpuOff n) {
+	public void endVisit(GpuStatement n){
 		opTable.addOptableEntry(gpu_off_op, defaultZeroInd, lineno(n));
 	}
+
+//	@Override
+//	public boolean visit(GpuOn n) { /* no children */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(GpuOn n) {
+//		opTable.addOptableEntry(gpu_on_op, defaultZeroInd, lineno(n));
+//	}
+//
+//	@Override
+//	public boolean visit(GpuOff n) { /* no children */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(GpuOff n) {
+//		opTable.addOptableEntry(gpu_off_op, defaultZeroInd, lineno(n));
+//	}
 
 	@Override
 	public boolean visit(GpuAllocate n) { /* visit children */

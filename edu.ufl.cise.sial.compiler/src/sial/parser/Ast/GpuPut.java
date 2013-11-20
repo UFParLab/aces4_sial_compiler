@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 97:  Statement ::= gpu_put$ Primary
+ *<li>Rule 96:  Statement ::= gpu_put$ Primary
  *</b>
  */
 public class GpuPut extends ASTNode implements IStatement
