@@ -25,7 +25,6 @@ import sial.parser.SialParsersym;
 import sial.parser.Ast.ASTNode;
 import sial.parser.Ast.ASTNodeToken;
 import sial.parser.Ast.ArrayDec;
-import sial.parser.Ast.ConstantModifier;
 import sial.parser.Ast.ContiguousModifier;
 import sial.parser.Ast.IASTNodeToken;
 import sial.parser.Ast.IDec;
@@ -171,23 +170,23 @@ public class ASTUtils implements SialParsersym{
 	}
 
 
-	/**  Indicates whether given Idec has the constant modifier */
-    public static boolean isConstant(IDec n){
-    	List modifiers = null;
-    	if (n instanceof ScalarDec)
-    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
-    	else if (n instanceof IndexDec)
-    		modifiers = ((IndexDec) n).getModifiersopt().getList();
-    	else if (n instanceof IntDec)
-    		modifiers = ((IntDec) n).getModifiersopt().getList();
-    	else if (n instanceof ArrayDec)
-    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-    	if (modifiers== null || modifiers.isEmpty()) return false;
-    	for( Object m: modifiers){
-    		if (m instanceof ConstantModifier) return true;
-    	}
-    	return false;
-    }	
+//	/**  Indicates whether given Idec has the constant modifier */
+//    public static boolean isConstant(IDec n){
+//    	List modifiers = null;
+//    	if (n instanceof ScalarDec)
+//    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+//    	else if (n instanceof IndexDec)
+//    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+//    	else if (n instanceof IntDec)
+//    		modifiers = ((IntDec) n).getModifiersopt().getList();
+//    	else if (n instanceof ArrayDec)
+//    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+//    	if (modifiers== null || modifiers.isEmpty()) return false;
+//    	for( Object m: modifiers){
+//    		if (m instanceof ConstantModifier) return true;
+//    	}
+//    	return false;
+//    }	
     
     /** returns true if the given IDec is an array, and is static or contiguous */
     public static boolean isStaticOrContiguousArray(IDec n){

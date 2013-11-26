@@ -1,11 +1,10 @@
 package sial.code_gen;
 
+import static sial.parser.context.ASTUtils.getContractedIndices;
 import static sial.parser.context.ASTUtils.getDoubleVal;
 import static sial.parser.context.ASTUtils.getIntVal;
 import static sial.parser.context.ASTUtils.getRoot;
-import static sial.parser.context.ASTUtils.isConstant;
 import static sial.parser.context.ASTUtils.isPredefined;
-import static sial.parser.context.ASTUtils.getContractedIndices;
 
 import java.io.DataOutput;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import lpg.runtime.IAst;
 import sial.compiler.CommandLine;
 import sial.parser.SialParsersym;
 import sial.parser.Ast.ASTNode;
-import sial.parser.Ast.ASTNodeToken;
 import sial.parser.Ast.AbstractVisitor;
 import sial.parser.Ast.AllocIndexIdent;
 import sial.parser.Ast.AllocIndexList;
@@ -39,7 +37,6 @@ import sial.parser.Ast.BinOpTensor;
 import sial.parser.Ast.BinaryExpression;
 import sial.parser.Ast.CallStatement;
 import sial.parser.Ast.CollectiveStatement;
-import sial.parser.Ast.ConstantModifier;
 import sial.parser.Ast.CreateStatement;
 import sial.parser.Ast.CycleStatement;
 import sial.parser.Ast.DataBlock;
@@ -49,7 +46,6 @@ import sial.parser.Ast.DecList;
 import sial.parser.Ast.DeleteStatement;
 import sial.parser.Ast.DestroyStatement;
 import sial.parser.Ast.DimensionList;
-//import sial.parser.Ast.DimensionListopt;
 import sial.parser.Ast.DoStatement;
 import sial.parser.Ast.DoStatementSubIndex;
 import sial.parser.Ast.DoubleLitPrimary;
@@ -104,7 +100,6 @@ import sial.parser.Ast.RelationalExpression;
 import sial.parser.Ast.RequestStatement;
 import sial.parser.Ast.ReturnStatement;
 import sial.parser.Ast.ScalarDec;
-import sial.parser.Ast.Section;
 import sial.parser.Ast.ServerBarrierStatement;
 import sial.parser.Ast.Sial;
 import sial.parser.Ast.SipBarrierStatement;
@@ -116,6 +111,7 @@ import sial.parser.Ast.SubIndexDec;
 import sial.parser.Ast.WhereClause;
 import sial.parser.Ast.WhereClauseList;
 import sial.parser.context.ASTUtils;
+//import sial.parser.Ast.DimensionListopt;
 
 /** Visits AST and generates code for the SIAL program */
 public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
@@ -737,7 +733,17 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public void endVisit(DeallocateStatement n) {
 		int index = operandStack.pop();
-		int[] ind = indexArrayStack.pop();
+		int[] ind = null;
+		if (n.getAllocIndexListopt() != null){	
+  		     ind = indexArrayStack.pop();
+		}
+		else {ind = defaultUndefInd;
+		ArrayDec arrayDec = (ArrayDec)n.getIdent().getDec();
+		DimensionList decDims = arrayDec.getDimensionList();
+		for (int i = 0; i < decDims.size(); ++i){
+			ind[i] = wild;
+		}
+		}
 		opTable.addOptableEntry(deallocate_op, index, ind, lineno(n));
 	}
 
@@ -1126,10 +1132,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			loadOpcode = sp_ldi_sym_op;
 		} else { // is literal
 			loadOpcode = sp_ldi_op;
-			operand2--; // this is a value of an int literal stored in the
+			//operand2--; // this is a value of an int literal stored in the
 						// instruction, not an index,
 						// decrement to compensate for
 						// addOptableEntry increment to make Fortan index
+			// ACES4 will not be incremented.
 		}
 		opTable.addOptableEntry(loadOpcode, operand2, loc2, defaultOneInd,
 				lineno(n));

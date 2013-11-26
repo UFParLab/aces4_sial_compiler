@@ -2,7 +2,6 @@ package sial.parser.context;
 
 import static sial.parser.context.ASTUtils.getIntVal;
 import static sial.parser.context.ASTUtils.getEnclosingProc;
-import static sial.parser.context.ASTUtils.isConstant;
 import static sial.parser.context.ASTUtils.isPredefined;
 import static sial.parser.context.ASTUtils.isStaticOrContiguousArray;
 
@@ -36,7 +35,6 @@ import sial.parser.Ast.BinOpTensor;
 import sial.parser.Ast.BinaryExpression;
 import sial.parser.Ast.CallStatement;
 import sial.parser.Ast.CollectiveStatement;
-import sial.parser.Ast.ConstantModifier;
 import sial.parser.Ast.CreateStatement;
 import sial.parser.Ast.CycleStatement;
 import sial.parser.Ast.DataBlock;
@@ -443,7 +441,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	/* index and subindex declarations */
 	@Override
 	public boolean visit(IndexDec n) {
-		check(!isConstant(n), n, "index cannot be constant");
+//		check(!isConstant(n), n, "index cannot be constant");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
@@ -878,7 +876,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		return true;
 	}
 
-	// TODO this was copied from endVisit(AllocateStatement)
+	// 
 	@Override
 	public void endVisit(DeallocateStatement n) { // check array name
 		IDec dec = n.getIdent().getDec();
@@ -1853,14 +1851,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		if (dec == null)
 			return false;
 		DimensionList declaredIndices = ((ArrayDec) dec).getDimensionList();
-		boolean hasDeclared = true;
+		if (declaredIndices.size() < indices.size()){
+			return false; //this block sizes don't match,
+			  //this avoids index out of bounds exception.
+			  //the error should be found elsewhere.
+			  //THIS ASSUMPTION MAY NOT BE TRUE
+		}
 		for (int i = 0; i < indices.size(); ++i) {
 			Ident declaredIdent = declaredIndices.getDimensionAt(i);
 			Ident usedIdent = indices.getIdentAt(i);
-			boolean same = declaredIdent.getName().equals(usedIdent.getName());
-			hasDeclared = hasDeclared && same;
+			if (!declaredIdent.getName().equals(usedIdent.getName())) return false;
+
 		}
-		return hasDeclared;
+		return true;
 	}
 
 	// returns true if there is at least one index that is a subindex of
@@ -1874,6 +1877,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		DimensionList declaredIndices = ((ArrayDec) dec).getDimensionList();
 		boolean isValid = true;
 		boolean subBlock = false;
+		if (declaredIndices.size() < indices.size()){
+			return false; //this block sizes don't match,
+			  //this avoids index out of bounds exception.
+			  //the error should be found elsewhere.
+			  //THIS ASSUMPTION MAY NOT BE TRUE
+		}
 		for (int i = 0; i < indices.size(); ++i) {
 			Ident declaredIdent = declaredIndices.getDimensionAt(i);
 			Ident usedIdent = indices.getIdentAt(i);
