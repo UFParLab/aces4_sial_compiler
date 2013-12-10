@@ -960,20 +960,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		return true;
 	}
 
-	// @Override
-	// public void endVisit(IdentList n) {
-	// // Each ident in this list has left its address on the operand stack
-	// // Remove them and put into an in array, converting to Fortran indices.
-	// // Push the array on the indexStack
-	// int nindex = n.size();
-	// // Get the index table entries from the stack and fill the ind array,
-	// // converting to fortran indices
-	// int[] ind = new int[AcesHacks.max_array_index];
-	// for (int i = nindex - 1; i >= 0; i--) {
-	// ind[i] = operandStack.pop() + 1;
-	// }
-	// indexArrayStack.push(ind);
-	// }
 
 	// ACES4 not fortran indices, unused indices should be 0
 	@Override

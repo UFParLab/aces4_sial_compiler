@@ -186,6 +186,7 @@ public class SialCompiler {
 		errs = errors;
 		if (errors > 0) {
 			System.err.println(errors + (errors <= 1 ? " error." : " errors."));
+			System.exit(-1);
 			return;
 		}
 
