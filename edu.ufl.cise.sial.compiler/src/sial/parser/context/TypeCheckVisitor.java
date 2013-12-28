@@ -82,7 +82,7 @@ import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.ModifierList;
 import sial.parser.Ast.NegatedUnary;
 import sial.parser.Ast.PardoStatement;
-import sial.parser.Ast.PersistentModifier;
+//import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.PrepareStatement;
 import sial.parser.Ast.PrequestStatement;
@@ -97,10 +97,12 @@ import sial.parser.Ast.Range;
 import sial.parser.Ast.RelOp;
 import sial.parser.Ast.RelationalExpression;
 import sial.parser.Ast.RequestStatement;
+import sial.parser.Ast.RestorePersistent;
 import sial.parser.Ast.ReturnStatement;
 import sial.parser.Ast.ScalarDec;
 import sial.parser.Ast.Section;
 import sial.parser.Ast.ServerBarrierStatement;
+import sial.parser.Ast.SetPersistent;
 import sial.parser.Ast.Sial;
 import sial.parser.Ast.SipBarrierStatement;
 import sial.parser.Ast.SpecialDec;
@@ -1604,14 +1606,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(PredefinedModifier n) { /* nop */
 	}
 
-	@Override
-	public boolean visit(PersistentModifier n) { /* nothing to check */
-		return false;
-	}
-
-	@Override
-	public void endVisit(PersistentModifier n) { /* nop */
-	}
+//	@Override
+//	public boolean visit(PersistentModifier n) { /* nothing to check */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(PersistentModifier n) { /* nop */
+//	}
 
 	@Override
 	public boolean visit(ArgList n) {
@@ -2029,13 +2031,18 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(StringLitPrimary n) { /* nop */
 	}
 
+//	@Override
+//	public boolean visit(StringLiteral n) {
+//		// TODO upgrade this--for now, don't visit the children of a
+//		// PrintStatement or PrintlnStatement, so don't need to check here.
+//		check(n.getParent() instanceof ImportProg, n,
+//				"String literals may only appear in import, print, and println statements");
+//		return true;
+//	}
+	
 	@Override
-	public boolean visit(StringLiteral n) {
-		// TODO upgrade this--for now, don't visit the children of a
-		// PrintStatement or PrintlnStatement, so don't need to check here.
-		check(n.getParent() instanceof ImportProg, n,
-				"String literals may only appear in import, print, and println statements");
-		return true;
+	public boolean visit(StringLiteral n) { /*nothing to check here.  Correct usage determined by grammar */
+		return false;
 	}
 
 	@Override
@@ -2202,5 +2209,38 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 			return;
 		}
 		check (arg instanceof DataBlockPrimary, n, "gpu_get argument must be array");
+	}
+	
+	public boolean visit(SetPersistent n) { /* visit children */
+		return true;
+	}
+
+	public void endVisit(SetPersistent n) {
+		IDec dec = n.getIdent().getDec();
+		if (check(dec instanceof ArrayDec, n, "set_persistent argument "
+				+ n.getIdent().getName()
+				+ " must be a served or distributed array")) {
+			ArrayDec arrayDec = (ArrayDec)dec;
+			String typeName = arrayDec.getTypeName();
+			check(typeName.equals("served") || typeName.equals("distributed"),
+					n, "set_persistent argument " + n.getIdent().getName()
+							+ " must be a served or distributed array");
+		}
+	}
+
+	public boolean visit(RestorePersistent n) { /* visit children */
+		return true;
+	}
+
+	public void endVisit(RestorePersistent n) {
+		IDec dec = n.getIdent().getDec();
+		if (check(dec instanceof ArrayDec, n, "set_persistent argument "
+				+ n.getIdent().getName()
+				+ " must be a served or distributed array")) {
+			String typeName = ((ArrayDec) dec).getTypeName();
+			check(typeName.equals("served") || typeName.equals("distributed"),
+					n, "set_persistent argument " + n.getIdent().getName()
+							+ " must be a served or distributed array");
+		}
 	}
 }

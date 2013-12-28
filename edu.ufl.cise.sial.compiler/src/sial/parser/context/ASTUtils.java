@@ -33,7 +33,7 @@ import sial.parser.Ast.ImportProg;
 import sial.parser.Ast.ImportProgList;
 import sial.parser.Ast.IndexDec;
 import sial.parser.Ast.IntDec;
-import sial.parser.Ast.PersistentModifier;
+//import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.ProcDec;
 import sial.parser.Ast.Program;
@@ -221,24 +221,24 @@ public class ASTUtils implements SialParsersym{
     	}
     	return false;
     }	    
-    public static boolean isPersistent(IDec n){
-    	List modifiers = null;
-    	if (n instanceof ScalarDec)
-    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
-    	else if (n instanceof IndexDec)
-    		modifiers = ((IndexDec) n).getModifiersopt().getList();
-    	else if (n instanceof IntDec)
-    		modifiers = ((IntDec) n).getModifiersopt().getList();
-    	else if (n instanceof ArrayDec)
-    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-    	else if (n instanceof ScalarDec)
-    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
-    	if (modifiers== null || modifiers.isEmpty()) return false;
-    	for( Object m: modifiers){
-    		if (m instanceof PersistentModifier) return true;
-    	}
-    	return false;
-    }
+//    public static boolean isPersistent(IDec n){
+//    	List modifiers = null;
+//    	if (n instanceof ScalarDec)
+//    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+//    	else if (n instanceof IndexDec)
+//    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+//    	else if (n instanceof IntDec)
+//    		modifiers = ((IntDec) n).getModifiersopt().getList();
+//    	else if (n instanceof ArrayDec)
+//    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+//    	else if (n instanceof ScalarDec)
+//    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+//    	if (modifiers== null || modifiers.isEmpty()) return false;
+//    	for( Object m: modifiers){
+//    		if (m instanceof PersistentModifier) return true;
+//    	}
+//    	return false;
+//    }
 
     public static int[] getContractedIndices(int[] a1, int[] a2) {
     	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];

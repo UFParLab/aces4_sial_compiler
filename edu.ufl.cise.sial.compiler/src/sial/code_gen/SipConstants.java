@@ -139,5 +139,7 @@ public final static int
 	gpu_free_op = 191,
 	gpu_put_op = 192,
 	gpu_get_op = 193,
-	last_opcode    = gpu_get_op;
+	set_persistent_op = 194,
+	restore_persistent_op=195,
+	last_opcode = restore_persistent_op;
 }

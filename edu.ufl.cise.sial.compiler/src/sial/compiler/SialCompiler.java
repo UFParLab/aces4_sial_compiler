@@ -186,8 +186,8 @@ public class SialCompiler {
 		errs = errors;
 		if (errors > 0) {
 			System.err.println(errors + (errors <= 1 ? " error." : " errors."));
+			if (options.isNO_EXIT_ON_ERROR()) return;
 			System.exit(-1);
-			return;
 		}
 
 		if (options.isNO_GENERATE()) {

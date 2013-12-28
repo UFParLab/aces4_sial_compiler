@@ -21,12 +21,12 @@ public class TestTypeChecking {
         String dir =  System.getProperty("user.dir");
         System.out.println("dir: " + dir);
 		String sialpath = dir + File.separatorChar +"type_checking_test_cases";
-		String[] args = {"-v", "-sp", sialpath, name + ".sialx" };
+		String[] args = {"-ne", "-v", "-sp", sialpath, name + ".sialx" };
 		System.out.println("Sialpath is " + sialpath);
 		System.out.print("args = ");
 		for (String s: args) { System.out.print(s + " ");
 		}
-		System.out.println("starting " + name);
+		System.out.println("\nstarting " + name);
 		SialCompiler.main(args);
 		System.out.println("returned from SialCompiler.main(args) in test "+ name);
 		assertEquals(numErrs,SialCompiler.errs);
@@ -47,10 +47,10 @@ public class TestTypeChecking {
 		runTypeCheckTest("special_dec",0);
 	}
 	
-	@Test
-	public void special_dec_fail() throws IOException {
-		runTypeCheckTest("special_dec_fail",1);
-	}
+//	@Test
+//	public void special_dec_fail() throws IOException {
+//		runTypeCheckTest("special_dec_fail",1);
+//	}
 	
 	@Test
 	public void hello_world() throws IOException {
@@ -166,6 +166,16 @@ public class TestTypeChecking {
 	@Test
 	public void assignments_fail() throws IOException{
 		runTypeCheckTest("assignments_fail",1);
+	}
+	
+	@Test
+	public void set_persistent_pass() throws IOException{
+		runTypeCheckTest("set_persistent_pass", 0);
+	}
+	
+	@Test
+	public void set_persistent_fail() throws IOException{
+		runTypeCheckTest("set_persistent_fail", 2);
 	}
 	
 }

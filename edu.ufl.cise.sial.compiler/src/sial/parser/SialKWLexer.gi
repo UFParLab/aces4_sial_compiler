@@ -60,7 +60,6 @@ destroy
 where
 import
 predefined
-persistent
 special
 server_barrier
 sip_barrier
@@ -82,6 +81,8 @@ gpu_allocate
 gpu_free
 gpu_put
 gpu_get
+set_persistent
+restore_persistent
 
 %End
 
@@ -150,7 +151,6 @@ gpu_get
 		| i m p o r t                        /.$setResult($_import);./								  
 		| i n t                        /.$setResult($_int);./												 
 		| p r e d e f i n e d                        /.$setResult($_predefined);./		
-	    | p e r s i s t e n t                        /.$setResult($_persistent);./			
         | s p e c i a l             /. $setResult($_special);./			
 		| s e r v e r _ b a r r i e r           /. $setResult($_server_barrier);./
 		| s i p _ b a r r i e r      /.$setResult($_sip_barrier);./		
@@ -171,5 +171,7 @@ gpu_get
 	    | g p u _ a l l o c a t e   /.$setResult($_gpu_allocate);./				
 	    | g p u _ f r e e  /.$setResult($_gpu_free);./
 		| g p u _ g e t  /.$setResult($_gpu_get);./
-		| g p u _ p u t  /.$setResult($_gpu_put);./												   											  
+		| g p u _ p u t  /.$setResult($_gpu_put);./			
+	    | s e t _ p e r s i s t e n t        /.$setResult($_set_persistent);./									   
+	    | r e s t o r e _ p e r s i s t e n t       /.$setResult($_restore_persistent);./																	   											  
 %End

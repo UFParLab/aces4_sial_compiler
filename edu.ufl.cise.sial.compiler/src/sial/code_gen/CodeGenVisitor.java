@@ -83,7 +83,9 @@ import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.ModifierList;
 import sial.parser.Ast.NegatedUnary;
 import sial.parser.Ast.PardoStatement;
-import sial.parser.Ast.PersistentModifier;
+import sial.parser.Ast.RestorePersistent;
+import sial.parser.Ast.SetPersistent;
+//import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.PrepareStatement;
 import sial.parser.Ast.PrequestStatement;
@@ -1559,14 +1561,14 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public void endVisit(PredefinedModifier n) { /* nop */
 	}
 
-	@Override
-	public boolean visit(PersistentModifier n) { /* nothing to do */
-		return false;
-	}
-
-	@Override
-	public void endVisit(PersistentModifier n) { /* nop */
-	}
+//	@Override
+//	public boolean visit(PersistentModifier n) { /* nothing to do */
+//		return false;
+//	}
+//
+//	@Override
+//	public void endVisit(PersistentModifier n) { /* nop */
+//	}
 
 	@Override
 	public boolean visit(ArgList n) { /* visit children */
@@ -1652,49 +1654,73 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(StringLitPrimary n) {
-		assert false : "string literals not yet supported except in print and println statements";
-		return false;
+		return true;
 	}
 
 	@Override
-	public void endVisit(StringLitPrimary n) { /* nop */
+	public void endVisit(StringLitPrimary n) { 
+		String s = ASTUtils.getStringVal(n);
+	    int stringIndex = stringLiteralTable.getAndAdd(s);	
+	    operandStack.push(stringIndex);
+	}
+
+//	@Override
+//	public boolean visit(StringLiteral n) {
+////		assert false : "string literals not yet supported except in print and println statements";
+//		return false;
+//	}
+	
+	@Override
+	public boolean visit(StringLiteral n){
+		return true; 
 	}
 
 	@Override
-	public boolean visit(StringLiteral n) {
-		assert false : "string literals not yet supported except in print and println statements";
-		return false;
+	public void endVisit(StringLiteral n) {		
+		String s = ASTUtils.getStringVal(n);
+	    int stringIndex = stringLiteralTable.getAndAdd(s);	
+	    operandStack.push(stringIndex);
+	}
+
+//	@Override
+//	public boolean visit(PrintStatement n) {
+//		String s = ASTUtils.getStringVal(n.getSTRINGLIT());
+//		int stringIndex = stringLiteralTable.getAndAdd(s);
+//		// System.out.println(s + " " + stringIndex);
+//		opTable.addOptableEntry(print_op, stringIndex, defaultZeroInd,
+//				lineno(n));
+//		return false; // should not visit child
+//	}
+	
+	@Override
+	public boolean visit(PrintStatement n){ /*visit child*/
+		return true;			
 	}
 
 	@Override
-	public void endVisit(StringLiteral n) { /* nop */
+	public void endVisit(PrintStatement n) { 
+		int stringIndex = operandStack.pop();
+		opTable.addOptableEntry(print_op, stringIndex, defaultZeroInd,lineno(n));		
+	}
+
+//	@Override
+//	public boolean visit(PrintlnStatement n) {
+//		String s = ASTUtils.getStringVal(n.getSTRINGLIT());
+//		int stringIndex = stringLiteralTable.getAndAdd(s);
+//		opTable.addOptableEntry(println_op, stringIndex, defaultZeroInd,
+//				lineno(n));
+//		return false; // should not visit child
+//	}
+	
+	@Override 
+	public boolean visit(PrintlnStatement n){
+		return true;
 	}
 
 	@Override
-	public boolean visit(PrintStatement n) {
-		String s = ASTUtils.getStringVal(n.getSTRINGLIT());
-		int stringIndex = stringLiteralTable.getAndAdd(s);
-		// System.out.println(s + " " + stringIndex);
-		opTable.addOptableEntry(print_op, stringIndex, defaultZeroInd,
-				lineno(n));
-		return false; // should not visit child
-	}
-
-	@Override
-	public void endVisit(PrintStatement n) { /* nop */
-	}
-
-	@Override
-	public boolean visit(PrintlnStatement n) {
-		String s = ASTUtils.getStringVal(n.getSTRINGLIT());
-		int stringIndex = stringLiteralTable.getAndAdd(s);
-		opTable.addOptableEntry(println_op, stringIndex, defaultZeroInd,
-				lineno(n));
-		return false; // should not visit child
-	}
-
-	@Override
-	public void endVisit(PrintlnStatement n) { /* nop */
+	public void endVisit(PrintlnStatement n) { 		
+		int stringIndex = operandStack.pop();
+	    opTable.addOptableEntry(println_op, stringIndex, defaultZeroInd,lineno(n));		
 	}
 
 	@Override
@@ -1859,25 +1885,47 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public void endVisit(GpuGet n) {
 		IPrimary arg = n.getPrimary();
-		int array_table_slot = -1;
+		int arrayTableSlot = -1;
 		int[] ind = null;
 		int rank = -1;
 		if (arg instanceof IdentPrimary) {
-			array_table_slot = operandStack.pop();
+			arrayTableSlot = operandStack.pop();
 			ind = defaultUndefInd;
 			rank = 0;
 		} else if (arg instanceof DataBlockPrimary) {
-			array_table_slot = operandStack.pop();
-			rank = arrayTable.getRank(array_table_slot);
+			arrayTableSlot = operandStack.pop();
+			rank = arrayTable.getRank(arrayTableSlot);
 			ind = indexArrayStack.pop();
 		} else
 			assert false;
 		// If this is an array, with rank 0, it is a static or contiguous array
 		// without a block selector.
-		opTable.addOptableEntry(reindex_op, rank, array_table_slot, ind,
+		opTable.addOptableEntry(reindex_op, rank, arrayTableSlot, ind,
 				lineno(n)); // array_table_slot goes in resultIndex slot of
 							// OptableEntry
-		opTable.addOptableEntry(gpu_get_op, array_table_slot,
+		opTable.addOptableEntry(gpu_get_op, arrayTableSlot,
 				defaultUndefInd, lineno(n));
+	}
+	
+	public boolean visit(SetPersistent n) {
+		return true;
+	}
+
+	public void endVisit(SetPersistent n) {
+		int stringTableSlot = operandStack.pop();
+		int arrayTableSlot = operandStack.pop();
+		opTable.addOptableEntry(set_persistent_op, stringTableSlot,
+				arrayTableSlot, defaultZeroInd, lineno(n));
+	}
+
+	public boolean visit(RestorePersistent n) {
+		return true;
+	}
+
+	public void endVisit(RestorePersistent n) {
+		int stringTableSlot = operandStack.pop();
+		int arrayTableSlot = operandStack.pop();
+		opTable.addOptableEntry(restore_persistent_op, stringTableSlot,
+				arrayTableSlot, defaultZeroInd, lineno(n));
 	}
 }

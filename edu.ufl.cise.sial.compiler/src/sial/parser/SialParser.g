@@ -42,7 +42,6 @@
 	LEFTPAREN ::= '('
 	RIGHTPAREN ::= ')'
 	
-	
 	%End
 
 	%Start
@@ -125,12 +124,11 @@
 
     Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
     Modifier$PredefinedModifier ::= 'predefined'
-    Modifier$PersistentModifier ::= 'persistent'
+--    Modifier$PersistentModifier ::= 'persistent'
 	Modifier$ScopedExtentModifier ::= 'scoped_extent'
 	Modifier$ContiguousModifier ::= 'contiguous'
 	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
 
-	 
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
 	 Dec ::= ScalarDec  | ArrayDec  |  IndexDec | SubIndexDec | IntDec  | ProcDec | SpecialDec
 	 
@@ -331,8 +329,8 @@
 	--	Statement$ComputeIntegralsStatement ::= compute_integrals$ DataBlock
 	Statement$DestroyStatement::= destroy$ Ident
 	
-    Statement$PrintlnStatement ::= println$ STRINGLIT
-	Statement$PrintStatement ::= print$ STRINGLIT
+    Statement$PrintlnStatement ::= println$ StringLiteral
+	Statement$PrintStatement ::= print$ StringLiteral
 	Statement$PrintIndexStatement ::= print_index$ Ident
     Statement$PrintScalarStatement::= print_scalar$ Ident --TODO rework this to take a unary expression
 	
@@ -360,6 +358,30 @@
 	 Statement$GpuFree ::= gpu_free$ Primary
 	 Statement$GpuPut ::= gpu_put$ Primary
 	 Statement$GpuGet ::= gpu_get$ Primary
+	 
+	 Statement$SetPersistent ::= set_persistent$ Ident StringLiteral
+	 --	/. 
+	 -- String stringValue;
+	 -- public void setStringValue(String stringValue){
+	 --        this.stringValue = stringValue;
+	 -- }
+	 -- public String  getStringValue(){
+	 --        return stringValue;
+  --    }
+	 -- 
+	 --./
+	 Statement$RestorePersistent ::= restore_persistent$ Ident StringLiteral
+	 --	/. 
+	 -- String stringValue;
+	 -- public void setStringValue(String stringValue){
+	 --        this.stringValue = stringValue;
+	 -- }
+	 -- public String  getStringValue(){
+	 --        return stringValue;
+  --    }
+	 -- 
+	 --./
+--	 StringLiteralopt ::= %empty | StringLiteral
 	
 	AssignOp$AssignOpEqual  ::=    '='
 	AssignOp$AssignOpPlus  ::=    '+='

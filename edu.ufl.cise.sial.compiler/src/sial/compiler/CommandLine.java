@@ -28,6 +28,7 @@ class CommandLine {
 	private boolean BIG_ENDIAN = false;
 	private boolean VERBOSE = false;
 	private boolean NO_GENERATE = false; // if true, only check. Do not generate code.
+	private boolean NO_EXIT_ON_ERROR = false; //does not call system.exit.  Used for junit tests.
 	boolean ACES = true; // this is used with aces
 	private String SUFFIX = "sialx"; // when given a directory, process files with this
 								// suffix
@@ -51,6 +52,8 @@ class CommandLine {
 				} else if (args[i].equals("-noGenerate")
 						|| args[i].equals("-n"))
 					setNO_GENERATE(true);
+				else if (args[i].equals("-noExitOnError") || args[i].equals("-ne"))
+					setNO_EXIT_ON_ERROR(true);
 				else if (args[i].equals("-verbose") || args[i].equals("-v"))
 					setVERBOSE(true);
 				else if (args[i].equals("-sialPath") || args[i].equals("-sp")) {
@@ -96,6 +99,14 @@ class CommandLine {
 			System.out.println("input path = " + getINPUT_FILE().toString());
 		}
 		assert getINPUT_FILE() != null;
+	}
+
+	public boolean isNO_EXIT_ON_ERROR() {
+		return NO_EXIT_ON_ERROR;
+	}
+
+	public void setNO_EXIT_ON_ERROR(boolean nO_EXIT_ON_ERROR) {
+		NO_EXIT_ON_ERROR = nO_EXIT_ON_ERROR;
 	}
 
 	public CommandLine() {
