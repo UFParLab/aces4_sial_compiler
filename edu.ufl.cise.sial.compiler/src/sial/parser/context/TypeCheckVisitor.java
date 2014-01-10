@@ -2219,12 +2219,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		IDec dec = n.getIdent().getDec();
 		if (check(dec instanceof ArrayDec, n, "set_persistent argument "
 				+ n.getIdent().getName()
-				+ " must be a served or distributed array")) {
+				+ " must be an array")) {
 			ArrayDec arrayDec = (ArrayDec)dec;
 			String typeName = arrayDec.getTypeName();
-			check(typeName.equals("served") || typeName.equals("distributed"),
+			check(!(typeName.equals("temp") || typeName.equals("local")),
 					n, "set_persistent argument " + n.getIdent().getName()
-							+ " must be a served or distributed array");
+							+ " must be a static, served, or distributed array");
 		}
 	}
 
