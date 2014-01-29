@@ -36,7 +36,8 @@ attr_scalar = 0x80;  //0x80 == 128 == "10000000"
 //attributes for existing types
 public final static int
 	served_array_t = attr_sip_consistent, // ==2
-    static_array_t = (attr_contiguous | attr_auto_allocate | attr_predefined | attr_persistent),  //==108
+//   static_array_t = (attr_contiguous | attr_auto_allocate | attr_predefined | attr_persistent),  //==108
+	static_array_t = (attr_contiguous | attr_auto_allocate),  //==12
     distributed_array_t = served_array_t, //==2
     temp_array_t = (attr_auto_allocate | attr_scope_extent), //== 24
     scalar_value_t = (attr_contiguous | attr_auto_allocate | attr_scalar), //==140

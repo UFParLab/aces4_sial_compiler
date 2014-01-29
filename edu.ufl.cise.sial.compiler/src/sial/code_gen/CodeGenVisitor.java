@@ -313,11 +313,16 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ArrayDec n) {
-		int arrayTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
+		int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
+		if (ASTUtils.isPredefined(n)) {
+			attribute = attribute | attr_predefined;
+		}		
 		int priority = 0;
-		if (arrayTypeNum == SipConstants.distributed_array_t)
+//		if (arrayTypeNum == SipConstants.distributed_array_t)
+		if (n.getTypeName().toLowerCase()== "distributed")
 			priority = SipConstants.distributed_array_priority;
-		else if (arrayTypeNum == SipConstants.served_array_t)
+//		else if (arrayTypeNum == SipConstants.served_array_t)
+		else if (n.getTypeName().toLowerCase() == "served")
 			priority = SipConstants.served_array_priority;
 		DimensionList dimensions = n.getDimensionList();
 		int arraynindex = dimensions.size();
@@ -326,7 +331,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			IDec indexIDec = dimensions.getDimensionAt(i).getDec();
 			indarray[i] = indexTable.getIndex(indexIDec);
 		}
-		arrayTable.addArrayEntry(n, arraynindex, arrayTypeNum, indarray,
+		arrayTable.addArrayEntry(n, arraynindex, attribute, indarray,
 				priority);
 		return false;
 	}
