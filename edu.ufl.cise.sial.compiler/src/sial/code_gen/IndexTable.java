@@ -34,12 +34,16 @@ public class IndexTable implements SipConstants, SialParsersym {
 
 	static class Entry {
 		int bseg;  //also parent index for subindices
+		boolean bsegIsSymbolic;
 		int eseg;
+		boolean esegIsSymbolic;
 		int index_type;
 
-		Entry(int bseg, int eseg, int index_type) {
+		Entry(int bseg, boolean bsegIsSymbolic, int eseg, boolean esegIsSymbolic, int index_type) {
 			this.bseg = bseg;
+			this.bsegIsSymbolic = bsegIsSymbolic;
 			this.eseg = eseg;
+			this.esegIsSymbolic = esegIsSymbolic;
 			this.index_type = index_type;
 		}
 
@@ -56,7 +60,9 @@ public class IndexTable implements SipConstants, SialParsersym {
 			final int prime = 31;
 			int result = 1;
 			result = prime * result + bseg;
+			result = prime * result + (bsegIsSymbolic?1:0);
 			result = prime * result + eseg;
+			result = prime * result + (esegIsSymbolic?1:0);
 			result = prime * result + index_type;
 			return result;
 		}
@@ -77,7 +83,11 @@ public class IndexTable implements SipConstants, SialParsersym {
 			Entry other = (Entry) obj;
 			if (bseg != other.bseg)
 				return false;
+			if (bsegIsSymbolic != other.bsegIsSymbolic)
+				return false;
 			if (eseg != other.eseg)
+				return false;
+			if (esegIsSymbolic != other.esegIsSymbolic)
 				return false;
 			if (index_type != other.index_type)
 				return false;
@@ -86,14 +96,18 @@ public class IndexTable implements SipConstants, SialParsersym {
 
 		public void read(DataInput input) throws IOException {
 			bseg = input.readInt();
+			bsegIsSymbolic = input.readInt()==0?false:true;
 			eseg = input.readInt();
+			esegIsSymbolic = input.readInt()==0?false:true;
 			index_type = input.readInt();
 		}
 
 
 		public void write(DataOutput output) throws IOException {
 		output.writeInt(bseg); //value given in sial program, may be symbolic predefined
+		output.writeInt(bsegIsSymbolic?1:0); //1 if bseg symbolic predefined
 		output.writeInt(eseg); //value in sial program, may be symbolic predefined
+		output.writeInt(esegIsSymbolic?1:0); //1 if eseg symbolic predefined
 		output.writeInt(index_type);
 	}		
 		
@@ -101,7 +115,10 @@ public class IndexTable implements SipConstants, SialParsersym {
 			StringBuilder sb = new StringBuilder();
 			sb.append(bseg);
 			sb.append(',');
+			sb.append(bsegIsSymbolic);
+			sb.append(',');
 			sb.append(eseg);
+			sb.append(esegIsSymbolic);
 			sb.append(',');
 			sb.append(index_type);
 			sb.append('\n');
@@ -167,10 +184,10 @@ public class IndexTable implements SipConstants, SialParsersym {
 		return indexBiMap.get(dec);
 	}
 
-	int addEntry(IDec dec, int beg, int end, int type) {
+	int addEntry(IDec dec, int beg, boolean begIsSymbolic, int end, boolean endIsSymbolic, int type) {
 		int index = num_entries++;
 		indexBiMap.put(dec, index);
-		Entry entry = new Entry(beg, end, type);
+		Entry entry = new Entry(beg, begIsSymbolic, end, endIsSymbolic, type);
 		entries.add(entry);                                                                                          
 		return index;
 	}

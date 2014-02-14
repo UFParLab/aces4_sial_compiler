@@ -192,7 +192,8 @@
 	 ./
 	 
 	 Range ::= RangeVal$RangeValStart ','$ RangeVal$RangeValEnd
-	 RangeVal$IntLitRangeVal ::= INTLIT 
+	 RangeVal$IntLitRangeVal ::= INTLIT  
+	 RangeVal$NegRangeVal ::= '-'$ INTLIT
 	 RangeVal$IdentRangeVal ::=  Ident
 	 /.
 	   public String getName(){

@@ -80,6 +80,7 @@ import sial.parser.Ast.IntDec;
 import sial.parser.Ast.IntLitPrimary;
 import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.ModifierList;
+import sial.parser.Ast.NegRangeVal;
 import sial.parser.Ast.NegatedUnary;
 import sial.parser.Ast.PardoStatement;
 //import sial.parser.Ast.PersistentModifier;
@@ -505,12 +506,24 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(IntLitRangeVal n) {
-		check(getIntVal(n) >= 1, n, "index range must be at least 1");
+		IndexDec parent = (IndexDec) n.getParent().getParent();  
+		check(getIntVal(n) >= 1 || (parent.getIndexKind().getikind().getKind()==TK_index), n, "index range must be at least 1 (unless index is simple)");
 		return false;
 	}
 
 	@Override
 	public void endVisit(IntLitRangeVal n) { /* nop */
+	}
+	
+	@Override
+	public boolean visit(NegRangeVal n) {
+		IndexDec parent = (IndexDec) n.getParent().getParent();  
+		check(parent.getIndexKind().getikind().getKind()==TK_index, n, "negative range only allowed for simple indices");
+		return false;
+	}
+
+	@Override
+	public void endVisit(NegRangeVal n) { /* nop */
 	}
 
 	@Override

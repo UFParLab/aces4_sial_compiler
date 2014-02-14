@@ -33,6 +33,8 @@ import sial.parser.Ast.ImportProg;
 import sial.parser.Ast.ImportProgList;
 import sial.parser.Ast.IndexDec;
 import sial.parser.Ast.IntDec;
+import sial.parser.Ast.IntLitRangeVal;
+import sial.parser.Ast.NegRangeVal;
 //import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.ProcDec;
@@ -82,11 +84,16 @@ public class ASTUtils implements SialParsersym{
     }
 
 
-    /** returns the in value of the gien IRangeVal, which is required to be an int literal */
+    /** returns the int value of the given IRangeVal, which is required to be an int literal or negated int literal */
 	public static int getIntVal(IRangeVal range1){
+		if( range1 instanceof IntLitRangeVal){
 		assert range1.getLeftIToken().getKind()== TK_INTLIT: range1.toString();
 		String text = range1.toString();
 		return Integer.parseInt(text);
+		}
+		NegRangeVal negRangVal = (NegRangeVal)range1;
+		String text = negRangVal.getINTLIT().toString();
+		return - Integer.parseInt(text);
 	}
 	
 	/** returns the int value of the given IToken, which is required to an int literal*/

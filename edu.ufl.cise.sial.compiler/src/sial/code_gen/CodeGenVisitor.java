@@ -81,6 +81,7 @@ import sial.parser.Ast.IntDec;
 import sial.parser.Ast.IntLitPrimary;
 import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.ModifierList;
+import sial.parser.Ast.NegRangeVal;
 import sial.parser.Ast.NegatedUnary;
 import sial.parser.Ast.PardoStatement;
 import sial.parser.Ast.RestorePersistent;
@@ -364,21 +365,25 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	public boolean visit(IndexDec n) {
 		int indexTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
 		int bseg, eseg;
+		boolean bsegIsSymbolic = false;
+		boolean esegIsSymbolic = false;
 		IRangeVal range1 = n.getRange().getRangeValStart();
 		if (range1 instanceof IdentRangeVal) { // this must be a predefined int
 			IDec dec1 = ((IdentRangeVal) range1).getDec();
 			bseg = scalarTable.getIntIndex(dec1);
-		} else { // bseg is a literal
+			bsegIsSymbolic = true;
+		} else { 
 			bseg = getIntVal(range1);
-		}
+		} 
 		IRangeVal range2 = n.getRange().getRangeValEnd();
 		if (range2 instanceof IdentRangeVal) { // this must be a predefined int
 			IDec dec2 = ((IdentRangeVal) range2).getDec();
 			eseg = scalarTable.getIntIndex(dec2);
-		} else { // bseg is a literal
+			esegIsSymbolic = true;
+		} else {
 			eseg = getIntVal(range2);
-		}
-		indexTable.addEntry(n, bseg, eseg, indexTypeNum);
+		} 
+		indexTable.addEntry(n, bseg, bsegIsSymbolic, eseg, esegIsSymbolic, indexTypeNum);
 		return false;
 	}
 
@@ -400,7 +405,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int indexTypeNum = TypeConstantMap.getTypeConstant("subindex");
 		IndexDec parentDec = (IndexDec) n.getParentIdent().getDec();
 		int parentIndex = indexTable.getIndex(parentDec);
-		indexTable.addEntry(n, parentIndex, 0, indexTypeNum);
+		indexTable.addEntry(n, parentIndex, false, 0, false, indexTypeNum);
 		return false;
 	}
 
@@ -423,6 +428,15 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(IntLitRangeVal n) { /* nop */
+	}
+	
+	@Override
+	public boolean visit(NegRangeVal n) { /* handled by IndexDec */
+		return false;
+	}
+
+	@Override
+	public void endVisit(NegRangeVal n) { /* nop */
 	}
 
 	@Override

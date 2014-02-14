@@ -82,7 +82,7 @@ public class ScalarTable {
 		 assert size == nConstants : "mismatch between intBiMap.size()=" + size +  " and nConstants=" + nConstants;
 		 BiMap<Integer,String> names = intBiMap.inverse();
 			for (int i = 0; i < size; i++){
-				sb.append(names.get(-i) + '\n'); 
+				sb.append(names.get(i) + '\n');  //NO LONGER -1
 			}
 		return sb.toString();
 	}
@@ -132,7 +132,7 @@ public class ScalarTable {
 	//currently they cannot be given a value when assigned.
 	int addConstant(String name){
 		int index = nConstants++;
-		Integer oldVal = intBiMap.put(name, -index);  //insert negative of index
+		Integer oldVal = intBiMap.put(name, index);  //ADDED EXTRA FIELD TO DETECT SYMBOLIC CONSTANTS, NO LONGER THE NEGATIVE OF INDEX.
 		assert oldVal == null: "adding duplicate constant name";
 		return index;
 	}
@@ -150,9 +150,7 @@ public class ScalarTable {
 		return index;
 	}
 	
-//	int addDoubleLiteralFortranIndex(double value){
-//		return addDoubleLiteral(value)+1;
-//	}
+
 
 	// AcesHack: convert the int to a double and treat as double literal
 	int addIntLiteral(int value) {
@@ -174,7 +172,7 @@ public class ScalarTable {
 		for (int i = 0; i != nConstantsToRead; i++){
 			int index = input.readInt();
 			String name = input.readString();
-			Integer oldVal = intBiMap.put(name, -index);  //insert negative of index
+			Integer oldVal = intBiMap.put(name, index);  //insert negative of index  NOT NOW
 			assert oldVal == null;
 		}
 	}
@@ -193,7 +191,7 @@ public class ScalarTable {
 		output.writeInt(nConstants);
 		BiMap<Integer, String> inverse = intBiMap.inverse();
 		for (int i = 0; i != nConstants; i++){
-			String name = inverse.get(-i);
+			String name = inverse.get(i); //no longer need to negate constant index
 			//output.write(i);
 		    output.writeString(name);	
 		}

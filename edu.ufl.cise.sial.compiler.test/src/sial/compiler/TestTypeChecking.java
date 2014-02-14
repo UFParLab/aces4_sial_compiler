@@ -178,4 +178,18 @@ public class TestTypeChecking {
 		runTypeCheckTest("set_persistent_fail", 2);
 	}
 	
+	@Test
+	public void simpleIndexRange_pass() throws IOException{
+		runTypeCheckTest("simpleIndexRange_pass",0);
+	}
+	
+	@Test
+	public void indexRange_fail() throws IOException{
+		runTypeCheckTest("indexRange_fail",1);
+	}
+	
+	@Test
+	public void negSimpleIndexRange_pass() throws IOException{
+		runTypeCheckTest("negSimpleIndexRange_pass",0);
+	}
 }
