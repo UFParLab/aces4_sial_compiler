@@ -51,8 +51,9 @@ public class SialPath {
 
 	}
 
-	/* findFile takes a String representing a filename and returns the canonical File object
-	 * for the corresponding file.  The directories in the SIAL path and the working
+	/** findFile returns the canonical File object
+	 * for the given file, which may be specified by a String representing the file name,
+	 * Path (or File) object.  The directories in the SIAL path and the working
 	 * directory are searched.  
 	 * 
 	 * If the file does not exist in a directory in the SialPath, a FileNotFoundException is thrown.
@@ -61,43 +62,36 @@ public class SialPath {
 	public File findFile(String fileName) throws IOException {
 		File file = new File(fileName);
 		assert file != null;
-		if (file.canRead())
-			return file.getCanonicalFile();
-		// file not in current directory, search directories in dirs
-		Iterator<File> iter = dirs.iterator();
-		File searching = file;
-		while (!searching.canRead() && iter.hasNext()) {
-			searching = new File(iter.next(),fileName);
-		}
-		if (searching.canRead()) {
-			return searching;
-		}
-		throw new FileNotFoundException(fileName + " not found");
+		return findFile(fileName, file);
 	}
 
 	public File findFile(Path filePath) throws IOException {
 		File file = filePath.toAbsolutePath().toFile();
 		String fileName = filePath.getFileName().toString();
 		assert file != null;
+		return findFile(fileName, file);
+	}
+	
+	private File findFile(String fileName, File file) throws IOException,
+			FileNotFoundException {
 		if (file.canRead())
 			return file.getCanonicalFile();
 		// file not in current directory, search directories in dirs
 		Iterator<File> iter = dirs.iterator();
 		File searching = file;
 		while (!searching.canRead() && iter.hasNext()) {
-			searching = new File(iter.next(),fileName);
-		}
-		if (searching.canRead()) {
-			return searching;
+			searching = new File(iter.next(), fileName);
+			if (searching.canRead())
+				return searching;
 		}
 		throw new FileNotFoundException(fileName + " not found");
 	}
-	/** returns the canonical path of the file with the given file name, if a file with this
-	 * name exists in the SialPath.  If not, then an IOException is thrown.
-	 */
 
-	//TODO:  should this throw a FileNotFoundException???
-	public String findPath(String fileName) throws IOException {
+
+	/** returns the canonical path of the file with the given file name, if a file with this
+	 * name exists in the SialPath.  If not, then an Exception is thrown.
+	 */
+	public String findPath(String fileName) throws IOException, FileNotFoundException {
 		return findFile(fileName).getCanonicalPath();
 	}
 
