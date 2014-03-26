@@ -1,0 +1,22 @@
+import "aces_defs.sialx"
+import "t2_def1.sialx"
+
+sial t2_def2
+distributed a(i,j)
+distributed b(j,i)
+temp c(i,j)
+temp d(i,j)
+scalar x 
+
+proc F
+do i
+do j
+get a (i,j)
+get b (j, i)
+x = a(i,j) * b(j,i)
+print_scalar x
+enddo j
+enddo i 
+endproc F
+
+endsial t2_def2

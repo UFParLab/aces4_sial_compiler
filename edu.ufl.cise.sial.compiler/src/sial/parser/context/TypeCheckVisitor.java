@@ -1416,6 +1416,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 			// get type of dimension in declaration
 			IDec dimensionDec = declaredDimensionList.getDimensionAt(i)
 					.getDec();
+			//if dimensionDec == null, the index was not properly declared.  
+			//this should have been detected when the children were visited.
+			//return to avoid null pointer exception.
+			if (dimensionDec == null) return;
 			// get a string representing type, could be some index or subindex
 			String dimensionType = (dimensionDec instanceof IndexDec) ? ((IndexDec) dimensionDec)
 					.getTypeName() : ((IndexDec) ((SubIndexDec) dimensionDec)
@@ -2230,14 +2234,18 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(SetPersistent n) {
 		IDec dec = n.getIdent().getDec();
-		if (check(dec instanceof ArrayDec, n, "set_persistent argument "
-				+ n.getIdent().getName()
-				+ " must be an array")) {
-			ArrayDec arrayDec = (ArrayDec)dec;
-			String typeName = arrayDec.getTypeName();
-			check(typeName.equals("static") || typeName.equals("served") || typeName.equals("distributed"),
-					n, "set_persistent argument " + n.getIdent().getName()
-							+ " must be a static, served, or distributed array");
+		if (dec instanceof ScalarDec) return;
+		if (check(dec instanceof ArrayDec, n,
+				"set_persistent argument " + n.getIdent().getName()
+						+ " must be an array or scalar")) {
+				String typeName = ((ArrayDec) dec).getTypeName();
+				check(typeName.equals("static") || typeName.equals("served")
+						|| typeName.equals("distributed"),
+						n,
+						"set_persistent array argument "
+								+ n.getIdent().getName()
+								+ " must be a static, served, or distributed");
+			
 		}
 	}
 
@@ -2247,13 +2255,17 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(RestorePersistent n) {
 		IDec dec = n.getIdent().getDec();
-		if (check(dec instanceof ArrayDec, n, "set_persistent argument "
-				+ n.getIdent().getName()
-				+ " must be an array")) {
-			String typeName = ((ArrayDec) dec).getTypeName();
-			check(typeName.equals("static") || typeName.equals("served") || typeName.equals("distributed"),
-					n, "set_persistent argument " + n.getIdent().getName()
-							+ " must be a static, served, or distributed array");
+		if (dec instanceof ScalarDec) return;
+		if (check(dec instanceof ArrayDec, n,
+				"restore_persistent argument " + n.getIdent().getName()
+						+ " must be an array or scalar")) {
+				String typeName = ((ArrayDec) dec).getTypeName();
+				check(typeName.equals("static") || typeName.equals("served")
+						|| typeName.equals("distributed"),
+						n,
+						"restore_persistent array argument "
+								+ n.getIdent().getName()
+								+ " must be a static, served, or distributed");
 		}
 	}
 }

@@ -1,0 +1,30 @@
+import "aces_defs.sialx"
+
+sial t2
+index i = 1,30
+index j = 30,50
+
+distributed a(i,j)
+distributed b(j,i)
+distributed c(i,j)
+temp d1(i,j)
+scalar x 
+
+proc F
+do i
+do j
+get a (i,j)
+get b (j, i)
+x = a(i,j) * b(j,i)
+#print_scalar x
+enddo j
+enddo i 
+endproc F
+
+
+distributed g(i,j)
+
+call F
+execute blocks_to_list t2.c
+
+endsial t2
