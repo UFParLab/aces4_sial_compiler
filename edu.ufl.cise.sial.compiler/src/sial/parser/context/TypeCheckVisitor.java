@@ -2234,6 +2234,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(SetPersistent n) {
 		IDec dec = n.getIdent().getDec();
+		if (!check(!isPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be persistent")){
+			return;
+		}
 		if (dec instanceof ScalarDec) return;
 		if (check(dec instanceof ArrayDec, n,
 				"set_persistent argument " + n.getIdent().getName()
@@ -2255,6 +2258,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(RestorePersistent n) {
 		IDec dec = n.getIdent().getDec();
+		if (!check(!isPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be target of restore persistent")){
+			return;
+		}
 		if (dec instanceof ScalarDec) return;
 		if (check(dec instanceof ArrayDec, n,
 				"restore_persistent argument " + n.getIdent().getName()

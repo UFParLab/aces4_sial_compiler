@@ -1,0 +1,34 @@
+import "aces_defs.sialx"
+sial set_persistent_predefined_fail
+
+    aoindex mu     = 1, norb
+      aoindex nu     = 1, norb
+      aoindex lambda = 1, norb
+      aoindex sigma  = 1, norb
+#
+      moaindex i = baocc, eaocc
+      moaindex i1= baocc, eaocc
+
+      moaindex a = bavirt, eavirt
+      
+      predefined scalar my_scalar 
+      scalar your_scalar
+
+      temp Txxxi(mu,nu,lambda,i)
+      temp Txixi(mu,i1,lambda,i)
+      temp Txxii(mu,nu,i1,i)
+      distributed Vxixi(mu,i1,lambda,i)
+      distributed Vxxii(mu,nu,i1,i)
+
+      served AOINT(mu,nu,lambda,sigma) 
+ 
+      set_persistent AOINT "aoint_file"
+      set_persistent Vxixi "v"
+      set_persistent my_scalar "MyScalar"
+      
+      restore_persistent AOINT "integrals"
+      restore_persistent Vxixi "b"
+      restore_persistent your_scalar "YourScalar"
+
+endsial set_persistent_predefined_fail
+
