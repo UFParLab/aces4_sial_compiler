@@ -7,6 +7,7 @@ import static sial.parser.context.ASTUtils.isStaticOrContiguousArray;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -116,6 +117,7 @@ import sial.parser.Ast.WhereClauseList;
 import sial.parser.context.AcesRangeChecks;
 import sial.parser.context.AmbiguousNameException;
 import sial.parser.context.SymbolTable;
+
 
 /** Performs type checking on SIAL programs */
 public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
@@ -291,6 +293,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public void endVisit(Sial n) {
 		symbolTable.set_symbolTablePopulated(true);
+		checkCallSites();
 	}
 
 	// dummy class to allow putting the program name in the symbol table.
@@ -1558,6 +1561,11 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		try {
 			IDec decl = findAndSetDec(n);
 			check(decl != null, n, n.toString() + " not declared");
+			if (decl instanceof IndexDec) {
+				check(isDefinedInEnclosingScope(n, n),
+						n, "index " + n.toString()
+								+ " not defined by enclosing do or pardo loop");
+			}
 		} catch (AmbiguousNameException e) {
 			emitError(n, e.getMessage());
 		}
@@ -2273,5 +2281,95 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 								+ n.getIdent().getName()
 								+ " must be a static, served, or distributed");
 		}
+	}
+	
+	
+	
+	/**
+	 * determines whether the given index has a defined value at this point.
+	 * Either it is within a pardo or do loop that defines the variable, or it
+	 * is in a proc, and is defined in all callsites of the proc. Since the 
+	 * callsites have not necessarily been visited yet, they are added to
+	 * a list, indexAtCallSitesToCheck.  These are checked at the end of the program.
+	 * 
+	 * @param n
+	 *            ident representing index 
+	 * @param node
+	 *            node whose ancesters should define the index
+	 * @return
+	 */
+	public boolean isDefinedInEnclosingScope(Ident n, IAst node) {
+		IndexDec dec = (IndexDec) n.getDec();
+		IAst tnode = ASTUtils.getEnclosingLoopOrIDec(n, node);
+		if (tnode == null)
+			return false;
+		if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
+			return true;
+		if (tnode instanceof ProcDec) {
+//			ArrayList<CallStatement> callSites = getCallSites(dec,
+//					(ProcDec) tnode); // if here, tnode is ProcDec
+//			Iterator<CallStatement> iter = callSites.iterator();
+//			while (iter.hasNext()) {
+//				if (!isDefinedInEnclosingScope(dec, iter.next()))
+//					return false;
+//			}
+//			return true;
+			indexAtCallSitesToCheck.add(new IndexAtCallSites(n, dec, (ProcDec) tnode));
+		}
+		return true;
+	}
+	
+	/** List of indices that need to be checked along with their call sites */
+	List<IndexAtCallSites> indexAtCallSitesToCheck = new ArrayList<IndexAtCallSites>();
+	public  boolean checkCallSites(){
+		
+//		Iterator<IndexAtCallSites> iter = indexAtCallSitesToCheck.iterator();
+//		while(iter.hasNext()){
+//			if ( !iter.next().checkCallSite() ) return false;
+//		}
+		for (int i = 0; i < indexAtCallSitesToCheck.size(); ++i){
+			indexAtCallSitesToCheck.get(i).checkCallSite();
+		}
+		return true;
+	}
+	
+	/** IndexAtCallSites encapsulates an index and call sites for the procedure where this index is found.  These meed to be checked to ensure that
+	 * the index has a defined value at that point in the program.
+
+	 */
+	class IndexAtCallSites{
+		ArrayList<CallStatement> callSites;
+		ProcDec procDec;
+		Ident ident;
+		IndexDec indexDec;
+
+		
+		IndexAtCallSites(Ident ident, IndexDec indexDec, ProcDec procDec){
+			callSites = ASTUtils.getCallSites(indexDec, procDec);
+			this.ident = ident;
+			this.procDec = procDec;
+			this.indexDec = indexDec;
+		}
+		
+		/**
+		 * traverses the list and ensures that 
+		 * @return
+		 */
+		boolean checkCallSite(){
+			Iterator<CallStatement> iter = callSites.iterator();
+			while (iter.hasNext()) {
+				CallStatement callStatement = iter.next();
+//				if (!isDefinedInEnclosingScope(ident, callStatement)){
+//					System.out.println("checking call site  " + callStatement + " for index " + indexDec);
+//					return false;
+//				}
+				check(isDefinedInEnclosingScope(ident, callStatement), ident, "index " + ident + " not defined at call site " + callStatement + " at line " + callStatement.getLeftIToken().getLine());						
+			}
+			return true;
+		}
+		
+
+			
+		
 	}
 }

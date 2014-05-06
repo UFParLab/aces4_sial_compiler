@@ -5,6 +5,7 @@ package sial.parser.context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import static sial.code_gen.SipConstants.static_array_t;
 
@@ -25,16 +26,21 @@ import sial.parser.SialParsersym;
 import sial.parser.Ast.ASTNode;
 import sial.parser.Ast.ASTNodeToken;
 import sial.parser.Ast.ArrayDec;
+import sial.parser.Ast.CallStatement;
 import sial.parser.Ast.ContiguousModifier;
+import sial.parser.Ast.DoStatement;
 import sial.parser.Ast.IASTNodeToken;
 import sial.parser.Ast.IDec;
 import sial.parser.Ast.IRangeVal;
+import sial.parser.Ast.Ident;
+import sial.parser.Ast.IdentList;
 import sial.parser.Ast.ImportProg;
 import sial.parser.Ast.ImportProgList;
 import sial.parser.Ast.IndexDec;
 import sial.parser.Ast.IntDec;
 import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.NegRangeVal;
+import sial.parser.Ast.PardoStatement;
 //import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.ProcDec;
@@ -74,10 +80,119 @@ public class ASTUtils implements SialParsersym{
 		return (ProcDec) tnode;
 	}
 	
+	/**
+	 * 
+	 * @param n  The identifier represeting an index
+	 * @param node  The AST node whose ancestors should define a value for the index
+	 * @return  the AST node that is either a Dec in which the index appears, Do or Pardo loop that defines the given index, or the AST node of the procedure containing the node, or null if none of the above
+	 */
+	static IAst getEnclosingLoopOrIDec(Ident n, IAst node){
+		IndexDec dec = (IndexDec) n.getDec();
+		IAst tnode = node.getParent();
+		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
+			tnode = tnode.getParent();
+		}
+		if (tnode == null ) return tnode; //not found
+		if (tnode instanceof IDec) return tnode; //this context of this ident was a declaration.
+		if (tnode instanceof DoStatement){
+			DoStatement doStatement = (DoStatement)tnode;
+			IDec doVarDec = doStatement.getStartIndex().getDec();
+			if (doVarDec == dec) return doStatement;
+			return getEnclosingLoopOrIDec(n, doStatement);
+		}
+		if (tnode instanceof PardoStatement){
+			PardoStatement pardoStatement = (PardoStatement)tnode;
+			IdentList identList  = pardoStatement.getStartIndices();
+			for (int i = 0; i < identList.size(); ++i){
+				Ident pardoVar = (Ident) identList.getElementAt(i);
+				IDec pardoVarDec = pardoVar.getDec();
+				if (pardoVarDec == dec) return pardoStatement;
+			}
+			return getEnclosingLoopOrIDec(n, pardoStatement);
+		}
+		return null;
+	}
 	
+	static ArrayList<CallStatement> getCallSites(IndexDec dec, ProcDec procDec){
+		Sial root = getRoot((IAst)procDec);
+		ArrayList<CallStatement> callStatements = new CollectCallSiteVisitor(root, procDec).getCallSites();
+		return callStatements;
+	}
+	
+	
+//	/**
+//	 * determines whether the given index has a defined value at this point.
+//	 * Either it is within a pardo or do loop that defines the variable, or it
+//	 * is in a proc, and is defined in all callsites of the proc. Since the 
+//	 * callsites have not necessarily been visited yet, they are added to
+//	 * a list, indexAtCallSitesToCheck.  These are checked at the end of the program.
+//	 * 
+//	 * @param n
+//	 *            ident representing index 
+//	 * @param node
+//	 *            node whose ancesters should define the index
+//	 * @return
+//	 */
+//	public static boolean isDefinedInEnclosingScope(Ident n, IAst node) {
+//		IndexDec dec = (IndexDec) n.getDec();
+//		IAst tnode = getEnclosingLoopOrIDec(n, node);
+//		if (tnode == null)
+//			return false;
+//		if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
+//			return true;
+//		if (tnode instanceof ProcDec) {
+////			ArrayList<CallStatement> callSites = getCallSites(dec,
+////					(ProcDec) tnode); // if here, tnode is ProcDec
+////			Iterator<CallStatement> iter = callSites.iterator();
+////			while (iter.hasNext()) {
+////				if (!isDefinedInEnclosingScope(dec, iter.next()))
+////					return false;
+////			}
+////			return true;
+//			indexAtCallSitesToCheck.add(new IndexAtCallSites(dec, (ProcDec) tnode));
+//		}
+//		return true;
+//	}
+//	
+//	static List<IndexAtCallSites> indexAtCallSitesToCheck = new ArrayList<IndexAtCallSites>();
+//	public static boolean checkCallSites(){
+//		Iterator<IndexAtCallSites> iter = indexAtCallSitesToCheck.iterator();
+//		while(iter.hasNext()){
+//			if ( !iter.next().check() ) return false;
+//		}
+//		return true;
+//	}
+//	
+//	static class IndexAtCallSites{
+//		ArrayList<CallStatement> callSites;
+//		ProcDec procDec;
+//		Ident ident;
+//		IndexDec indexDec;
+//
+//		
+//		IndexAtCallSites(Ident ident, IndexDec indexDec, ProcDec procDec){
+//			callSites = getCallSites(indexDec, procDec);
+//			this.ident = ident;
+//			this.procDec = procDec;
+//			this.indexDec = indexDec;
+//		}
+//		
+//		boolean checkCallSite(){
+//			Iterator<CallStatement> iter = callSites.iterator();
+//			while (iter.hasNext()) {
+//				CallStatement callStatement = iter.next();
+////				if (!isDefinedInEnclosingScope(ident, callStatement)){
+////					System.out.println("checking call site  " + callStatement + " for index " + indexDec);
+////					return false;
+////				}
+//				if (!check(isDefinedInEnclosingScope(ident, callStatement), ident, "index " + ident + " not defined at call site " + callStatement + " at line " + callStatement.getLeftIToken().getLine())
+//						
+//			}
+//			return true;
+//		}
+//	}
 
-	
-    public static String stripName(String rawId) {
+	public static String stripName(String rawId) {
         int idx= rawId.indexOf('$');
 
         return (idx >= 0) ? rawId.substring(0, idx) : rawId;
@@ -271,7 +386,6 @@ public class ASTUtils implements SialParsersym{
     	//return, padding with zeros
     	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
 	}
-    
-
+     
 
 }

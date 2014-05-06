@@ -580,8 +580,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		// visit the loop variable ident to get its index
 		n.getStartIndex().accept(this);
 		int[] ind = Arrays.copyOf(defaultOneInd, defaultOneInd.length);
-		// replace ind[0] with (fortran) index of loop variable
-		ind[0] = operandStack.pop(); // ACES4--this is not a fortran index
+		ind[0] = operandStack.pop(); // index of loop variable
 		int do_instruction = opTable.addOptableEntry(do_op, ind, lineno(n));
 		// visit remaining children
 		if (n.getWhereClauseList() != null)
@@ -986,11 +985,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public void endVisit(IdentList n) {
 		// Each ident in this list has left its address on the operand stack
-		// Remove them and put into an in array, converting to Fortran indices.
+		// Remove them and put into an in array.
 		// Push the array on the indexStack
 		int nindex = n.size();
 		// Get the index table entries from the stack and fill the ind array,
-		// converting to fortran indices
 		int[] ind = new int[TypeConstantMap.max_rank];
 		for (int i = nindex - 1; i >= 0; i--) {
 			ind[i] = operandStack.pop();

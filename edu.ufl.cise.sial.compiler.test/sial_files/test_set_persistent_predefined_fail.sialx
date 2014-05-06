@@ -47,5 +47,6 @@ sial t45
      set_persistent Vxxii "Vxxii"
      set_persistent stat   "staticarray"
      set_persistent my_scalar "my_scalar"
+     set_persistent ca "ca"
 
 endsial t45

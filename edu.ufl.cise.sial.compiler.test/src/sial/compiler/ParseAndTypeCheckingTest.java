@@ -200,7 +200,27 @@ public class ParseAndTypeCheckingTest {
 	
 	@Test
 	public void restore_persistent_test_fail() throws IOException{
-		runTypeCheckTest("restore_persistent_test_fail",1);
+		runTypeCheckTest("restore_persistent_test_fail",2);
+	}
+	
+	@Test
+	public void undefined_index_fail() throws IOException{
+		runTypeCheckTest("undefined_index_fail",1);
+	}
+	
+	@Test
+	public void index_in_proc_not_defined() throws IOException{
+		runTypeCheckTest("index_in_proc_not_defined",1);
+	}
+	
+	@Test
+	public void trans_frag_fpardo() throws IOException{
+		runTypeCheckTest("trans_frag_fpardo",1);
+	}
+	
+	@Test
+	public void rccsdpr_aaa() throws IOException{
+		runTypeCheckTest("rccsdpt_aaa",0);
 	}
 
 }

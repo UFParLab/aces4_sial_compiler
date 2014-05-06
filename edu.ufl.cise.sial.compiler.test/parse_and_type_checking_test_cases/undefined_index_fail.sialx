@@ -1,0 +1,22 @@
+
+
+sial undefined_index_fail
+index i = 1,30
+index j = 30,50
+index k = 1,20
+
+distributed a(i,j)
+distributed b(i,j)
+distributed c(i,k)
+
+
+do i
+do j
+ a(i,j) = 0.0
+c(i,k) = 0.0
+enddo j
+enddo i
+
+
+
+endsial undefined_index_fail
