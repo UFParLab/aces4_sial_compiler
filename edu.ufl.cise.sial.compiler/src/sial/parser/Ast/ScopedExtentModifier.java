@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 18:  Modifier ::= scoped_extent
+ *<li>Rule 17:  Modifier ::= scoped_extent
  *</b>
  */
 public class ScopedExtentModifier extends ASTNodeToken implements IModifier

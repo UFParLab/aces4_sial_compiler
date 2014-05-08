@@ -9,15 +9,19 @@ import org.eclipse.imp.parser.IParser;
   import java.util.List;
 
 /**
+ *<em>
+ *<li>Rule 99:  STRINGLITopt ::= $Empty
+ *</em>
+ *<p>
  *<b>
- *<li>Rule 17:  Modifier ::= persistent
+ *<li>Rule 100:  STRINGLITopt ::= STRINGLIT
  *</b>
  */
-public class PersistentModifier extends ASTNodeToken implements IModifier
+public class STRINGLITopt extends ASTNodeToken implements ISTRINGLITopt
 {
-    public IToken getpersistent() { return leftIToken; }
+    public IToken getSTRINGLIT() { return leftIToken; }
 
-    public PersistentModifier(IToken token) { super(token); initialize(); }
+    public STRINGLITopt(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

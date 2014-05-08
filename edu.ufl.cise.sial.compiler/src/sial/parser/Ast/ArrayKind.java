@@ -10,11 +10,11 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 33:  ArrayKind ::= static$akind
- *<li>Rule 34:  ArrayKind ::= temp$akind
- *<li>Rule 35:  ArrayKind ::= local$akind
- *<li>Rule 36:  ArrayKind ::= distributed$akind
- *<li>Rule 37:  ArrayKind ::= served$akind
+ *<li>Rule 32:  ArrayKind ::= static$akind
+ *<li>Rule 33:  ArrayKind ::= temp$akind
+ *<li>Rule 34:  ArrayKind ::= local$akind
+ *<li>Rule 35:  ArrayKind ::= distributed$akind
+ *<li>Rule 36:  ArrayKind ::= served$akind
  *</b>
  */
 public class ArrayKind extends ASTNodeToken implements IArrayKind

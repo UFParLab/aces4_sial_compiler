@@ -10,20 +10,25 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 85:  Statement ::= print$ StringLiteral
+ *<li>Rule 99:  Statement ::= restore_persistent$ Ident StringLiteral
  *</b>
  */
-public class PrintStatement extends ASTNode implements IStatement
+public class RestorePersistent extends ASTNode implements IStatement
 {
+    private Ident _Ident;
     private StringLiteral _StringLiteral;
 
+    public Ident getIdent() { return _Ident; }
     public StringLiteral getStringLiteral() { return _StringLiteral; }
 
-    public PrintStatement(IToken leftIToken, IToken rightIToken,
-                          StringLiteral _StringLiteral)
+    public RestorePersistent(IToken leftIToken, IToken rightIToken,
+                             Ident _Ident,
+                             StringLiteral _StringLiteral)
     {
         super(leftIToken, rightIToken);
 
+        this._Ident = _Ident;
+        ((ASTNode) _Ident).setParent(this);
         this._StringLiteral = _StringLiteral;
         ((ASTNode) _StringLiteral).setParent(this);
         initialize();
@@ -35,6 +40,7 @@ public class PrintStatement extends ASTNode implements IStatement
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
+        list.add(_Ident);
         list.add(_StringLiteral);
         return list;
     }
@@ -42,9 +48,10 @@ public class PrintStatement extends ASTNode implements IStatement
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof PrintStatement)) return false;
+        if (! (o instanceof RestorePersistent)) return false;
         if (! super.equals(o)) return false;
-        PrintStatement other = (PrintStatement) o;
+        RestorePersistent other = (RestorePersistent) o;
+        if (! _Ident.equals(other._Ident)) return false;
         if (! _StringLiteral.equals(other._StringLiteral)) return false;
         return true;
     }
@@ -52,6 +59,7 @@ public class PrintStatement extends ASTNode implements IStatement
     public int hashCode()
     {
         int hash = super.hashCode();
+        hash = hash * 31 + (_Ident.hashCode());
         hash = hash * 31 + (_StringLiteral.hashCode());
         return hash;
     }
@@ -67,7 +75,10 @@ public class PrintStatement extends ASTNode implements IStatement
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
+        {
+            _Ident.accept(v);
             _StringLiteral.accept(v);
+        }
         v.endVisit(this);
     }
 }

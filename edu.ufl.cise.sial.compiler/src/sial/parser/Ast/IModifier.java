@@ -6,7 +6,6 @@ package sial.parser.Ast;
  *<ul>
  *<li>Sip_ConsistentModifier
  *<li>PredefinedModifier
- *<li>PersistentModifier
  *<li>ScopedExtentModifier
  *<li>ContiguousModifier
  *<li>Auto_AllocateModifier

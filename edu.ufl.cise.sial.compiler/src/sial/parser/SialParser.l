@@ -299,7 +299,6 @@ Terminals:
     where
     import
     predefined
-    persistent
     special
     server_barrier
     sip_barrier
@@ -319,6 +318,8 @@ Terminals:
     gpu_free
     gpu_put
     gpu_get
+    set_persistent
+    restore_persistent
     EOF_TOKEN
     SINGLE_LINE_COMMENT
     IDENTIFIER
@@ -353,40 +354,40 @@ Rules:
 14                 | Modifiers Modifier
 15     Modifier$Sip_ConsistentModifier ::= sip_consistent
 16     Modifier$PredefinedModifier ::= predefined
-17     Modifier$PersistentModifier ::= persistent
-18     Modifier$ScopedExtentModifier ::= scoped_extent
-19     Modifier$ContiguousModifier ::= contiguous
-20     Modifier$Auto_AllocateModifier ::= auto_allocate
-21     DecList$$Dec ::= $Empty
-22               | DecList Dec EOLs $
-23     Dec ::= ScalarDec
-24           | ArrayDec
-25           | IndexDec
-26           | SubIndexDec
-27           | IntDec
-28           | ProcDec
-29           | SpecialDec
-30     ScalarDec ::= Modifiersopt scalar $ Ident
-31     IntDec ::= Modifiersopt int $ Ident
-32     ArrayDec ::= Modifiersopt ArrayKind Ident ( $ DimensionList ) $
-33     ArrayKind$ArrayKind ::= static $akind
-34                 | temp $akind
-35                 | local $akind
-36                 | distributed $akind
-37                 | served $akind
-38     DimensionList$$Dimension ::= Dimension
-39                     | DimensionList , $ Dimension
-40     Dimension ::= Ident
-41     IndexDec ::= Modifiersopt IndexKind Ident = $ Range
-42     IndexKind$IndexKind ::= aoindex $ikind
-43                 | moindex $ikind
-44                 | moaindex $ikind
-45                 | mobindex $ikind
-46                 | index $ikind
-47                 | laindex $ikind
-48     SubIndexDec$SubIndexDec ::= subindex $ Ident of $ Ident $ParentIdent
-49     Range ::= RangeVal $RangeValStart , $ RangeVal $RangeValEnd
-50     RangeVal$IntLitRangeVal ::= INTLIT
+17     Modifier$ScopedExtentModifier ::= scoped_extent
+18     Modifier$ContiguousModifier ::= contiguous
+19     Modifier$Auto_AllocateModifier ::= auto_allocate
+20     DecList$$Dec ::= $Empty
+21               | DecList Dec EOLs $
+22     Dec ::= ScalarDec
+23           | ArrayDec
+24           | IndexDec
+25           | SubIndexDec
+26           | IntDec
+27           | ProcDec
+28           | SpecialDec
+29     ScalarDec ::= Modifiersopt scalar $ Ident
+30     IntDec ::= Modifiersopt int $ Ident
+31     ArrayDec ::= Modifiersopt ArrayKind Ident ( $ DimensionList ) $
+32     ArrayKind$ArrayKind ::= static $akind
+33                 | temp $akind
+34                 | local $akind
+35                 | distributed $akind
+36                 | served $akind
+37     DimensionList$$Dimension ::= Dimension
+38                     | DimensionList , $ Dimension
+39     Dimension ::= Ident
+40     IndexDec ::= Modifiersopt IndexKind Ident = $ Range
+41     IndexKind$IndexKind ::= aoindex $ikind
+42                 | moindex $ikind
+43                 | moaindex $ikind
+44                 | mobindex $ikind
+45                 | index $ikind
+46                 | laindex $ikind
+47     SubIndexDec$SubIndexDec ::= subindex $ Ident of $ Ident $ParentIdent
+48     Range ::= RangeVal $RangeValStart , $ RangeVal $RangeValEnd
+49     RangeVal$IntLitRangeVal ::= INTLIT
+50     RangeVal$NegRangeVal ::= - $ INTLIT
 51     RangeVal$IdentRangeVal ::= Ident
 52     ProcDec ::= proc $ Ident EOLs $ StatementList endproc Ident $endIdent
 53     SpecialDec ::= special $ Ident IdentOpt $Signature
@@ -420,8 +421,8 @@ Rules:
 81     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
 82     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
 83     Statement$DestroyStatement ::= destroy $ Ident
-84     Statement$PrintlnStatement ::= println $ STRINGLIT
-85     Statement$PrintStatement ::= print $ STRINGLIT
+84     Statement$PrintlnStatement ::= println $ StringLiteral
+85     Statement$PrintStatement ::= print $ StringLiteral
 86     Statement$PrintIndexStatement ::= print_index $ Ident
 87     Statement$PrintScalarStatement ::= print_scalar $ Ident
 88     Arg ::= Primary
@@ -434,45 +435,47 @@ Rules:
 95     Statement$GpuFree ::= gpu_free $ Primary
 96     Statement$GpuPut ::= gpu_put $ Primary
 97     Statement$GpuGet ::= gpu_get $ Primary
-98     AssignOp$AssignOpEqual ::= =
-99     AssignOp$AssignOpPlus ::= +=
-100    AssignOp$AssignOpMinus ::= -=
-101    AssignOp$AssignOpStar ::= *=
-102    ScalarOrBlockVar ::= Ident
-103                       | DataBlock
-104    DataBlock ::= Ident ( $ Indices ) $
-105    Indices$$Ident ::= Ident
-106              | Indices , $ Ident
-107    AllocIndex$AllocIndexIdent ::= Ident
-108    AllocIndex$AllocIndexWildCard ::= * $
-109    AllocIndexList$$AllocIndex ::= AllocIndex
-110                     | AllocIndexList , $ AllocIndex
-111    AllocIndexListopt ::= $Empty
-112                        | ( AllocIndexList )
-113    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
-114    RelOp$RelOp ::= < $op
-115            | > $op
-116            | <= $op
-117            | >= $op
-118            | == $op
-119            | != $op
-120    Expression ::= UnaryExpression $UnaryExpression
-121                 | BinaryExpression $BinaryExpression
-122    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
-123    BinOp$BinOpStar ::= *
-124    BinOp$BinOpDiv ::= /
-125    BinOp$BinOpPlus ::= +
-126    BinOp$BinOpMinus ::= -
-127    BinOp$BinOpTensor ::= ^
-128    UnaryExpression ::= Primary
-129    UnaryExpression$NegatedUnary ::= - $ Primary
-130    Primary$IntLitPrimary ::= INTLIT
-131    Primary$DoubleLitPrimary ::= DOUBLELIT
-132    Primary$IdentPrimary ::= Ident
-133    Primary$DataBlockPrimary ::= DataBlock
-134    Primary$StringLitPrimary ::= StringLiteral
-135    StringLiteral ::= STRINGLIT
-136    Ident ::= IDENTIFIER
+98     Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
+99     Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
+100    AssignOp$AssignOpEqual ::= =
+101    AssignOp$AssignOpPlus ::= +=
+102    AssignOp$AssignOpMinus ::= -=
+103    AssignOp$AssignOpStar ::= *=
+104    ScalarOrBlockVar ::= Ident
+105                       | DataBlock
+106    DataBlock ::= Ident ( $ Indices ) $
+107    Indices$$Ident ::= Ident
+108              | Indices , $ Ident
+109    AllocIndex$AllocIndexIdent ::= Ident
+110    AllocIndex$AllocIndexWildCard ::= * $
+111    AllocIndexList$$AllocIndex ::= AllocIndex
+112                     | AllocIndexList , $ AllocIndex
+113    AllocIndexListopt ::= $Empty
+114                        | ( AllocIndexList )
+115    RelationalExpression ::= UnaryExpression $UnaryExpressionLeft RelOp UnaryExpression $UnaryExpressionRight
+116    RelOp$RelOp ::= < $op
+117            | > $op
+118            | <= $op
+119            | >= $op
+120            | == $op
+121            | != $op
+122    Expression ::= UnaryExpression $UnaryExpression
+123                 | BinaryExpression $BinaryExpression
+124    BinaryExpression ::= UnaryExpression $Expr1 BinOp UnaryExpression $Expr2
+125    BinOp$BinOpStar ::= *
+126    BinOp$BinOpDiv ::= /
+127    BinOp$BinOpPlus ::= +
+128    BinOp$BinOpMinus ::= -
+129    BinOp$BinOpTensor ::= ^
+130    UnaryExpression ::= Primary
+131    UnaryExpression$NegatedUnary ::= - $ Primary
+132    Primary$IntLitPrimary ::= INTLIT
+133    Primary$DoubleLitPrimary ::= DOUBLELIT
+134    Primary$IdentPrimary ::= Ident
+135    Primary$DataBlockPrimary ::= DataBlock
+136    Primary$StringLitPrimary ::= StringLiteral
+137    StringLiteral ::= STRINGLIT
+138    Ident ::= IDENTIFIER
 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
@@ -545,7 +548,6 @@ destroy ::= destroy
 where ::= where
 import ::= import
 predefined ::= predefined
-persistent ::= persistent
 special ::= special
 server_barrier ::= server_barrier
 sip_barrier ::= sip_barrier
@@ -565,6 +567,8 @@ gpu_allocate ::= gpu_allocate
 gpu_free ::= gpu_free
 gpu_put ::= gpu_put
 gpu_get ::= gpu_get
+set_persistent ::= set_persistent
+restore_persistent ::= restore_persistent
 EOF_TOKEN ::= EOF_TOKEN
 SINGLE_LINE_COMMENT ::= SINGLE_LINE_COMMENT
 IDENTIFIER ::= IDENTIFIER
@@ -593,6 +597,7 @@ RelationalExpression ::= RelationalExpression
 Indices ::= Indices
 DataBlock ::= DataBlock
 AssignOp ::= AssignOp
+StringLiteral ::= StringLiteral
 Arg ::= Arg
 Primary ::= Primary
 ScalarOrBlockVar ::= ScalarOrBlockVar
@@ -618,8 +623,7 @@ IdentOpt ::=
 WhereClauseList ::= 
 AllocIndexListopt ::= 
 ArgList ::= 
-BinaryExpression ::= 
-StringLiteral ::= 
+BinaryExpression ::= 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
 

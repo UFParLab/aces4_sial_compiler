@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 31:  IntDec ::= Modifiersopt int$ Ident
+ *<li>Rule 30:  IntDec ::= Modifiersopt int$ Ident
  *</b>
  */
 public class IntDec extends ASTNode implements IIntDec

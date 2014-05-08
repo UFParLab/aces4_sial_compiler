@@ -1,8 +1,0 @@
-import "aces_defs.sialx"
-import "t0_defs.sialx"
-sial t0
-
-
-execute blocks_to_list a
-
-endsial t0

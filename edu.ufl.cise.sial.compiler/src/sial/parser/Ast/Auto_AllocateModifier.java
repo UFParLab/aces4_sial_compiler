@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 20:  Modifier ::= auto_allocate
+ *<li>Rule 19:  Modifier ::= auto_allocate
  *</b>
  */
 public class Auto_AllocateModifier extends ASTNodeToken implements IModifier

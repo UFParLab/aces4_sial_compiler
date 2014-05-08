@@ -1,10 +1,11 @@
 package sial.parser.Ast;
 
 /**
- * is always implemented by <b>ASTNodeToken</b>. It is also implemented by:
+ * is implemented by:
  *<b>
  *<ul>
  *<li>IntLitRangeVal
+ *<li>NegRangeVal
  *<li>IdentRangeVal
  *<li>Ident
  *</ul>

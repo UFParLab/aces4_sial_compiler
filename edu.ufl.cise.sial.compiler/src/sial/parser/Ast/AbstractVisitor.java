@@ -40,9 +40,6 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(PredefinedModifier n) { unimplementedVisitor("visit(PredefinedModifier)"); return true; }
     public void endVisit(PredefinedModifier n) { unimplementedVisitor("endVisit(PredefinedModifier)"); }
 
-    public boolean visit(PersistentModifier n) { unimplementedVisitor("visit(PersistentModifier)"); return true; }
-    public void endVisit(PersistentModifier n) { unimplementedVisitor("endVisit(PersistentModifier)"); }
-
     public boolean visit(ScopedExtentModifier n) { unimplementedVisitor("visit(ScopedExtentModifier)"); return true; }
     public void endVisit(ScopedExtentModifier n) { unimplementedVisitor("endVisit(ScopedExtentModifier)"); }
 
@@ -84,6 +81,9 @@ public abstract class AbstractVisitor implements Visitor
 
     public boolean visit(IntLitRangeVal n) { unimplementedVisitor("visit(IntLitRangeVal)"); return true; }
     public void endVisit(IntLitRangeVal n) { unimplementedVisitor("endVisit(IntLitRangeVal)"); }
+
+    public boolean visit(NegRangeVal n) { unimplementedVisitor("visit(NegRangeVal)"); return true; }
+    public void endVisit(NegRangeVal n) { unimplementedVisitor("endVisit(NegRangeVal)"); }
 
     public boolean visit(IdentRangeVal n) { unimplementedVisitor("visit(IdentRangeVal)"); return true; }
     public void endVisit(IdentRangeVal n) { unimplementedVisitor("endVisit(IdentRangeVal)"); }
@@ -208,6 +208,12 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(GpuGet n) { unimplementedVisitor("visit(GpuGet)"); return true; }
     public void endVisit(GpuGet n) { unimplementedVisitor("endVisit(GpuGet)"); }
 
+    public boolean visit(SetPersistent n) { unimplementedVisitor("visit(SetPersistent)"); return true; }
+    public void endVisit(SetPersistent n) { unimplementedVisitor("endVisit(SetPersistent)"); }
+
+    public boolean visit(RestorePersistent n) { unimplementedVisitor("visit(RestorePersistent)"); return true; }
+    public void endVisit(RestorePersistent n) { unimplementedVisitor("endVisit(RestorePersistent)"); }
+
     public boolean visit(AssignOpEqual n) { unimplementedVisitor("visit(AssignOpEqual)"); return true; }
     public void endVisit(AssignOpEqual n) { unimplementedVisitor("endVisit(AssignOpEqual)"); }
 
@@ -297,7 +303,6 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ModifierList) return visit((ModifierList) n);
         else if (n instanceof Sip_ConsistentModifier) return visit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) return visit((PredefinedModifier) n);
-        else if (n instanceof PersistentModifier) return visit((PersistentModifier) n);
         else if (n instanceof ScopedExtentModifier) return visit((ScopedExtentModifier) n);
         else if (n instanceof ContiguousModifier) return visit((ContiguousModifier) n);
         else if (n instanceof Auto_AllocateModifier) return visit((Auto_AllocateModifier) n);
@@ -312,6 +317,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof SubIndexDec) return visit((SubIndexDec) n);
         else if (n instanceof Range) return visit((Range) n);
         else if (n instanceof IntLitRangeVal) return visit((IntLitRangeVal) n);
+        else if (n instanceof NegRangeVal) return visit((NegRangeVal) n);
         else if (n instanceof IdentRangeVal) return visit((IdentRangeVal) n);
         else if (n instanceof ProcDec) return visit((ProcDec) n);
         else if (n instanceof SpecialDec) return visit((SpecialDec) n);
@@ -353,6 +359,8 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof GpuFree) return visit((GpuFree) n);
         else if (n instanceof GpuPut) return visit((GpuPut) n);
         else if (n instanceof GpuGet) return visit((GpuGet) n);
+        else if (n instanceof SetPersistent) return visit((SetPersistent) n);
+        else if (n instanceof RestorePersistent) return visit((RestorePersistent) n);
         else if (n instanceof AssignOpEqual) return visit((AssignOpEqual) n);
         else if (n instanceof AssignOpPlus) return visit((AssignOpPlus) n);
         else if (n instanceof AssignOpMinus) return visit((AssignOpMinus) n);
@@ -391,7 +399,6 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ModifierList) endVisit((ModifierList) n);
         else if (n instanceof Sip_ConsistentModifier) endVisit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) endVisit((PredefinedModifier) n);
-        else if (n instanceof PersistentModifier) endVisit((PersistentModifier) n);
         else if (n instanceof ScopedExtentModifier) endVisit((ScopedExtentModifier) n);
         else if (n instanceof ContiguousModifier) endVisit((ContiguousModifier) n);
         else if (n instanceof Auto_AllocateModifier) endVisit((Auto_AllocateModifier) n);
@@ -406,6 +413,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof SubIndexDec) endVisit((SubIndexDec) n);
         else if (n instanceof Range) endVisit((Range) n);
         else if (n instanceof IntLitRangeVal) endVisit((IntLitRangeVal) n);
+        else if (n instanceof NegRangeVal) endVisit((NegRangeVal) n);
         else if (n instanceof IdentRangeVal) endVisit((IdentRangeVal) n);
         else if (n instanceof ProcDec) endVisit((ProcDec) n);
         else if (n instanceof SpecialDec) endVisit((SpecialDec) n);
@@ -447,6 +455,8 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof GpuFree) endVisit((GpuFree) n);
         else if (n instanceof GpuPut) endVisit((GpuPut) n);
         else if (n instanceof GpuGet) endVisit((GpuGet) n);
+        else if (n instanceof SetPersistent) endVisit((SetPersistent) n);
+        else if (n instanceof RestorePersistent) endVisit((RestorePersistent) n);
         else if (n instanceof AssignOpEqual) endVisit((AssignOpEqual) n);
         else if (n instanceof AssignOpPlus) endVisit((AssignOpPlus) n);
         else if (n instanceof AssignOpMinus) endVisit((AssignOpMinus) n);

@@ -38,6 +38,8 @@ package sial.parser.Ast;
  *<li>GpuFree
  *<li>GpuPut
  *<li>GpuGet
+ *<li>SetPersistent
+ *<li>RestorePersistent
  *</ul>
  *</b>
  */

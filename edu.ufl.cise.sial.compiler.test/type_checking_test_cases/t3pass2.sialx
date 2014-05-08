@@ -1,7 +1,0 @@
-import "t3_def1.sialx"
-import "t3_def2.sialx"
-import "t3_def3.sialx"
-
-sial t3pass2
-distributed c(k,k)
-endsial t3pass2

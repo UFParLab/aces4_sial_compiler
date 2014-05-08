@@ -14,13 +14,13 @@ import org.eclipse.imp.parser.IParser;
  *<ul>
  *<li>Sip_ConsistentModifier
  *<li>PredefinedModifier
- *<li>PersistentModifier
  *<li>ScopedExtentModifier
  *<li>ContiguousModifier
  *<li>Auto_AllocateModifier
  *<li>ArrayKind
  *<li>IndexKind
  *<li>IntLitRangeVal
+ *<li>NegRangeVal
  *<li>IdentRangeVal
  *<li>CallStatement
  *<li>ReturnStatement
@@ -56,6 +56,8 @@ import org.eclipse.imp.parser.IParser;
  *<li>GpuFree
  *<li>GpuPut
  *<li>GpuGet
+ *<li>SetPersistent
+ *<li>RestorePersistent
  *<li>AssignOpEqual
  *<li>AssignOpPlus
  *<li>AssignOpMinus

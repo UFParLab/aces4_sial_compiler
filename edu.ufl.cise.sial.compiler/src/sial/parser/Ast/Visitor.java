@@ -37,9 +37,6 @@ public interface Visitor extends IAstVisitor
     boolean visit(PredefinedModifier n);
     void endVisit(PredefinedModifier n);
 
-    boolean visit(PersistentModifier n);
-    void endVisit(PersistentModifier n);
-
     boolean visit(ScopedExtentModifier n);
     void endVisit(ScopedExtentModifier n);
 
@@ -81,6 +78,9 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(IntLitRangeVal n);
     void endVisit(IntLitRangeVal n);
+
+    boolean visit(NegRangeVal n);
+    void endVisit(NegRangeVal n);
 
     boolean visit(IdentRangeVal n);
     void endVisit(IdentRangeVal n);
@@ -204,6 +204,12 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(GpuGet n);
     void endVisit(GpuGet n);
+
+    boolean visit(SetPersistent n);
+    void endVisit(SetPersistent n);
+
+    boolean visit(RestorePersistent n);
+    void endVisit(RestorePersistent n);
 
     boolean visit(AssignOpEqual n);
     void endVisit(AssignOpEqual n);

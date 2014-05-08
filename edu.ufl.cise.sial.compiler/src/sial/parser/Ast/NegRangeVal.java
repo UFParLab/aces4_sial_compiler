@@ -10,22 +10,22 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 85:  Statement ::= print$ StringLiteral
+ *<li>Rule 50:  RangeVal ::= -$ INTLIT
  *</b>
  */
-public class PrintStatement extends ASTNode implements IStatement
+public class NegRangeVal extends ASTNode implements IRangeVal
 {
-    private StringLiteral _StringLiteral;
+    private ASTNodeToken _INTLIT;
 
-    public StringLiteral getStringLiteral() { return _StringLiteral; }
+    public ASTNodeToken getINTLIT() { return _INTLIT; }
 
-    public PrintStatement(IToken leftIToken, IToken rightIToken,
-                          StringLiteral _StringLiteral)
+    public NegRangeVal(IToken leftIToken, IToken rightIToken,
+                       ASTNodeToken _INTLIT)
     {
         super(leftIToken, rightIToken);
 
-        this._StringLiteral = _StringLiteral;
-        ((ASTNode) _StringLiteral).setParent(this);
+        this._INTLIT = _INTLIT;
+        ((ASTNode) _INTLIT).setParent(this);
         initialize();
     }
 
@@ -35,24 +35,24 @@ public class PrintStatement extends ASTNode implements IStatement
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_StringLiteral);
+        list.add(_INTLIT);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof PrintStatement)) return false;
+        if (! (o instanceof NegRangeVal)) return false;
         if (! super.equals(o)) return false;
-        PrintStatement other = (PrintStatement) o;
-        if (! _StringLiteral.equals(other._StringLiteral)) return false;
+        NegRangeVal other = (NegRangeVal) o;
+        if (! _INTLIT.equals(other._INTLIT)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_StringLiteral.hashCode());
+        hash = hash * 31 + (_INTLIT.hashCode());
         return hash;
     }
 
@@ -67,7 +67,7 @@ public class PrintStatement extends ASTNode implements IStatement
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _StringLiteral.accept(v);
+            _INTLIT.accept(v);
         v.endVisit(this);
     }
 }

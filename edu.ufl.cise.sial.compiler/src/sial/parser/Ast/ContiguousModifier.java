@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 19:  Modifier ::= contiguous
+ *<li>Rule 18:  Modifier ::= contiguous
  *</b>
  */
 public class ContiguousModifier extends ASTNodeToken implements IModifier

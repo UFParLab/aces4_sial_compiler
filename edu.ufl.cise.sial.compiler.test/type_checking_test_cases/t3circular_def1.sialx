@@ -1,6 +1,0 @@
-import "t3circular_def2.sialx"
-sial t3circular_def1
-index i = 1,30
-index j = 1,30
-index k = 1,30
-endsial t3circular_def1

@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 32:  ArrayDec ::= Modifiersopt ArrayKind Ident ($ DimensionList )$
+ *<li>Rule 31:  ArrayDec ::= Modifiersopt ArrayKind Ident ($ DimensionList )$
  *</b>
  */
 public class ArrayDec extends ASTNode implements IArrayDec

@@ -1,8 +1,0 @@
-import "aces_defs.sialx"
-import "t1_defs.sialx"
-sial t1imports
-
-call F
-execute blocks_to_list a
-
-endsial t1imports
