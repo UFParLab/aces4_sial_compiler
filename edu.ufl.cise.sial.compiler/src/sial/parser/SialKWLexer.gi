@@ -83,6 +83,7 @@ gpu_put
 gpu_get
 set_persistent
 restore_persistent
+sparse
 
 %End
 
@@ -174,4 +175,6 @@ restore_persistent
 		| g p u _ p u t  /.$setResult($_gpu_put);./			
 	    | s e t _ p e r s i s t e n t        /.$setResult($_set_persistent);./									   
 	    | r e s t o r e _ p e r s i s t e n t       /.$setResult($_restore_persistent);./																	   											  
-%End
+        | s p a r s e      /.$setResult($_sparse);./
+														
+	%End

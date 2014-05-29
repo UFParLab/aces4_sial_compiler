@@ -317,7 +317,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
 		if (ASTUtils.isPredefined(n)) {
 			attribute = attribute | attr_predefined;
-		}		
+		}
+		if (ASTUtils.isSparseDistributedOrServed(n)){
+			attribute = attribute | attr_sparse;
+		}
 		int priority = 0;
 //		if (arrayTypeNum == SipConstants.distributed_array_t)
 		if (n.getTypeName().toLowerCase()== "distributed")

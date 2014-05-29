@@ -41,6 +41,7 @@ import sial.parser.Ast.IntDec;
 import sial.parser.Ast.IntLitRangeVal;
 import sial.parser.Ast.NegRangeVal;
 import sial.parser.Ast.PardoStatement;
+import sial.parser.Ast.SparseModifier;
 //import sial.parser.Ast.PersistentModifier;
 import sial.parser.Ast.PredefinedModifier;
 import sial.parser.Ast.ProcDec;
@@ -324,6 +325,22 @@ public class ASTUtils implements SialParsersym{
     	return false;
     }	    
     
+    
+	public static boolean isSparseDistributedOrServed(IDec n) {
+		if (n instanceof ArrayDec) {
+			ArrayDec arrayDec = (ArrayDec) n;
+			if (arrayDec.getArrayKind().toString().equals("distributed")
+					|| arrayDec.getArrayKind().toString().equals("served")) {
+				// check for contiguous declaration
+				List modifiers = arrayDec.getModifiersopt().getList();
+				for (Object m : modifiers) {
+					if (m instanceof SparseModifier)
+						return true;
+				}
+			}
+		}
+		return false;
+	}
     
     public static boolean isPredefined(IDec n){
     	List modifiers = null;

@@ -222,5 +222,10 @@ public class ParseAndTypeCheckingTest {
 	public void rccsdpr_aaa() throws IOException{
 		runTypeCheckTest("rccsdpt_aaa",0);
 	}
+	
+	@Test
+	public void sparsearray() throws IOException{
+		runTypeCheckTest("sparsearray",0);
+	}
 
 }

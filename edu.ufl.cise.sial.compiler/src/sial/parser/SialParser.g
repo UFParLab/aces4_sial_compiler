@@ -128,6 +128,7 @@
 	Modifier$ScopedExtentModifier ::= 'scoped_extent'
 	Modifier$ContiguousModifier ::= 'contiguous'
 	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
+	Modifier$SparseModifier ::= 'sparse'
 
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
 	 Dec ::= ScalarDec  | ArrayDec  |  IndexDec | SubIndexDec | IntDec  | ProcDec | SpecialDec

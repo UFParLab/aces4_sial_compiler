@@ -31,7 +31,8 @@ attr_auto_allocate = 0x08,  //0x08 ==   8 == "00001000"
 attr_scope_extent = 0x10, //0x10 ==  16 == "00010000"
 attr_predefined = 0x20,  //0x20 ==  32 == "00100000"
 attr_persistent = 0x40,  //0x40 ==  64 == "01000000"
-attr_scalar = 0x80;  //0x80 == 128 == "10000000"
+attr_scalar = 0x80,  //0x80 == 128 == "10000000"
+attr_sparse = 0x100; //0x100 == 256 == "100000000"
 
 //attributes for existing types
 public final static int
