@@ -2,7 +2,6 @@ package sial.parser.context;
 
 import static sial.parser.context.ASTUtils.getIntVal;
 import static sial.parser.context.ASTUtils.getEnclosingProc;
-import static sial.parser.context.ASTUtils.isPredefined;
 import static sial.parser.context.ASTUtils.isStaticOrContiguousArray;
 
 import java.util.ArrayList;
@@ -375,6 +374,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
 				+ name);
+		check(isLegalScalarDec(n), n, "illegal modifier for scalar declaration "+ name);
 		return true;
 	}
 
@@ -385,12 +385,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	/* int declaration */
 	@Override
 	public boolean visit(IntDec n) {
-		check(isPredefined(n), n,
-				"only constant, predefined ints currently implemented");
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
 				+ name);
+		check(isLegalIntDec(n), n,
+				"only predefined ints (i.e. constants) currently implemented");
 		constants.add(n); // add to constant list
 		return true;
 	}
@@ -398,15 +398,37 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public void endVisit(IntDec n) { /* nop */
 	}
+	
+	boolean isLegalArrayDec(ArrayDec n){
+		String arrayKind = n.getArrayKind().toString();
+		return 
+		  (arrayKind.equals("distributed") && !ASTUtils.hasPredefined(n) && !ASTUtils.hasContiguous(n))  /* sparse OK */||
+		  (arrayKind.equals("served") && !ASTUtils.hasPredefined(n) && !ASTUtils.hasContiguous(n)) /* sparse OK */ ||
+		  (arrayKind.equals("static") && !ASTUtils.hasSparse(n) /* contiguous, predefined OK */ ||
+		  (arrayKind.equals("local") && !ASTUtils.hasSparse(n) && !ASTUtils.hasPredefined(n) /*contiguous OK*/ ) ||
+		  (arrayKind.equals("temp")) && !ASTUtils.hasSparse(n) && !ASTUtils.hasPredefined(n) && !ASTUtils.hasContiguous(n));
+	}
+	
+	boolean isLegalScalarDec(ScalarDec n){
+		return !ASTUtils.hasContiguous(n) && !ASTUtils.hasSparse(n);  /* only legal modifier is predefined */
+	}
+	
+	
+	/** Currently, only predefined ints supported */
+	boolean isLegalIntDec(IntDec n){
+		return ASTUtils.hasPredefined(n)  && !ASTUtils.hasContiguous(n) && !ASTUtils.hasSparse(n);
+	}
 
 	/* array declaration */
 	@Override
 	public boolean visit(ArrayDec n) {
 		// check(!isConstant(n), n, "Constant arrays are not implemented");
+
 		Ident id = n.getIdent();
 		String name = n.getName();
 		check(symbolTable.insert(name, n), id, "Duplicate declaration of "
 				+ name);
+		check(isLegalArrayDec(n),n, "Illegal modifier in declaration of array " + name);
 		return true;
 	}
 
@@ -533,7 +555,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	public boolean visit(IdentRangeVal n) {
 		IDec dec = findAndSetDec(n);
 		check(dec instanceof IntDec, n, n.getName() + " not declared");
-		check(isPredefined(dec), n, n.getName() + " must be predefined");
+		check(ASTUtils.hasPredefined(dec), n, n.getName() + " must be predefined");
 		return false;
 	}
 
@@ -843,8 +865,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 		// check indices
 		ArrayDec arrayDec = (ArrayDec) dec;
 		DimensionList decDims = arrayDec.getDimensionList();
-		if (n.getAllocIndexListopt() == null)
-			return; // no indices given
+		if (n.getAllocIndexListopt() == null){// no indices given, this local array should be contiguous
+			check( ASTUtils.hasContiguous(arrayDec), n, "local array " + n.getIdent().toString() + " is not contiguous, so it needs explicit indices in allocate statement");
+			return; 
+		}
 		AllocIndexList allocDims = n.getAllocIndexListopt().getAllocIndexList();
 		if (!check(decDims.size() == allocDims.size(), n,
 				"index list in allocate statement incompatible with declaration of "
@@ -1668,22 +1692,25 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 	// selector
 	@Override
 	public void endVisit(ArgList n) {
-		// if an argument is an IdentPrimary, it must either be a scalar or a
-		// static array
+		// if an argument is an IdentPrimary, it must either be a scalar or a static or contiguous array, or one of the intrinsic exceptions to this constraint
 		for (int i = 0; i < n.size(); ++i) {
 			IArg arg = n.getArgAt(i);
 			if (arg instanceof IdentPrimary) {
 				IdentPrimary idparg = (IdentPrimary) arg;
 				IDec dec = idparg.getDec();
 				if (dec instanceof ArrayDec) {
-					check(isStaticOrContiguousArray(dec)
-							|| nonstatic_noselector_array_allowed(n), idparg,
+					check( ASTUtils.isStaticOrContiguousArray(dec)|| nonstatic_noselector_array_allowed(n), idparg,
 							"execute "
 									+ ((ExecuteStatement) n.getParent())
 											.getIdent().getName()
-									+ " has array argument " + idparg.getName()
+									+ " has selector-less array argument " + idparg.getName()
 									+ " which is neither static nor contigous");
 				}
+				else check(dec instanceof ScalarDec, idparg, "execute "
+									+ ((ExecuteStatement) n.getParent())
+											.getIdent().getName()
+									+ " has selectorless argument " + idparg.getName()
+									+ " which is neither a static or contiguous array, nor a scalar");
 			}
 		}
 	}
@@ -2159,7 +2186,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 			IdentPrimary idparg = (IdentPrimary) arg;
 			IDec dec = idparg.getDec();
 			if (dec instanceof ArrayDec) {
-				check(isStaticOrContiguousArray(dec)
+				check(ASTUtils.isStaticOrContiguousArray(dec)
 						, idparg,
 						"gpu_allocate has whole array argument " + idparg.getName()
 								+ " which is neither static nor contigous");
@@ -2182,7 +2209,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 			IdentPrimary idparg = (IdentPrimary) arg;
 			IDec dec = idparg.getDec();
 			if (dec instanceof ArrayDec) {
-				check(isStaticOrContiguousArray(dec)
+				check(ASTUtils.isStaticOrContiguousArray(dec)
 						, n,
 						"gpu_free has whole array argument " + idparg.getName()
 								+ " which is neither static nor contigous");
@@ -2204,7 +2231,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 			IdentPrimary idparg = (IdentPrimary) arg;
 			IDec dec = idparg.getDec();
 			if (dec instanceof ArrayDec) {
-				check(isStaticOrContiguousArray(dec)
+				check(ASTUtils.isStaticOrContiguousArray(dec)
 						, n,
 						"gpu_put has whole array argument " + idparg.getName()
 								+ " which is neither static nor contigous");
@@ -2242,7 +2269,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(SetPersistent n) {
 		IDec dec = n.getIdent().getDec();
-		if (!check(!isPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be persistent")){
+		if (!check(!ASTUtils.hasPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be persistent")){
+			return;
+		}
+		if (!check(!ASTUtils.hasSparse(dec),n, "predefined object " + n.getIdent().getName() + " cannot be sparse")){
 			return;
 		}
 		if (dec instanceof ScalarDec) return;
@@ -2266,7 +2296,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym,
 
 	public void endVisit(RestorePersistent n) {
 		IDec dec = n.getIdent().getDec();
-		if (!check(!isPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be target of restore persistent")){
+		if (!check(!ASTUtils.hasPredefined(dec),n, "predefined object " + n.getIdent().getName() + " cannot be target of restore persistent")){
+			return;
+		}
+		if (!check(!ASTUtils.hasSparse(dec),n, "sparse object " + n.getIdent().getName() + " cannot be target of restore persistent")){
 			return;
 		}
 		if (dec instanceof ScalarDec) return;

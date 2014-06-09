@@ -122,12 +122,12 @@
 	Modifiers$$Modifier ::= Modifier
                           | Modifiers Modifier
 
-    Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
+--    Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
     Modifier$PredefinedModifier ::= 'predefined'
 --    Modifier$PersistentModifier ::= 'persistent'
-	Modifier$ScopedExtentModifier ::= 'scoped_extent'
+--	Modifier$ScopedExtentModifier ::= 'scoped_extent'
 	Modifier$ContiguousModifier ::= 'contiguous'
-	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
+--	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
 	Modifier$SparseModifier ::= 'sparse'
 
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
@@ -155,7 +155,7 @@
 		./
 		
 		ArrayKind$ArrayKind ::=
-		static$akind 
+		  static$akind 
 		| temp$akind  
 		| local$akind    
 		| distributed$akind

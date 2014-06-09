@@ -311,38 +311,72 @@ public class ASTUtils implements SialParsersym{
 //    	return false;
 //    }	
     
+	
+
+	
     /** returns true if the given IDec is an array, and is static or contiguous */
     public static boolean isStaticOrContiguousArray(IDec n){
-    	if (n instanceof ArrayDec){
-    		ArrayDec arrayDec = (ArrayDec)n;
-    		if (arrayDec.getArrayKind().toString().equals("static")) return true;
-    		//check for contiguous declaration
-    		List modifiers = arrayDec.getModifiersopt().getList();
-        	for( Object m: modifiers){
-        		if (m instanceof ContiguousModifier) return true;
-        	}
-    	}
-    	return false;
+    	return (n instanceof ArrayDec) && 
+    			(((ArrayDec)n).getArrayKind().toString().equals("static") || hasContiguous(n));
     }	    
     
     
-	public static boolean isSparseDistributedOrServed(IDec n) {
-		if (n instanceof ArrayDec) {
-			ArrayDec arrayDec = (ArrayDec) n;
-			if (arrayDec.getArrayKind().toString().equals("distributed")
-					|| arrayDec.getArrayKind().toString().equals("served")) {
-				// check for contiguous declaration
-				List modifiers = arrayDec.getModifiersopt().getList();
-				for (Object m : modifiers) {
-					if (m instanceof SparseModifier)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-    
-    public static boolean isPredefined(IDec n){
+//	public static boolean isSparseDistributedOrServed(IDec n) {
+//		if (n instanceof ArrayDec) {
+//			ArrayDec arrayDec = (ArrayDec) n;
+//			if (arrayDec.getArrayKind().toString().equals("distributed")
+//					|| arrayDec.getArrayKind().toString().equals("served")) {
+//				// check for contiguous declaration
+//				List modifiers = arrayDec.getModifiersopt().getList();
+//				for (Object m : modifiers) {
+//					if (m instanceof SparseModifier)
+//						return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
+	
+	public static boolean hasSparse(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return false;
+    	for( Object m: modifiers){
+    		if (m instanceof SparseModifier) return true;
+    	}
+    	return false;
+    }	    	
+	
+    public static boolean hasContiguous(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return false;
+    	for( Object m: modifiers){
+    		if (m instanceof ContiguousModifier) return true;
+    	}
+    	return false;
+    }	    
+   
+	
+    public static boolean hasPredefined(IDec n){
     	List modifiers = null;
     	if (n instanceof ScalarDec)
     	    modifiers = ((ScalarDec) n).getModifiersopt().getList();

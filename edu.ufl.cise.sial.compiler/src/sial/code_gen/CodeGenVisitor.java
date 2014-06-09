@@ -4,8 +4,6 @@ import static sial.parser.context.ASTUtils.getContractedIndices;
 import static sial.parser.context.ASTUtils.getDoubleVal;
 import static sial.parser.context.ASTUtils.getIntVal;
 import static sial.parser.context.ASTUtils.getRoot;
-import static sial.parser.context.ASTUtils.isPredefined;
-
 import java.io.DataOutput;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -283,7 +281,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 	@Override
 	public boolean visit(ScalarDec n) {
 		int attribute = scalar_value_t;
-		if (ASTUtils.isPredefined(n)) {
+		if (ASTUtils.hasPredefined(n)) {
 			attribute = attribute | attr_predefined;
 		}
 		int index = scalarTable.addScalar(n); // Aces4
@@ -298,7 +296,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(IntDec n) {
-		if (isPredefined(n)) {// this is a constant
+		if (ASTUtils.hasPredefined(n)) {// this is a constant
 			scalarTable.addConstant(n.getName()); // TODO this should be
 													// refactored in scalarTable
 													// to be named isPredefined
@@ -314,20 +312,26 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public boolean visit(ArrayDec n) {
+		//Compute attribute.  Not all combinations of attributes are legal, but this has already been checked by the TypeCheckVisitor
 		int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
-		if (ASTUtils.isPredefined(n)) {
+		if (ASTUtils.hasPredefined(n)) {
 			attribute = attribute | attr_predefined;
 		}
-		if (ASTUtils.isSparseDistributedOrServed(n)){
+		if (ASTUtils.hasSparse(n)){
 			attribute = attribute | attr_sparse;
 		}
+		if (ASTUtils.hasContiguous(n)){
+			attribute = attribute | attr_contiguous;
+		}
 		int priority = 0;
-//		if (arrayTypeNum == SipConstants.distributed_array_t)
+
+		//Determine priority.  Currently only two values, and the only real difference between distributed and served.
 		if (n.getTypeName().toLowerCase()== "distributed")
 			priority = SipConstants.distributed_array_priority;
-//		else if (arrayTypeNum == SipConstants.served_array_t)
 		else if (n.getTypeName().toLowerCase() == "served")
 			priority = SipConstants.served_array_priority;
+		
+		
 		DimensionList dimensions = n.getDimensionList();
 		int arraynindex = dimensions.size();
 		int[] indarray = new int[arraynindex];
@@ -742,10 +746,17 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(AllocateStatement n) {
-		// get index of array to be allocated
-		int index = operandStack.pop();
-		int[] ind = indexArrayStack.pop();
-		opTable.addOptableEntry(allocate_op, index, ind, lineno(n));
+		// get id of array to be allocated
+		int id = operandStack.pop();
+		int[] ind = null;
+		if (n.getAllocIndexListopt() != null) {
+			ind = indexArrayStack.pop();
+			opTable.addOptableEntry(allocate_op, id, ind, lineno(n));
+		} else {
+			ind = defaultUndefInd;
+			opTable.addOptableEntry(allocate_contiguous_local_op, id, ind,
+					lineno(n));
+		}
 	}
 
 	@Override
@@ -755,19 +766,29 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 
 	@Override
 	public void endVisit(DeallocateStatement n) {
-		int index = operandStack.pop();
+		int id = operandStack.pop();
 		int[] ind = null;
-		if (n.getAllocIndexListopt() != null){	
-  		     ind = indexArrayStack.pop();
+		if (n.getAllocIndexListopt() != null) { // explicit indices were given,
+												// pop them off the
+												// indexArrayStack
+			ind = indexArrayStack.pop();
+			opTable.addOptableEntry(deallocate_op, id, ind, lineno(n));
+			return;
 		}
-		else {ind = defaultUndefInd;
-		ArrayDec arrayDec = (ArrayDec)n.getIdent().getDec();
+		//no explicit indices
+		ind = defaultUndefInd;
+		ArrayDec arrayDec = (ArrayDec) n.getIdent().getDec();
+		if (ASTUtils.hasContiguous(arrayDec)) {
+			opTable.addOptableEntry(deallocate_contiguous_local_op, id, ind,
+					lineno(n));
+			return;
+		}
+		//omitted indices for non-contiguous array is syntactic sugar for [*,*..]
 		DimensionList decDims = arrayDec.getDimensionList();
-		for (int i = 0; i < decDims.size(); ++i){
+		for (int i = 0; i < decDims.size(); ++i) {
 			ind[i] = wild;
 		}
-		}
-		opTable.addOptableEntry(deallocate_op, index, ind, lineno(n));
+		opTable.addOptableEntry(deallocate_op, id, ind, lineno(n));
 	}
 
 	@Override

@@ -143,5 +143,7 @@ public final static int
 	gpu_get_op = 193,
 	set_persistent_op = 194,
 	restore_persistent_op=195,
-	last_opcode = restore_persistent_op;
+	allocate_contiguous_local_op=196,
+	deallocate_contiguous_local_op=197,
+	last_opcode = deallocate_contiguous_local_op;
 }
