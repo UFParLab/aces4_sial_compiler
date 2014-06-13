@@ -84,6 +84,7 @@ gpu_get
 set_persistent
 restore_persistent
 sparse
+assert_same
 
 %End
 
@@ -176,5 +177,7 @@ sparse
 	    | s e t _ p e r s i s t e n t        /.$setResult($_set_persistent);./									   
 	    | r e s t o r e _ p e r s i s t e n t       /.$setResult($_restore_persistent);./																	   											  
         | s p a r s e      /.$setResult($_sparse);./
+		| a s s e r t _ s a m e  /.$setResult($_assert_same);./				 
+
 														
 	%End

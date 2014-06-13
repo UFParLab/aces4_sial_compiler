@@ -403,6 +403,39 @@ public class ASTUtils implements SialParsersym{
     	//return, padding with zeros
     	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
 	}
-     
 
+	public static IAst getEnclosingPardoOrProcDec(IAst node) {
+		IAst tnode = node.getParent();
+		while (tnode != null && !(tnode instanceof ProcDec || tnode instanceof PardoStatement)) tnode = tnode.getParent();
+		return tnode;
+	}
+     
+/*
+ * 	static IAst getEnclosingLoopOrIDec(Ident n, IAst node){
+		IndexDec dec = (IndexDec) n.getDec();
+		IAst tnode = node.getParent();
+		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
+			tnode = tnode.getParent();
+		}
+		if (tnode == null ) return tnode; //not found
+		if (tnode instanceof IDec) return tnode; //the context of this ident was a declaration.
+		if (tnode instanceof DoStatement){
+			DoStatement doStatement = (DoStatement)tnode;
+			IDec doVarDec = doStatement.getStartIndex().getDec();
+			if (doVarDec == dec) return doStatement;
+			return getEnclosingLoopOrIDec(n, doStatement);
+		}
+		if (tnode instanceof PardoStatement){
+			PardoStatement pardoStatement = (PardoStatement)tnode;
+			IdentList identList  = pardoStatement.getStartIndices();
+			for (int i = 0; i < identList.size(); ++i){
+				Ident pardoVar = (Ident) identList.getElementAt(i);
+				IDec pardoVarDec = pardoVar.getDec();
+				if (pardoVarDec == dec) return pardoStatement;
+			}
+			return getEnclosingLoopOrIDec(n, pardoStatement);
+		}
+		return null;
+	}
+ */
 }

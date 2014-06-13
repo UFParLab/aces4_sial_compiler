@@ -4,13 +4,17 @@
 %options import_terminals=SialLexer.gi
 %options parent_saved,automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=ASTNode
 
-
+-- LPG note:  
+--   on the lhs  a @ following a symbol specifies the name of the AST node
+--  on the rhs, a $ folllowing a symbol means that it is omitted from the AST node.  A $$ means that the AST node creates a list
 %Globals
     /.import org.eclipse.imp.parser.IParser;
       import sial.parser.context.*;
 	  import java.util.Date;
 	  import java.util.ArrayList;
 	  import java.util.List;
+	  import sial.parser.context.ExpressionTypes.ExpressionType;
+	  import static sial.parser.context.ExpressionTypes.ExpressionType.*;
     ./
 %End
 
@@ -41,6 +45,8 @@
 	STAR_ASSIGN ::= '*='
 	LEFTPAREN ::= '('
 	RIGHTPAREN ::= ')'
+	LEFTSQUARE ::= '['
+	RIGHTSQUARE ::= ']'
 	
 	%End
 
@@ -82,6 +88,8 @@
 	public boolean isImported(){
 	       return isImported;
     }
+	
+
 	
    ./
    
@@ -294,6 +302,7 @@
 	 StatementList  -- all statements must be PardoStatements, but this will be verified during type checking
 	 endsection$ 
 	 	 /.
+			//NOT CLEAR WHY THIS IS HERE!!!!
 	  IDec dec;
 	  public void setDec(IDec dec) { this.dec = dec; }
 	  public IDec getDec() { return dec; }
@@ -341,7 +350,8 @@
 	Statement$ExecuteStatement ::= execute$ Ident ArgList
 	--It would be better to have a comma separating the args
 	
-	Statement$AssignStatement ::=  ScalarOrBlockVar AssignOp Expression
+	--Statement$AssignStatement ::=  ScalarOrBlockVar AssignOp Expression
+Statement$AssignToIdent ::=  Ident AssignOp Expression
 	/. boolean slice;
 	   boolean insert;
 	   public boolean isSlice(){return slice;}
@@ -350,7 +360,14 @@
 	   public void setInsert(boolean val){insert = val;}
 	 ./ 
 	 
-	 
+Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
+	/. boolean slice;
+	   boolean insert;
+	   public boolean isSlice(){return slice;}
+	   public void setSlice(boolean val){ slice = val; }
+	   public boolean isInsert(){return insert;}
+	   public void setInsert(boolean val){insert = val;}
+	 ./ 
 
 	 Statement$GpuStatement ::= gpu_on$ EOLs$
 	 StatementList
@@ -373,6 +390,8 @@
 	 -- 
 	 --./
 	 Statement$RestorePersistent ::= restore_persistent$ Ident StringLiteral
+	 
+	 Statement$AssertSame ::= assert_same$  Ident
 	 --	/. 
 	 -- String stringValue;
 	 -- public void setStringValue(String stringValue){
@@ -390,9 +409,10 @@
 	AssignOp$AssignOpMinus  ::=   '-='
 	AssignOp$AssignOpStar   ::= '*='
 	
-	ScalarOrBlockVar ::= Ident | DataBlock
+--	ScalarOrBlockVar ::= Ident | DataBlock
 
- 	DataBlock ::= Ident '('$ Indices ')'$
+ --	DataBlock ::= Ident '('$ Indices ')'$
+    DataBlock ::= Ident '['$ Indices ']'$
 	Indices$$Ident ::= Ident | Indices ','$ Ident
 	
 	AllocIndex$AllocIndexIdent ::= Ident
@@ -406,44 +426,136 @@
 	  ./
 	AllocIndex$AllocIndexWildCard ::= '*'$
 	AllocIndexList$$AllocIndex ::= AllocIndex | AllocIndexList ',' $ AllocIndex
-    AllocIndexListopt ::= %empty | '(' AllocIndexList ')'
+ --   AllocIndexListopt ::= %empty | '(' AllocIndexList ')'
+    AllocIndexListopt ::= %empty | '[' AllocIndexList ']'
 	
 	RelationalExpression ::= UnaryExpression$UnaryExpressionLeft RelOp UnaryExpression$UnaryExpressionRight
-	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op
+	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op 
 	
-	Expression ::= UnaryExpression$UnaryExpression | BinaryExpression$BinaryExpression
-	BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
-	BinOp$BinOpStar ::= '*' 
-	BinOp$BinOpDiv ::= '/'
-	BinOp$BinOpPlus ::= '+'
-	BinOp$BinOpMinus  ::= '-'
-	BinOp$BinOpTensor ::= '^'
+--	Expression ::= UnaryExpression$UnaryExpression | BinaryExpression$BinaryExpression
+--	BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
+--	BinOp$BinOpStar ::= '*' 
+--	BinOp$BinOpDiv ::= '/'
+--	BinOp$BinOpPlus ::= '+'
+--	BinOp$BinOpMinus  ::= '-'
+--	BinOp$BinOpTensor ::= '^'
 
-	UnaryExpression ::= Primary
-	UnaryExpression$NegatedUnary ::= '-' $ Primary
+-- NEW STUFF STARTS HERE
+    Expression ::= Term
+	Expression$AddExpr ::= Expression '+' Term
+	/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	 ./
+	 
+	Expression$SubtractExpr ::= Expression '-' Term
+	/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
 	
-	Primary$IntLitPrimary ::= INTLIT
-	Primary$DoubleLitPrimary ::= DOUBLELIT
-	Primary$IdentPrimary  ::= Ident
-		/.
+--  MulOp$Star ::= '*'
+--	MulOp$Div ::= '/'
+--	MulOp$Tensor ::= '^'
+	
+--	Term ::= UnaryExpression
+--	Term$MulOpExpr ::= Term MulOp UnaryExpression
+-- 
+    Term ::= CastExpression
+--	Term$MulOpExpr ::= Term MulOp CastExpression
+	Term$StarExpr ::= Term '*'$ CastExpression
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	Term$DivExpr ::= Term '/'$ CastExpression
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	Term$HatExpr ::= Term '^' CastExpression
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	
+	CastExpression ::= UnaryExpression
+	CastExpression$IntCastExpr ::= '('$  int$ ')'$ CastExpression
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	CastExpression$ScalarCastExpr ::= '('$  scalar$ ')'$ CastExpression
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+    
+	UnaryExpression ::= Primary
+	UnaryExpression$NegatedUnaryExpr ::= '-'$ Primary
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	
+	Primary$ParenExpr ::= '('$ Expression ')'$
+	 /. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	Primary$IntLitExpr ::= INTLIT
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	Primary$DoubleLitExpr ::= DOUBLELIT
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+	Primary$IdentExpr  ::= Ident
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
 	  IDec dec;
 	  public void setDec(IDec dec) { this.dec = dec; }
 	  public IDec getDec() { return dec; }
 	  public boolean equals(Object obj){
-	       if (!(obj instanceof IdentPrimary)) 
+	       if (!(obj instanceof IdentExpr)) 
 		            return false;
 	        return  obj == null? false : this.toString().equals(obj.toString());
 	  }
-	  private static final long serialVersionUID = -4338743197305594251L;
+//	  private static final long serialVersionUID = -4338743197305594251L;
 	  public int hashCode(){
-	       return (int)serialVersionUID;
+	       return this.toString().hashCode();
 	  }
 	  public String getName(){
 	       return toString().toLowerCase();
 	  }
 	 ./
-	Primary$DataBlockPrimary ::= DataBlock
-    Primary$StringLitPrimary ::= StringLiteral
+	Primary$DataBlockExpr ::= DataBlock
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
+    Primary$StringLitExpr ::= StringLiteral
+		/. ExpressionType type = null;
+	  public void setType(ExpressionType type){this.type = type;}
+	  public ExpressionType getType(){return type;}
+	   
+	 ./
 	
 	StringLiteral ::= STRINGLIT
 	/. 
@@ -462,15 +574,11 @@
 	  IDec dec;
 	  public void setDec(IDec dec) { this.dec = dec; }
 	  public IDec getDec() { return dec; }
-       public boolean equals(Object obj){
+      public boolean equals(Object obj){
 	       
 	       if (!(obj instanceof Ident)) return false;
 	       return  obj == null? false : (getIDENTIFIER().toString().equalsIgnoreCase(((Ident)obj).getIDENTIFIER().toString()));
 	  }
-	  // private static final long serialVersionUID = -4338743197305594251L;
-	  // public int hashCode(){
-	 //  return (int)serialVersionUID;
-	 // }
 
 	  public String getName(){
 	       return toString().toLowerCase();
@@ -485,7 +593,6 @@
 
 /.
   
-
 
  private SymbolTable symbolTable;
  public  SymbolTable getSymbolTable(){return symbolTable;}

@@ -54,6 +54,8 @@
         STAR_ASSIGN
         LEFTPAREN
         RIGHTPAREN
+		LEFTSQUARE
+		RIGHTSQUARE
         EOL
 		STRINGLIT
 %End
@@ -144,7 +146,8 @@
             | '-' '='	    /.    makeToken($_MINUS_ASSIGN);./
             | '*' '='	    /.    makeToken($_STAR_ASSIGN);./
             | eol           /.    makeToken($_EOL);./
-
+		     | '['       /. makeToken($_LEFTSQUARE);./
+           | ']'      /. makeToken($_RIGHTSQUARE);./   
 --	    mlc  ::= '/' '#' Inside Hashes '/'
 
 	stringlit ::=  '"' SLBody '"'
