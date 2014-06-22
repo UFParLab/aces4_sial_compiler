@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 40:  IndexDec ::= Modifiersopt IndexKind Ident =$ Range
+ *<li>Rule 42:  IndexDec ::= Modifiersopt IndexKind Ident =$ Range
  *</b>
  */
 public class IndexDec extends ASTNode implements IIndexDec

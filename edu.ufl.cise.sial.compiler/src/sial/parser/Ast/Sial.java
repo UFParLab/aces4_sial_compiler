@@ -8,6 +8,8 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
@@ -112,6 +114,8 @@ boolean isImported;  //indicates that this program is imported into another SIAL
 public boolean isImported(){
        return isImported;
 }
+
+
 
 }
 

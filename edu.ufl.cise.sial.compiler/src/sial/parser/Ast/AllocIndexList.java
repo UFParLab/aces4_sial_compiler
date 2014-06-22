@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 111:  AllocIndexList ::= AllocIndex
- *<li>Rule 112:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
+ *<li>Rule 116:  AllocIndexList ::= AllocIndex
+ *<li>Rule 117:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
  *</b>
  */
 public class AllocIndexList extends AbstractASTNodeList implements IAllocIndexList

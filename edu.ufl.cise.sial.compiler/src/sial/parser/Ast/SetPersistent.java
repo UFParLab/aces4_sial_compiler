@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 98:  Statement ::= set_persistent$ Ident StringLiteral
+ *<li>Rule 104:  Statement ::= set_persistent$ Ident StringLiteral
  *</b>
  */
 public class SetPersistent extends ASTNode implements IStatement

@@ -1,0 +1,28 @@
+sial non_nested_pardo_and_barrier_pass
+
+aoindex aoi = 1,100
+aoindex aoj = 1,200
+
+proc p0
+pardo aoi
+println "hello"
+endPardo aoi
+sip_barrier
+endproc p0
+
+proc p1
+call p0
+endproc p1
+
+call p0
+pardo aoj
+println "hello"
+endPardo aoj
+sip_barrier
+
+
+
+
+
+
+endsial non_nested_pardo_and_barrier_pass

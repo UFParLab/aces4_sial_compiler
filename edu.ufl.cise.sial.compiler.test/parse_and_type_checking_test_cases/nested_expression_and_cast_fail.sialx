@@ -1,0 +1,64 @@
+sial nested_expression_and_cast_fail
+
+int i = 3
+int j = 4
+int k = 5
+int l
+aoindex aoi = 3,10
+index ii = 1,100
+scalar x
+scalar y = 3.0
+scalar z = 4.0
+
+
+static a[ii,ii]
+static b[aoi,aoi]
+
+l = (i+j)*k
+l = (i-j)/k
+l = i+j*k
+i = i+j/k
+j = 3 + 3 + (4 + 6)/(l - 3)
+if  3 + 3 + (4 + 6)/(l - 3) > i + 1
+println "greater than i"
+endif 
+
+do ii 
+do aoi
+where ii < aoi
+where ii > aoi
+println "blah"
+
+x = b[aoi,aoi]
+i = (int)b[aoi,aoi]
+
+
+
+enddo aoi
+enddo ii
+
+
+do ii 
+do aoi
+where ii < aoi 
+where ii > aoi
+x += a[ii,ii]
+i *= (int)a[ii,ii]
+
+a[ii,ii] = x
+a[ii,ii] = (scalar)j
+println "blah"
+enddo aoi
+enddo ii
+
+l = j + (int)y
+l = j + (int)3.0
+
+z = x + (scalar)i
+
+z = x + (scalar)7/(scalar)i
+z = x + (scalar)(7/i)
+
+
+
+endsial nested_expression_and_cast_fail

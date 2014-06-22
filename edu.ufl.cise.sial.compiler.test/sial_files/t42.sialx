@@ -2,15 +2,15 @@ import "aces_defs.sialx"
 sial t41
       moaindex a = bavirt, eavirt
       moaindex i1= baocc, eaocc
-      served t1a_old(a,i1) 
-      distributed Dai(i1,a) #same as t41 except order of indeices reversed)
+      served t1a_old[a,i1] 
+      distributed Dai[i1,a] #same as t41 except order of indeices reversed]
       scalar etemp
       scalar esum
 paRDO a, i1  
 #
-	   REQUEST             t1a_old(a,i1) a  
-	   GET                 Dai(i1,a) 
-	   etemp             = t1a_old(a,i1)*Dai(i1,a) 
+	   REQUEST             t1a_old[a,i1] a  
+	   GET                 Dai[i1,a] 
+	   etemp             = t1a_old[a,i1]*Dai[i1,a] 
 	   etemp            *= 0.25
 	   esum             += etemp  
 #

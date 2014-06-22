@@ -7,6 +7,8 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 public interface Visitor extends IAstVisitor
 {
@@ -31,20 +33,8 @@ public interface Visitor extends IAstVisitor
     boolean visit(ModifierList n);
     void endVisit(ModifierList n);
 
-    boolean visit(Sip_ConsistentModifier n);
-    void endVisit(Sip_ConsistentModifier n);
-
-    boolean visit(PredefinedModifier n);
-    void endVisit(PredefinedModifier n);
-
-    boolean visit(ScopedExtentModifier n);
-    void endVisit(ScopedExtentModifier n);
-
-    boolean visit(ContiguousModifier n);
-    void endVisit(ContiguousModifier n);
-
-    boolean visit(Auto_AllocateModifier n);
-    void endVisit(Auto_AllocateModifier n);
+    boolean visit(Modifier n);
+    void endVisit(Modifier n);
 
     boolean visit(DecList n);
     void endVisit(DecList n);
@@ -52,8 +42,14 @@ public interface Visitor extends IAstVisitor
     boolean visit(ScalarDec n);
     void endVisit(ScalarDec n);
 
+    boolean visit(ScalarInitialValue n);
+    void endVisit(ScalarInitialValue n);
+
     boolean visit(IntDec n);
     void endVisit(IntDec n);
+
+    boolean visit(IntInitialValue n);
+    void endVisit(IntInitialValue n);
 
     boolean visit(ArrayDec n);
     void endVisit(ArrayDec n);
@@ -181,29 +177,44 @@ public interface Visitor extends IAstVisitor
     boolean visit(PrintScalarStatement n);
     void endVisit(PrintScalarStatement n);
 
+    boolean visit(PrintIntStatement n);
+    void endVisit(PrintIntStatement n);
+
+    boolean visit(DataBlockArg n);
+    void endVisit(DataBlockArg n);
+
+    boolean visit(IdentArg n);
+    void endVisit(IdentArg n);
+
+    boolean visit(DoubleLitArg n);
+    void endVisit(DoubleLitArg n);
+
     boolean visit(ArgList n);
     void endVisit(ArgList n);
 
     boolean visit(ExecuteStatement n);
     void endVisit(ExecuteStatement n);
 
-    boolean visit(AssignStatement n);
-    void endVisit(AssignStatement n);
+    boolean visit(AssignToIdent n);
+    void endVisit(AssignToIdent n);
 
-    boolean visit(GpuStatement n);
-    void endVisit(GpuStatement n);
+    boolean visit(AssignToBlock n);
+    void endVisit(AssignToBlock n);
 
-    boolean visit(GpuAllocate n);
-    void endVisit(GpuAllocate n);
+    boolean visit(GPUSection n);
+    void endVisit(GPUSection n);
 
-    boolean visit(GpuFree n);
-    void endVisit(GpuFree n);
+    boolean visit(GPUAllocateBlock n);
+    void endVisit(GPUAllocateBlock n);
 
-    boolean visit(GpuPut n);
-    void endVisit(GpuPut n);
+    boolean visit(GPUFreeBlock n);
+    void endVisit(GPUFreeBlock n);
 
-    boolean visit(GpuGet n);
-    void endVisit(GpuGet n);
+    boolean visit(GPUPutBlock n);
+    void endVisit(GPUPutBlock n);
+
+    boolean visit(GPUGetBlock n);
+    void endVisit(GPUGetBlock n);
 
     boolean visit(SetPersistent n);
     void endVisit(SetPersistent n);
@@ -211,17 +222,11 @@ public interface Visitor extends IAstVisitor
     boolean visit(RestorePersistent n);
     void endVisit(RestorePersistent n);
 
-    boolean visit(AssignOpEqual n);
-    void endVisit(AssignOpEqual n);
+    boolean visit(AssertSame n);
+    void endVisit(AssertSame n);
 
-    boolean visit(AssignOpPlus n);
-    void endVisit(AssignOpPlus n);
-
-    boolean visit(AssignOpMinus n);
-    void endVisit(AssignOpMinus n);
-
-    boolean visit(AssignOpStar n);
-    void endVisit(AssignOpStar n);
+    boolean visit(AssignOp n);
+    void endVisit(AssignOp n);
 
     boolean visit(DataBlock n);
     void endVisit(DataBlock n);
@@ -241,47 +246,53 @@ public interface Visitor extends IAstVisitor
     boolean visit(AllocIndexListopt n);
     void endVisit(AllocIndexListopt n);
 
-    boolean visit(RelationalExpression n);
-    void endVisit(RelationalExpression n);
-
     boolean visit(RelOp n);
     void endVisit(RelOp n);
 
-    boolean visit(BinaryExpression n);
-    void endVisit(BinaryExpression n);
+    boolean visit(RelationalExpression n);
+    void endVisit(RelationalExpression n);
 
-    boolean visit(BinOpStar n);
-    void endVisit(BinOpStar n);
+    boolean visit(AddExpr n);
+    void endVisit(AddExpr n);
 
-    boolean visit(BinOpDiv n);
-    void endVisit(BinOpDiv n);
+    boolean visit(SubtractExpr n);
+    void endVisit(SubtractExpr n);
 
-    boolean visit(BinOpPlus n);
-    void endVisit(BinOpPlus n);
+    boolean visit(StarExpr n);
+    void endVisit(StarExpr n);
 
-    boolean visit(BinOpMinus n);
-    void endVisit(BinOpMinus n);
+    boolean visit(DivExpr n);
+    void endVisit(DivExpr n);
 
-    boolean visit(BinOpTensor n);
-    void endVisit(BinOpTensor n);
+    boolean visit(TensorExpr n);
+    void endVisit(TensorExpr n);
 
-    boolean visit(NegatedUnary n);
-    void endVisit(NegatedUnary n);
+    boolean visit(IntCastExpr n);
+    void endVisit(IntCastExpr n);
 
-    boolean visit(IntLitPrimary n);
-    void endVisit(IntLitPrimary n);
+    boolean visit(ScalarCastExpr n);
+    void endVisit(ScalarCastExpr n);
 
-    boolean visit(DoubleLitPrimary n);
-    void endVisit(DoubleLitPrimary n);
+    boolean visit(NegatedUnaryExpr n);
+    void endVisit(NegatedUnaryExpr n);
 
-    boolean visit(IdentPrimary n);
-    void endVisit(IdentPrimary n);
+    boolean visit(ParenExpr n);
+    void endVisit(ParenExpr n);
 
-    boolean visit(DataBlockPrimary n);
-    void endVisit(DataBlockPrimary n);
+    boolean visit(IntLitExpr n);
+    void endVisit(IntLitExpr n);
 
-    boolean visit(StringLitPrimary n);
-    void endVisit(StringLitPrimary n);
+    boolean visit(DoubleLitExpr n);
+    void endVisit(DoubleLitExpr n);
+
+    boolean visit(IdentExpr n);
+    void endVisit(IdentExpr n);
+
+    boolean visit(DataBlockExpr n);
+    void endVisit(DataBlockExpr n);
+
+    boolean visit(StringLitExpr n);
+    void endVisit(StringLitExpr n);
 
     boolean visit(StringLiteral n);
     void endVisit(StringLiteral n);

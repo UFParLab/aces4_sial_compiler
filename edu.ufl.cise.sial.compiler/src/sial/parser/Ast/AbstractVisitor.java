@@ -7,6 +7,8 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 public abstract class AbstractVisitor implements Visitor
 {
@@ -34,20 +36,8 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ModifierList n) { unimplementedVisitor("visit(ModifierList)"); return true; }
     public void endVisit(ModifierList n) { unimplementedVisitor("endVisit(ModifierList)"); }
 
-    public boolean visit(Sip_ConsistentModifier n) { unimplementedVisitor("visit(Sip_ConsistentModifier)"); return true; }
-    public void endVisit(Sip_ConsistentModifier n) { unimplementedVisitor("endVisit(Sip_ConsistentModifier)"); }
-
-    public boolean visit(PredefinedModifier n) { unimplementedVisitor("visit(PredefinedModifier)"); return true; }
-    public void endVisit(PredefinedModifier n) { unimplementedVisitor("endVisit(PredefinedModifier)"); }
-
-    public boolean visit(ScopedExtentModifier n) { unimplementedVisitor("visit(ScopedExtentModifier)"); return true; }
-    public void endVisit(ScopedExtentModifier n) { unimplementedVisitor("endVisit(ScopedExtentModifier)"); }
-
-    public boolean visit(ContiguousModifier n) { unimplementedVisitor("visit(ContiguousModifier)"); return true; }
-    public void endVisit(ContiguousModifier n) { unimplementedVisitor("endVisit(ContiguousModifier)"); }
-
-    public boolean visit(Auto_AllocateModifier n) { unimplementedVisitor("visit(Auto_AllocateModifier)"); return true; }
-    public void endVisit(Auto_AllocateModifier n) { unimplementedVisitor("endVisit(Auto_AllocateModifier)"); }
+    public boolean visit(Modifier n) { unimplementedVisitor("visit(Modifier)"); return true; }
+    public void endVisit(Modifier n) { unimplementedVisitor("endVisit(Modifier)"); }
 
     public boolean visit(DecList n) { unimplementedVisitor("visit(DecList)"); return true; }
     public void endVisit(DecList n) { unimplementedVisitor("endVisit(DecList)"); }
@@ -55,8 +45,14 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ScalarDec n) { unimplementedVisitor("visit(ScalarDec)"); return true; }
     public void endVisit(ScalarDec n) { unimplementedVisitor("endVisit(ScalarDec)"); }
 
+    public boolean visit(ScalarInitialValue n) { unimplementedVisitor("visit(ScalarInitialValue)"); return true; }
+    public void endVisit(ScalarInitialValue n) { unimplementedVisitor("endVisit(ScalarInitialValue)"); }
+
     public boolean visit(IntDec n) { unimplementedVisitor("visit(IntDec)"); return true; }
     public void endVisit(IntDec n) { unimplementedVisitor("endVisit(IntDec)"); }
+
+    public boolean visit(IntInitialValue n) { unimplementedVisitor("visit(IntInitialValue)"); return true; }
+    public void endVisit(IntInitialValue n) { unimplementedVisitor("endVisit(IntInitialValue)"); }
 
     public boolean visit(ArrayDec n) { unimplementedVisitor("visit(ArrayDec)"); return true; }
     public void endVisit(ArrayDec n) { unimplementedVisitor("endVisit(ArrayDec)"); }
@@ -184,29 +180,44 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(PrintScalarStatement n) { unimplementedVisitor("visit(PrintScalarStatement)"); return true; }
     public void endVisit(PrintScalarStatement n) { unimplementedVisitor("endVisit(PrintScalarStatement)"); }
 
+    public boolean visit(PrintIntStatement n) { unimplementedVisitor("visit(PrintIntStatement)"); return true; }
+    public void endVisit(PrintIntStatement n) { unimplementedVisitor("endVisit(PrintIntStatement)"); }
+
+    public boolean visit(DataBlockArg n) { unimplementedVisitor("visit(DataBlockArg)"); return true; }
+    public void endVisit(DataBlockArg n) { unimplementedVisitor("endVisit(DataBlockArg)"); }
+
+    public boolean visit(IdentArg n) { unimplementedVisitor("visit(IdentArg)"); return true; }
+    public void endVisit(IdentArg n) { unimplementedVisitor("endVisit(IdentArg)"); }
+
+    public boolean visit(DoubleLitArg n) { unimplementedVisitor("visit(DoubleLitArg)"); return true; }
+    public void endVisit(DoubleLitArg n) { unimplementedVisitor("endVisit(DoubleLitArg)"); }
+
     public boolean visit(ArgList n) { unimplementedVisitor("visit(ArgList)"); return true; }
     public void endVisit(ArgList n) { unimplementedVisitor("endVisit(ArgList)"); }
 
     public boolean visit(ExecuteStatement n) { unimplementedVisitor("visit(ExecuteStatement)"); return true; }
     public void endVisit(ExecuteStatement n) { unimplementedVisitor("endVisit(ExecuteStatement)"); }
 
-    public boolean visit(AssignStatement n) { unimplementedVisitor("visit(AssignStatement)"); return true; }
-    public void endVisit(AssignStatement n) { unimplementedVisitor("endVisit(AssignStatement)"); }
+    public boolean visit(AssignToIdent n) { unimplementedVisitor("visit(AssignToIdent)"); return true; }
+    public void endVisit(AssignToIdent n) { unimplementedVisitor("endVisit(AssignToIdent)"); }
 
-    public boolean visit(GpuStatement n) { unimplementedVisitor("visit(GpuStatement)"); return true; }
-    public void endVisit(GpuStatement n) { unimplementedVisitor("endVisit(GpuStatement)"); }
+    public boolean visit(AssignToBlock n) { unimplementedVisitor("visit(AssignToBlock)"); return true; }
+    public void endVisit(AssignToBlock n) { unimplementedVisitor("endVisit(AssignToBlock)"); }
 
-    public boolean visit(GpuAllocate n) { unimplementedVisitor("visit(GpuAllocate)"); return true; }
-    public void endVisit(GpuAllocate n) { unimplementedVisitor("endVisit(GpuAllocate)"); }
+    public boolean visit(GPUSection n) { unimplementedVisitor("visit(GPUSection)"); return true; }
+    public void endVisit(GPUSection n) { unimplementedVisitor("endVisit(GPUSection)"); }
 
-    public boolean visit(GpuFree n) { unimplementedVisitor("visit(GpuFree)"); return true; }
-    public void endVisit(GpuFree n) { unimplementedVisitor("endVisit(GpuFree)"); }
+    public boolean visit(GPUAllocateBlock n) { unimplementedVisitor("visit(GPUAllocateBlock)"); return true; }
+    public void endVisit(GPUAllocateBlock n) { unimplementedVisitor("endVisit(GPUAllocateBlock)"); }
 
-    public boolean visit(GpuPut n) { unimplementedVisitor("visit(GpuPut)"); return true; }
-    public void endVisit(GpuPut n) { unimplementedVisitor("endVisit(GpuPut)"); }
+    public boolean visit(GPUFreeBlock n) { unimplementedVisitor("visit(GPUFreeBlock)"); return true; }
+    public void endVisit(GPUFreeBlock n) { unimplementedVisitor("endVisit(GPUFreeBlock)"); }
 
-    public boolean visit(GpuGet n) { unimplementedVisitor("visit(GpuGet)"); return true; }
-    public void endVisit(GpuGet n) { unimplementedVisitor("endVisit(GpuGet)"); }
+    public boolean visit(GPUPutBlock n) { unimplementedVisitor("visit(GPUPutBlock)"); return true; }
+    public void endVisit(GPUPutBlock n) { unimplementedVisitor("endVisit(GPUPutBlock)"); }
+
+    public boolean visit(GPUGetBlock n) { unimplementedVisitor("visit(GPUGetBlock)"); return true; }
+    public void endVisit(GPUGetBlock n) { unimplementedVisitor("endVisit(GPUGetBlock)"); }
 
     public boolean visit(SetPersistent n) { unimplementedVisitor("visit(SetPersistent)"); return true; }
     public void endVisit(SetPersistent n) { unimplementedVisitor("endVisit(SetPersistent)"); }
@@ -214,17 +225,11 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(RestorePersistent n) { unimplementedVisitor("visit(RestorePersistent)"); return true; }
     public void endVisit(RestorePersistent n) { unimplementedVisitor("endVisit(RestorePersistent)"); }
 
-    public boolean visit(AssignOpEqual n) { unimplementedVisitor("visit(AssignOpEqual)"); return true; }
-    public void endVisit(AssignOpEqual n) { unimplementedVisitor("endVisit(AssignOpEqual)"); }
+    public boolean visit(AssertSame n) { unimplementedVisitor("visit(AssertSame)"); return true; }
+    public void endVisit(AssertSame n) { unimplementedVisitor("endVisit(AssertSame)"); }
 
-    public boolean visit(AssignOpPlus n) { unimplementedVisitor("visit(AssignOpPlus)"); return true; }
-    public void endVisit(AssignOpPlus n) { unimplementedVisitor("endVisit(AssignOpPlus)"); }
-
-    public boolean visit(AssignOpMinus n) { unimplementedVisitor("visit(AssignOpMinus)"); return true; }
-    public void endVisit(AssignOpMinus n) { unimplementedVisitor("endVisit(AssignOpMinus)"); }
-
-    public boolean visit(AssignOpStar n) { unimplementedVisitor("visit(AssignOpStar)"); return true; }
-    public void endVisit(AssignOpStar n) { unimplementedVisitor("endVisit(AssignOpStar)"); }
+    public boolean visit(AssignOp n) { unimplementedVisitor("visit(AssignOp)"); return true; }
+    public void endVisit(AssignOp n) { unimplementedVisitor("endVisit(AssignOp)"); }
 
     public boolean visit(DataBlock n) { unimplementedVisitor("visit(DataBlock)"); return true; }
     public void endVisit(DataBlock n) { unimplementedVisitor("endVisit(DataBlock)"); }
@@ -244,47 +249,53 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(AllocIndexListopt n) { unimplementedVisitor("visit(AllocIndexListopt)"); return true; }
     public void endVisit(AllocIndexListopt n) { unimplementedVisitor("endVisit(AllocIndexListopt)"); }
 
-    public boolean visit(RelationalExpression n) { unimplementedVisitor("visit(RelationalExpression)"); return true; }
-    public void endVisit(RelationalExpression n) { unimplementedVisitor("endVisit(RelationalExpression)"); }
-
     public boolean visit(RelOp n) { unimplementedVisitor("visit(RelOp)"); return true; }
     public void endVisit(RelOp n) { unimplementedVisitor("endVisit(RelOp)"); }
 
-    public boolean visit(BinaryExpression n) { unimplementedVisitor("visit(BinaryExpression)"); return true; }
-    public void endVisit(BinaryExpression n) { unimplementedVisitor("endVisit(BinaryExpression)"); }
+    public boolean visit(RelationalExpression n) { unimplementedVisitor("visit(RelationalExpression)"); return true; }
+    public void endVisit(RelationalExpression n) { unimplementedVisitor("endVisit(RelationalExpression)"); }
 
-    public boolean visit(BinOpStar n) { unimplementedVisitor("visit(BinOpStar)"); return true; }
-    public void endVisit(BinOpStar n) { unimplementedVisitor("endVisit(BinOpStar)"); }
+    public boolean visit(AddExpr n) { unimplementedVisitor("visit(AddExpr)"); return true; }
+    public void endVisit(AddExpr n) { unimplementedVisitor("endVisit(AddExpr)"); }
 
-    public boolean visit(BinOpDiv n) { unimplementedVisitor("visit(BinOpDiv)"); return true; }
-    public void endVisit(BinOpDiv n) { unimplementedVisitor("endVisit(BinOpDiv)"); }
+    public boolean visit(SubtractExpr n) { unimplementedVisitor("visit(SubtractExpr)"); return true; }
+    public void endVisit(SubtractExpr n) { unimplementedVisitor("endVisit(SubtractExpr)"); }
 
-    public boolean visit(BinOpPlus n) { unimplementedVisitor("visit(BinOpPlus)"); return true; }
-    public void endVisit(BinOpPlus n) { unimplementedVisitor("endVisit(BinOpPlus)"); }
+    public boolean visit(StarExpr n) { unimplementedVisitor("visit(StarExpr)"); return true; }
+    public void endVisit(StarExpr n) { unimplementedVisitor("endVisit(StarExpr)"); }
 
-    public boolean visit(BinOpMinus n) { unimplementedVisitor("visit(BinOpMinus)"); return true; }
-    public void endVisit(BinOpMinus n) { unimplementedVisitor("endVisit(BinOpMinus)"); }
+    public boolean visit(DivExpr n) { unimplementedVisitor("visit(DivExpr)"); return true; }
+    public void endVisit(DivExpr n) { unimplementedVisitor("endVisit(DivExpr)"); }
 
-    public boolean visit(BinOpTensor n) { unimplementedVisitor("visit(BinOpTensor)"); return true; }
-    public void endVisit(BinOpTensor n) { unimplementedVisitor("endVisit(BinOpTensor)"); }
+    public boolean visit(TensorExpr n) { unimplementedVisitor("visit(TensorExpr)"); return true; }
+    public void endVisit(TensorExpr n) { unimplementedVisitor("endVisit(TensorExpr)"); }
 
-    public boolean visit(NegatedUnary n) { unimplementedVisitor("visit(NegatedUnary)"); return true; }
-    public void endVisit(NegatedUnary n) { unimplementedVisitor("endVisit(NegatedUnary)"); }
+    public boolean visit(IntCastExpr n) { unimplementedVisitor("visit(IntCastExpr)"); return true; }
+    public void endVisit(IntCastExpr n) { unimplementedVisitor("endVisit(IntCastExpr)"); }
 
-    public boolean visit(IntLitPrimary n) { unimplementedVisitor("visit(IntLitPrimary)"); return true; }
-    public void endVisit(IntLitPrimary n) { unimplementedVisitor("endVisit(IntLitPrimary)"); }
+    public boolean visit(ScalarCastExpr n) { unimplementedVisitor("visit(ScalarCastExpr)"); return true; }
+    public void endVisit(ScalarCastExpr n) { unimplementedVisitor("endVisit(ScalarCastExpr)"); }
 
-    public boolean visit(DoubleLitPrimary n) { unimplementedVisitor("visit(DoubleLitPrimary)"); return true; }
-    public void endVisit(DoubleLitPrimary n) { unimplementedVisitor("endVisit(DoubleLitPrimary)"); }
+    public boolean visit(NegatedUnaryExpr n) { unimplementedVisitor("visit(NegatedUnaryExpr)"); return true; }
+    public void endVisit(NegatedUnaryExpr n) { unimplementedVisitor("endVisit(NegatedUnaryExpr)"); }
 
-    public boolean visit(IdentPrimary n) { unimplementedVisitor("visit(IdentPrimary)"); return true; }
-    public void endVisit(IdentPrimary n) { unimplementedVisitor("endVisit(IdentPrimary)"); }
+    public boolean visit(ParenExpr n) { unimplementedVisitor("visit(ParenExpr)"); return true; }
+    public void endVisit(ParenExpr n) { unimplementedVisitor("endVisit(ParenExpr)"); }
 
-    public boolean visit(DataBlockPrimary n) { unimplementedVisitor("visit(DataBlockPrimary)"); return true; }
-    public void endVisit(DataBlockPrimary n) { unimplementedVisitor("endVisit(DataBlockPrimary)"); }
+    public boolean visit(IntLitExpr n) { unimplementedVisitor("visit(IntLitExpr)"); return true; }
+    public void endVisit(IntLitExpr n) { unimplementedVisitor("endVisit(IntLitExpr)"); }
 
-    public boolean visit(StringLitPrimary n) { unimplementedVisitor("visit(StringLitPrimary)"); return true; }
-    public void endVisit(StringLitPrimary n) { unimplementedVisitor("endVisit(StringLitPrimary)"); }
+    public boolean visit(DoubleLitExpr n) { unimplementedVisitor("visit(DoubleLitExpr)"); return true; }
+    public void endVisit(DoubleLitExpr n) { unimplementedVisitor("endVisit(DoubleLitExpr)"); }
+
+    public boolean visit(IdentExpr n) { unimplementedVisitor("visit(IdentExpr)"); return true; }
+    public void endVisit(IdentExpr n) { unimplementedVisitor("endVisit(IdentExpr)"); }
+
+    public boolean visit(DataBlockExpr n) { unimplementedVisitor("visit(DataBlockExpr)"); return true; }
+    public void endVisit(DataBlockExpr n) { unimplementedVisitor("endVisit(DataBlockExpr)"); }
+
+    public boolean visit(StringLitExpr n) { unimplementedVisitor("visit(StringLitExpr)"); return true; }
+    public void endVisit(StringLitExpr n) { unimplementedVisitor("endVisit(StringLitExpr)"); }
 
     public boolean visit(StringLiteral n) { unimplementedVisitor("visit(StringLiteral)"); return true; }
     public void endVisit(StringLiteral n) { unimplementedVisitor("endVisit(StringLiteral)"); }
@@ -301,14 +312,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) return visit((ImportProgList) n);
         else if (n instanceof ImportProg) return visit((ImportProg) n);
         else if (n instanceof ModifierList) return visit((ModifierList) n);
-        else if (n instanceof Sip_ConsistentModifier) return visit((Sip_ConsistentModifier) n);
-        else if (n instanceof PredefinedModifier) return visit((PredefinedModifier) n);
-        else if (n instanceof ScopedExtentModifier) return visit((ScopedExtentModifier) n);
-        else if (n instanceof ContiguousModifier) return visit((ContiguousModifier) n);
-        else if (n instanceof Auto_AllocateModifier) return visit((Auto_AllocateModifier) n);
+        else if (n instanceof Modifier) return visit((Modifier) n);
         else if (n instanceof DecList) return visit((DecList) n);
         else if (n instanceof ScalarDec) return visit((ScalarDec) n);
+        else if (n instanceof ScalarInitialValue) return visit((ScalarInitialValue) n);
         else if (n instanceof IntDec) return visit((IntDec) n);
+        else if (n instanceof IntInitialValue) return visit((IntInitialValue) n);
         else if (n instanceof ArrayDec) return visit((ArrayDec) n);
         else if (n instanceof ArrayKind) return visit((ArrayKind) n);
         else if (n instanceof DimensionList) return visit((DimensionList) n);
@@ -351,40 +360,45 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof PrintStatement) return visit((PrintStatement) n);
         else if (n instanceof PrintIndexStatement) return visit((PrintIndexStatement) n);
         else if (n instanceof PrintScalarStatement) return visit((PrintScalarStatement) n);
+        else if (n instanceof PrintIntStatement) return visit((PrintIntStatement) n);
+        else if (n instanceof DataBlockArg) return visit((DataBlockArg) n);
+        else if (n instanceof IdentArg) return visit((IdentArg) n);
+        else if (n instanceof DoubleLitArg) return visit((DoubleLitArg) n);
         else if (n instanceof ArgList) return visit((ArgList) n);
         else if (n instanceof ExecuteStatement) return visit((ExecuteStatement) n);
-        else if (n instanceof AssignStatement) return visit((AssignStatement) n);
-        else if (n instanceof GpuStatement) return visit((GpuStatement) n);
-        else if (n instanceof GpuAllocate) return visit((GpuAllocate) n);
-        else if (n instanceof GpuFree) return visit((GpuFree) n);
-        else if (n instanceof GpuPut) return visit((GpuPut) n);
-        else if (n instanceof GpuGet) return visit((GpuGet) n);
+        else if (n instanceof AssignToIdent) return visit((AssignToIdent) n);
+        else if (n instanceof AssignToBlock) return visit((AssignToBlock) n);
+        else if (n instanceof GPUSection) return visit((GPUSection) n);
+        else if (n instanceof GPUAllocateBlock) return visit((GPUAllocateBlock) n);
+        else if (n instanceof GPUFreeBlock) return visit((GPUFreeBlock) n);
+        else if (n instanceof GPUPutBlock) return visit((GPUPutBlock) n);
+        else if (n instanceof GPUGetBlock) return visit((GPUGetBlock) n);
         else if (n instanceof SetPersistent) return visit((SetPersistent) n);
         else if (n instanceof RestorePersistent) return visit((RestorePersistent) n);
-        else if (n instanceof AssignOpEqual) return visit((AssignOpEqual) n);
-        else if (n instanceof AssignOpPlus) return visit((AssignOpPlus) n);
-        else if (n instanceof AssignOpMinus) return visit((AssignOpMinus) n);
-        else if (n instanceof AssignOpStar) return visit((AssignOpStar) n);
+        else if (n instanceof AssertSame) return visit((AssertSame) n);
+        else if (n instanceof AssignOp) return visit((AssignOp) n);
         else if (n instanceof DataBlock) return visit((DataBlock) n);
         else if (n instanceof IdentList) return visit((IdentList) n);
         else if (n instanceof AllocIndexIdent) return visit((AllocIndexIdent) n);
         else if (n instanceof AllocIndexWildCard) return visit((AllocIndexWildCard) n);
         else if (n instanceof AllocIndexList) return visit((AllocIndexList) n);
         else if (n instanceof AllocIndexListopt) return visit((AllocIndexListopt) n);
-        else if (n instanceof RelationalExpression) return visit((RelationalExpression) n);
         else if (n instanceof RelOp) return visit((RelOp) n);
-        else if (n instanceof BinaryExpression) return visit((BinaryExpression) n);
-        else if (n instanceof BinOpStar) return visit((BinOpStar) n);
-        else if (n instanceof BinOpDiv) return visit((BinOpDiv) n);
-        else if (n instanceof BinOpPlus) return visit((BinOpPlus) n);
-        else if (n instanceof BinOpMinus) return visit((BinOpMinus) n);
-        else if (n instanceof BinOpTensor) return visit((BinOpTensor) n);
-        else if (n instanceof NegatedUnary) return visit((NegatedUnary) n);
-        else if (n instanceof IntLitPrimary) return visit((IntLitPrimary) n);
-        else if (n instanceof DoubleLitPrimary) return visit((DoubleLitPrimary) n);
-        else if (n instanceof IdentPrimary) return visit((IdentPrimary) n);
-        else if (n instanceof DataBlockPrimary) return visit((DataBlockPrimary) n);
-        else if (n instanceof StringLitPrimary) return visit((StringLitPrimary) n);
+        else if (n instanceof RelationalExpression) return visit((RelationalExpression) n);
+        else if (n instanceof AddExpr) return visit((AddExpr) n);
+        else if (n instanceof SubtractExpr) return visit((SubtractExpr) n);
+        else if (n instanceof StarExpr) return visit((StarExpr) n);
+        else if (n instanceof DivExpr) return visit((DivExpr) n);
+        else if (n instanceof TensorExpr) return visit((TensorExpr) n);
+        else if (n instanceof IntCastExpr) return visit((IntCastExpr) n);
+        else if (n instanceof ScalarCastExpr) return visit((ScalarCastExpr) n);
+        else if (n instanceof NegatedUnaryExpr) return visit((NegatedUnaryExpr) n);
+        else if (n instanceof ParenExpr) return visit((ParenExpr) n);
+        else if (n instanceof IntLitExpr) return visit((IntLitExpr) n);
+        else if (n instanceof DoubleLitExpr) return visit((DoubleLitExpr) n);
+        else if (n instanceof IdentExpr) return visit((IdentExpr) n);
+        else if (n instanceof DataBlockExpr) return visit((DataBlockExpr) n);
+        else if (n instanceof StringLitExpr) return visit((StringLitExpr) n);
         else if (n instanceof StringLiteral) return visit((StringLiteral) n);
         else if (n instanceof Ident) return visit((Ident) n);
         throw new UnsupportedOperationException("visit(" + n.getClass().toString() + ")");
@@ -397,14 +411,12 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) endVisit((ImportProgList) n);
         else if (n instanceof ImportProg) endVisit((ImportProg) n);
         else if (n instanceof ModifierList) endVisit((ModifierList) n);
-        else if (n instanceof Sip_ConsistentModifier) endVisit((Sip_ConsistentModifier) n);
-        else if (n instanceof PredefinedModifier) endVisit((PredefinedModifier) n);
-        else if (n instanceof ScopedExtentModifier) endVisit((ScopedExtentModifier) n);
-        else if (n instanceof ContiguousModifier) endVisit((ContiguousModifier) n);
-        else if (n instanceof Auto_AllocateModifier) endVisit((Auto_AllocateModifier) n);
+        else if (n instanceof Modifier) endVisit((Modifier) n);
         else if (n instanceof DecList) endVisit((DecList) n);
         else if (n instanceof ScalarDec) endVisit((ScalarDec) n);
+        else if (n instanceof ScalarInitialValue) endVisit((ScalarInitialValue) n);
         else if (n instanceof IntDec) endVisit((IntDec) n);
+        else if (n instanceof IntInitialValue) endVisit((IntInitialValue) n);
         else if (n instanceof ArrayDec) endVisit((ArrayDec) n);
         else if (n instanceof ArrayKind) endVisit((ArrayKind) n);
         else if (n instanceof DimensionList) endVisit((DimensionList) n);
@@ -447,40 +459,45 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof PrintStatement) endVisit((PrintStatement) n);
         else if (n instanceof PrintIndexStatement) endVisit((PrintIndexStatement) n);
         else if (n instanceof PrintScalarStatement) endVisit((PrintScalarStatement) n);
+        else if (n instanceof PrintIntStatement) endVisit((PrintIntStatement) n);
+        else if (n instanceof DataBlockArg) endVisit((DataBlockArg) n);
+        else if (n instanceof IdentArg) endVisit((IdentArg) n);
+        else if (n instanceof DoubleLitArg) endVisit((DoubleLitArg) n);
         else if (n instanceof ArgList) endVisit((ArgList) n);
         else if (n instanceof ExecuteStatement) endVisit((ExecuteStatement) n);
-        else if (n instanceof AssignStatement) endVisit((AssignStatement) n);
-        else if (n instanceof GpuStatement) endVisit((GpuStatement) n);
-        else if (n instanceof GpuAllocate) endVisit((GpuAllocate) n);
-        else if (n instanceof GpuFree) endVisit((GpuFree) n);
-        else if (n instanceof GpuPut) endVisit((GpuPut) n);
-        else if (n instanceof GpuGet) endVisit((GpuGet) n);
+        else if (n instanceof AssignToIdent) endVisit((AssignToIdent) n);
+        else if (n instanceof AssignToBlock) endVisit((AssignToBlock) n);
+        else if (n instanceof GPUSection) endVisit((GPUSection) n);
+        else if (n instanceof GPUAllocateBlock) endVisit((GPUAllocateBlock) n);
+        else if (n instanceof GPUFreeBlock) endVisit((GPUFreeBlock) n);
+        else if (n instanceof GPUPutBlock) endVisit((GPUPutBlock) n);
+        else if (n instanceof GPUGetBlock) endVisit((GPUGetBlock) n);
         else if (n instanceof SetPersistent) endVisit((SetPersistent) n);
         else if (n instanceof RestorePersistent) endVisit((RestorePersistent) n);
-        else if (n instanceof AssignOpEqual) endVisit((AssignOpEqual) n);
-        else if (n instanceof AssignOpPlus) endVisit((AssignOpPlus) n);
-        else if (n instanceof AssignOpMinus) endVisit((AssignOpMinus) n);
-        else if (n instanceof AssignOpStar) endVisit((AssignOpStar) n);
+        else if (n instanceof AssertSame) endVisit((AssertSame) n);
+        else if (n instanceof AssignOp) endVisit((AssignOp) n);
         else if (n instanceof DataBlock) endVisit((DataBlock) n);
         else if (n instanceof IdentList) endVisit((IdentList) n);
         else if (n instanceof AllocIndexIdent) endVisit((AllocIndexIdent) n);
         else if (n instanceof AllocIndexWildCard) endVisit((AllocIndexWildCard) n);
         else if (n instanceof AllocIndexList) endVisit((AllocIndexList) n);
         else if (n instanceof AllocIndexListopt) endVisit((AllocIndexListopt) n);
-        else if (n instanceof RelationalExpression) endVisit((RelationalExpression) n);
         else if (n instanceof RelOp) endVisit((RelOp) n);
-        else if (n instanceof BinaryExpression) endVisit((BinaryExpression) n);
-        else if (n instanceof BinOpStar) endVisit((BinOpStar) n);
-        else if (n instanceof BinOpDiv) endVisit((BinOpDiv) n);
-        else if (n instanceof BinOpPlus) endVisit((BinOpPlus) n);
-        else if (n instanceof BinOpMinus) endVisit((BinOpMinus) n);
-        else if (n instanceof BinOpTensor) endVisit((BinOpTensor) n);
-        else if (n instanceof NegatedUnary) endVisit((NegatedUnary) n);
-        else if (n instanceof IntLitPrimary) endVisit((IntLitPrimary) n);
-        else if (n instanceof DoubleLitPrimary) endVisit((DoubleLitPrimary) n);
-        else if (n instanceof IdentPrimary) endVisit((IdentPrimary) n);
-        else if (n instanceof DataBlockPrimary) endVisit((DataBlockPrimary) n);
-        else if (n instanceof StringLitPrimary) endVisit((StringLitPrimary) n);
+        else if (n instanceof RelationalExpression) endVisit((RelationalExpression) n);
+        else if (n instanceof AddExpr) endVisit((AddExpr) n);
+        else if (n instanceof SubtractExpr) endVisit((SubtractExpr) n);
+        else if (n instanceof StarExpr) endVisit((StarExpr) n);
+        else if (n instanceof DivExpr) endVisit((DivExpr) n);
+        else if (n instanceof TensorExpr) endVisit((TensorExpr) n);
+        else if (n instanceof IntCastExpr) endVisit((IntCastExpr) n);
+        else if (n instanceof ScalarCastExpr) endVisit((ScalarCastExpr) n);
+        else if (n instanceof NegatedUnaryExpr) endVisit((NegatedUnaryExpr) n);
+        else if (n instanceof ParenExpr) endVisit((ParenExpr) n);
+        else if (n instanceof IntLitExpr) endVisit((IntLitExpr) n);
+        else if (n instanceof DoubleLitExpr) endVisit((DoubleLitExpr) n);
+        else if (n instanceof IdentExpr) endVisit((IdentExpr) n);
+        else if (n instanceof DataBlockExpr) endVisit((DataBlockExpr) n);
+        else if (n instanceof StringLitExpr) endVisit((StringLitExpr) n);
         else if (n instanceof StringLiteral) endVisit((StringLiteral) n);
         else if (n instanceof Ident) endVisit((Ident) n);
         throw new UnsupportedOperationException("visit(" + n.getClass().toString() + ")");

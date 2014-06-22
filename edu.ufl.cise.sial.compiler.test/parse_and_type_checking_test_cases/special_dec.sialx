@@ -3,12 +3,12 @@ predefined int norb
 special fill_block_sequential wr
 aoindex i = 1,norb
 aoindex j = 1,norb
-temp a(i,j)
-temp b(j,i)
+temp a[i,j]
+temp b[j,i]
 do i
 do j
-execute fill_block_sequential a(i,j) 2.0
-b(j,i) = a(i,j)
+execute fill_block_sequential a[i,j] 2.0
+b[j,i] = a[i,j]
 enddo j
 enddo i
 println "end of fill_sequential_test"

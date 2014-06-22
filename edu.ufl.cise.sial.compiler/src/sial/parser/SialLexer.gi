@@ -74,7 +74,7 @@
 
     0    1    2    3    4    5    6    7    8    9
 
-   AfterASCII   ::= '\u0080..\ufffe'
+    AfterASCII   ::= '\u0080..\ufffe'
     Space        ::= ' '
     LF           ::= NewLine
     CR           ::= Return

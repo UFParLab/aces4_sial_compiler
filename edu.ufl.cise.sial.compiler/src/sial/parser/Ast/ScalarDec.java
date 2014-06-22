@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 29:  ScalarDec ::= Modifiersopt scalar$ Ident
+ *<li>Rule 27:  ScalarDec ::= Modifiersopt scalar$ Ident ScalarInitializationOpt
  *</b>
  */
 public class ScalarDec extends ASTNode implements IScalarDec
@@ -21,13 +23,19 @@ public class ScalarDec extends ASTNode implements IScalarDec
 
     private ModifierList _Modifiersopt;
     private Ident _Ident;
+    private ScalarInitialValue _ScalarInitializationOpt;
 
     public ModifierList getModifiersopt() { return _Modifiersopt; }
     public Ident getIdent() { return _Ident; }
+    /**
+     * The value returned by <b>getScalarInitializationOpt</b> may be <b>null</b>
+     */
+    public ScalarInitialValue getScalarInitializationOpt() { return _ScalarInitializationOpt; }
 
     public ScalarDec(SialParser environment, IToken leftIToken, IToken rightIToken,
                      ModifierList _Modifiersopt,
-                     Ident _Ident)
+                     Ident _Ident,
+                     ScalarInitialValue _ScalarInitializationOpt)
     {
         super(leftIToken, rightIToken);
 
@@ -36,6 +44,8 @@ public class ScalarDec extends ASTNode implements IScalarDec
         ((ASTNode) _Modifiersopt).setParent(this);
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
+        this._ScalarInitializationOpt = _ScalarInitializationOpt;
+        if (_ScalarInitializationOpt != null) ((ASTNode) _ScalarInitializationOpt).setParent(this);
         initialize();
     }
 
@@ -47,6 +57,7 @@ public class ScalarDec extends ASTNode implements IScalarDec
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Modifiersopt);
         list.add(_Ident);
+        list.add(_ScalarInitializationOpt);
         return list;
     }
 
@@ -58,6 +69,10 @@ public class ScalarDec extends ASTNode implements IScalarDec
         ScalarDec other = (ScalarDec) o;
         if (! _Modifiersopt.equals(other._Modifiersopt)) return false;
         if (! _Ident.equals(other._Ident)) return false;
+        if (_ScalarInitializationOpt == null)
+            if (other._ScalarInitializationOpt != null) return false;
+            else; // continue
+        else if (! _ScalarInitializationOpt.equals(other._ScalarInitializationOpt)) return false;
         return true;
     }
 
@@ -66,6 +81,7 @@ public class ScalarDec extends ASTNode implements IScalarDec
         int hash = super.hashCode();
         hash = hash * 31 + (_Modifiersopt.hashCode());
         hash = hash * 31 + (_Ident.hashCode());
+        hash = hash * 31 + (_ScalarInitializationOpt == null ? 0 : _ScalarInitializationOpt.hashCode());
         return hash;
     }
 
@@ -83,6 +99,7 @@ public class ScalarDec extends ASTNode implements IScalarDec
         {
             _Modifiersopt.accept(v);
             _Ident.accept(v);
+            if (_ScalarInitializationOpt != null) _ScalarInitializationOpt.accept(v);
         }
         v.endVisit(this);
     }

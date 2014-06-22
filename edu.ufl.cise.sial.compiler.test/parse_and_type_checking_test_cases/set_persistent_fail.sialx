@@ -11,13 +11,13 @@ sial set_persistent_fail
 
       moaindex a = bavirt, eavirt
 
-      temp Txxxi(mu,nu,lambda,i)
-      temp Txixi(mu,i1,lambda,i)
-      temp Txxii(mu,nu,i1,i)
-      distributed Vxixi(mu,i1,lambda,i)
-      local Vxxii(mu,nu,i1,i)
+      temp Txxxi[mu,nu,lambda,i]
+      temp Txixi[mu,i1,lambda,i]
+      temp Txxii[mu,nu,i1,i]
+      distributed Vxixi[mu,i1,lambda,i]
+      local Vxxii[mu,nu,i1,i]
 
-      served AOINT(mu,nu,lambda,sigma) 
+      served AOINT[mu,nu,lambda,sigma] 
  
       set_persistent AOINT "aoint_file"
       set_persistent Vxxii

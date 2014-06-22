@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 58:  WhereClause ::= where$ RelationalExpression
+ *<li>Rule 60:  WhereClause ::= where$ RelationalExpression
  *</b>
  */
 public class WhereClause extends ASTNode implements IWhereClause

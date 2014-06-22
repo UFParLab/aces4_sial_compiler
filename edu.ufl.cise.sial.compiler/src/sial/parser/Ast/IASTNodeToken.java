@@ -7,16 +7,14 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  * is always implemented by <b>ASTNodeToken</b>. It is also implemented by:
  *<b>
  *<ul>
- *<li>Sip_ConsistentModifier
- *<li>PredefinedModifier
- *<li>ScopedExtentModifier
- *<li>ContiguousModifier
- *<li>Auto_AllocateModifier
+ *<li>Modifier
  *<li>ArrayKind
  *<li>IndexKind
  *<li>IntLitRangeVal
@@ -49,33 +47,32 @@ import org.eclipse.imp.parser.IParser;
  *<li>PrintStatement
  *<li>PrintIndexStatement
  *<li>PrintScalarStatement
+ *<li>PrintIntStatement
+ *<li>DataBlockArg
+ *<li>IdentArg
+ *<li>DoubleLitArg
  *<li>ExecuteStatement
- *<li>AssignStatement
- *<li>GpuStatement
- *<li>GpuAllocate
- *<li>GpuFree
- *<li>GpuPut
- *<li>GpuGet
+ *<li>AssignToIdent
+ *<li>AssignToBlock
+ *<li>GPUSection
+ *<li>GPUAllocateBlock
+ *<li>GPUFreeBlock
+ *<li>GPUPutBlock
+ *<li>GPUGetBlock
  *<li>SetPersistent
  *<li>RestorePersistent
- *<li>AssignOpEqual
- *<li>AssignOpPlus
- *<li>AssignOpMinus
- *<li>AssignOpStar
+ *<li>AssertSame
+ *<li>AssignOp
  *<li>DataBlock
  *<li>AllocIndexIdent
  *<li>AllocIndexWildCard
  *<li>RelOp
- *<li>BinOpStar
- *<li>BinOpDiv
- *<li>BinOpPlus
- *<li>BinOpMinus
- *<li>BinOpTensor
- *<li>IntLitPrimary
- *<li>DoubleLitPrimary
- *<li>IdentPrimary
- *<li>DataBlockPrimary
- *<li>StringLitPrimary
+ *<li>ParenExpr
+ *<li>IntLitExpr
+ *<li>DoubleLitExpr
+ *<li>IdentExpr
+ *<li>DataBlockExpr
+ *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident
  *</ul>

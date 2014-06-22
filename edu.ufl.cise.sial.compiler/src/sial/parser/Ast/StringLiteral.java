@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 137:  StringLiteral ::= STRINGLIT
+ *<li>Rule 145:  StringLiteral ::= STRINGLIT
  *</b>
  */
 public class StringLiteral extends ASTNodeToken implements IStringLiteral

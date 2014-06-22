@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 83:  Statement ::= destroy$ Ident
+ *<li>Rule 85:  Statement ::= destroy$ Ident
  *</b>
  */
 public class DestroyStatement extends ASTNode implements IStatement

@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 86:  Statement ::= print_index$ Ident
+ *<li>Rule 88:  Statement ::= print_index$ Ident
  *</b>
  */
 public class PrintIndexStatement extends ASTNode implements IStatement

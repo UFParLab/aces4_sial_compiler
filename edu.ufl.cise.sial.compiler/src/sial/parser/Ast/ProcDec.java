@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 52:  ProcDec ::= proc$ Ident EOLs$ StatementList endproc Ident$endIdent
+ *<li>Rule 54:  ProcDec ::= proc$ Ident EOLs$ StatementList endproc Ident$endIdent
  *</b>
  */
 public class ProcDec extends ASTNode implements IProcDec

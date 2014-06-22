@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 63:  Statement ::= server_barrier$ IdentOpt
+ *<li>Rule 65:  Statement ::= server_barrier$ IdentOpt
  *</b>
  */
 public class ServerBarrierStatement extends ASTNode implements IStatement

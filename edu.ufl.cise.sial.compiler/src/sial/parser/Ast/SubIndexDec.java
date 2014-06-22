@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 47:  SubIndexDec ::= subindex$ Ident of$ Ident$ParentIdent
+ *<li>Rule 49:  SubIndexDec ::= subindex$ Ident of$ Ident$ParentIdent
  *</b>
  */
 public class SubIndexDec extends ASTNode implements ISubIndexDec

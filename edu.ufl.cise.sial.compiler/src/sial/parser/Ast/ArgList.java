@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 89:  ArgList ::= $Empty
- *<li>Rule 90:  ArgList ::= ArgList Arg
+ *<li>Rule 94:  ArgList ::= $Empty
+ *<li>Rule 95:  ArgList ::= ArgList Arg
  *</b>
  */
 public class ArgList extends AbstractASTNodeList implements IArgList

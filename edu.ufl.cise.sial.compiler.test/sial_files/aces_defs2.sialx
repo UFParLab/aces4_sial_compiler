@@ -3,24 +3,24 @@ import "aces_defs.sialx"
 
 #These values are inserted into the sip's symbolic_constant_table.
 predefined constant int norb #total number of atomic orbital segments 
-predefined constant int nocc  # number of occupied molecular orbital segments (no spin)
-predefined constant int nvirt # number of unoccupied or virtual orbital segments (no spin)
-predefined constant int bocc  # begin of occupied orbital segment range (no spin)
-predefined constant int eocc  # end occupied orbital segment range (no spin)
-predefined constant int bvirt  # begin of virtual orbital segment range (no spin)
-predefined constant int evirt  # end of virtual orbital segment range (no spin)
-predefined constant int naocc # number of occupied molecular orbital segments (alpha)
-predefined constant int nbocc # number of occupied molecular orbital segments (beta)
-predefined constant int navirt # number of unoccupied or virtual orbital segments (alpha)
-predefined constant int nbvirt # number of unoccupied or virtual orbital segments (beta)
-predefined constant int baocc  # begin of occupied orbital segment range (alpha)
-predefined constant int bbocc  # begin of occupied orbital segment range (beta)
-predefined constant int eaocc  # end occupied orbital segment range (alpha)
-predefined constant int ebocc  # end occupied orbital segment range (beta)
-predefined constant int bavirt  # begin of virtual orbital segment range (alpha)
-predefined constant int bbvirt  # begin of virtual orbital segment range (beta)
-predefined constant int eavirt  # end of virtual orbital segment range (alpha)
-predefined constant int ebvirt  # end of virtual orbital segment range (beta)
+predefined constant int nocc  # number of occupied molecular orbital segments [no spin]
+predefined constant int nvirt # number of unoccupied or virtual orbital segments [no spin]
+predefined constant int bocc  # begin of occupied orbital segment range [no spin]
+predefined constant int eocc  # end occupied orbital segment range [no spin]
+predefined constant int bvirt  # begin of virtual orbital segment range [no spin]
+predefined constant int evirt  # end of virtual orbital segment range [no spin]
+predefined constant int naocc # number of occupied molecular orbital segments [alpha]
+predefined constant int nbocc # number of occupied molecular orbital segments [beta]
+predefined constant int navirt # number of unoccupied or virtual orbital segments [alpha]
+predefined constant int nbvirt # number of unoccupied or virtual orbital segments [beta]
+predefined constant int baocc  # begin of occupied orbital segment range [alpha]
+predefined constant int bbocc  # begin of occupied orbital segment range [beta]
+predefined constant int eaocc  # end occupied orbital segment range [alpha]
+predefined constant int ebocc  # end occupied orbital segment range [beta]
+predefined constant int bavirt  # begin of virtual orbital segment range [alpha]
+predefined constant int bbvirt  # begin of virtual orbital segment range [beta]
+predefined constant int eavirt  # end of virtual orbital segment range [alpha]
+predefined constant int ebvirt  # end of virtual orbital segment range [beta]
 predefined constant int noccorb #  TODO used in any code?
 predefined constant int nvirtorb #  TODO used in code?
 predefined constant int boccorb
@@ -68,17 +68,17 @@ aoindex aces_defs_mu = 1, norb  #3
 
 
 #these constants are predefined in the array and scalar tables
-predefined static c(aces_defs_mu,aces_defs_p)  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
-predefined static ca(aces_defs_mu,aces_defs_pa)  # Alpha spin orbital transformation matrix from the SCF, read in from JOBARC. 
-predefined static cb(aces_defs_mu,aces_defs_pb)  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
+predefined static c[aces_defs_mu,aces_defs_p]  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
+predefined static ca[aces_defs_mu,aces_defs_pa]  # Alpha spin orbital transformation matrix from the SCF, read in from JOBARC. 
+predefined static cb[aces_defs_mu,aces_defs_pb]  # Restricted spin orbital transformation matrix from the SCF, read in from JOBARC. 
 
 predefined scalar scfeneg  # ????   
 predefined scalar totenerg  #Total energy read in from JOBARC.
           
-predefined static e(aces_defs_pb,aces_defs_p)  # Restricted spin orbital energies from the SCF, read in from JOBARC. 
+predefined static e[aces_defs_pb,aces_defs_p]  # Restricted spin orbital energies from the SCF, read in from JOBARC. 
 
-predefined static ea(aces_defs_pa, aces_defs_p)  # Alpha spin orbital energies matrix from the SCF, read in from JOBARC. 
-predefined static eb(aces_defs_pb, aces_defs_pa )  # Restricted spin orbital energies matrix from the SCF, read in from JOBARC. 
+predefined static ea[aces_defs_pa, aces_defs_p]  # Alpha spin orbital energies matrix from the SCF, read in from JOBARC. 
+predefined static eb[aces_defs_pb, aces_defs_pa ]  # Restricted spin orbital energies matrix from the SCF, read in from JOBARC. 
 
 
 
@@ -86,8 +86,8 @@ predefined scalar damp #value of DAMPSCF from ZMAT
 predefined scalar cc_conv  # value of CC_CONV from ZMAT.
 predefined scalar scf_conv  # value of SCF_CONV from ZMAT
 
-predefined static fockrohf_a(aces_defs_pb,aces_defs_pb)
-predefined static fockrohf_b(aces_defs_pb,aces_defs_pb)
+predefined static fockrohf_a[aces_defs_pb,aces_defs_pb]
+predefined static fockrohf_b[aces_defs_pb,aces_defs_pb]
 
 predefined scalar stabvalue  #this is used only in guess_scf_uhf_finish.sial.  It is not a constant
 

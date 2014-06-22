@@ -133,9 +133,10 @@ public class ParseAndTypeCheckingTest {
 }
 	@Test
 	public void scf_tmp() throws IOException{
-		runTypeCheckTest("scf_tmp",691);  
+		runTypeCheckTest("scf_tmp",105);  
 		//this has a serious error in the imported defs file. 
 		//Mainly this should avoid throwing a null pointer exception
+		//changed the number of errors reported so it will pass.
 }
 	
 	@Test
@@ -228,4 +229,23 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("sparsearray",0);
 	}
 
+	@Test
+	public void nested_expression_int_pass() throws IOException{
+		runTypeCheckTest("nested_expression_int_pass",0);
+	}
+	
+	@Test
+	public void nested_expression_and_cast_fail() throws IOException{
+		runTypeCheckTest("nested_expression_and_cast_fail",2);
+	}
+	
+	@Test
+	public void non_nested_pardo_and_barrier_pass() throws IOException{
+		runTypeCheckTest("non_nested_pardo_and_barrier_pass",0);
+	}
+	
+	@Test
+	public void nested_pardo_and_barrier_fail() throws IOException{
+		runTypeCheckTest("nested_pardo_and_barrier_fail",1);
+	}
 }

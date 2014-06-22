@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 37:  DimensionList ::= Dimension
- *<li>Rule 38:  DimensionList ::= DimensionList ,$ Dimension
+ *<li>Rule 39:  DimensionList ::= Dimension
+ *<li>Rule 40:  DimensionList ::= DimensionList ,$ Dimension
  *</b>
  */
 public class DimensionList extends AbstractASTNodeList implements IDimensionList

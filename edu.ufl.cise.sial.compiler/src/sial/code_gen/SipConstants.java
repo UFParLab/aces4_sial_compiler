@@ -52,24 +52,28 @@ public final static int
    distributed_array_priority = 2;
 
 
-//constants in .sio files
+//constants in .siox files
 public final static int
-    magic = 70707,
-    version = 1,
-    release = 2,
-    wild = 90909;
+    magic = 70707,  //recorded in header and checked at load time
+    version = 1,    //recorded in header and checked at load time
+    release = 3,    //recorded in header and checked at load time
+    wild = 90909,   // indicates wild card value for allocate statements
+    push_result_int = -1,  //indicates that result of expression evaluation should be pushed onto the sip control_stack
+    push_result_scalar = -2,  //indicates that the result of expression evaluation should be pushed onto the sip expression stack
+    invalid_dest_for_block = -3;  //temporary value for destiniation of expressions with block values.  This should be replaced during code generation.
+    
 
 
 //opcodes
 public final static int 
 	contraction_op = 101,
 	sum_op         = 102,
-	reindex_op     = 103,
+	push_block_selector_op       = 103,
 	do_op          = 104,
 	enddo_op       = 105,
 	get_op         = 106,
 	user_sub_op    = 107,
-	put_op         = 108,
+	put_accumulate_op         = 108,
 	go_to_op       = 109,
 	create_op      = 110,
 	delete_op      = 111,
@@ -77,22 +81,22 @@ public final static int
 	return_op      = 113,
 	jz_op          = 114, //not used.  check this
 	stop_op        = 115,
-	sp_add_op      = 116,
-	sp_sub_op      = 117,
-	sp_mult_op     = 118,
-	sp_div_op      = 119,
-	sp_equal_op    = 120,
-	sp_nequal_op   = 121,
-	sp_ge_op       = 122,
-	sp_le_op       = 123,
-	sp_gt_op       = 124,
-	sp_lt_op       = 125,
-	sp_ldi_op      = 126,
-	sp_ldindex_op  = 127,
+	int_add_op      = 116,
+	int_subtract_op      = 117,
+	int_multiply_op     = 118,
+	int_divide_op      = 119,
+	int_equal_op    = 120,
+	int_nequal_op   = 121,
+	int_ge_op       = 122,
+	int_le_op       = 123,
+	int_gt_op       = 124,
+	int_lt_op       = 125,
+	int_load_literal_op      = 126,
+	index_load_value_op  = 127,
 	pardo_op       = 128,
 	endpardo_op    = 129,
 	exit_op        = 130,
-	assignment_op  = 131,      // =
+	int_assignment_op  = 131,      // =
 	cycle_op       = 132,
 	self_multiply_op = 134,    // *= scalar
 	subtract_op    = 135,      // -
@@ -103,21 +107,21 @@ public final static int
 	compute_integrals_op = 140,
 	put_replace_op = 141,
 	tensor_op      = 142,
-	fl_add_op      = 146,
-	fl_sub_op      = 147,
-	fl_mult_op     = 148,
-	fl_div_op      = 149,
-	fl_eq_op       = 150,
-	fl_ne_op       = 151,
-	fl_ge_op       = 152,
-	fl_le_op       = 153,
-	fl_gt_op       = 154,
-	fl_lt_op       = 155,
-	fl_load_value_op  = 157,
+	scalar_add_op      = 146,
+	scalar_subtract_op      = 147,
+	scalar_multiply_op     = 148,
+	scalar_divide_op      = 149,
+	scalar_eq_op       = 150,
+	scalar_ne_op       = 151,
+	scalar_ge_op       = 152,
+	scalar_le_op       = 153,
+	scalar_gt_op       = 154,
+	scalar_lt_op       = 155,
+	scalar_load_value_op  = 157,
 	prepare_increment_op = 158,
 	allocate_op    = 159,
 	deallocate_op  = 160,
-	sp_ldi_sym_op  = 161,
+	int_load_value_op  = 161,
 	destroy_op     = 162,
 	prequest_op    = 163,
 	where_op       = 164,
@@ -143,5 +147,30 @@ public final static int
 	gpu_get_op = 193,
 	set_persistent_op = 194,
 	restore_persistent_op=195,
-	last_opcode = restore_persistent_op;
+	int_neg_op = 196,
+	scalar_neg_op = 197,
+//	int_load_literal_op = 198,
+	string_load_literal_op = 199,
+	print_int_op = 100,
+	cast_to_int_op = 101,
+	cast_to_scalar_op = 102,
+	scalar_assignment_op = 103,
+	contraction_accumulate_op = 104,
+	begin_pardo_section_op = 105,
+	end_pardo_section_op = 106,
+	get_block_for_reading_op = 107,
+	get_block_for_accumulate_op = 108,
+	get_block_for_writing_op = 109,
+	get_block_for_update_op = 110,
+	copy_or_transpose_block_op = 111,
+	fill_block_op = 112,
+	block_add_op = 113,
+	block_subtract_op = 114,
+	block_contract_op = 115,
+	block_contract_accumulate_op = 116,
+	assert_same_op = 117,
+	int_modulo_op = 118,
+	int_store_op = 119,
+	scalar_store_op = 120,
+	last_opcode = scalar_store_op;
 }

@@ -7,14 +7,16 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 32:  ArrayKind ::= static$akind
- *<li>Rule 33:  ArrayKind ::= temp$akind
- *<li>Rule 34:  ArrayKind ::= local$akind
- *<li>Rule 35:  ArrayKind ::= distributed$akind
- *<li>Rule 36:  ArrayKind ::= served$akind
+ *<li>Rule 34:  ArrayKind ::= static$akind
+ *<li>Rule 35:  ArrayKind ::= temp$akind
+ *<li>Rule 36:  ArrayKind ::= local$akind
+ *<li>Rule 37:  ArrayKind ::= distributed$akind
+ *<li>Rule 38:  ArrayKind ::= served$akind
  *</b>
  */
 public class ArrayKind extends ASTNodeToken implements IArrayKind

@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 87:  Statement ::= print_scalar$ Ident
+ *<li>Rule 89:  Statement ::= print_scalar$ Ident
  *</b>
  */
 public class PrintScalarStatement extends ASTNode implements IStatement

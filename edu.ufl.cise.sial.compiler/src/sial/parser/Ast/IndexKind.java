@@ -7,15 +7,17 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 41:  IndexKind ::= aoindex$ikind
- *<li>Rule 42:  IndexKind ::= moindex$ikind
- *<li>Rule 43:  IndexKind ::= moaindex$ikind
- *<li>Rule 44:  IndexKind ::= mobindex$ikind
- *<li>Rule 45:  IndexKind ::= index$ikind
- *<li>Rule 46:  IndexKind ::= laindex$ikind
+ *<li>Rule 43:  IndexKind ::= aoindex$ikind
+ *<li>Rule 44:  IndexKind ::= moindex$ikind
+ *<li>Rule 45:  IndexKind ::= moaindex$ikind
+ *<li>Rule 46:  IndexKind ::= mobindex$ikind
+ *<li>Rule 47:  IndexKind ::= index$ikind
+ *<li>Rule 48:  IndexKind ::= laindex$ikind
  *</b>
  */
 public class IndexKind extends ASTNodeToken implements IIndexKind

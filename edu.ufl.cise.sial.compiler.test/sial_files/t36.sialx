@@ -13,13 +13,13 @@ sial t36
       moaindex a2= bavirt, eavirt
       moaindex a3= bavirt, eavirt 
 
-served VSpipi(p,i1,p1,i2)
-distributed  Vaaii(p,i1,p1,i2)
+served VSpipi[p,i1,p1,i2]
+distributed  Vaaii[p,i1,p1,i2]
 
  pardo p,i1,p1
    do i2
-      request              VSpipi(p,i1,p1,i2) i1
-      get                Vaaii(p,i1,p1,i2)
+      request              VSpipi[p,i1,p1,i2] i1
+      get                Vaaii[p,i1,p1,i2]
    enddo i2
 endpardo p,i1,p1
 endsial t36

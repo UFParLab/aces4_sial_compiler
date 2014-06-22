@@ -5,17 +5,18 @@ package sial.parser.Ast;
  *<b>
  *<ul>
  *<li>DataBlock
- *<li>NegatedUnary
- *<li>IntLitPrimary
- *<li>DoubleLitPrimary
- *<li>IdentPrimary
- *<li>DataBlockPrimary
- *<li>StringLitPrimary
+ *<li>NegatedUnaryExpr
+ *<li>ParenExpr
+ *<li>IntLitExpr
+ *<li>DoubleLitExpr
+ *<li>IdentExpr
+ *<li>DataBlockExpr
+ *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident
  *</ul>
  *</b>
  */
-public interface IUnaryExpression extends IExpression {}
+public interface IUnaryExpression extends ICastExpression {}
 
 

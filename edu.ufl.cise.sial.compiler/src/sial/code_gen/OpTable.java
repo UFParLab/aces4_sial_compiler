@@ -15,11 +15,11 @@ import sial.code_gen.IndexTable.Entry;
 import sial.io.SIADataInput;
 import sial.io.SIADataOutput;
 import sial.parser.SialParsersym;
+import static sial.code_gen.CodeGenVisitor.defaultZeroInd;
 
 
 
 public class OpTable {
-	
 	
 	public static class Entry{
 		int opcode; //1
@@ -152,7 +152,9 @@ public class OpTable {
 		nOps = 0; 	 
 	}
 
-
+	public int addOptableEntry(int opcode, int lineno){
+		return addOptableEntry(opcode, 0,0,0, defaultZeroInd, lineno);
+	}
 
 	public int addOptableEntry(int opcode, int result_array, int[] ind, int lineno) {
 		 int index = nOps++;
@@ -196,6 +198,7 @@ public class OpTable {
 		return index;
 	}
 	
+
 	
 	public int addOptableEntry(Entry e){
 		int index = nOps++;
@@ -255,6 +258,26 @@ public class OpTable {
 		entries.get(instructionToChange).result_array = nOps;
 	}
 	
+	//set destination slot for assignments in last instruction
+	public void setDestination(int arraySlot, int [] ind){
+		Entry entry = entries.get(nOps-1);
+		entry.result_array = arraySlot;
+		entry.ind = ind;
+	}
+	
+	public void setDestination(int scalar_slot) {
+		setDestination(scalar_slot, defaultZeroInd);
+		
+	}
+	
+	public int lastOpcode(){
+		return entries.get(nOps-1).opcode;
+	}
+	
+	public void updateLastOpcode(int expected, int replacement){
+		assert (lastOpcode() == expected): "compiler bug, update last opcode encountered unexpected opcode";
+		entries.get(nOps-1).opcode = replacement;
+	}
     boolean firstOpInitialized = false;
 
 	public boolean isFirstOpInitialized() {
@@ -280,9 +303,24 @@ public class OpTable {
 	        return table;
 	}
 
+	/**swaps the position of the two most recent instruction in the optable */
+    public void swap(){
+    	Entry tmp = entries.get(nOps-2);
+    	entries.set(nOps-2,  entries.get(nOps-1));
+    	entries.set(nOps-1, tmp);
+    }
 
 
-
+	/** reorders the instructions in the optable so the latest one goes before the third on in. 
+	 * in other words, if the current Optable has entries   ...... entryN-3, entryN-2, entryN-1, then 
+	 * after this method, the will be ....,entryN-1, entryN-3, entryN-2*/
+    //
+    public void swap2(){
+    	Entry tmp = entries.get(nOps-3);
+    	entries.set(nOps-3, entries.get(nOps-2));
+    	entries.set(nOps-2, entries.get(nOps-1));
+    	entries.set(nOps-1,  tmp);
+    }
 
 
     
