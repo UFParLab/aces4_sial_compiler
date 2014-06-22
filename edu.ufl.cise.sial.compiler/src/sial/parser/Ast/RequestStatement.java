@@ -7,30 +7,35 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 80:  Statement ::= request$ DataBlock Ident
+ *<li>Rule 82:  Statement ::= request$ DataBlock IdentOpt
  *</b>
  */
 public class RequestStatement extends ASTNode implements IStatement
 {
     private DataBlock _DataBlock;
-    private Ident _Ident;
+    private Ident _IdentOpt;
 
     public DataBlock getDataBlock() { return _DataBlock; }
-    public Ident getIdent() { return _Ident; }
+    /**
+     * The value returned by <b>getIdentOpt</b> may be <b>null</b>
+     */
+    public Ident getIdentOpt() { return _IdentOpt; }
 
     public RequestStatement(IToken leftIToken, IToken rightIToken,
                             DataBlock _DataBlock,
-                            Ident _Ident)
+                            Ident _IdentOpt)
     {
         super(leftIToken, rightIToken);
 
         this._DataBlock = _DataBlock;
         ((ASTNode) _DataBlock).setParent(this);
-        this._Ident = _Ident;
-        ((ASTNode) _Ident).setParent(this);
+        this._IdentOpt = _IdentOpt;
+        if (_IdentOpt != null) ((ASTNode) _IdentOpt).setParent(this);
         initialize();
     }
 
@@ -41,7 +46,7 @@ public class RequestStatement extends ASTNode implements IStatement
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_DataBlock);
-        list.add(_Ident);
+        list.add(_IdentOpt);
         return list;
     }
 
@@ -52,7 +57,10 @@ public class RequestStatement extends ASTNode implements IStatement
         if (! super.equals(o)) return false;
         RequestStatement other = (RequestStatement) o;
         if (! _DataBlock.equals(other._DataBlock)) return false;
-        if (! _Ident.equals(other._Ident)) return false;
+        if (_IdentOpt == null)
+            if (other._IdentOpt != null) return false;
+            else; // continue
+        else if (! _IdentOpt.equals(other._IdentOpt)) return false;
         return true;
     }
 
@@ -60,7 +68,7 @@ public class RequestStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_DataBlock.hashCode());
-        hash = hash * 31 + (_Ident.hashCode());
+        hash = hash * 31 + (_IdentOpt == null ? 0 : _IdentOpt.hashCode());
         return hash;
     }
 
@@ -77,7 +85,7 @@ public class RequestStatement extends ASTNode implements IStatement
         if (checkChildren)
         {
             _DataBlock.accept(v);
-            _Ident.accept(v);
+            if (_IdentOpt != null) _IdentOpt.accept(v);
         }
         v.endVisit(this);
     }

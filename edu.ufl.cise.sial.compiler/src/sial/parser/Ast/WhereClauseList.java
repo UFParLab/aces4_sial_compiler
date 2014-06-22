@@ -7,14 +7,16 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<em>
- *<li>Rule 59:  WhereClauseList ::= $Empty
+ *<li>Rule 61:  WhereClauseList ::= $Empty
  *</em>
  *<p>
  *<b>
- *<li>Rule 60:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
+ *<li>Rule 62:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
  *</b>
  */
 public class WhereClauseList extends ASTNode implements IWhereClauseList

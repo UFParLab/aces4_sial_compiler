@@ -391,64 +391,64 @@ public class SialKWLexer extends SialKWLexerprs
         keywordKind[55] = (SialParsersym.TK_print_scalar);
 
         //
-        // Rule 56:  Keyword ::= s i p _ c o n s i s t e n t
+        // Rule 56:  Keyword ::= p r i n t _ i n t
         //
-        keywordKind[56] = (SialParsersym.TK_sip_consistent);
+        keywordKind[56] = (SialParsersym.TK_print_int);
 
         //
-        // Rule 57:  Keyword ::= s c o p e d _ e x t e n t
+        // Rule 57:  Keyword ::= c o n t i g u o u s
         //
-        keywordKind[57] = (SialParsersym.TK_scoped_extent);
+        keywordKind[57] = (SialParsersym.TK_contiguous);
 
         //
-        // Rule 58:  Keyword ::= c o n t i g u o u s
+        // Rule 58:  Keyword ::= g p u _ o n
         //
-        keywordKind[58] = (SialParsersym.TK_contiguous);
+        keywordKind[58] = (SialParsersym.TK_gpu_on);
 
         //
-        // Rule 59:  Keyword ::= a u t o _ a l l o c a t e
+        // Rule 59:  Keyword ::= g p u _ o f f
         //
-        keywordKind[59] = (SialParsersym.TK_auto_allocate);
+        keywordKind[59] = (SialParsersym.TK_gpu_off);
 
         //
-        // Rule 60:  Keyword ::= g p u _ o n
+        // Rule 60:  Keyword ::= g p u _ a l l o c a t e
         //
-        keywordKind[60] = (SialParsersym.TK_gpu_on);
+        keywordKind[60] = (SialParsersym.TK_gpu_allocate);
 
         //
-        // Rule 61:  Keyword ::= g p u _ o f f
+        // Rule 61:  Keyword ::= g p u _ f r e e
         //
-        keywordKind[61] = (SialParsersym.TK_gpu_off);
+        keywordKind[61] = (SialParsersym.TK_gpu_free);
 
         //
-        // Rule 62:  Keyword ::= g p u _ a l l o c a t e
+        // Rule 62:  Keyword ::= g p u _ g e t
         //
-        keywordKind[62] = (SialParsersym.TK_gpu_allocate);
+        keywordKind[62] = (SialParsersym.TK_gpu_get);
 
         //
-        // Rule 63:  Keyword ::= g p u _ f r e e
+        // Rule 63:  Keyword ::= g p u _ p u t
         //
-        keywordKind[63] = (SialParsersym.TK_gpu_free);
+        keywordKind[63] = (SialParsersym.TK_gpu_put);
 
         //
-        // Rule 64:  Keyword ::= g p u _ g e t
+        // Rule 64:  Keyword ::= s e t _ p e r s i s t e n t
         //
-        keywordKind[64] = (SialParsersym.TK_gpu_get);
+        keywordKind[64] = (SialParsersym.TK_set_persistent);
 
         //
-        // Rule 65:  Keyword ::= g p u _ p u t
+        // Rule 65:  Keyword ::= r e s t o r e _ p e r s i s t e n t
         //
-        keywordKind[65] = (SialParsersym.TK_gpu_put);
+        keywordKind[65] = (SialParsersym.TK_restore_persistent);
 
         //
-        // Rule 66:  Keyword ::= s e t _ p e r s i s t e n t
+        // Rule 66:  Keyword ::= s p a r s e
         //
-        keywordKind[66] = (SialParsersym.TK_set_persistent);
+        keywordKind[66] = (SialParsersym.TK_sparse);
 
         //
-        // Rule 67:  Keyword ::= r e s t o r e _ p e r s i s t e n t
+        // Rule 67:  Keyword ::= a s s e r t _ s a m e
         //
-        keywordKind[67] = (SialParsersym.TK_restore_persistent);
+        keywordKind[67] = (SialParsersym.TK_assert_same);
 
         for (int i = 0; i < keywordKind.length; i++)
         {

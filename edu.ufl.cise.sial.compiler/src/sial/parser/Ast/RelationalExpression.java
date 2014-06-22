@@ -7,26 +7,28 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 115:  RelationalExpression ::= UnaryExpression$UnaryExpressionLeft RelOp UnaryExpression$UnaryExpressionRight
+ *<li>Rule 126:  RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
  *</b>
  */
 public class RelationalExpression extends ASTNode implements IRelationalExpression
 {
-    private IUnaryExpression _UnaryExpressionLeft;
+    private IExpression _UnaryExpressionLeft;
     private RelOp _RelOp;
-    private IUnaryExpression _UnaryExpressionRight;
+    private IExpression _UnaryExpressionRight;
 
-    public IUnaryExpression getUnaryExpressionLeft() { return _UnaryExpressionLeft; }
+    public IExpression getUnaryExpressionLeft() { return _UnaryExpressionLeft; }
     public RelOp getRelOp() { return _RelOp; }
-    public IUnaryExpression getUnaryExpressionRight() { return _UnaryExpressionRight; }
+    public IExpression getUnaryExpressionRight() { return _UnaryExpressionRight; }
 
     public RelationalExpression(IToken leftIToken, IToken rightIToken,
-                                IUnaryExpression _UnaryExpressionLeft,
+                                IExpression _UnaryExpressionLeft,
                                 RelOp _RelOp,
-                                IUnaryExpression _UnaryExpressionRight)
+                                IExpression _UnaryExpressionRight)
     {
         super(leftIToken, rightIToken);
 

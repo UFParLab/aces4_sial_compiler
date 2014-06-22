@@ -1,9 +1,9 @@
-#  Copyright (c) 2003-2010 University of Florida
+#  Copyright [c] 2003-2010 University of Florida
 import "aces_defs.sialx"
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  [at your option] any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -54,42 +54,42 @@ import "aces_defs.sialx"
 #
 # Declare distributed arrays which are used 
 # 
-      distributed Vxixi(mu,i1,nu,i) 
-      distributed Vaiai(a,i1,a1,i) 
-      distributed Vxjxj(mu,j1,nu,j) 
-      distributed Vbjbj(b,j1,b1,j) 
-      distributed Vxixj(mu,i,nu,j) 
-      distributed Vaibj(a,i,b,j) 
+      distributed Vxixi[mu,i1,nu,i] 
+      distributed Vaiai[a,i1,a1,i] 
+      distributed Vxjxj[mu,j1,nu,j] 
+      distributed Vbjbj[b,j1,b1,j] 
+      distributed Vxixj[mu,i,nu,j] 
+      distributed Vaibj[a,i,b,j] 
 #
 # Declare Temporary arrays which are used 
 # 
-      temp Txxxi(mu,nu,lambda,i) 
-      temp Txxxj(mu,nu,lambda,j) 
-      temp Txiai(mu,i,a,i1) 
-      temp T1xiai(mu,i,a,i1) 
-      temp Txjbj(mu,j,b,j1) 
-      temp Txibj(mu,i,b,j1) 
-      temp Txixi(mu,i,nu,i1) 
-      temp T1xixi(mu,i,nu,i1) 
-      temp Txjxj(mu,j,nu,j1) 
-      temp T1xjxj(mu,j,nu,j1) 
-      temp Txixj(mu,i,nu,j) 
-      temp T1xixj(mu,i,nu,j) 
-      temp Taiai(a,i,a1,i1) 
-      temp T1aiai(a,i,a1,i1) 
-      temp Tbjbj(b,j,b1,j1) 
-      temp T1bjbj(b,j,b1,j1) 
-      temp Taibj(a,i,b,j) 
-      temp T1aibj(a,i,b,j) 
-      temp V0xxxi(mu,nu,lambda,i) 
-      temp V2xxxi(mu,nu,sigma,i) 
-      temp V0xxxj(mu,nu,lambda,j) 
-      temp V2xxxj(mu,nu,sigma,j) 
+      temp Txxxi[mu,nu,lambda,i] 
+      temp Txxxj[mu,nu,lambda,j] 
+      temp Txiai[mu,i,a,i1] 
+      temp T1xiai[mu,i,a,i1] 
+      temp Txjbj[mu,j,b,j1] 
+      temp Txibj[mu,i,b,j1] 
+      temp Txixi[mu,i,nu,i1] 
+      temp T1xixi[mu,i,nu,i1] 
+      temp Txjxj[mu,j,nu,j1] 
+      temp T1xjxj[mu,j,nu,j1] 
+      temp Txixj[mu,i,nu,j] 
+      temp T1xixj[mu,i,nu,j] 
+      temp Taiai[a,i,a1,i1] 
+      temp T1aiai[a,i,a1,i1] 
+      temp Tbjbj[b,j,b1,j1] 
+      temp T1bjbj[b,j,b1,j1] 
+      temp Taibj[a,i,b,j] 
+      temp T1aibj[a,i,b,j] 
+      temp V0xxxi[mu,nu,lambda,i] 
+      temp V2xxxi[mu,nu,sigma,i] 
+      temp V0xxxj[mu,nu,lambda,j] 
+      temp V2xxxj[mu,nu,sigma,j] 
 #
 # Declare served arrays 
 # 
-      temp AOINT(mu,nu,lambda,sigma)
-      temp BOINT(mu,nu,lambda,sigma)
+      temp AOINT[mu,nu,lambda,sigma]
+      temp BOINT[mu,nu,lambda,sigma]
 #
 # Declare Scalars 
 #
@@ -113,8 +113,8 @@ import "aces_defs.sialx"
 #
      DO i 
 #
-        create Vxixi(*,*,*,i)
-        create Vaiai(*,*,*,i)     
+        create Vxixi[*,*,*,i]
+        create Vaiai[*,*,*,i]     
         sip_barrier 
 #
         PARDO mu, nu, lambda, sigma  
@@ -122,27 +122,27 @@ import "aces_defs.sialx"
               WHERE mu     < nu
               WHERE lambda < sigma
 #
-                 execute compute_integrals        AOINT(mu,nu,lambda,sigma)
-                 V0xxxi(mu,nu,lambda,i) = AOINT(mu,nu,lambda,sigma)*ca(sigma,i)
-                 V2xxxi(mu,nu,sigma,i)  = AOINT(mu,nu,lambda,sigma)*ca(lambda,i)
+                 execute compute_integrals        AOINT[mu,nu,lambda,sigma]
+                 V0xxxi[mu,nu,lambda,i] = AOINT[mu,nu,lambda,sigma]*ca[sigma,i]
+                 V2xxxi[mu,nu,sigma,i]  = AOINT[mu,nu,lambda,sigma]*ca[lambda,i]
 #
                  DO i1 
 #
-                    Txixi(mu,i1,lambda,i)      = V0xxxi(mu,nu,lambda,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,lambda,i) += Txixi(mu,i1,lambda,i)
+                    Txixi[mu,i1,lambda,i]      = V0xxxi[mu,nu,lambda,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,lambda,i] += Txixi[mu,i1,lambda,i]
 #
-                    T1xixi(mu,i1,sigma,i)      = V2xxxi(mu,nu,sigma,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,sigma,i)  += T1xixi(mu,i1,sigma,i)
+                    T1xixi[mu,i1,sigma,i]      = V2xxxi[mu,nu,sigma,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,sigma,i]  += T1xixi[mu,i1,sigma,i]
 #
                  ENDDO i1  
 #
                  DO i1
 #
-                    Txixi(nu,i1,lambda,i)      = V0xxxi(mu,nu,lambda,i)*ca(mu,i1)
-                    put Vxixi(nu,i1,lambda,i) += Txixi(nu,i1,lambda,i)
+                    Txixi[nu,i1,lambda,i]      = V0xxxi[mu,nu,lambda,i]*ca[mu,i1]
+                    put Vxixi[nu,i1,lambda,i] += Txixi[nu,i1,lambda,i]
 #
-                    T1xixi(nu,i1,sigma,i)      = V2xxxi(mu,nu,sigma,i)*ca(mu,i1)
-                    put Vxixi(nu,i1,sigma,i)  += T1xixi(nu,i1,sigma,i)
+                    T1xixi[nu,i1,sigma,i]      = V2xxxi[mu,nu,sigma,i]*ca[mu,i1]
+                    put Vxixi[nu,i1,sigma,i]  += T1xixi[nu,i1,sigma,i]
 #
                  ENDDO i1
 #
@@ -156,17 +156,17 @@ import "aces_defs.sialx"
               WHERE mu     == nu
               WHERE lambda < sigma
 #
-                 execute compute_integrals        AOINT(mu,nu,lambda,sigma)
-                 V0xxxi(mu,nu,lambda,i) = AOINT(mu,nu,lambda,sigma)*ca(sigma,i)
-                 V2xxxi(mu,nu,sigma,i)  = AOINT(mu,nu,lambda,sigma)*ca(lambda,i)
+                 execute compute_integrals        AOINT[mu,nu,lambda,sigma]
+                 V0xxxi[mu,nu,lambda,i] = AOINT[mu,nu,lambda,sigma]*ca[sigma,i]
+                 V2xxxi[mu,nu,sigma,i]  = AOINT[mu,nu,lambda,sigma]*ca[lambda,i]
 #
                  DO i1 
 #
-                    Txixi(mu,i1,lambda,i)      = V0xxxi(mu,nu,lambda,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,lambda,i) += Txixi(mu,i1,lambda,i)
+                    Txixi[mu,i1,lambda,i]      = V0xxxi[mu,nu,lambda,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,lambda,i] += Txixi[mu,i1,lambda,i]
 #
-                    T1xixi(mu,i1,sigma,i)      = V2xxxi(mu,nu,sigma,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,sigma,i)  += T1xixi(mu,i1,sigma,i)
+                    T1xixi[mu,i1,sigma,i]      = V2xxxi[mu,nu,sigma,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,sigma,i]  += T1xixi[mu,i1,sigma,i]
 #
                  ENDDO i1  
 #
@@ -180,16 +180,16 @@ import "aces_defs.sialx"
               WHERE mu     < nu
               WHERE lambda == sigma
 #
-                 execute compute_integrals        AOINT(mu,nu,lambda,sigma)
-                 V0xxxi(mu,nu,lambda,i) = AOINT(mu,nu,lambda,sigma)*ca(sigma,i)
+                 execute compute_integrals        AOINT[mu,nu,lambda,sigma]
+                 V0xxxi[mu,nu,lambda,i] = AOINT[mu,nu,lambda,sigma]*ca[sigma,i]
 #
                  DO i1 
 #
-                    Txixi(mu,i1,lambda,i)      = V0xxxi(mu,nu,lambda,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,lambda,i) += Txixi(mu,i1,lambda,i)
+                    Txixi[mu,i1,lambda,i]      = V0xxxi[mu,nu,lambda,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,lambda,i] += Txixi[mu,i1,lambda,i]
 #
-                    T1xixi(nu,i1,lambda,i)     = V0xxxi(mu,nu,lambda,i)*ca(mu,i1)
-                    put Vxixi(nu,i1,lambda,i) += T1xixi(nu,i1,lambda,i)
+                    T1xixi[nu,i1,lambda,i]     = V0xxxi[mu,nu,lambda,i]*ca[mu,i1]
+                    put Vxixi[nu,i1,lambda,i] += T1xixi[nu,i1,lambda,i]
 #
                  ENDDO i1
 #
@@ -203,13 +203,13 @@ import "aces_defs.sialx"
               WHERE mu     == nu
               WHERE lambda == sigma
 #
-                 execute compute_integrals        AOINT(mu,nu,lambda,sigma)
-                 V0xxxi(mu,nu,lambda,i) = AOINT(mu,nu,lambda,sigma)*ca(sigma,i)
+                 execute compute_integrals        AOINT[mu,nu,lambda,sigma]
+                 V0xxxi[mu,nu,lambda,i] = AOINT[mu,nu,lambda,sigma]*ca[sigma,i]
 #
                  DO i1 
 #
-                    Txixi(mu,i1,lambda,i)      = V0xxxi(mu,nu,lambda,i)*ca(nu,i1)
-                    put Vxixi(mu,i1,lambda,i) += Txixi(mu,i1,lambda,i)
+                    Txixi[mu,i1,lambda,i]      = V0xxxi[mu,nu,lambda,i]*ca[nu,i1]
+                    put Vxixi[mu,i1,lambda,i] += Txixi[mu,i1,lambda,i]
 #
                  ENDDO i1  
 #
@@ -222,45 +222,45 @@ import "aces_defs.sialx"
 #
         PARDO a1, mu, i1  
 #
-           Txiai(mu,i1,a1,i) = 0.0 
+           Txiai[mu,i1,a1,i] = 0.0 
 #
            DO lambda  
 #
-              get                  Vxixi(mu,i1,lambda,i)
-              T1xiai(mu,i1,a1,i) = Vxixi(mu,i1,lambda,i)*ca(lambda,a1)  
-              Txiai(mu,i1,a1,i) += T1xiai(mu,i1,a1,i) 
+              get                  Vxixi[mu,i1,lambda,i]
+              T1xiai[mu,i1,a1,i] = Vxixi[mu,i1,lambda,i]*ca[lambda,a1]  
+              Txiai[mu,i1,a1,i] += T1xiai[mu,i1,a1,i] 
 #
            ENDDO lambda  
 #
            DO a 
 #
-              Taiai(a,i1,a1,i)      = Txiai(mu,i1,a1,i)*ca(mu,a) 
-              put Vaiai(a,i1,a1,i) += Taiai(a,i1,a1,i)  
+              Taiai[a,i1,a1,i]      = Txiai[mu,i1,a1,i]*ca[mu,a] 
+              put Vaiai[a,i1,a1,i] += Taiai[a,i1,a1,i]  
 #
            ENDDO a 
 #
         ENDPARDO a1, mu, i1  
 #
         sip_barrier 
-        delete Vxixi(*,*,*,i)
+        delete Vxixi[*,*,*,i]
 #
         PARDO a, a1, i1   
 #
-              get                        Vaiai(a,i1,a1,i)  
-              get                        Vaiai(a1,i1,a,i)  
-              Taiai(a,i1,a1,i)         = Vaiai(a,i1,a1,i)
-              T1aiai(a,i1,a1,i)        = Vaiai(a1,i1,a,i)
-              Taiai(a,i1,a1,i)        *= 2.0  
-              Taiai(a,i1,a1,i)        -= T1aiai(a,i1,a1,i)  
+              get                        Vaiai[a,i1,a1,i]  
+              get                        Vaiai[a1,i1,a,i]  
+              Taiai[a,i1,a1,i]         = Vaiai[a,i1,a1,i]
+              T1aiai[a,i1,a1,i]        = Vaiai[a1,i1,a,i]
+              Taiai[a,i1,a1,i]        *= 2.0  
+              Taiai[a,i1,a1,i]        -= T1aiai[a,i1,a1,i]  
               execute energy_denominator Taiai  
-              etemp                    = Taiai(a,i1,a1,i)*Vaiai(a,i1,a1,i) 
+              etemp                    = Taiai[a,i1,a1,i]*Vaiai[a,i1,a1,i] 
              #etemp                   *= 0.25  
               esumaa                  += etemp 
 #
         ENDPARDO a, a1, i1   
 #
         sip_barrier 
-        delete Vaiai(*,*,*,i)
+        delete Vaiai[*,*,*,i]
 #
      ENDDO i
 #

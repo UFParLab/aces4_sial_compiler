@@ -71,10 +71,11 @@ print
 println
 print_index
 print_scalar
-sip_consistent
-scoped_extent
+print_int
+--sip_consistent
+--scoped_extent
 contiguous
-auto_allocate
+--auto_allocate
 gpu_on
 gpu_off
 gpu_allocate
@@ -163,11 +164,12 @@ assert_same
         | p r i n t         /.$setResult($_print);./	 
         | p r i n t  l n       /.$setResult($_println);./
 		| p r i n t _ i n d e x  /.$setResult($_print_index);./
-		| p r i n t _ s c a l a r 	 /.$setResult($_print_scalar);./			
-		| s i p _ c o n s i s t e n t	 /.$setResult($_sip_consistent);./
-        | s c o p e d _ e x t e n t	 /.$setResult($_scoped_extent);./
+		| p r i n t _ s c a l a r 	 /.$setResult($_print_scalar);./		
+		| p r i n t _ i n t /.$setResult($_print_int);./							 
+--		| s i p _ c o n s i s t e n t	 /.$setResult($_sip_consistent);./
+--        | s c o p e d _ e x t e n t	 /.$setResult($_scoped_extent);./
         | c o n t i g u o u s  /.$setResult($_contiguous);./
-        | a u t o _ a l l o c a t e   /.$setResult($_auto_allocate);./ 			
+--        | a u t o _ a l l o c a t e   /.$setResult($_auto_allocate);./ 			
 		| g p u _ o n  /.$setResult($_gpu_on);./
 	    | g p u _ o f f   /.$setResult($_gpu_off);./					
 	    | g p u _ a l l o c a t e   /.$setResult($_gpu_allocate);./				

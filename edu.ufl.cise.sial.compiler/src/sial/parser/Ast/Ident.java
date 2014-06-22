@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 138:  Ident ::= IDENTIFIER
+ *<li>Rule 146:  Ident ::= IDENTIFIER
  *</b>
  */
 public class Ident extends ASTNodeToken implements IIdent
@@ -43,15 +45,11 @@ public class Ident extends ASTNodeToken implements IIdent
   IDec dec;
   public void setDec(IDec dec) { this.dec = dec; }
   public IDec getDec() { return dec; }
-   public boolean equals(Object obj){
+  public boolean equals(Object obj){
        
        if (!(obj instanceof Ident)) return false;
        return  obj == null? false : (getIDENTIFIER().toString().equalsIgnoreCase(((Ident)obj).getIDENTIFIER().toString()));
   }
-  // private static final long serialVersionUID = -4338743197305594251L;
-  // public int hashCode(){
- //  return (int)serialVersionUID;
- // }
 
   public String getName(){
        return toString().toLowerCase();

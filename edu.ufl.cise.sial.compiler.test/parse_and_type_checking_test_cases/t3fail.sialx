@@ -2,5 +2,5 @@ import "t3_def1.sialx"
 import "t3_def2.sialx"
 
 sial t3pass
-distributed c(i,k)
+distributed c[i,k]
 endsial t3pass

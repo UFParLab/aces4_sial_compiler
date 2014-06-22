@@ -3,7 +3,7 @@ import "aces_defs.sialx"
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  [at your option] any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -117,58 +117,58 @@ import "aces_defs.sialx"
 # Declare arrays
 #
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      served Viaai(i,a1,a,i1)
-      served Vaaii(a,a1,i,i1)
+      served Viaai[i,a1,a,i1]
+      served Vaaii[a,a1,i,i1]
 #
-      served Vjbbj(j,b,b1,j1)
-      served Vbbjj(b,b1,j,j1)
+      served Vjbbj[j,b,b1,j1]
+      served Vbbjj[b,b1,j,j1]
 #
-      served Vaajj(a,a1,j,j1)
-      served Viabj(i,a,b,j)
+      served Vaajj[a,a1,j,j1]
+      served Viabj[i,a,b,j]
 #
 # VFL arrays to use simple indeces
 
-      distributed VC1A(a,i,k21)
-      distributed VCH1A(a,i,k20)
-      distributed VTEMP1A(a,i,k20)
+      distributed VC1A[a,i,k21]
+      distributed VCH1A[a,i,k20]
+      distributed VTEMP1A[a,i,k20]
 
-      distributed ax(j20,k20)
-      local Lax(j20,k20)
-      static MYvev(kindex20,jindex20)
-      static Aeig(kindex20,jindex20)
-      temp t1(k21,k21)
-      temp t20(k20,j20)
-      distributed orth(j21,k21)
+      distributed ax[j20,k20]
+      local Lax[j20,k20]
+      static MYvev[kindex20,jindex20]
+      static Aeig[kindex20,jindex20]
+      temp t1[k21,k21]
+      temp t20[k20,j20]
+      distributed orth[j21,k21]
 
-      temp taiS(a,i,k21)
-      temp t2aiS(a,i,k20)
-      temp t3aiS(a,i,k20)
+      temp taiS[a,i,k21]
+      temp t2aiS[a,i,k20]
+      temp t3aiS[a,i,k20]
 
-      temp tbjS(b,j,k21)
-      temp t2bjS(b,j,k20)
-      temp t3bjS(b,j,k20)
+      temp tbjS[b,j,k21]
+      temp t2bjS[b,j,k20]
+      temp t3bjS[b,j,k20]
 
-      temp atemp2(jindex2,kindex2)
-      temp atemp3(jindex3,kindex3)
-      temp atemp4(jindex4,kindex4)
-      temp atemp5(jindex5,kindex5)
-      temp atemp6(jindex6,kindex6)
-      temp atemp7(jindex7,kindex7)
-      temp atemp8(jindex8,kindex8)
-      temp atemp9(jindex9,kindex9)
-      temp atemp10(jindex10,kindex10)
-      temp atemp11(jindex11,kindex11)
-      temp atemp12(jindex12,kindex12)
-      temp atemp13(jindex13,kindex13)
-      temp atemp14(jindex14,kindex14)
-      temp atemp15(jindex15,kindex15)
-      temp atemp16(jindex16,kindex16)
-      temp atemp17(jindex17,kindex17)
-      temp atemp18(jindex18,kindex18)
-      temp atemp19(jindex19,kindex19)
-      temp atemp20(jindex20,kindex20)
+      temp atemp2[jindex2,kindex2]
+      temp atemp3[jindex3,kindex3]
+      temp atemp4[jindex4,kindex4]
+      temp atemp5[jindex5,kindex5]
+      temp atemp6[jindex6,kindex6]
+      temp atemp7[jindex7,kindex7]
+      temp atemp8[jindex8,kindex8]
+      temp atemp9[jindex9,kindex9]
+      temp atemp10[jindex10,kindex10]
+      temp atemp11[jindex11,kindex11]
+      temp atemp12[jindex12,kindex12]
+      temp atemp13[jindex13,kindex13]
+      temp atemp14[jindex14,kindex14]
+      temp atemp15[jindex15,kindex15]
+      temp atemp16[jindex16,kindex16]
+      temp atemp17[jindex17,kindex17]
+      temp atemp18[jindex18,kindex18]
+      temp atemp19[jindex19,kindex19]
+      temp atemp20[jindex20,kindex20]
 #
-      local L1ai(a,i) 
+      local L1ai[a,i] 
 
       scalar six 
       scalar kcount
@@ -180,283 +180,283 @@ import "aces_defs.sialx"
 #
 #    served arrays used in EOM
 #
-      static Sii(i,i1)
-      static Sdii(i,i1)
-      static Saa(a,a1)
-      static Sdaa(a,a1)
-      static Sia(i,a)
-      static Sdia(i,a)
-      static Sjj(j,j1)
-      static Sdjj(j,j1)
-      static Sbb(b,b1)
-      static Sdbb(b,b1)
-      static Smat(kindex,jindex)
-      static SVEV(kindex,jindex)
-      static Smat2(kindex2,jindex2)
-      static SVEV2(kindex2,jindex2)
-      static Smat3(kindex3,jindex3)
-      static SVEV3(kindex3,jindex3)
-      static Smat4(kindex4,jindex4)
-      static SVEV4(kindex4,jindex4)
-      static Smat5(kindex5,jindex5)
-      static SVEV5(kindex5,jindex5)
-      static Smat6(kindex6,jindex6)
-      static SVEV6(kindex6,jindex6)
-      static Smat7(kindex7,jindex7)
-      static SVEV7(kindex7,jindex7)
+      static Sii[i,i1]
+      static Sdii[i,i1]
+      static Saa[a,a1]
+      static Sdaa[a,a1]
+      static Sia[i,a]
+      static Sdia[i,a]
+      static Sjj[j,j1]
+      static Sdjj[j,j1]
+      static Sbb[b,b1]
+      static Sdbb[b,b1]
+      static Smat[kindex,jindex]
+      static SVEV[kindex,jindex]
+      static Smat2[kindex2,jindex2]
+      static SVEV2[kindex2,jindex2]
+      static Smat3[kindex3,jindex3]
+      static SVEV3[kindex3,jindex3]
+      static Smat4[kindex4,jindex4]
+      static SVEV4[kindex4,jindex4]
+      static Smat5[kindex5,jindex5]
+      static SVEV5[kindex5,jindex5]
+      static Smat6[kindex6,jindex6]
+      static SVEV6[kindex6,jindex6]
+      static Smat7[kindex7,jindex7]
+      static SVEV7[kindex7,jindex7]
 #======================================================
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #--start of script generated part of the code
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #======================================================
-      static Smat8(kindex8,jindex8)
-      static SVEV8(kindex8,jindex8)
-      static Smat9(kindex9,jindex9)
-      static SVEV9(kindex9,jindex9)
-      static Smat10(kindex10,jindex10)
-      static SVEV10(kindex10,jindex10)
-      static Smat11(kindex11,jindex11)
-      static SVEV11(kindex11,jindex11)
-      static Smat12(kindex12,jindex12)
-      static SVEV12(kindex12,jindex12)
-      static Smat13(kindex13,jindex13)
-      static SVEV13(kindex13,jindex13)
-      static Smat14(kindex14,jindex14)
-      static SVEV14(kindex14,jindex14)
-      static Smat15(kindex15,jindex15)
-      static SVEV15(kindex15,jindex15)
-      static Smat16(kindex16,jindex16)
-      static SVEV16(kindex16,jindex16)
-      static Smat17(kindex17,jindex17)
-      static SVEV17(kindex17,jindex17)
-      static Smat18(kindex18,jindex18)
-      static SVEV18(kindex18,jindex18)
-      static Smat19(kindex19,jindex19)
-      static SVEV19(kindex19,jindex19)
-      static Smat20(kindex20,jindex20)
-      static SVEV20(kindex20,jindex20)
+      static Smat8[kindex8,jindex8]
+      static SVEV8[kindex8,jindex8]
+      static Smat9[kindex9,jindex9]
+      static SVEV9[kindex9,jindex9]
+      static Smat10[kindex10,jindex10]
+      static SVEV10[kindex10,jindex10]
+      static Smat11[kindex11,jindex11]
+      static SVEV11[kindex11,jindex11]
+      static Smat12[kindex12,jindex12]
+      static SVEV12[kindex12,jindex12]
+      static Smat13[kindex13,jindex13]
+      static SVEV13[kindex13,jindex13]
+      static Smat14[kindex14,jindex14]
+      static SVEV14[kindex14,jindex14]
+      static Smat15[kindex15,jindex15]
+      static SVEV15[kindex15,jindex15]
+      static Smat16[kindex16,jindex16]
+      static SVEV16[kindex16,jindex16]
+      static Smat17[kindex17,jindex17]
+      static SVEV17[kindex17,jindex17]
+      static Smat18[kindex18,jindex18]
+      static SVEV18[kindex18,jindex18]
+      static Smat19[kindex19,jindex19]
+      static SVEV19[kindex19,jindex19]
+      static Smat20[kindex20,jindex20]
+      static SVEV20[kindex20,jindex20]
 #======================================================
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #--end of script generated part of the code
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #======================================================
 #
-      temp tcoef2(kindex2,jindex2)
-      temp tcoef3(kindex3,jindex3)
-      temp tcoef4(kindex4,jindex4)
-      temp tcoef5(kindex5,jindex5)
-      temp tcoef6(kindex6,jindex6)
-      temp tcoef7(kindex7,jindex7)
-      temp tcoef8(kindex8,jindex8)
-      temp tcoef9(kindex9,jindex9)
-      temp tcoef10(kindex10,jindex10)
-      temp tcoef11(kindex11,jindex11)
-      temp tcoef12(kindex12,jindex12)
-      temp tcoef13(kindex13,jindex13)
-      temp tcoef14(kindex14,jindex14)
-      temp tcoef15(kindex15,jindex15)
-      temp tcoef16(kindex16,jindex16)
-      temp tcoef17(kindex17,jindex17)
-      temp tcoef18(kindex18,jindex18)
-      temp tcoef19(kindex19,jindex19)
-      temp tcoef20(kindex20,jindex20)
+      temp tcoef2[kindex2,jindex2]
+      temp tcoef3[kindex3,jindex3]
+      temp tcoef4[kindex4,jindex4]
+      temp tcoef5[kindex5,jindex5]
+      temp tcoef6[kindex6,jindex6]
+      temp tcoef7[kindex7,jindex7]
+      temp tcoef8[kindex8,jindex8]
+      temp tcoef9[kindex9,jindex9]
+      temp tcoef10[kindex10,jindex10]
+      temp tcoef11[kindex11,jindex11]
+      temp tcoef12[kindex12,jindex12]
+      temp tcoef13[kindex13,jindex13]
+      temp tcoef14[kindex14,jindex14]
+      temp tcoef15[kindex15,jindex15]
+      temp tcoef16[kindex16,jindex16]
+      temp tcoef17[kindex17,jindex17]
+      temp tcoef18[kindex18,jindex18]
+      temp tcoef19[kindex19,jindex19]
+      temp tcoef20[kindex20,jindex20]
 #
-      temp  Tiaai(i1,a1,a,i)
-      temp  TSiaai(i,a,a1,i1)
-      temp  TS2iaai(i,a,a1,i1)
-      temp  TSbjbj(b,j,b1,j1)
-      temp  Taaii(a,a2,i,i2)
-      temp  T1aaii(a,a2,i,i2)
-      temp  Tbbjj(b,b1,j,j1)
-      temp  T2bbjj(b,b1,j,j1)
-      temp  Tii(i,i1)
-      temp  T1ii(i,i1)
-      temp  T1jj(j,j1)
-      temp  Tjj(j,j1)
-      temp  Taa(a,a1)
-      temp  Tbb(b,b1)
-      temp  tai(a,i)
-      temp  t1ai(a,i)
-      temp  t11ai(a,i)
-      temp  t1aa(a,a1)
-      temp  t11aa(a,a1)
-      temp  t1bb(b,b1)
-      temp  t11bb(b,b1)
-      temp  t111bb(b,b1)
-      temp  tia(i,a)
-      temp  t2ia(i,a)
-      temp  t2jb(j,b)
-      temp  t1ia(i,a)
-      temp  t2ai(a,i)
-      temp  t3ai(a,i)
-      temp  tbj(b,j)
-      temp  tjb(j,b)
-      temp  t1jb(j,b)
-      temp  t1bj(b,j)
-      temp  t2bj(b,j)
-      temp  t3bj(b,j)
-      temp  t11bj(b,j)
-      temp  Tjbbj(j1,b1,b,j)
-      temp tiabj(i,a,b,j) 
+      temp  Tiaai[i1,a1,a,i]
+      temp  TSiaai[i,a,a1,i1]
+      temp  TS2iaai[i,a,a1,i1]
+      temp  TSbjbj[b,j,b1,j1]
+      temp  Taaii[a,a2,i,i2]
+      temp  T1aaii[a,a2,i,i2]
+      temp  Tbbjj[b,b1,j,j1]
+      temp  T2bbjj[b,b1,j,j1]
+      temp  Tii[i,i1]
+      temp  T1ii[i,i1]
+      temp  T1jj[j,j1]
+      temp  Tjj[j,j1]
+      temp  Taa[a,a1]
+      temp  Tbb[b,b1]
+      temp  tai[a,i]
+      temp  t1ai[a,i]
+      temp  t11ai[a,i]
+      temp  t1aa[a,a1]
+      temp  t11aa[a,a1]
+      temp  t1bb[b,b1]
+      temp  t11bb[b,b1]
+      temp  t111bb[b,b1]
+      temp  tia[i,a]
+      temp  t2ia[i,a]
+      temp  t2jb[j,b]
+      temp  t1ia[i,a]
+      temp  t2ai[a,i]
+      temp  t3ai[a,i]
+      temp  tbj[b,j]
+      temp  tjb[j,b]
+      temp  t1jb[j,b]
+      temp  t1bj[b,j]
+      temp  t2bj[b,j]
+      temp  t3bj[b,j]
+      temp  t11bj[b,j]
+      temp  Tjbbj[j1,b1,b,j]
+      temp tiabj[i,a,b,j] 
 #
-      local VAL(jindex,kindex)
-      temp VAL1(jindex,kindex)
-      local lai(a,i)
-      local lia(i,a)
-      local ljb(j,b)
-      local l2ai(a,i)
-      local laa(a,a1)
-      local lbb(b,b1)
-      local lii(i1,i)
-      local ljj(j1,j)
-      local lbj(b,j)
+      local VAL[jindex,kindex]
+      temp VAL1[jindex,kindex]
+      local lai[a,i]
+      local lia[i,a]
+      local ljb[j,b]
+      local l2ai[a,i]
+      local laa[a,a1]
+      local lbb[b,b1]
+      local lii[i1,i]
+      local ljj[j1,j]
+      local lbj[b,j]
 #
 #     eom local arrays
 #
-      local acoef(spdim,spdim)
-      local Lmat(kindex,jindex)
-      local LVEV(kindex,jindex)
-      local acoef2(kindex2,jindex2)
-      local Lmat2(kindex2,jindex2)
-      local LVEV2(kindex2,jindex2)
-      local acoef3(kindex3,jindex3)
-      local Lmat3(kindex3,jindex3)
-      local LVEV3(kindex3,jindex3)
-      local acoef4(kindex4,jindex4)
-      local Lmat4(kindex4,jindex4)
-      local LVEV4(kindex4,jindex4)
-      local acoef5(kindex5,jindex5)
-      local Lmat5(kindex5,jindex5)
-      local LVEV5(kindex5,jindex5)
-      local acoef6(kindex6,jindex6)
-      local Lmat6(kindex6,jindex6)
-      local LVEV6(kindex6,jindex6)
-      local acoef7(kindex7,jindex7)
-      local Lmat7(kindex7,jindex7)
-      local LVEV7(kindex7,jindex7)
-      local acoef8(kindex8,jindex8)
-      local Lmat8(kindex8,jindex8)
-      local LVEV8(kindex8,jindex8)
-      local acoef9(kindex9,jindex9)
-      local Lmat9(kindex9,jindex9)
-      local LVEV9(kindex9,jindex9)
+      local acoef[spdim,spdim]
+      local Lmat[kindex,jindex]
+      local LVEV[kindex,jindex]
+      local acoef2[kindex2,jindex2]
+      local Lmat2[kindex2,jindex2]
+      local LVEV2[kindex2,jindex2]
+      local acoef3[kindex3,jindex3]
+      local Lmat3[kindex3,jindex3]
+      local LVEV3[kindex3,jindex3]
+      local acoef4[kindex4,jindex4]
+      local Lmat4[kindex4,jindex4]
+      local LVEV4[kindex4,jindex4]
+      local acoef5[kindex5,jindex5]
+      local Lmat5[kindex5,jindex5]
+      local LVEV5[kindex5,jindex5]
+      local acoef6[kindex6,jindex6]
+      local Lmat6[kindex6,jindex6]
+      local LVEV6[kindex6,jindex6]
+      local acoef7[kindex7,jindex7]
+      local Lmat7[kindex7,jindex7]
+      local LVEV7[kindex7,jindex7]
+      local acoef8[kindex8,jindex8]
+      local Lmat8[kindex8,jindex8]
+      local LVEV8[kindex8,jindex8]
+      local acoef9[kindex9,jindex9]
+      local Lmat9[kindex9,jindex9]
+      local LVEV9[kindex9,jindex9]
 #======================================================
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #--start of script generated part of the code
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #======================================================
-      local Lmat10(kindex10,jindex10)
-      local LVEV10(kindex10,jindex10)
-      local acoef10(kindex10,jindex10)
-      local Lmat11(kindex11,jindex11)
-      local LVEV11(kindex11,jindex11)
-      local acoef11(kindex11,jindex11)
-      local Lmat12(kindex12,jindex12)
-      local LVEV12(kindex12,jindex12)
-      local acoef12(kindex12,jindex12)
-      local Lmat13(kindex13,jindex13)
-      local LVEV13(kindex13,jindex13)
-      local acoef13(kindex13,jindex13)
-      local Lmat14(kindex14,jindex14)
-      local LVEV14(kindex14,jindex14)
-      local acoef14(kindex14,jindex14)
-      local Lmat15(kindex15,jindex15)
-      local LVEV15(kindex15,jindex15)
-      local acoef15(kindex15,jindex15)
-      local Lmat16(kindex16,jindex16)
-      local LVEV16(kindex16,jindex16)
-      local acoef16(kindex16,jindex16)
-      local Lmat17(kindex17,jindex17)
-      local LVEV17(kindex17,jindex17)
-      local acoef17(kindex17,jindex17)
-      local Lmat18(kindex18,jindex18)
-      local LVEV18(kindex18,jindex18)
-      local acoef18(kindex18,jindex18)
-      local Lmat19(kindex19,jindex19)
-      local LVEV19(kindex19,jindex19)
-      local acoef19(kindex19,jindex19)
-      local Lmat20(kindex20,jindex20)
-      local LVEV20(kindex20,jindex20)
-      local acoef20(kindex20,jindex20)
+      local Lmat10[kindex10,jindex10]
+      local LVEV10[kindex10,jindex10]
+      local acoef10[kindex10,jindex10]
+      local Lmat11[kindex11,jindex11]
+      local LVEV11[kindex11,jindex11]
+      local acoef11[kindex11,jindex11]
+      local Lmat12[kindex12,jindex12]
+      local LVEV12[kindex12,jindex12]
+      local acoef12[kindex12,jindex12]
+      local Lmat13[kindex13,jindex13]
+      local LVEV13[kindex13,jindex13]
+      local acoef13[kindex13,jindex13]
+      local Lmat14[kindex14,jindex14]
+      local LVEV14[kindex14,jindex14]
+      local acoef14[kindex14,jindex14]
+      local Lmat15[kindex15,jindex15]
+      local LVEV15[kindex15,jindex15]
+      local acoef15[kindex15,jindex15]
+      local Lmat16[kindex16,jindex16]
+      local LVEV16[kindex16,jindex16]
+      local acoef16[kindex16,jindex16]
+      local Lmat17[kindex17,jindex17]
+      local LVEV17[kindex17,jindex17]
+      local acoef17[kindex17,jindex17]
+      local Lmat18[kindex18,jindex18]
+      local LVEV18[kindex18,jindex18]
+      local acoef18[kindex18,jindex18]
+      local Lmat19[kindex19,jindex19]
+      local LVEV19[kindex19,jindex19]
+      local acoef19[kindex19,jindex19]
+      local Lmat20[kindex20,jindex20]
+      local LVEV20[kindex20,jindex20]
+      local acoef20[kindex20,jindex20]
 #======================================================
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #--end of script generated part of the code
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #======================================================
 #
-      distributed DDaa(a,a1)
-      distributed DDii(i,i1)
-      distributed DDia(i,a)
-      distributed DDbb(b,b1)
-      distributed DDjj(j,j1)
-      distributed DDjb(j,b)
-      distributed VCONV1A(a,i)
-      distributed VCONV1B(b,j)
-      distributed Fae_a(a,a1)
-      distributed Fae_b(b,b1)
-      distributed Fmi_a(i1,i)
-      distributed Fmi_b(j1,j)
-      distributed Fia_a(i,a)
-      distributed Fia_b(j,b)
-      distributed Wmnijab(i,i1,j,j1)
-      distributed Wmnijaa(i,i1,i2,i3)
-      distributed Wmnijbb(j,j1,j2,j3)
+      distributed DDaa[a,a1]
+      distributed DDii[i,i1]
+      distributed DDia[i,a]
+      distributed DDbb[b,b1]
+      distributed DDjj[j,j1]
+      distributed DDjb[j,b]
+      distributed VCONV1A[a,i]
+      distributed VCONV1B[b,j]
+      distributed Fae_a[a,a1]
+      distributed Fae_b[b,b1]
+      distributed Fmi_a[i1,i]
+      distributed Fmi_b[j1,j]
+      distributed Fia_a[i,a]
+      distributed Fia_b[j,b]
+      distributed Wmnijab[i,i1,j,j1]
+      distributed Wmnijaa[i,i1,i2,i3]
+      distributed Wmnijbb[j,j1,j2,j3]
 #
 #     distributed arrays used in EOM
 #
-      distributed VEV(kindex,jindex)
-      distributed VEV2(kindex2,jindex2)
-      distributed VEV3(kindex3,jindex3)
-      distributed VEV4(kindex4,jindex4)
+      distributed VEV[kindex,jindex]
+      distributed VEV2[kindex2,jindex2]
+      distributed VEV3[kindex3,jindex3]
+      distributed VEV4[kindex4,jindex4]
 #======================================================
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #--end of script generated part of the code
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #======================================================
 #
-      distributed VCEND1A1(a,i)
-      distributed VCEND1B1(b,j)
-      distributed VCEND1A2(a,i)
-      distributed VCEND1B2(b,j)
-      distributed VCEND1A3(a,i)
-      distributed VCEND1B3(b,j)
-      distributed VCEND1A4(a,i)
-      distributed VCEND1B4(b,j)
-      distributed VCEND1A5(a,i)
-      distributed VCEND1B5(b,j)
-      distributed VCEND1A6(a,i)
-      distributed VCEND1B6(b,j)
-      distributed VCEND1A7(a,i)
-      distributed VCEND1B7(b,j)
-      distributed VCEND1A8(a,i)
-      distributed VCEND1B8(b,j)
-      distributed VCEND1A9(a,i)
-      distributed VCEND1B9(b,j)
-      distributed VCEND1A10(a,i)
-      distributed VCEND1B10(b,j)
-      distributed VCEND1A11(a,i)
-      distributed VCEND1B11(b,j)
-      distributed VCEND1A12(a,i)
-      distributed VCEND1B12(b,j)
+      distributed VCEND1A1[a,i]
+      distributed VCEND1B1[b,j]
+      distributed VCEND1A2[a,i]
+      distributed VCEND1B2[b,j]
+      distributed VCEND1A3[a,i]
+      distributed VCEND1B3[b,j]
+      distributed VCEND1A4[a,i]
+      distributed VCEND1B4[b,j]
+      distributed VCEND1A5[a,i]
+      distributed VCEND1B5[b,j]
+      distributed VCEND1A6[a,i]
+      distributed VCEND1B6[b,j]
+      distributed VCEND1A7[a,i]
+      distributed VCEND1B7[b,j]
+      distributed VCEND1A8[a,i]
+      distributed VCEND1B8[b,j]
+      distributed VCEND1A9[a,i]
+      distributed VCEND1B9[b,j]
+      distributed VCEND1A10[a,i]
+      distributed VCEND1B10[b,j]
+      distributed VCEND1A11[a,i]
+      distributed VCEND1B11[b,j]
+      distributed VCEND1A12[a,i]
+      distributed VCEND1B12[b,j]
 #
-      distributed VCE1A(a,i)
+      distributed VCE1A[a,i]
 #
-      distributed VCACT1A(a,i)
+      distributed VCACT1A[a,i]
 #
-      distributed VCHACT1A(a,i)
+      distributed VCHACT1A[a,i]
 #
-      distributed VSTART1A1(a,i)
-      distributed VSTART1A2(a,i)
-      distributed VSTART1A3(a,i)
-      distributed VSTART1A4(a,i)
-      distributed VSTART1A5(a,i)
-      distributed VSTART1A6(a,i)
-      distributed VSTART1A7(a,i)
-      distributed VSTART1A8(a,i)
-      distributed VSTART1A9(a,i)
-      distributed VSTART1A10(a,i)
-      distributed VSTART1A11(a,i)
-      distributed VSTART1A12(a,i)
+      distributed VSTART1A1[a,i]
+      distributed VSTART1A2[a,i]
+      distributed VSTART1A3[a,i]
+      distributed VSTART1A4[a,i]
+      distributed VSTART1A5[a,i]
+      distributed VSTART1A6[a,i]
+      distributed VSTART1A7[a,i]
+      distributed VSTART1A8[a,i]
+      distributed VSTART1A9[a,i]
+      distributed VSTART1A10[a,i]
+      distributed VSTART1A11[a,i]
+      distributed VSTART1A12[a,i]
 #
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
@@ -976,143 +976,143 @@ import "aces_defs.sialx"
 # Arrays for Transformation 
 # ------------------------- 
 #
-      temp daoint(mu,nu,lambda,sigma) 
-      temp Txixi(mu,i1,lambda,i)
-      temp T1xixi(mu,i1,lambda,i)
-      temp Txxii(mu,nu,i1,i)
-      temp Tixxi(i1,nu,lambda,i)
-      temp Txipi(mu,i,p,i1)
-      temp Tpipi(p1,i,p,i1)
-      temp T1pipi(p1,i,p,i1)
-      temp T2pipi(p1,i,p,i1)
-      temp Tixai(i,mu,a,i1)
-      temp Txaii(mu,a,i,i1)
+      temp daoint[mu,nu,lambda,sigma] 
+      temp Txixi[mu,i1,lambda,i]
+      temp T1xixi[mu,i1,lambda,i]
+      temp Txxii[mu,nu,i1,i]
+      temp Tixxi[i1,nu,lambda,i]
+      temp Txipi[mu,i,p,i1]
+      temp Tpipi[p1,i,p,i1]
+      temp T1pipi[p1,i,p,i1]
+      temp T2pipi[p1,i,p,i1]
+      temp Tixai[i,mu,a,i1]
+      temp Txaii[mu,a,i,i1]
 #
-      temp Txxxi(mu,nu,sigma,i)
-      temp T1xxxi(mu,nu,sigma,i)
-      temp Txxxj(mu,nu,sigma,j)
-      temp T1xxxj(mu,nu,sigma,j)
+      temp Txxxi[mu,nu,sigma,i]
+      temp T1xxxi[mu,nu,sigma,i]
+      temp Txxxj[mu,nu,sigma,j]
+      temp T1xxxj[mu,nu,sigma,j]
 #
-      served Vxixi(mu,i1,lambda,i)
-      served Vxxii(mu,nu,i1,i)
-      served Viixx(i1,i,mu,nu)
-      served Vixxi(i1,nu,lambda,i)
-      served Vixai(i,mu,a,i1)
-      served Vxaii(mu,a,i,i1)   
-      served Vixbj(i,mu,b,j) 
-      served Vixxj(i,mu,nu,j) 
+      served Vxixi[mu,i1,lambda,i]
+      served Vxxii[mu,nu,i1,i]
+      served Viixx[i1,i,mu,nu]
+      served Vixxi[i1,nu,lambda,i]
+      served Vixai[i,mu,a,i1]
+      served Vxaii[mu,a,i,i1]   
+      served Vixbj[i,mu,b,j] 
+      served Vixxj[i,mu,nu,j] 
 #
-      temp Txjxj(mu,j1,lambda,j)
-      temp T1xjxj(mu,j1,lambda,j)
-      temp Txxjj(mu,nu,j1,j)
-      temp Tjjxx(j1,nu,lambda,j)
-      temp Tjxxj(j1,nu,lambda,j)
-      temp Txjqj(mu,j,q,j1)
-      temp Tqjqj(q1,j,q,j1)
-      temp T1qjqj(q1,j,q,j1)
-      temp T2qjqj(q1,j,q,j1)
-      temp Tjxbj(j,mu,b,j1)
-      temp Txbjj(mu,b,j,j1)
-      temp Txbbj(mu,b1,b,j)
-      temp Tbbbj(b2,b,b1,j)
-      temp T1bbbj(b2,b,b1,j)
-      temp Txxbj(mu,nu,b,j)
-      temp txixx(lambda,i,mu,nu)
-      temp t1xixx(lambda,i,mu,nu)
-      temp t2xixx(lambda,i,mu,nu)
-      temp t3xixx(lambda,i,mu,nu)
-      temp txjxx(lambda,j,mu,nu)
-      temp t1xjxx(lambda,j,mu,nu)
-      temp t2xjxx(lambda,j,mu,nu)
-      temp t3xjxx(lambda,j,mu,nu)
-      temp txxix(nu,mu,i,lambda)
-      temp t1xxix(nu,mu,i,lambda)
-      temp t2xxix(nu,mu,i,lambda)
-      temp t3xxix(nu,mu,i,lambda)
-      temp txxjx(nu,mu,j,lambda)
-      temp t1xxjx(nu,mu,j,lambda)
-      temp t2xxjx(nu,mu,j,lambda)
-      temp t3xxjx(nu,mu,j,lambda)
+      temp Txjxj[mu,j1,lambda,j]
+      temp T1xjxj[mu,j1,lambda,j]
+      temp Txxjj[mu,nu,j1,j]
+      temp Tjjxx[j1,nu,lambda,j]
+      temp Tjxxj[j1,nu,lambda,j]
+      temp Txjqj[mu,j,q,j1]
+      temp Tqjqj[q1,j,q,j1]
+      temp T1qjqj[q1,j,q,j1]
+      temp T2qjqj[q1,j,q,j1]
+      temp Tjxbj[j,mu,b,j1]
+      temp Txbjj[mu,b,j,j1]
+      temp Txbbj[mu,b1,b,j]
+      temp Tbbbj[b2,b,b1,j]
+      temp T1bbbj[b2,b,b1,j]
+      temp Txxbj[mu,nu,b,j]
+      temp txixx[lambda,i,mu,nu]
+      temp t1xixx[lambda,i,mu,nu]
+      temp t2xixx[lambda,i,mu,nu]
+      temp t3xixx[lambda,i,mu,nu]
+      temp txjxx[lambda,j,mu,nu]
+      temp t1xjxx[lambda,j,mu,nu]
+      temp t2xjxx[lambda,j,mu,nu]
+      temp t3xjxx[lambda,j,mu,nu]
+      temp txxix[nu,mu,i,lambda]
+      temp t1xxix[nu,mu,i,lambda]
+      temp t2xxix[nu,mu,i,lambda]
+      temp t3xxix[nu,mu,i,lambda]
+      temp txxjx[nu,mu,j,lambda]
+      temp t1xxjx[nu,mu,j,lambda]
+      temp t2xxjx[nu,mu,j,lambda]
+      temp t3xxjx[nu,mu,j,lambda]
 #
-      served Vxxjj(mu,nu,j1,j)
-      served Vjjxx(j1,nu,lambda,j)
-      served Vjxxj(j1,nu,lambda,j)
-      served Vxjqj(mu,j,q,j1)
-      served Vjxbj(j,mu,b,j1)
-      served Vxbjj(mu,b,j,j1)     
+      served Vxxjj[mu,nu,j1,j]
+      served Vjjxx[j1,nu,lambda,j]
+      served Vjxxj[j1,nu,lambda,j]
+      served Vxjqj[mu,j,q,j1]
+      served Vjxbj[j,mu,b,j1]
+      served Vxbjj[mu,b,j,j1]     
 #
-      temp Txixj(mu,i,nu,j)
-      temp Txiqj(mu,i,q,j)
-      temp Tpiqj(p,i,q,j)
-      temp T1piqj(p,i,q,j)
-      temp T2piqj(p,i,q,j)
-      temp Tiixx(i,i1,mu,nu)
-      temp Tiixb(i,i1,mu,b)
-      temp Tiibb(i,i1,b1,b)
-      temp Txajj(mu,a,j,j1)
-      temp Taajj(a,a1,j,j1)
-      temp Txabj(mu,a,b,j)
-      temp Tixxj(i,mu,nu,j)
-      temp Tixbj(i,mu,b,j)
-      temp Taabj(a,a1,b,j) 
-      temp Txbii(mu,b,i,i1)
-      temp Tbbii(b,b1,i,i1)
-      temp Tjbii(j,b,i,i1)
-      temp Txbai(mu,b,a,i)
-      temp Tbbai(b,b1,a,i)
+      temp Txixj[mu,i,nu,j]
+      temp Txiqj[mu,i,q,j]
+      temp Tpiqj[p,i,q,j]
+      temp T1piqj[p,i,q,j]
+      temp T2piqj[p,i,q,j]
+      temp Tiixx[i,i1,mu,nu]
+      temp Tiixb[i,i1,mu,b]
+      temp Tiibb[i,i1,b1,b]
+      temp Txajj[mu,a,j,j1]
+      temp Taajj[a,a1,j,j1]
+      temp Txabj[mu,a,b,j]
+      temp Tixxj[i,mu,nu,j]
+      temp Tixbj[i,mu,b,j]
+      temp Taabj[a,a1,b,j] 
+      temp Txbii[mu,b,i,i1]
+      temp Tbbii[b,b1,i,i1]
+      temp Tjbii[j,b,i,i1]
+      temp Txbai[mu,b,a,i]
+      temp Tbbai[b,b1,a,i]
 #
-      served Vxbii(mu,b,i,i1)  
-      local L0xxxi(mu,nu,lambda,i)
-      local L1xxxi(nu,mu,lambda,i)
-      local L2xxxi(mu,nu,sigma,i)
-      local L3xxxi(nu,mu,sigma,i)
+      served Vxbii[mu,b,i,i1]  
+      local L0xxxi[mu,nu,lambda,i]
+      local L1xxxi[nu,mu,lambda,i]
+      local L2xxxi[mu,nu,sigma,i]
+      local L3xxxi[nu,mu,sigma,i]
 #
-      local L0xxxj(mu,nu,lambda,j)
-      local L1xxxj(nu,mu,lambda,j)
-      local L2xxxj(mu,nu,sigma,j)
-      local L3xxxj(nu,mu,sigma,j)
+      local L0xxxj[mu,nu,lambda,j]
+      local L1xxxj[nu,mu,lambda,j]
+      local L2xxxj[mu,nu,sigma,j]
+      local L3xxxj[nu,mu,sigma,j]
 #
-      temp V0xxxi(mu,nu,lambda,i)
-      temp V0xxxj(mu,nu,lambda,j)
+      temp V0xxxi[mu,nu,lambda,i]
+      temp V0xxxj[mu,nu,lambda,j]
 #
-      local Lxixi(mu,i1,lambda,i)
-      local Lxixj(mu,i,lambda,j)
-      local Lxjxj(mu,j1,lambda,j)
-      local Lxxii(mu,nu,i1,i)
-      local Lxxjj(mu,nu,j1,j)
-      local Lixxi(i1,nu,lambda,i)
-      local Lixxj(i,nu,lambda,j)
-      local Ljxxj(j1,nu,lambda,j)
-      local Lxipi(mu,i,p,i1)
-      local Lpipi(p1,i,p,i1)
-      local Lxaii(mu,a,i,i1)
-      local Laaii(a1,a,i,i1)
-      local Lixai(i,mu,a,i1)
-      local Liaai(i,a1,a,i1)
+      local Lxixi[mu,i1,lambda,i]
+      local Lxixj[mu,i,lambda,j]
+      local Lxjxj[mu,j1,lambda,j]
+      local Lxxii[mu,nu,i1,i]
+      local Lxxjj[mu,nu,j1,j]
+      local Lixxi[i1,nu,lambda,i]
+      local Lixxj[i,nu,lambda,j]
+      local Ljxxj[j1,nu,lambda,j]
+      local Lxipi[mu,i,p,i1]
+      local Lpipi[p1,i,p,i1]
+      local Lxaii[mu,a,i,i1]
+      local Laaii[a1,a,i,i1]
+      local Lixai[i,mu,a,i1]
+      local Liaai[i,a1,a,i1]
 #
-      local Lxjqj(mu,j,q,j1)
-      local Lqjqj(q1,j,q,j1)
-      local Lxbjj(mu,b,j,j1)
-      local Lbbjj(b1,b,j,j1)
-      local Ljxbj(j,mu,b,j1)
-      local Ljbbj(j,b1,b,j1)
-      local Lxbii(mu,b,i,i1)
-      local Lbbii(b1,b,i,i1)
-      local Lxajj(mu,a,j,j1)
-      local Laajj(a1,a,j,j1)
-      local Lixbj(i,mu,b,j)
-      local Liabj(i,a,b,j)
-      local Liixb(i,i1,mu,b)
-      local Liibb(i,i1,b1,b)
-      local Lxiqj(mu,i,q,j)
-      local Lpiqj(p,i,q,j)
+      local Lxjqj[mu,j,q,j1]
+      local Lqjqj[q1,j,q,j1]
+      local Lxbjj[mu,b,j,j1]
+      local Lbbjj[b1,b,j,j1]
+      local Ljxbj[j,mu,b,j1]
+      local Ljbbj[j,b1,b,j1]
+      local Lxbii[mu,b,i,i1]
+      local Lbbii[b1,b,i,i1]
+      local Lxajj[mu,a,j,j1]
+      local Laajj[a1,a,j,j1]
+      local Lixbj[i,mu,b,j]
+      local Liabj[i,a,b,j]
+      local Liixb[i,i1,mu,b]
+      local Liibb[i,i1,b1,b]
+      local Lxiqj[mu,i,q,j]
+      local Lpiqj[p,i,q,j]
 #
-      local Lxiai(mu,i,a1,i1)
-      local Lxjbj(mu,j,b1,j1)
-      local Lxibj(mu,i,b,j)
-      local L1xixi(mu,i,nu,i1)
-      local L1xjxj(mu,j,nu,j1)
-      local L1xixj(mu,i,nu,j)
+      local Lxiai[mu,i,a1,i1]
+      local Lxjbj[mu,j,b1,j1]
+      local Lxibj[mu,i,b,j]
+      local L1xixi[mu,i,nu,i1]
+      local L1xjxj[mu,j,nu,j1]
+      local L1xixj[mu,i,nu,j]
 #
 #    ------------------------------------------------------------------------
 #
@@ -1126,65 +1126,65 @@ import "aces_defs.sialx"
      sip_barrier
 #
       PARDO mu, nu, lambda
-            allocate L0xxxi(mu,nu,lambda,*) 
-            allocate L0xxxj(mu,nu,lambda,*) 
+            allocate L0xxxi[mu,nu,lambda,*] 
+            allocate L0xxxj[mu,nu,lambda,*] 
             DO  sigma
 #
-                execute compute_integrals daoint(mu,nu,lambda,sigma)
+                execute compute_integrals daoint[mu,nu,lambda,sigma]
 #
                 DO i
-                   txxxi(mu,nu,lambda,i)  = daoint(mu,nu,lambda,sigma)*ca(sigma,i)
-                   L0xxxi(mu,nu,lambda,i) += txxxi(mu,nu,lambda,i)
+                   txxxi[mu,nu,lambda,i]  = daoint[mu,nu,lambda,sigma]*ca[sigma,i]
+                   L0xxxi[mu,nu,lambda,i] += txxxi[mu,nu,lambda,i]
                 ENDDO i
 #
                 DO j
-                   txxxj(mu,nu,lambda,j)  = daoint(mu,nu,lambda,sigma)*ca(sigma,j)
-                   L0xxxj(mu,nu,lambda,j) += txxxj(mu,nu,lambda,j)
+                   txxxj[mu,nu,lambda,j]  = daoint[mu,nu,lambda,sigma]*ca[sigma,j]
+                   L0xxxj[mu,nu,lambda,j] += txxxj[mu,nu,lambda,j]
                 ENDDO j
 #
            ENDDO  sigma
 #     
            DO i
 #     
-              txixx(lambda,i,mu,nu) = L0xxxi(mu,nu,lambda,i)
-              txxix(nu,mu,i,lambda) = L0xxxi(mu,nu,lambda,i)
+              txixx[lambda,i,mu,nu] = L0xxxi[mu,nu,lambda,i]
+              txxix[nu,mu,i,lambda] = L0xxxi[mu,nu,lambda,i]
 #
               DO i1
-                 Txxii(nu,mu,i,i1)  = txxix(nu,mu,i,lambda)*ca(lambda,i1)
-                 prepare Vxxii(nu,mu,i,i1) += Txxii(nu,mu,i,i1)
+                 Txxii[nu,mu,i,i1]  = txxix[nu,mu,i,lambda]*ca[lambda,i1]
+                 prepare Vxxii[nu,mu,i,i1] += Txxii[nu,mu,i,i1]
               ENDDO i1
 #
               DO i1
-                 Tixxi(i1,nu,lambda,i)  = L0xxxi(mu,nu,lambda,i)*ca(mu,i1)
-                 prepare Vixxi(i1,nu,lambda,i) += Tixxi(i1,nu,lambda,i)
+                 Tixxi[i1,nu,lambda,i]  = L0xxxi[mu,nu,lambda,i]*ca[mu,i1]
+                 prepare Vixxi[i1,nu,lambda,i] += Tixxi[i1,nu,lambda,i]
               ENDDO i1
 #
            ENDDO i
 #
            DO j
 #     
-              txjxx(lambda,j,mu,nu) = L0xxxj(mu,nu,lambda,j)
-              txxjx(nu,mu,j,lambda) = L0xxxj(mu,nu,lambda,j)
+              txjxx[lambda,j,mu,nu] = L0xxxj[mu,nu,lambda,j]
+              txxjx[nu,mu,j,lambda] = L0xxxj[mu,nu,lambda,j]
 #
               DO j1
-                 Txxjj(nu,mu,j,j1)  = txxjx(nu,mu,j,lambda)*ca(lambda,j1)
-                 prepare Vxxjj(nu,mu,j,j1) += Txxjj(nu,mu,j,j1)
+                 Txxjj[nu,mu,j,j1]  = txxjx[nu,mu,j,lambda]*ca[lambda,j1]
+                 prepare Vxxjj[nu,mu,j,j1] += Txxjj[nu,mu,j,j1]
               ENDDO j1
 #
               DO j1
-                 Tjxxj(j1,nu,lambda,j)  = L0xxxj(mu,nu,lambda,j)*ca(mu,j1)
-                 prepare Vjxxj(j1,nu,lambda,j) += Tjxxj(j1,nu,lambda,j)
+                 Tjxxj[j1,nu,lambda,j]  = L0xxxj[mu,nu,lambda,j]*ca[mu,j1]
+                 prepare Vjxxj[j1,nu,lambda,j] += Tjxxj[j1,nu,lambda,j]
               ENDDO j1
 #
               DO i1
-                 Tixxj(i1,nu,lambda,j)  = L0xxxj(mu,nu,lambda,j)*ca(mu,i1)
-                 prepare Vixxj(i1,nu,lambda,j) += Tixxj(i1,nu,lambda,j)
+                 Tixxj[i1,nu,lambda,j]  = L0xxxj[mu,nu,lambda,j]*ca[mu,i1]
+                 prepare Vixxj[i1,nu,lambda,j] += Tixxj[i1,nu,lambda,j]
               ENDDO i1
 #
            ENDDO j
 #
-        deallocate L0xxxi(mu,nu,lambda,*)
-        deallocate L0xxxj(mu,nu,lambda,*)
+        deallocate L0xxxi[mu,nu,lambda,*]
+        deallocate L0xxxj[mu,nu,lambda,*]
       ENDPARDO mu, nu, lambda 
 #
      server_barrier
@@ -1206,26 +1206,26 @@ import "aces_defs.sialx"
 #
      PARDO mu, i, i1
 #
-           allocate Lxaii(mu,*,i,i1) 
+           allocate Lxaii[mu,*,i,i1] 
 #
            DO nu 
 #
-              REQUEST Vxxii(mu,nu,i,i1) i
+              REQUEST Vxxii[mu,nu,i,i1] i
 #
               DO a
-                 Txaii(mu,a,i,i1)  = Vxxii(mu,nu,i,i1)*ca(nu,a)
-                 Lxaii(mu,a,i,i1) += Txaii(mu,a,i,i1)
+                 Txaii[mu,a,i,i1]  = Vxxii[mu,nu,i,i1]*ca[nu,a]
+                 Lxaii[mu,a,i,i1] += Txaii[mu,a,i,i1]
               ENDDO a
 #
            ENDDO nu 
 #
            DO a 
 #
-              PREPARE Vxaii(mu,a,i,i1) = Lxaii(mu,a,i,i1) 
+              PREPARE Vxaii[mu,a,i,i1] = Lxaii[mu,a,i,i1] 
 #
            ENDDO a 
 #
-           deallocate Lxaii(mu,*,i,i1) 
+           deallocate Lxaii[mu,*,i,i1] 
 #
      ENDPARDO mu, i, i1
 #
@@ -1234,16 +1234,16 @@ import "aces_defs.sialx"
 #
      PARDO a, i, i1
 #
-           allocate Laaii(*,a,i,i1) 
+           allocate Laaii[*,a,i,i1] 
 #
            DO mu 
 #
-              REQUEST Vxaii(mu,a,i,i1) i
+              REQUEST Vxaii[mu,a,i,i1] i
 #
               DO a1
 #
-                 Taaii(a1,a,i,i1)  = Vxaii(mu,a,i,i1)*ca(mu,a1)
-                 Laaii(a1,a,i,i1) += Taaii(a1,a,i,i1)
+                 Taaii[a1,a,i,i1]  = Vxaii[mu,a,i,i1]*ca[mu,a1]
+                 Laaii[a1,a,i,i1] += Taaii[a1,a,i,i1]
 #
               ENDDO a1
 #
@@ -1251,11 +1251,11 @@ import "aces_defs.sialx"
 #
            DO a1 
 #
-              PREPARE Vaaii(a1,a,i,i1) = Laaii(a1,a,i,i1) 
+              PREPARE Vaaii[a1,a,i,i1] = Laaii[a1,a,i,i1] 
 #
            ENDDO a1 
 #
-           deallocate Laaii(*,a,i,i1) 
+           deallocate Laaii[*,a,i,i1] 
 #
      ENDPARDO a, i, i1
 #
@@ -1279,16 +1279,16 @@ import "aces_defs.sialx"
 #
      PARDO mu, i, i1
 #
-           allocate Lixai(i,mu,*,i1) 
+           allocate Lixai[i,mu,*,i1] 
 #
            DO nu 
 #
-              REQUEST Vixxi(i,mu,nu,i1) i 
+              REQUEST Vixxi[i,mu,nu,i1] i 
 #
               DO a
 #
-                 Tixai(i,mu,a,i1)  = Vixxi(i,mu,nu,i1)*ca(nu,a)
-                 Lixai(i,mu,a,i1) += Tixai(i,mu,a,i1)
+                 Tixai[i,mu,a,i1]  = Vixxi[i,mu,nu,i1]*ca[nu,a]
+                 Lixai[i,mu,a,i1] += Tixai[i,mu,a,i1]
 #
               ENDDO a
 #
@@ -1296,11 +1296,11 @@ import "aces_defs.sialx"
 #
            DO a 
 #
-              PREPARE Vixai(i,mu,a,i1) = Lixai(i,mu,a,i1)
+              PREPARE Vixai[i,mu,a,i1] = Lixai[i,mu,a,i1]
 #
            ENDDO a 
 #
-           deallocate Lixai(i,mu,*,i1) 
+           deallocate Lixai[i,mu,*,i1] 
 #
      ENDPARDO mu, i, i1
 #
@@ -1310,16 +1310,16 @@ import "aces_defs.sialx"
 #
      PARDO a, i, i1
 #
-           allocate Liaai(i,*,a,i1) 
+           allocate Liaai[i,*,a,i1] 
 #
            DO mu 
 #
-              REQUEST Vixai(i,mu,a,i1) i 
+              REQUEST Vixai[i,mu,a,i1] i 
 #
               DO a1
 #
-                 Tiaai(i,a1,a,i1)  = Vixai(i,mu,a,i1)*ca(mu,a1)
-                 Liaai(i,a1,a,i1) += Tiaai(i,a1,a,i1)
+                 Tiaai[i,a1,a,i1]  = Vixai[i,mu,a,i1]*ca[mu,a1]
+                 Liaai[i,a1,a,i1] += Tiaai[i,a1,a,i1]
 #
               ENDDO a1
 #
@@ -1327,15 +1327,15 @@ import "aces_defs.sialx"
 #
            DO a1 
 #
-              REQUEST                    Vaaii(a,a1,i,i1) a  
-              tiaai(i,a1,a,i1)         = Vaaii(a,a1,i,i1) 
-              tiaai(i,a1,a,i1)        -= Liaai(i,a1,a,i1)  
-              tiaai(i,a1,a,i1)        *= -1.0  
-              PREPARE Viaai(i,a1,a,i1) = tiaai(i,a1,a,i1)
+              REQUEST                    Vaaii[a,a1,i,i1] a  
+              tiaai[i,a1,a,i1]         = Vaaii[a,a1,i,i1] 
+              tiaai[i,a1,a,i1]        -= Liaai[i,a1,a,i1]  
+              tiaai[i,a1,a,i1]        *= -1.0  
+              PREPARE Viaai[i,a1,a,i1] = tiaai[i,a1,a,i1]
 #
            ENDDO a1 
 #
-           deallocate Liaai(i,*,a,i1) 
+           deallocate Liaai[i,*,a,i1] 
 #
      ENDPARDO a, i, i1
 #
@@ -1359,16 +1359,16 @@ import "aces_defs.sialx"
 #
      PARDO mu, j, j1
 #
-           allocate Lxbjj(mu,*,j,j1) 
+           allocate Lxbjj[mu,*,j,j1] 
 #
            DO nu 
 #
-              REQUEST Vxxjj(mu,nu,j,j1) j 
+              REQUEST Vxxjj[mu,nu,j,j1] j 
 #
               DO b
 #
-                 Txbjj(mu,b,j,j1)  = Vxxjj(mu,nu,j,j1)*ca(nu,b)
-                 Lxbjj(mu,b,j,j1) += Txbjj(mu,b,j,j1)
+                 Txbjj[mu,b,j,j1]  = Vxxjj[mu,nu,j,j1]*ca[nu,b]
+                 Lxbjj[mu,b,j,j1] += Txbjj[mu,b,j,j1]
 #
               ENDDO b
 #
@@ -1376,11 +1376,11 @@ import "aces_defs.sialx"
 #
            DO b 
 #
-              PREPARE Vxbjj(mu,b,j,j1) = Lxbjj(mu,b,j,j1)
+              PREPARE Vxbjj[mu,b,j,j1] = Lxbjj[mu,b,j,j1]
 #
            ENDDO b 
 #
-           deallocate Lxbjj(mu,*,j,j1) 
+           deallocate Lxbjj[mu,*,j,j1] 
 #
      ENDPARDO mu, j, j1
 #
@@ -1389,16 +1389,16 @@ import "aces_defs.sialx"
 #
      PARDO b, j, j1
 #
-           allocate Lbbjj(*,b,j,j1) 
+           allocate Lbbjj[*,b,j,j1] 
 #
            DO mu 
 #
-              REQUEST Vxbjj(mu,b,j,j1) j 
+              REQUEST Vxbjj[mu,b,j,j1] j 
 #
               DO b1
 #
-                 Tbbjj(b1,b,j,j1)  = Vxbjj(mu,b,j,j1)*ca(mu,b1)
-                 Lbbjj(b1,b,j,j1) += Tbbjj(b1,b,j,j1)
+                 Tbbjj[b1,b,j,j1]  = Vxbjj[mu,b,j,j1]*ca[mu,b1]
+                 Lbbjj[b1,b,j,j1] += Tbbjj[b1,b,j,j1]
 #
               ENDDO b1
 #
@@ -1406,11 +1406,11 @@ import "aces_defs.sialx"
 #
            DO b1
 #
-              PREPARE Vbbjj(b1,b,j,j1) = Lbbjj(b1,b,j,j1)
+              PREPARE Vbbjj[b1,b,j,j1] = Lbbjj[b1,b,j,j1]
 #
            ENDDO b1
 #
-           deallocate Lbbjj(*,b,j,j1) 
+           deallocate Lbbjj[*,b,j,j1] 
 #
      ENDPARDO b, j, j1
 #
@@ -1434,16 +1434,16 @@ import "aces_defs.sialx"
 #
      PARDO mu, j, j1
 #
-           allocate Ljxbj(j,mu,*,j1) 
+           allocate Ljxbj[j,mu,*,j1] 
 #
            DO nu 
 #
-              REQUEST Vjxxj(j,mu,nu,j1) j 
+              REQUEST Vjxxj[j,mu,nu,j1] j 
 #
               DO b
 #
-                 Tjxbj(j,mu,b,j1)  = Vjxxj(j,mu,nu,j1)*ca(nu,b)
-                 Ljxbj(j,mu,b,j1) += Tjxbj(j,mu,b,j1)
+                 Tjxbj[j,mu,b,j1]  = Vjxxj[j,mu,nu,j1]*ca[nu,b]
+                 Ljxbj[j,mu,b,j1] += Tjxbj[j,mu,b,j1]
 #
               ENDDO b
 #
@@ -1451,11 +1451,11 @@ import "aces_defs.sialx"
 #
            DO b
 #
-              PREPARE Vjxbj(j,mu,b,j1) = Ljxbj(j,mu,b,j1)
+              PREPARE Vjxbj[j,mu,b,j1] = Ljxbj[j,mu,b,j1]
 #
            ENDDO b
 #
-           deallocate Ljxbj(j,mu,*,j1) 
+           deallocate Ljxbj[j,mu,*,j1] 
 #
      ENDPARDO mu, j, j1
 #
@@ -1464,16 +1464,16 @@ import "aces_defs.sialx"
 #
      PARDO b, j, j1
 #
-           allocate Ljbbj(j,*,b,j1) 
+           allocate Ljbbj[j,*,b,j1] 
 #
            DO mu 
 #
-              REQUEST Vjxbj(j,mu,b,j1) j 
+              REQUEST Vjxbj[j,mu,b,j1] j 
 #
               DO b1
 #
-                 Tjbbj(j,b1,b,j1)  = Vjxbj(j,mu,b,j1)*ca(mu,b1)
-                 Ljbbj(j,b1,b,j1) += Tjbbj(j,b1,b,j1)
+                 Tjbbj[j,b1,b,j1]  = Vjxbj[j,mu,b,j1]*ca[mu,b1]
+                 Ljbbj[j,b1,b,j1] += Tjbbj[j,b1,b,j1]
 #
               ENDDO b1
 #
@@ -1481,15 +1481,15 @@ import "aces_defs.sialx"
 #
            DO b1
 #
-              REQUEST                    Vbbjj(b,b1,j,j1) b 
-              tjbbj(j,b1,b,j1)         = Vbbjj(b,b1,j,j1) 
-              tjbbj(j,b1,b,j1)        -= Ljbbj(j,b1,b,j1)  
-              tjbbj(j,b1,b,j1)        *= -1.0  
-              PREPARE Vjbbj(j,b1,b,j1) = tjbbj(j,b1,b,j1)
+              REQUEST                    Vbbjj[b,b1,j,j1] b 
+              tjbbj[j,b1,b,j1]         = Vbbjj[b,b1,j,j1] 
+              tjbbj[j,b1,b,j1]        -= Ljbbj[j,b1,b,j1]  
+              tjbbj[j,b1,b,j1]        *= -1.0  
+              PREPARE Vjbbj[j,b1,b,j1] = tjbbj[j,b1,b,j1]
 #
            ENDDO b1
 #
-           deallocate Ljbbj(j,*,b,j1) 
+           deallocate Ljbbj[j,*,b,j1] 
 #
      ENDPARDO b, j, j1
 #
@@ -1512,16 +1512,16 @@ import "aces_defs.sialx"
 #
      PARDO mu, i, j
 #
-           allocate Lixbj(i,mu,*,j) 
+           allocate Lixbj[i,mu,*,j] 
 #
            DO nu 
 #
-              REQUEST Vixxj(i,mu,nu,j) i
+              REQUEST Vixxj[i,mu,nu,j] i
 #
               DO b
 #
-                 Tixbj(i,mu,b,j)  = Vixxj(i,mu,nu,j)*ca(nu,b)
-                 Lixbj(i,mu,b,j) += Tixbj(i,mu,b,j)
+                 Tixbj[i,mu,b,j]  = Vixxj[i,mu,nu,j]*ca[nu,b]
+                 Lixbj[i,mu,b,j] += Tixbj[i,mu,b,j]
 #
               ENDDO b
 #
@@ -1529,11 +1529,11 @@ import "aces_defs.sialx"
 #
            DO b
 #
-              PREPARE Vixbj(i,mu,b,j) = Lixbj(i,mu,b,j)
+              PREPARE Vixbj[i,mu,b,j] = Lixbj[i,mu,b,j]
 #
            ENDDO b
 #
-           deallocate Lixbj(i,mu,*,j) 
+           deallocate Lixbj[i,mu,*,j] 
 #
      ENDPARDO mu, i, j
 #
@@ -1542,16 +1542,16 @@ import "aces_defs.sialx"
 #
      PARDO b, i, j
 #
-           allocate Liabj(i,*,b,j) 
+           allocate Liabj[i,*,b,j] 
 #
            DO mu 
 #
-              REQUEST Vixbj(i,mu,b,j) i
+              REQUEST Vixbj[i,mu,b,j] i
 #
               DO a
 #
-                 Tiabj(i,a,b,j)  = Vixbj(i,mu,b,j)*ca(mu,a)
-                 Liabj(i,a,b,j) += Tiabj(i,a,b,j)
+                 Tiabj[i,a,b,j]  = Vixbj[i,mu,b,j]*ca[mu,a]
+                 Liabj[i,a,b,j] += Tiabj[i,a,b,j]
 #
               ENDDO a
 #
@@ -1559,11 +1559,11 @@ import "aces_defs.sialx"
 #
            DO a
 #
-              PREPARE Viabj(i,a,b,j) = Liabj(i,a,b,j)
+              PREPARE Viabj[i,a,b,j] = Liabj[i,a,b,j]
 #
            ENDDO a
 #
-           deallocate Liabj(i,*,b,j) 
+           deallocate Liabj[i,*,b,j] 
 #
      ENDPARDO b, i, j
 #
@@ -1657,28 +1657,28 @@ import "aces_defs.sialx"
 #
       PARDO a, i
 #
-            tai(a,i) = 0.0
+            tai[a,i] = 0.0
 #
             DO i1
-               GET         VCACT1A(a,i1)
-               t2ai(a,i) = VCACT1A(a,i1)*fock_a(i1,i)
-               tai(a,i) -= t2ai(a,i)
+               GET         VCACT1A[a,i1]
+               t2ai[a,i] = VCACT1A[a,i1]*fock_a[i1,i]
+               tai[a,i] -= t2ai[a,i]
             ENDDO i1
 #
             DO a1
 #
-               GET         VCACT1A(a1,i)
-               t1ai(a,i) = VCACT1A(a1,i)*fock_a(a,a1)
-               tai(a,i) += t1ai(a,i)
+               GET         VCACT1A[a1,i]
+               t1ai[a,i] = VCACT1A[a1,i]*fock_a[a,a1]
+               tai[a,i] += t1ai[a,i]
 #
             ENDDO a1
 #
-            PUT VCHACT1A(a,i) = tai(a,i)
+            PUT VCHACT1A[a,i] = tai[a,i]
 #
             DO k20
                if k20 == spdim
-                  t2aiS(a,i,k20)     = tai(a,i)
-                  PUT VCH1A(a,i,k20) = t2aiS(a,i,k20)
+                  t2aiS[a,i,k20]     = tai[a,i]
+                  PUT VCH1A[a,i,k20] = t2aiS[a,i,k20]
                endif
             ENDDO k20
 #
@@ -1688,15 +1688,15 @@ import "aces_defs.sialx"
 #
       PARDO a, i, b, j 
 #
-            REQUEST              Viabj(i,a,b,j) a 
-            GET                  VCACT1A(b,j)
-            t2ai(a,i)          = Viabj(i,a,b,j)*VCACT1A(b,j)
-            PUT VCHACT1A(a,i) += t2ai(a,i)
+            REQUEST              Viabj[i,a,b,j] a 
+            GET                  VCACT1A[b,j]
+            t2ai[a,i]          = Viabj[i,a,b,j]*VCACT1A[b,j]
+            PUT VCHACT1A[a,i] += t2ai[a,i]
 #
             DO k20
                if k20 == spdim
-                  t2aiS(a,i,k20)     = t2ai(a,i)
-                  PUT VCH1A(a,i,k20)+= t2aiS(a,i,k20)
+                  t2aiS[a,i,k20]     = t2ai[a,i]
+                  PUT VCH1A[a,i,k20]+= t2aiS[a,i,k20]
                endif
             ENDDO k20
 #
@@ -1704,15 +1704,15 @@ import "aces_defs.sialx"
 #
       PARDO a, i, a1, i1     
 #
-            REQUEST             Viaai(i1,a1,a,i) i
-            GET                 VCACT1A(a1,i1)
-            tai(a,i)          = Viaai(i1,a1,a,i)*VCACT1A(a1,i1)
-            PUT VCHACT1A(a,i)+= tai(a,i)
+            REQUEST             Viaai[i1,a1,a,i] i
+            GET                 VCACT1A[a1,i1]
+            tai[a,i]          = Viaai[i1,a1,a,i]*VCACT1A[a1,i1]
+            PUT VCHACT1A[a,i]+= tai[a,i]
 #
             DO k20
                if k20 == spdim
-                  t2aiS(a,i,k20)     = tai(a,i)
-                  PUT VCH1A(a,i,k20)+= t2aiS(a,i,k20)
+                  t2aiS[a,i,k20]     = tai[a,i]
+                  PUT VCH1A[a,i,k20]+= t2aiS[a,i,k20]
                endif
             ENDDO k20
 #
@@ -1726,13 +1726,13 @@ import "aces_defs.sialx"
 #
      PARDO a, i
 #
-           GET        VCHACT1A(a,i)
-           tai(a,i) = VCHACT1A(a,i)
+           GET        VCHACT1A[a,i]
+           tai[a,i] = VCHACT1A[a,i]
 #
             DO k20
                if k20 == spdim
-                  t2aiS(a,i,k20)     = tai(a,i)
-                  PUT VCH1A(a,i,k20) = t2aiS(a,i,k20)
+                  t2aiS[a,i,k20]     = tai[a,i]
+                  PUT VCH1A[a,i,k20] = t2aiS[a,i,k20]
                endif
             ENDDO k20
 #
@@ -1745,8 +1745,8 @@ import "aces_defs.sialx"
 #    ---------------
 #
           PARDO a, i
-                tai(a,i) = 0.0
-                PUT VCHACT1A(a,i) = tai(a,i)
+                tai[a,i] = 0.0
+                PUT VCHACT1A[a,i] = tai[a,i]
           ENDPARDO a, i
 #
      ENDPROC VCHACT_ZERO
@@ -1755,7 +1755,7 @@ import "aces_defs.sialx"
      PROC startvec2
 #    -------------- 
 #
-     allocate lai(*,*)
+     allocate lai[*,*]
 #
      sqr=1.0
      exponent=0.5
@@ -1763,92 +1763,92 @@ import "aces_defs.sialx"
      etemp=1.0/sqr
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A1(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A1[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one2 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A2(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A2[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one3 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A3(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A3[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one4 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A4(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A4[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one5 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A5(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A5[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one6 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A6(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A6[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      etemp *= -1.0 
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A7(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A7[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one2 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A8(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A8[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one3 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A9(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A9[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one4 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A10(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A10[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one5 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A11(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A11[a,i]=tai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           lai(a,i)=0.0
+           lai[a,i]=0.0
            execute place_one6 lai etemp
-           tai(a,i)=lai(a,i)
-           put VSTART1A12(a,i)=tai(a,i)
+           tai[a,i]=lai[a,i]
+           put VSTART1A12[a,i]=tai[a,i]
      ENDPARDO a, i
 #
-     deallocate lai(*,*)
+     deallocate lai[*,*]
 #
      sip_barrier 
 
@@ -1860,15 +1860,15 @@ import "aces_defs.sialx"
 #
      PARDO a, i
 #
-           GET                VSTART1A1(a,i)
-           tai(a,i)         = VSTART1A1(a,i)
-           PUT VCE1A(a,i)   = tai(a,i)
-           PUT VCACT1A(a,i) = tai(a,i)
+           GET                VSTART1A1[a,i]
+           tai[a,i]         = VSTART1A1[a,i]
+           PUT VCE1A[a,i]   = tai[a,i]
+           PUT VCACT1A[a,i] = tai[a,i]
 #
            DO k21
               if k21 == 1
-                taiS(a,i,k21)     = tai(a,i)
-                PUT VC1A(a,i,k21) = taiS(a,i,k21)
+                taiS[a,i,k21]     = tai[a,i]
+                PUT VC1A[a,i,k21] = taiS[a,i,k21]
               endif
            ENDDO k21
 #
@@ -1883,9 +1883,9 @@ import "aces_defs.sialx"
 #    ------------------ 
 #
      PARDO a, i
-           GET              VCACT1A(a,i)
-           tai(a,i)       = VCACT1A(a,i)
-           PUT VCE1A(a,i) = tai(a,i)
+           GET              VCACT1A[a,i]
+           tai[a,i]       = VCACT1A[a,i]
+           PUT VCE1A[a,i] = tai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
@@ -1899,13 +1899,13 @@ import "aces_defs.sialx"
      PARDO a, i
            DO k21
               if k21 == 21
-                 GET        VC1A(a,i,k21)
-                 tai(a,i) = VC1A(a,i,k21)
-                 PUT VCACT1A(a,i) = Tai(a,i)
+                 GET        VC1A[a,i,k21]
+                 tai[a,i] = VC1A[a,i,k21]
+                 PUT VCACT1A[a,i] = Tai[a,i]
                  DO j21
                     if j21 == 13
-                       taiS(a,i,j21)     = Tai(a,i)
-                       PUT VC1A(a,i,j21) = taiS(a,i,j21)
+                       taiS[a,i,j21]     = Tai[a,i]
+                       PUT VC1A[a,i,j21] = taiS[a,i,j21]
                     endif
                  ENDDO j21
               endif
@@ -1921,9 +1921,9 @@ import "aces_defs.sialx"
      PARDO a, i
            DO k21
               if k21 == spdim
-                 GET                VC1A(a,i,k21)
-                 tai(a,i)         = VC1A(a,i,k21)
-                 PUT VCACT1A(a,i) = tai(a,i)
+                 GET                VC1A[a,i,k21]
+                 tai[a,i]         = VC1A[a,i,k21]
+                 PUT VCACT1A[a,i] = tai[a,i]
               endif
            ENDDO k21
      ENDPARDO a, i
@@ -1939,9 +1939,9 @@ import "aces_defs.sialx"
      PARDO a, i
            DO k21
               if k21 > spdim
-                 GET                VC1A(a,i,k21)
-                 tai(a,i)         = VC1A(a,i,k21)
-                 PUT VCACT1A(a,i) = tai(a,i)
+                 GET                VC1A[a,i,k21]
+                 tai[a,i]         = VC1A[a,i,k21]
+                 PUT VCACT1A[a,i] = tai[a,i]
                  exit 
               endif
            ENDDO k21
@@ -1958,9 +1958,9 @@ import "aces_defs.sialx"
      PARDO a, i
            DO k21
               if k21 > spdim
-                 GET                 VC1A(a,i,k21)
-                 tai(a,i)          = VC1A(a,i,k21)
-                 PUT VCHACT1A(a,i) = tai(a,i)
+                 GET                 VC1A[a,i,k21]
+                 tai[a,i]          = VC1A[a,i,k21]
+                 PUT VCHACT1A[a,i] = tai[a,i]
                  exit 
               endif
            ENDDO k21
@@ -2015,7 +2015,7 @@ import "aces_defs.sialx"
      do kindex20
          if jindex20 == 1
          if kindex20 == 1
-            t20(kindex20,jindex20) = sMAT20(kindex20,jindex20)
+            t20[kindex20,jindex20] = sMAT20[kindex20,jindex20]
             execute return_sval t20  Aeig1
          endif
          endif
@@ -2037,7 +2037,7 @@ import "aces_defs.sialx"
      do jindex2
      do kindex2
 #
-     tcoef2(kindex2,jindex2)=Smat2(kindex2,jindex2)
+     tcoef2[kindex2,jindex2]=Smat2[kindex2,jindex2]
 #
      if kindex2 == 1
      if jindex2 == 1
@@ -2065,7 +2065,7 @@ import "aces_defs.sialx"
      do jindex3
      do kindex3
 #
-     tcoef3(kindex3,jindex3)=Smat3(kindex3,jindex3)
+     tcoef3[kindex3,jindex3]=Smat3[kindex3,jindex3]
 #
      if kindex3 == 1
      if jindex3 == 1
@@ -2098,7 +2098,7 @@ import "aces_defs.sialx"
      do jindex4
      do kindex4
 #
-     tcoef4(kindex4,jindex4)=Smat4(kindex4,jindex4)
+     tcoef4[kindex4,jindex4]=Smat4[kindex4,jindex4]
 #
      if kindex4 == 1
      if jindex4 == 1
@@ -2136,7 +2136,7 @@ import "aces_defs.sialx"
      do jindex5
      do kindex5
 #
-     tcoef5(kindex5,jindex5)=Smat5(kindex5,jindex5)
+     tcoef5[kindex5,jindex5]=Smat5[kindex5,jindex5]
 #
      if kindex5 == 1
      if jindex5 == 1
@@ -2179,7 +2179,7 @@ import "aces_defs.sialx"
      do jindex6
      do kindex6
 #
-     tcoef6(kindex6,jindex6)=Smat6(kindex6,jindex6)
+     tcoef6[kindex6,jindex6]=Smat6[kindex6,jindex6]
 #
      if kindex6 == 1
      if jindex6 == 1
@@ -2227,7 +2227,7 @@ import "aces_defs.sialx"
      do jindex7
      do kindex7
 #
-     tcoef7(kindex7,jindex7)=Smat7(kindex7,jindex7)
+     tcoef7[kindex7,jindex7]=Smat7[kindex7,jindex7]
 #
      if kindex7 == 1
      if jindex7 == 1
@@ -2280,7 +2280,7 @@ import "aces_defs.sialx"
      do jindex8
      do kindex8
 #
-     tcoef8(kindex8,jindex8)=Smat8(kindex8,jindex8)
+     tcoef8[kindex8,jindex8]=Smat8[kindex8,jindex8]
 #
      if kindex8 == 1
      if jindex8 == 1
@@ -2338,7 +2338,7 @@ import "aces_defs.sialx"
      do jindex9
      do kindex9
 #
-     tcoef9(kindex9,jindex9)=Smat9(kindex9,jindex9)
+     tcoef9[kindex9,jindex9]=Smat9[kindex9,jindex9]
 #
      if kindex9 == 1
      if jindex9 == 1
@@ -2403,7 +2403,7 @@ import "aces_defs.sialx"
      do jindex10
      do kindex10
 #
-     tcoef10(kindex10,jindex10)=Smat10(kindex10,jindex10)
+     tcoef10[kindex10,jindex10]=Smat10[kindex10,jindex10]
 #
      if kindex10 == 1
      if jindex10 == 1
@@ -2471,7 +2471,7 @@ import "aces_defs.sialx"
      do jindex11
      do kindex11
 #
-     tcoef11(kindex11,jindex11)=Smat11(kindex11,jindex11)
+     tcoef11[kindex11,jindex11]=Smat11[kindex11,jindex11]
 #
      if kindex11 == 1
      if jindex11 == 1
@@ -2544,7 +2544,7 @@ import "aces_defs.sialx"
      do jindex12
      do kindex12
 #
-     tcoef12(kindex12,jindex12)=Smat12(kindex12,jindex12)
+     tcoef12[kindex12,jindex12]=Smat12[kindex12,jindex12]
 #
      if kindex12 == 1
      if jindex12 == 1
@@ -2622,7 +2622,7 @@ import "aces_defs.sialx"
      do jindex13
      do kindex13
 #
-     tcoef13(kindex13,jindex13)=Smat13(kindex13,jindex13)
+     tcoef13[kindex13,jindex13]=Smat13[kindex13,jindex13]
 #
      if kindex13 == 1
      if jindex13 == 1
@@ -2705,7 +2705,7 @@ import "aces_defs.sialx"
      do jindex14
      do kindex14
 #
-     tcoef14(kindex14,jindex14)=Smat14(kindex14,jindex14)
+     tcoef14[kindex14,jindex14]=Smat14[kindex14,jindex14]
 #
      if kindex14 == 1
      if jindex14 == 1
@@ -2794,7 +2794,7 @@ import "aces_defs.sialx"
      do jindex15
      do kindex15
 #
-     tcoef15(kindex15,jindex15)=Smat15(kindex15,jindex15)
+     tcoef15[kindex15,jindex15]=Smat15[kindex15,jindex15]
 #
      if kindex15 == 1
      if jindex15 == 1
@@ -2887,7 +2887,7 @@ import "aces_defs.sialx"
      do jindex16
      do kindex16
 #
-     tcoef16(kindex16,jindex16)=Smat16(kindex16,jindex16)
+     tcoef16[kindex16,jindex16]=Smat16[kindex16,jindex16]
 #
      if kindex16 == 1
      if jindex16 == 1
@@ -2985,7 +2985,7 @@ import "aces_defs.sialx"
      do jindex17
      do kindex17
 #
-     tcoef17(kindex17,jindex17)=Smat17(kindex17,jindex17)
+     tcoef17[kindex17,jindex17]=Smat17[kindex17,jindex17]
 #
      if kindex17 == 1
      if jindex17 == 1
@@ -3088,7 +3088,7 @@ import "aces_defs.sialx"
      do jindex18
      do kindex18
 #
-     tcoef18(kindex18,jindex18)=Smat18(kindex18,jindex18)
+     tcoef18[kindex18,jindex18]=Smat18[kindex18,jindex18]
 #
      if kindex18 == 1
      if jindex18 == 1
@@ -3198,7 +3198,7 @@ import "aces_defs.sialx"
      do jindex19
      do kindex19
 #
-     tcoef19(kindex19,jindex19)=Smat19(kindex19,jindex19)
+     tcoef19[kindex19,jindex19]=Smat19[kindex19,jindex19]
 #
      if kindex19 == 1
      if jindex19 == 1
@@ -3311,7 +3311,7 @@ import "aces_defs.sialx"
      do jindex20
      do kindex20
 #
-     tcoef20(kindex20,jindex20)=Smat20(kindex20,jindex20)
+     tcoef20[kindex20,jindex20]=Smat20[kindex20,jindex20]
 #
      if kindex20 == 1
      if jindex20 == 1
@@ -3445,7 +3445,7 @@ import "aces_defs.sialx"
      do kindex20
          if jindex20 == 1
          if kindex20 == 1
-            t20(kindex20,jindex20) = sMAT20(kindex20,jindex20)
+            t20[kindex20,jindex20] = sMAT20[kindex20,jindex20]
             execute return_sval t20  omega
          endif
          endif
@@ -3799,11 +3799,11 @@ import "aces_defs.sialx"
 #    --------------2th iteration-----------------
      if spdim == 2
 #
-     allocate Lvev2(*,*)
+     allocate Lvev2[*,*]
 #
      do jindex2
      do kindex2
-     Lvev2(kindex2,jindex2)=Svev2(kindex2,jindex2)
+     Lvev2[kindex2,jindex2]=Svev2[kindex2,jindex2]
      enddo kindex2
      enddo jindex2
 #
@@ -3824,7 +3824,7 @@ import "aces_defs.sialx"
      enddo kindex2
      enddo jindex2
 #
-     deallocate Lvev2(*,*)
+     deallocate Lvev2[*,*]
 #
      endif
 #
@@ -3835,11 +3835,11 @@ import "aces_defs.sialx"
 #    --------------3th iteration-----------------
      if spdim == 3
 #
-     allocate Lvev3(*,*)
+     allocate Lvev3[*,*]
 #
      do jindex3
      do kindex3
-     Lvev3(kindex3,jindex3)=Svev3(kindex3,jindex3)
+     Lvev3[kindex3,jindex3]=Svev3[kindex3,jindex3]
      enddo kindex3
      enddo jindex3
 #
@@ -3863,7 +3863,7 @@ import "aces_defs.sialx"
      enddo kindex3
      enddo jindex3
 #
-     deallocate Lvev3(*,*)
+     deallocate Lvev3[*,*]
 #
      endif
 #
@@ -3874,11 +3874,11 @@ import "aces_defs.sialx"
 #    --------------4th iteration-----------------
      if spdim == 4
 #
-     allocate Lvev4(*,*)
+     allocate Lvev4[*,*]
 #
      do jindex4
      do kindex4
-     Lvev4(kindex4,jindex4)=Svev4(kindex4,jindex4)
+     Lvev4[kindex4,jindex4]=Svev4[kindex4,jindex4]
      enddo kindex4
      enddo jindex4
 #
@@ -3905,7 +3905,7 @@ import "aces_defs.sialx"
      enddo kindex4
      enddo jindex4
 #
-     deallocate Lvev4(*,*)
+     deallocate Lvev4[*,*]
 #
      endif
 #
@@ -3916,11 +3916,11 @@ import "aces_defs.sialx"
 #    --------------5th iteration-----------------
      if spdim == 5
 #
-     allocate Lvev5(*,*)
+     allocate Lvev5[*,*]
 #
      do jindex5
      do kindex5
-     Lvev5(kindex5,jindex5)=Svev5(kindex5,jindex5)
+     Lvev5[kindex5,jindex5]=Svev5[kindex5,jindex5]
      enddo kindex5
      enddo jindex5
 #
@@ -3950,7 +3950,7 @@ import "aces_defs.sialx"
      enddo kindex5
      enddo jindex5
 #
-     deallocate Lvev5(*,*)
+     deallocate Lvev5[*,*]
 #
      endif
 #
@@ -3961,11 +3961,11 @@ import "aces_defs.sialx"
 #    --------------6th iteration-----------------
      if spdim == 6
 #
-     allocate Lvev6(*,*)
+     allocate Lvev6[*,*]
 #
      do jindex6
      do kindex6
-     Lvev6(kindex6,jindex6)=Svev6(kindex6,jindex6)
+     Lvev6[kindex6,jindex6]=Svev6[kindex6,jindex6]
      enddo kindex6
      enddo jindex6
 #
@@ -3998,7 +3998,7 @@ import "aces_defs.sialx"
      enddo kindex6
      enddo jindex6
 #
-     deallocate Lvev6(*,*)
+     deallocate Lvev6[*,*]
 #
      endif
 #
@@ -4009,11 +4009,11 @@ import "aces_defs.sialx"
 #    --------------7th iteration-----------------
      if spdim == 7
 #
-     allocate Lvev7(*,*)
+     allocate Lvev7[*,*]
 #
      do jindex7
      do kindex7
-     Lvev7(kindex7,jindex7)=Svev7(kindex7,jindex7)
+     Lvev7[kindex7,jindex7]=Svev7[kindex7,jindex7]
      enddo kindex7
      enddo jindex7
 #
@@ -4049,7 +4049,7 @@ import "aces_defs.sialx"
      enddo kindex7
      enddo jindex7
 #
-     deallocate Lvev7(*,*)
+     deallocate Lvev7[*,*]
 #
      endif
 #
@@ -4060,11 +4060,11 @@ import "aces_defs.sialx"
 #    --------------8th iteration-----------------
      if spdim == 8
 #
-     allocate Lvev8(*,*)
+     allocate Lvev8[*,*]
 #
      do jindex8
      do kindex8
-     Lvev8(kindex8,jindex8)=Svev8(kindex8,jindex8)
+     Lvev8[kindex8,jindex8]=Svev8[kindex8,jindex8]
      enddo kindex8
      enddo jindex8
 #
@@ -4103,7 +4103,7 @@ import "aces_defs.sialx"
      enddo kindex8
      enddo jindex8
 #
-     deallocate Lvev8(*,*)
+     deallocate Lvev8[*,*]
 #
      endif
 #
@@ -4114,11 +4114,11 @@ import "aces_defs.sialx"
 #    --------------9th iteration-----------------
      if spdim == 9
 #
-     allocate Lvev9(*,*)
+     allocate Lvev9[*,*]
 #
      do jindex9
      do kindex9
-     Lvev9(kindex9,jindex9)=Svev9(kindex9,jindex9)
+     Lvev9[kindex9,jindex9]=Svev9[kindex9,jindex9]
      enddo kindex9
      enddo jindex9
 #
@@ -4160,7 +4160,7 @@ import "aces_defs.sialx"
      enddo kindex9
      enddo jindex9
 #
-     deallocate Lvev9(*,*)
+     deallocate Lvev9[*,*]
 #
      endif
 #
@@ -4171,11 +4171,11 @@ import "aces_defs.sialx"
 #    --------------10th iteration-----------------
      if spdim == 10
 #
-     allocate Lvev10(*,*)
+     allocate Lvev10[*,*]
 #
      do jindex10
      do kindex10
-     Lvev10(kindex10,jindex10)=Svev10(kindex10,jindex10)
+     Lvev10[kindex10,jindex10]=Svev10[kindex10,jindex10]
      enddo kindex10
      enddo jindex10
 #
@@ -4220,7 +4220,7 @@ import "aces_defs.sialx"
      enddo kindex10
      enddo jindex10
 #
-     deallocate Lvev10(*,*)
+     deallocate Lvev10[*,*]
 #
      endif
 #
@@ -4231,11 +4231,11 @@ import "aces_defs.sialx"
 #    --------------11th iteration-----------------
      if spdim == 11
 #
-     allocate Lvev11(*,*)
+     allocate Lvev11[*,*]
 #
      do jindex11
      do kindex11
-     Lvev11(kindex11,jindex11)=Svev11(kindex11,jindex11)
+     Lvev11[kindex11,jindex11]=Svev11[kindex11,jindex11]
      enddo kindex11
      enddo jindex11
 #
@@ -4283,7 +4283,7 @@ import "aces_defs.sialx"
      enddo kindex11
      enddo jindex11
 #
-     deallocate Lvev11(*,*)
+     deallocate Lvev11[*,*]
 #
      endif
 #
@@ -4294,11 +4294,11 @@ import "aces_defs.sialx"
 #    --------------12th iteration-----------------
      if spdim == 12
 #
-     allocate Lvev12(*,*)
+     allocate Lvev12[*,*]
 #
      do jindex12
      do kindex12
-     Lvev12(kindex12,jindex12)=Svev12(kindex12,jindex12)
+     Lvev12[kindex12,jindex12]=Svev12[kindex12,jindex12]
      enddo kindex12
      enddo jindex12
 #
@@ -4349,7 +4349,7 @@ import "aces_defs.sialx"
      enddo kindex12
      enddo jindex12
 #
-     deallocate Lvev12(*,*)
+     deallocate Lvev12[*,*]
 #
      endif
 #
@@ -4360,11 +4360,11 @@ import "aces_defs.sialx"
 #    --------------13th iteration-----------------
      if spdim == 13
 #
-     allocate Lvev13(*,*)
+     allocate Lvev13[*,*]
 #
      do jindex13
      do kindex13
-     Lvev13(kindex13,jindex13)=Svev13(kindex13,jindex13)
+     Lvev13[kindex13,jindex13]=Svev13[kindex13,jindex13]
      enddo kindex13
      enddo jindex13
 #
@@ -4418,7 +4418,7 @@ import "aces_defs.sialx"
      enddo kindex13
      enddo jindex13
 #
-     deallocate Lvev13(*,*)
+     deallocate Lvev13[*,*]
 #
      endif
 #
@@ -4429,11 +4429,11 @@ import "aces_defs.sialx"
 #    --------------14th iteration-----------------
      if spdim == 14
 #
-     allocate Lvev14(*,*)
+     allocate Lvev14[*,*]
 #
      do jindex14
      do kindex14
-     Lvev14(kindex14,jindex14)=Svev14(kindex14,jindex14)
+     Lvev14[kindex14,jindex14]=Svev14[kindex14,jindex14]
      enddo kindex14
      enddo jindex14
 #
@@ -4490,7 +4490,7 @@ import "aces_defs.sialx"
      enddo kindex14
      enddo jindex14
 #
-     deallocate Lvev14(*,*)
+     deallocate Lvev14[*,*]
 #
      endif
 #
@@ -4501,11 +4501,11 @@ import "aces_defs.sialx"
 #    --------------15th iteration-----------------
      if spdim == 15
 #
-     allocate Lvev15(*,*)
+     allocate Lvev15[*,*]
 #
      do jindex15
      do kindex15
-     Lvev15(kindex15,jindex15)=Svev15(kindex15,jindex15)
+     Lvev15[kindex15,jindex15]=Svev15[kindex15,jindex15]
      enddo kindex15
      enddo jindex15
 #
@@ -4565,7 +4565,7 @@ import "aces_defs.sialx"
      enddo kindex15
      enddo jindex15
 #
-     deallocate Lvev15(*,*)
+     deallocate Lvev15[*,*]
 #
      endif
 #
@@ -4576,11 +4576,11 @@ import "aces_defs.sialx"
 #    --------------16th iteration-----------------
      if spdim == 16
 #
-     allocate Lvev16(*,*)
+     allocate Lvev16[*,*]
 #
      do jindex16
      do kindex16
-     Lvev16(kindex16,jindex16)=Svev16(kindex16,jindex16)
+     Lvev16[kindex16,jindex16]=Svev16[kindex16,jindex16]
      enddo kindex16
      enddo jindex16
 #
@@ -4643,7 +4643,7 @@ import "aces_defs.sialx"
      enddo kindex16
      enddo jindex16
 #
-     deallocate Lvev16(*,*)
+     deallocate Lvev16[*,*]
 #
      endif
 #
@@ -4654,11 +4654,11 @@ import "aces_defs.sialx"
 #    --------------17th iteration-----------------
      if spdim == 17
 #
-     allocate Lvev17(*,*)
+     allocate Lvev17[*,*]
 #
      do jindex17
      do kindex17
-     Lvev17(kindex17,jindex17)=Svev17(kindex17,jindex17)
+     Lvev17[kindex17,jindex17]=Svev17[kindex17,jindex17]
      enddo kindex17
      enddo jindex17
 #
@@ -4724,7 +4724,7 @@ import "aces_defs.sialx"
      enddo kindex17
      enddo jindex17
 #
-     deallocate Lvev17(*,*)
+     deallocate Lvev17[*,*]
 #
      endif
 #
@@ -4735,11 +4735,11 @@ import "aces_defs.sialx"
 #    --------------18th iteration-----------------
      if spdim == 18
 #
-     allocate Lvev18(*,*)
+     allocate Lvev18[*,*]
 #
      do jindex18
      do kindex18
-     Lvev18(kindex18,jindex18)=Svev18(kindex18,jindex18)
+     Lvev18[kindex18,jindex18]=Svev18[kindex18,jindex18]
      enddo kindex18
      enddo jindex18
 #
@@ -4808,7 +4808,7 @@ import "aces_defs.sialx"
      enddo kindex18
      enddo jindex18
 #
-     deallocate Lvev18(*,*)
+     deallocate Lvev18[*,*]
 #
      endif
 #
@@ -4819,11 +4819,11 @@ import "aces_defs.sialx"
 #    --------------19th iteration-----------------
      if spdim == 19
 #
-     allocate Lvev19(*,*)
+     allocate Lvev19[*,*]
 #
      do jindex19
      do kindex19
-     Lvev19(kindex19,jindex19)=Svev19(kindex19,jindex19)
+     Lvev19[kindex19,jindex19]=Svev19[kindex19,jindex19]
      enddo kindex19
      enddo jindex19
 #
@@ -4895,7 +4895,7 @@ import "aces_defs.sialx"
      enddo kindex19
      enddo jindex19
 #
-     deallocate Lvev19(*,*)
+     deallocate Lvev19[*,*]
 #
      endif
 #
@@ -4906,11 +4906,11 @@ import "aces_defs.sialx"
 #    --------------20th iteration-----------------
      if spdim == 20
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -4985,7 +4985,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
      endif
 #
@@ -5109,25 +5109,25 @@ import "aces_defs.sialx"
 #
       PARDO a, i
 #
-           get VCACT1A(a,i)
-           get VCHACT1A(a,i)
-           get VCONV1A(a,i)
+           get VCACT1A[a,i]
+           get VCHACT1A[a,i]
+           get VCONV1A[a,i]
 #
-           tai(a,i)=VCACT1A(a,i)
-           tai(a,i)*=omega
-           tai(a,i)*=-1.0
-           tai(a,i)+=VCHACT1A(a,i)
+           tai[a,i]=VCACT1A[a,i]
+           tai[a,i]*=omega
+           tai[a,i]*=-1.0
+           tai[a,i]+=VCHACT1A[a,i]
 #
-           t1ai(a,i)=VCONV1A(a,i)
-           t1ai(a,i)*=-1.0
-           t11ai(a,i)=omega
-           t1ai(a,i)+=t11ai(a,i)
+           t1ai[a,i]=VCONV1A[a,i]
+           t1ai[a,i]*=-1.0
+           t11ai[a,i]=omega
+           t1ai[a,i]+=t11ai[a,i]
            execute apply_den2 tai t1ai
 #
             DO j21
                if j21 > spdim
-                  taiS(a,i,j21)     = tai(a,i)
-                  PUT VC1A(a,i,j21) = taiS(a,i,j21)
+                  taiS[a,i,j21]     = tai[a,i]
+                  PUT VC1A[a,i,j21] = taiS[a,i,j21]
                   exit
                ENDIF
             ENDDO j21
@@ -5147,64 +5147,64 @@ import "aces_defs.sialx"
 # -----------------------------------------------------------------
       DO k20
          if k20 == 1
-            Aeig(k20,k20) = Aeigvm1
+            Aeig[k20,k20] = Aeigvm1
          endif
          if k20 == 2
-            Aeig(k20,k20) = Aeigvm2
+            Aeig[k20,k20] = Aeigvm2
          endif
          if k20 == 3
-            Aeig(k20,k20) = Aeigvm3
+            Aeig[k20,k20] = Aeigvm3
          endif
          if k20 == 4
-            Aeig(k20,k20) = Aeigvm4
+            Aeig[k20,k20] = Aeigvm4
          endif
          if k20 == 5
-            Aeig(k20,k20) = Aeigvm5
+            Aeig[k20,k20] = Aeigvm5
          endif
          if k20 == 6
-            Aeig(k20,k20) = Aeigvm6
+            Aeig[k20,k20] = Aeigvm6
          endif
          if k20 == 7
-            Aeig(k20,k20) = Aeigvm7
+            Aeig[k20,k20] = Aeigvm7
          endif
          if k20 == 8
-            Aeig(k20,k20) = Aeigvm8
+            Aeig[k20,k20] = Aeigvm8
          endif
          if k20 == 9
-            Aeig(k20,k20) = Aeigvm9
+            Aeig[k20,k20] = Aeigvm9
          endif
          if k20 == 10
-            Aeig(k20,k20) = Aeigvm10
+            Aeig[k20,k20] = Aeigvm10
          endif
          if k20 == 11
-            Aeig(k20,k20) = Aeigvm11
+            Aeig[k20,k20] = Aeigvm11
          endif
          if k20 == 12
-            Aeig(k20,k20) = Aeigvm12
+            Aeig[k20,k20] = Aeigvm12
          endif
          if k20 == 13
-            Aeig(k20,k20) = Aeigvm13
+            Aeig[k20,k20] = Aeigvm13
          endif
          if k20 == 14
-            Aeig(k20,k20) = Aeigvm14
+            Aeig[k20,k20] = Aeigvm14
          endif
          if k20 == 15
-            Aeig(k20,k20) = Aeigvm15
+            Aeig[k20,k20] = Aeigvm15
          endif
          if k20 == 16
-            Aeig(k20,k20) = Aeigvm16
+            Aeig[k20,k20] = Aeigvm16
          endif
          if k20 == 17
-            Aeig(k20,k20) = Aeigvm17
+            Aeig[k20,k20] = Aeigvm17
          endif
          if k20 == 18
-            Aeig(k20,k20) = Aeigvm18
+            Aeig[k20,k20] = Aeigvm18
          endif
          if k20 == 19
-            Aeig(k20,k20) = Aeigvm19
+            Aeig[k20,k20] = Aeigvm19
          endif
          if k20 == 20
-            Aeig(k20,k20) = Aeigvm20
+            Aeig[k20,k20] = Aeigvm20
          endif
       ENDDO k20
 #
@@ -5214,22 +5214,22 @@ import "aces_defs.sialx"
 #
       if spdim > 1 
       PARDO a, i
-            tai(a,i) = 0.0 
+            tai[a,i] = 0.0 
             DO k21 
                if k21 <= spdim 
-                  GET                 VC1A(a,i,k21)  
-                  t1ai(a,i)         = VC1A(a,i,k21) 
+                  GET                 VC1A[a,i,k21]  
+                  t1ai[a,i]         = VC1A[a,i,k21] 
                   DO k20 
                      if k20 == k21 
-                        t20(k20,k20)      = Aeig(k20,k20) 
+                        t20[k20,k20]      = Aeig[k20,k20] 
                         execute return_sval t20 temp3 
                      endif 
                   ENDDO k20 
-                  t1ai(a,i)        *= temp3  
-                  tai(a,i)         += t1ai(a,i) 
+                  t1ai[a,i]        *= temp3  
+                  tai[a,i]         += t1ai[a,i] 
                endif 
             ENDDO k21 
-            PUT VCACT1A(a,i) = tai(a,i)
+            PUT VCACT1A[a,i] = tai[a,i]
       ENDPARDO a, i
       endif 
 #
@@ -5249,18 +5249,18 @@ import "aces_defs.sialx"
 #
       if spdim > 1 
       PARDO a, i
-            tai(a,i) = 0.0 
+            tai[a,i] = 0.0 
             DO k20 
                if k20 <= spdim 
-                  GET                 VCH1A(a,i,k20)  
-                  t1ai(a,i)         = VCH1A(a,i,k20) 
-                  t20(k20,k20)      = Aeig(k20,k20) 
+                  GET                 VCH1A[a,i,k20]  
+                  t1ai[a,i]         = VCH1A[a,i,k20] 
+                  t20[k20,k20]      = Aeig[k20,k20] 
                   execute return_sval t20 temp3 
-                  t1ai(a,i)        *= temp3  
-                  tai(a,i)         += t1ai(a,i) 
+                  t1ai[a,i]        *= temp3  
+                  tai[a,i]         += t1ai[a,i] 
                endif 
             ENDDO k20 
-            PUT VCHACT1A(a,i) = tai(a,i)
+            PUT VCHACT1A[a,i] = tai[a,i]
       ENDPARDO a, i
       endif 
 #
@@ -5280,10 +5280,10 @@ import "aces_defs.sialx"
      sum2=0.0
 #
      PARDO a, i
-           get         VCACT1A(a,i)
-           tai(a,i)  = VCACT1A(a,i)
-           t2ai(a,i) = tai(a,i)
-           etemp     = tai(a,i)*t2ai(a,i)
+           get         VCACT1A[a,i]
+           tai[a,i]  = VCACT1A[a,i]
+           t2ai[a,i] = tai[a,i]
+           etemp     = tai[a,i]*t2ai[a,i]
            sum1     += etemp
      ENDPARDO a, i
 #
@@ -5305,10 +5305,10 @@ import "aces_defs.sialx"
      sum2=0.0
 #
      PARDO a, i
-           get         VCHACT1A(a,i)
-           tai(a,i)  = VCHACT1A(a,i)
-           t2ai(a,i) = tai(a,i)
-           etemp     = tai(a,i)*t2ai(a,i)
+           get         VCHACT1A[a,i]
+           tai[a,i]  = VCHACT1A[a,i]
+           t2ai[a,i] = tai[a,i]
+           etemp     = tai[a,i]*t2ai[a,i]
            sum1     += etemp
      ENDPARDO a, i
 #
@@ -5335,46 +5335,46 @@ import "aces_defs.sialx"
 #
      PARDO a, i
 #
-     GET VCE1A(a,i)
-     tai(a,i)=VCE1A(a,i)
+     GET VCE1A[a,i]
+     tai[a,i]=VCE1A[a,i]
 #     execute dump_block tai
 #     execute print_scalar iroot
 #
      if iroot == 1.0
-     put VCEND1A1(a,i)=tai(a,i)
+     put VCEND1A1[a,i]=tai[a,i]
      endif
      if iroot == 2.0
-     put VCEND1A2(a,i)=tai(a,i)
+     put VCEND1A2[a,i]=tai[a,i]
      endif
      if iroot == 3.0
-     put VCEND1A3(a,i)=tai(a,i)
+     put VCEND1A3[a,i]=tai[a,i]
      endif
      if iroot == 4.0
-     put VCEND1A4(a,i)=tai(a,i)
+     put VCEND1A4[a,i]=tai[a,i]
      endif
      if iroot == 5.0
-     put VCEND1A5(a,i)=tai(a,i)
+     put VCEND1A5[a,i]=tai[a,i]
      endif
      if iroot == 6.0
-     put VCEND1A6(a,i)=tai(a,i)
+     put VCEND1A6[a,i]=tai[a,i]
      endif
      if iroot == 7.0
-     put VCEND1A7(a,i)=tai(a,i)
+     put VCEND1A7[a,i]=tai[a,i]
      endif
      if iroot == 8.0
-     put VCEND1A8(a,i)=tai(a,i)
+     put VCEND1A8[a,i]=tai[a,i]
      endif
      if iroot == 9.0
-     put VCEND1A9(a,i)=tai(a,i)
+     put VCEND1A9[a,i]=tai[a,i]
      endif
      if iroot == 10.0
-     put VCEND1A10(a,i)=tai(a,i)
+     put VCEND1A10[a,i]=tai[a,i]
      endif
      if iroot == 11.0
-     put VCEND1A11(a,i)=tai(a,i)
+     put VCEND1A11[a,i]=tai[a,i]
      endif
      if iroot == 12.0
-     put VCEND1A12(a,i)=tai(a,i)
+     put VCEND1A12[a,i]=tai[a,i]
      endif
 #
      ENDPARDO a, i
@@ -5395,10 +5395,10 @@ import "aces_defs.sialx"
 #    --------------- 
 #
      PARDO a, i
-           get                 VCACT1A(a,i)
-           tai(a,i)          = VCACT1A(a,i)
-           tai(a,i)         *= mult
-           put VCHACT1A(a,i) = tai(a,i)
+           get                 VCACT1A[a,i]
+           tai[a,i]          = VCACT1A[a,i]
+           tai[a,i]         *= mult
+           put VCHACT1A[a,i] = tai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
@@ -5410,12 +5410,12 @@ import "aces_defs.sialx"
 #    ----------------- 
 #
      PARDO a, i 
-           get         VCHACT1A(a,i)
-           tai(a,i)  = VCHACT1A(a,i)
-           tai(a,i) *= mult
+           get         VCHACT1A[a,i]
+           tai[a,i]  = VCHACT1A[a,i]
+           tai[a,i] *= mult
            DO k21 
               if k21 > spdim 
-                 PUT VC1A(a,i,k21) = tai(a,i) 
+                 PUT VC1A[a,i,k21] = tai[a,i] 
                  exit 
               endif 
            ENDDO k21 
@@ -5428,15 +5428,15 @@ import "aces_defs.sialx"
 #    ------------- 
 #
       PARDO a, i
-            GET VCHACT1A(a,i)
+            GET VCHACT1A[a,i]
             DO k21
                if k21 <= spdim
-                  GET                  VC1A(a,i,k21)
-                  tai(a,i)           = VC1A(a,i,k21)
-                  etemp              = VCHACT1A(a,i)*tai(a,i)
+                  GET                  VC1A[a,i,k21]
+                  tai[a,i]           = VC1A[a,i,k21]
+                  etemp              = VCHACT1A[a,i]*tai[a,i]
                   etemp             *= -1.0
-                  t1(k21,k21)        = etemp
-                  PUT orth(k21,k21) += t1(k21,k21)
+                  t1[k21,k21]        = etemp
+                  PUT orth[k21,k21] += t1[k21,k21]
                endif
             ENDDO k21
       ENDPARDO a, i
@@ -5450,26 +5450,26 @@ import "aces_defs.sialx"
 #    -------------- 
 #
       PARDO a, i
-            GET        VCHACT1A(a,i)
-            tai(a,i) = VCHACT1A(a,i)
+            GET        VCHACT1A[a,i]
+            tai[a,i] = VCHACT1A[a,i]
             DO k21
                if k21 <= spdim
-                  GET         VC1A(a,i,k21)
-                  GET         orth(k21,k21)
-                  t1ai(a,i) = VC1A(a,i,k21)
+                  GET         VC1A[a,i,k21]
+                  GET         orth[k21,k21]
+                  t1ai[a,i] = VC1A[a,i,k21]
 #
-                  t1(k21,k21)       = orth(k21,k21)
+                  t1[k21,k21]       = orth[k21,k21]
                   execute return_sval t1 fact
-                  t1ai(a,i)*= fact
-                  tai(a,i) += t1ai(a,i)
+                  t1ai[a,i]*= fact
+                  tai[a,i] += t1ai[a,i]
 #
                endif
             ENDDO k21
 #
-            PUT VCACT1A(a,i) = tai(a,i)
+            PUT VCACT1A[a,i] = tai[a,i]
 #
-            t2ai(a,i)        = tai(a,i)
-            etemp            = tai(a,i)*t2ai(a,i)
+            t2ai[a,i]        = tai[a,i]
+            etemp            = tai[a,i]*t2ai[a,i]
             sum1            += etemp
       ENDPARDO a, i
 #
@@ -5478,10 +5478,10 @@ import "aces_defs.sialx"
 # -------- rewrite vector to spdim+1 record ---------
 #
       PARDO a, i 
-            GET VCACT1A(a,i) 
+            GET VCACT1A[a,i] 
             DO k21 
                if k21 > spdim 
-                  PUT VC1A(a,i,k21) = VCACT1A(a,i) 
+                  PUT VC1A[a,i,k21] = VCACT1A[a,i] 
                   exit 
                endif 
             ENDDO k21 
@@ -5549,70 +5549,70 @@ import "aces_defs.sialx"
 # -----prepare f_aa diagonal = Sdaa
 #
      PARDO a, a1
-#     GET HBAR_aa(a,a1)
-           Saa(a,a1)      = fock_a(a,a1)
+#     GET HBAR_aa[a,a1]
+           Saa[a,a1]      = fock_a[a,a1]
            execute return_diagonal Saa Sdaa
-           taa(a,a1)      = Sdaa(a,a1)
-           put DDaa(a,a1) = taa(a,a1)
+           taa[a,a1]      = Sdaa[a,a1]
+           put DDaa[a,a1] = taa[a,a1]
      ENDPARDO a, a1
 #
 # -----prepare f_ii diagonal = Sdii
 #
      PARDO i, i1
-#     GET HBAR_ii(i1,i)
-           Sii(i1,i)      = fock_a(i1,i)
+#     GET HBAR_ii[i1,i]
+           Sii[i1,i]      = fock_a[i1,i]
            execute return_diagonal Sii Sdii
-           tii(i1,i)      = Sdii(i1,i)
-           put DDii(i1,i) = tii(i1,i)
+           tii[i1,i]      = Sdii[i1,i]
+           put DDii[i1,i] = tii[i1,i]
      ENDPARDO i, i1
 #
 # -----prepare f_bb diagonal = DDbb
 #
      PARDO b, b1
-#     GET HBAR_bb(b,b1)
-           Sbb(b,b1)      = fock_a(b,b1)
+#     GET HBAR_bb[b,b1]
+           Sbb[b,b1]      = fock_a[b,b1]
            execute return_diagonal Sbb Sdbb
-           tbb(b,b1)      = Sdbb(b,b1)
-           put DDbb(b,b1) = tbb(b,b1)
+           tbb[b,b1]      = Sdbb[b,b1]
+           put DDbb[b,b1] = tbb[b,b1]
      ENDPARDO b, b1
 #
 # -----prepare f_jj diagonal = DDjj
 #
      PARDO j, j1
-#     GET HBAR_jj(j1,j)
-           Sjj(j1,j)      = fock_a(j1,j)
+#     GET HBAR_jj[j1,j]
+           Sjj[j1,j]      = fock_a[j1,j]
            execute return_diagonal Sjj Sdjj
-           tjj(j1,j)      = Sdjj(j1,j)
-           put DDjj(j1,j) = tjj(j1,j)
+           tjj[j1,j]      = Sdjj[j1,j]
+           put DDjj[j1,j] = tjj[j1,j]
      ENDPARDO j, j1
 #
 # -----prepare Hbar_aiai diagonal
 #
      PARDO a, i
 #
-           tai(a,i) = 0.0
+           tai[a,i] = 0.0
 #
            do a1
            do i1
 #
-#     REQUEST HBAR_AJIB_aaaa(i1,a1,a,i) i
-               REQUEST             Viaai(i1,a1,a,i) i
-              #REQUEST             Vaaii(a,a1,i1,i) i
+#     REQUEST HBAR_AJIB_aaaa[i1,a1,a,i] i
+               REQUEST             Viaai[i1,a1,a,i] i
+              #REQUEST             Vaaii[a,a1,i1,i] i
 #
-              #Tiaai(i1,a1,a,i)  = Vaaii(a,a1,i1,i)
-               Tiaai(i1,a1,a,i)  = Viaai(i1,a1,a,i)
-              #Tiaai(i1,a1,a,i) *= -1.0
+              #Tiaai[i1,a1,a,i]  = Vaaii[a,a1,i1,i]
+               Tiaai[i1,a1,a,i]  = Viaai[i1,a1,a,i]
+              #Tiaai[i1,a1,a,i] *= -1.0
 #
-               Taaii(a,a1,i,i1)  = Tiaai(i1,a1,a,i)
+               Taaii[a,a1,i,i1]  = Tiaai[i1,a1,a,i]
                execute return_diagonal4 Taaii
-               tia(i1,a1)        = 1.0
-               t1ai(a,i)         = Taaii(a,a1,i,i1)*tia(i1,a1)
-               tai(a,i)         += t1ai(a,i)
+               tia[i1,a1]        = 1.0
+               t1ai[a,i]         = Taaii[a,a1,i,i1]*tia[i1,a1]
+               tai[a,i]         += t1ai[a,i]
 #
            enddo i1
            enddo a1
 #
-           PUT VCONV1A(a,i) = tai(a,i)
+           PUT VCONV1A[a,i] = tai[a,i]
 #
      ENDPARDO a, i
 #
@@ -5620,95 +5620,95 @@ import "aces_defs.sialx"
 #
      PARDO b, j
 #
-           tbj(b,j) = 0.0
+           tbj[b,j] = 0.0
 #
            do b1
            do j1
 #
-#     REQUEST HBAR_AJIB_bbbb(j1,b1,b,j) j
-               REQUEST             Vjbbj(j1,b1,b,j) j
-              #REQUEST             Vbbjj(b,b1,j1,j) j
+#     REQUEST HBAR_AJIB_bbbb[j1,b1,b,j] j
+               REQUEST             Vjbbj[j1,b1,b,j] j
+              #REQUEST             Vbbjj[b,b1,j1,j] j
 #
-              #Tjbbj(j1,b1,b,j)  = Vbbjj(b,b1,j1,j)
-               Tjbbj(j1,b1,b,j)  = Vjbbj(j1,b1,b,j)
-              #Tjbbj(j1,b1,b,j) *= -1.0
+              #Tjbbj[j1,b1,b,j]  = Vbbjj[b,b1,j1,j]
+               Tjbbj[j1,b1,b,j]  = Vjbbj[j1,b1,b,j]
+              #Tjbbj[j1,b1,b,j] *= -1.0
 #
-               Tbbjj(b,b1,j,j1)  = Tjbbj(j1,b1,b,j)
+               Tbbjj[b,b1,j,j1]  = Tjbbj[j1,b1,b,j]
                execute return_diagonal4 Tbbjj
-               tjb(j1,b1)        = 1.0
-               t1bj(b,j)         = Tbbjj(b,b1,j,j1)*tjb(j1,b1)
-               tbj(b,j)         += t1bj(b,j)
+               tjb[j1,b1]        = 1.0
+               t1bj[b,j]         = Tbbjj[b,b1,j,j1]*tjb[j1,b1]
+               tbj[b,j]         += t1bj[b,j]
 #
            enddo j1
            enddo b1
 #
-           PUT VCONV1B(b,j) = tbj(b,j)
+           PUT VCONV1B[b,j] = tbj[b,j]
 #
      ENDPARDO b, j
 #
      sip_barrier
 #
-# ---------compute T(a,i)=F(a,a)-f(i,i)-v(a,i,a,i)
+# ---------compute T[a,i]=F[a,a]-f[i,i]-v[a,i,a,i]
 #
      PARDO a, i
 #
-           tai(a,i) = 0.0
+           tai[a,i] = 0.0
 #
            do a1
 #
-              get         DDaa(a,a1)
-              tia(i,a1) = 1.0
-              taa(a1,a) = DDaa(a,a1)
+              get         DDaa[a,a1]
+              tia[i,a1] = 1.0
+              taa[a1,a] = DDaa[a,a1]
 #
-              t2ai(a,i) = tia(i,a1)*taa(a1,a)
-              tai(a,i) += t2ai(a,i)
+              t2ai[a,i] = tia[i,a1]*taa[a1,a]
+              tai[a,i] += t2ai[a,i]
 #
            enddo a1
 #
            do i1
 #
-              get         DDii(i1,i)
-              t2ia(i1,a)= 1.0
-              tii(i,i1) = DDii(i1,i)
+              get         DDii[i1,i]
+              t2ia[i1,a]= 1.0
+              tii[i,i1] = DDii[i1,i]
 #
-              t2ai(a,i) = tii(i,i1)*t2ia(i1,a)
-              t2ai(a,i)*= -1.0
-              tai(a,i) += t2ai(a,i)
+              t2ai[a,i] = tii[i,i1]*t2ia[i1,a]
+              t2ai[a,i]*= -1.0
+              tai[a,i] += t2ai[a,i]
 #
            enddo i1
 #
-           PUT VCONV1A(a,i)+=tai(a,i)
+           PUT VCONV1A[a,i]+=tai[a,i]
 #
      ENDPARDO a, i
 #
-# ---------compute T(b,j)=F(b,b)-f(j,j)
+# ---------compute T[b,j]=F[b,b]-f[j,j]
 #
      PARDO b, j
 #
-           tbj(b,j)=0.0
+           tbj[b,j]=0.0
 #
            do b1
 #
-              get         DDbb(b,b1)
-              tjb(j,b1) = 1.0
-              tbb(b1,b) = DDbb(b,b1)
-              t2bj(b,j) = tjb(j,b1)*tbb(b1,b)
-              tbj(b,j) += t2bj(b,j)
+              get         DDbb[b,b1]
+              tjb[j,b1] = 1.0
+              tbb[b1,b] = DDbb[b,b1]
+              t2bj[b,j] = tjb[j,b1]*tbb[b1,b]
+              tbj[b,j] += t2bj[b,j]
 #
            enddo b1
 #
            do j1
 #
-              get         DDjj(j1,j)
-              t2jb(j1,b)= 1.0
-              tjj(j,j1) = DDjj(j1,j)
-              t2bj(b,j) = tjj(j,j1)*t2jb(j1,b)
-              t2bj(b,j)*= -1.0
-              tbj(b,j) += t2bj(b,j)
+              get         DDjj[j1,j]
+              t2jb[j1,b]= 1.0
+              tjj[j,j1] = DDjj[j1,j]
+              t2bj[b,j] = tjj[j,j1]*t2jb[j1,b]
+              t2bj[b,j]*= -1.0
+              tbj[b,j] += t2bj[b,j]
 #
            enddo j1
 #
-           PUT VCONV1B(b,j) += tbj(b,j)
+           PUT VCONV1B[b,j] += tbj[b,j]
 #
      ENDPARDO b, j
 #
@@ -5861,11 +5861,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC1
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -5940,7 +5940,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC1
@@ -5948,11 +5948,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC2
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6027,7 +6027,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC2
@@ -6035,11 +6035,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC3
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6114,7 +6114,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC3
@@ -6122,11 +6122,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC4
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6201,7 +6201,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC4
@@ -6209,11 +6209,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC5
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6288,7 +6288,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC5
@@ -6296,11 +6296,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC6
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6375,7 +6375,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC6
@@ -6383,11 +6383,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC7
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6462,7 +6462,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC7
@@ -6470,11 +6470,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC8
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6549,7 +6549,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC8
@@ -6557,11 +6557,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC9
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6636,7 +6636,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC9
@@ -6644,11 +6644,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC10
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6723,7 +6723,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC10
@@ -6731,11 +6731,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC11
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6810,7 +6810,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC11
@@ -6818,11 +6818,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVEC12
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6897,7 +6897,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVEC12
@@ -6906,11 +6906,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX1
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -6989,7 +6989,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX1
@@ -6997,11 +6997,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX2
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7080,7 +7080,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX2
@@ -7088,11 +7088,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX3
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7171,7 +7171,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX3
@@ -7179,11 +7179,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX4
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7262,7 +7262,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX4
@@ -7270,11 +7270,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX5
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7353,7 +7353,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX5
@@ -7361,11 +7361,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX6
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7444,7 +7444,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX6
@@ -7452,11 +7452,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX7
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7535,7 +7535,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX7
@@ -7543,11 +7543,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX8
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7626,7 +7626,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX8
@@ -7634,11 +7634,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX9
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7717,7 +7717,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX9
@@ -7725,11 +7725,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX10
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7808,7 +7808,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX10
@@ -7816,11 +7816,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX11
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7899,7 +7899,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX11
@@ -7907,11 +7907,11 @@ import "aces_defs.sialx"
 #
        PROC DRAWVECX12
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -7990,7 +7990,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
 #
        ENDPROC DRAWVECX12
@@ -8011,12 +8011,12 @@ import "aces_defs.sialx"
 #
      lcount+=1.0
 #
-     allocate Lvev20(*,*)
+     allocate Lvev20[*,*]
 #
      do jindex20
      do kindex20
-     Lvev20(kindex20,jindex20)=Svev20(kindex20,jindex20)
-     MYvev(kindex20,jindex20)=Svev20(kindex20,jindex20)
+     Lvev20[kindex20,jindex20]=Svev20[kindex20,jindex20]
+     MYvev[kindex20,jindex20]=Svev20[kindex20,jindex20]
      enddo kindex20
      enddo jindex20
 #
@@ -8091,7 +8091,7 @@ import "aces_defs.sialx"
      enddo kindex20
      enddo jindex20
 #
-     deallocate Lvev20(*,*)
+     deallocate Lvev20[*,*]
 #
         if spdim2 == 1
         Aeig1 = 1000000.0
@@ -21340,800 +21340,800 @@ import "aces_defs.sialx"
 #
         if j20 == 1 
            if k20 == 1 
-              MYvev(k20,j20) = V1_1  
+              MYvev[k20,j20] = V1_1  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_1  
+              MYvev[k20,j20] = V2_1  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_1  
+              MYvev[k20,j20] = V3_1  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_1  
+              MYvev[k20,j20] = V4_1  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_1  
+              MYvev[k20,j20] = V5_1  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_1  
+              MYvev[k20,j20] = V6_1  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_1  
+              MYvev[k20,j20] = V7_1  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_1  
+              MYvev[k20,j20] = V8_1  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_1  
+              MYvev[k20,j20] = V9_1  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_1  
+              MYvev[k20,j20] = V10_1  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_1  
+              MYvev[k20,j20] = V11_1  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_1  
+              MYvev[k20,j20] = V12_1  
            endif 
         endif 
 #
 #
         if j20 == 2 
            if k20 == 1 
-              MYvev(k20,j20) = V1_2  
+              MYvev[k20,j20] = V1_2  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_2  
+              MYvev[k20,j20] = V2_2  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_2  
+              MYvev[k20,j20] = V3_2  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_2  
+              MYvev[k20,j20] = V4_2  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_2  
+              MYvev[k20,j20] = V5_2  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_2  
+              MYvev[k20,j20] = V6_2  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_2  
+              MYvev[k20,j20] = V7_2  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_2  
+              MYvev[k20,j20] = V8_2  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_2  
+              MYvev[k20,j20] = V9_2  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_2  
+              MYvev[k20,j20] = V10_2  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_2  
+              MYvev[k20,j20] = V11_2  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_2  
+              MYvev[k20,j20] = V12_2  
            endif 
         endif 
 #
 #
         if j20 == 3 
            if k20 == 1 
-              MYvev(k20,j20) = V1_3  
+              MYvev[k20,j20] = V1_3  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_3  
+              MYvev[k20,j20] = V2_3  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_3  
+              MYvev[k20,j20] = V3_3  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_3  
+              MYvev[k20,j20] = V4_3  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_3  
+              MYvev[k20,j20] = V5_3  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_3  
+              MYvev[k20,j20] = V6_3  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_3  
+              MYvev[k20,j20] = V7_3  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_3  
+              MYvev[k20,j20] = V8_3  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_3  
+              MYvev[k20,j20] = V9_3  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_3  
+              MYvev[k20,j20] = V10_3  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_3  
+              MYvev[k20,j20] = V11_3  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_3  
+              MYvev[k20,j20] = V12_3  
            endif 
         endif 
 #
 #
         if j20 == 4 
            if k20 == 1 
-              MYvev(k20,j20) = V1_4  
+              MYvev[k20,j20] = V1_4  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_4  
+              MYvev[k20,j20] = V2_4  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_4  
+              MYvev[k20,j20] = V3_4  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_4  
+              MYvev[k20,j20] = V4_4  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_4  
+              MYvev[k20,j20] = V5_4  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_4  
+              MYvev[k20,j20] = V6_4  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_4  
+              MYvev[k20,j20] = V7_4  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_4  
+              MYvev[k20,j20] = V8_4  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_4  
+              MYvev[k20,j20] = V9_4  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_4  
+              MYvev[k20,j20] = V10_4  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_4  
+              MYvev[k20,j20] = V11_4  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_4  
+              MYvev[k20,j20] = V12_4  
            endif 
         endif 
 #
 #
         if j20 == 5 
            if k20 == 1 
-              MYvev(k20,j20) = V1_5  
+              MYvev[k20,j20] = V1_5  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_5  
+              MYvev[k20,j20] = V2_5  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_5  
+              MYvev[k20,j20] = V3_5  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_5  
+              MYvev[k20,j20] = V4_5  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_5  
+              MYvev[k20,j20] = V5_5  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_5  
+              MYvev[k20,j20] = V6_5  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_5  
+              MYvev[k20,j20] = V7_5  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_5  
+              MYvev[k20,j20] = V8_5  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_5  
+              MYvev[k20,j20] = V9_5  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_5  
+              MYvev[k20,j20] = V10_5  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_5  
+              MYvev[k20,j20] = V11_5  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_5  
+              MYvev[k20,j20] = V12_5  
            endif 
         endif 
 #
 #
         if j20 == 6 
            if k20 == 1 
-              MYvev(k20,j20) = V1_6  
+              MYvev[k20,j20] = V1_6  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_6  
+              MYvev[k20,j20] = V2_6  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_6  
+              MYvev[k20,j20] = V3_6  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_6  
+              MYvev[k20,j20] = V4_6  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_6  
+              MYvev[k20,j20] = V5_6  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_6  
+              MYvev[k20,j20] = V6_6  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_6  
+              MYvev[k20,j20] = V7_6  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_6  
+              MYvev[k20,j20] = V8_6  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_6  
+              MYvev[k20,j20] = V9_6  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_6  
+              MYvev[k20,j20] = V10_6  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_6  
+              MYvev[k20,j20] = V11_6  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_6  
+              MYvev[k20,j20] = V12_6  
            endif 
         endif 
 #
 #
         if j20 == 7 
            if k20 == 1 
-              MYvev(k20,j20) = V1_7  
+              MYvev[k20,j20] = V1_7  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_7  
+              MYvev[k20,j20] = V2_7  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_7  
+              MYvev[k20,j20] = V3_7  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_7  
+              MYvev[k20,j20] = V4_7  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_7  
+              MYvev[k20,j20] = V5_7  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_7  
+              MYvev[k20,j20] = V6_7  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_7  
+              MYvev[k20,j20] = V7_7  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_7  
+              MYvev[k20,j20] = V8_7  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_7  
+              MYvev[k20,j20] = V9_7  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_7  
+              MYvev[k20,j20] = V10_7  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_7  
+              MYvev[k20,j20] = V11_7  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_7  
+              MYvev[k20,j20] = V12_7  
            endif 
         endif 
 #
 #
         if j20 == 8 
            if k20 == 1 
-              MYvev(k20,j20) = V1_8  
+              MYvev[k20,j20] = V1_8  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_8  
+              MYvev[k20,j20] = V2_8  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_8  
+              MYvev[k20,j20] = V3_8  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_8  
+              MYvev[k20,j20] = V4_8  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_8  
+              MYvev[k20,j20] = V5_8  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_8  
+              MYvev[k20,j20] = V6_8  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_8  
+              MYvev[k20,j20] = V7_8  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_8  
+              MYvev[k20,j20] = V8_8  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_8  
+              MYvev[k20,j20] = V9_8  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_8  
+              MYvev[k20,j20] = V10_8  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_8  
+              MYvev[k20,j20] = V11_8  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_8  
+              MYvev[k20,j20] = V12_8  
            endif 
         endif 
 #
 #
         if j20 == 9 
            if k20 == 1 
-              MYvev(k20,j20) = V1_9  
+              MYvev[k20,j20] = V1_9  
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_9  
+              MYvev[k20,j20] = V2_9  
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_9  
+              MYvev[k20,j20] = V3_9  
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_9  
+              MYvev[k20,j20] = V4_9  
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_9  
+              MYvev[k20,j20] = V5_9  
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_9  
+              MYvev[k20,j20] = V6_9  
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_9  
+              MYvev[k20,j20] = V7_9  
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_9  
+              MYvev[k20,j20] = V8_9  
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_9  
+              MYvev[k20,j20] = V9_9  
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_9  
+              MYvev[k20,j20] = V10_9  
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_9  
+              MYvev[k20,j20] = V11_9  
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_9  
+              MYvev[k20,j20] = V12_9  
            endif 
         endif 
 #
 #
         if j20 == 10
            if k20 == 1 
-              MYvev(k20,j20) = V1_10 
+              MYvev[k20,j20] = V1_10 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_10 
+              MYvev[k20,j20] = V2_10 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_10 
+              MYvev[k20,j20] = V3_10 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_10 
+              MYvev[k20,j20] = V4_10 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_10 
+              MYvev[k20,j20] = V5_10 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_10 
+              MYvev[k20,j20] = V6_10 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_10 
+              MYvev[k20,j20] = V7_10 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_10 
+              MYvev[k20,j20] = V8_10 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_10 
+              MYvev[k20,j20] = V9_10 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_10 
+              MYvev[k20,j20] = V10_10 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_10 
+              MYvev[k20,j20] = V11_10 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_10 
+              MYvev[k20,j20] = V12_10 
            endif 
         endif 
 #
 #
         if j20 == 11
            if k20 == 1 
-              MYvev(k20,j20) = V1_11 
+              MYvev[k20,j20] = V1_11 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_11 
+              MYvev[k20,j20] = V2_11 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_11 
+              MYvev[k20,j20] = V3_11 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_11 
+              MYvev[k20,j20] = V4_11 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_11 
+              MYvev[k20,j20] = V5_11 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_11 
+              MYvev[k20,j20] = V6_11 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_11 
+              MYvev[k20,j20] = V7_11 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_11 
+              MYvev[k20,j20] = V8_11 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_11 
+              MYvev[k20,j20] = V9_11 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_11 
+              MYvev[k20,j20] = V10_11 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_11 
+              MYvev[k20,j20] = V11_11 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_11 
+              MYvev[k20,j20] = V12_11 
            endif 
         endif 
 #
 #
         if j20 == 12
            if k20 == 1 
-              MYvev(k20,j20) = V1_12 
+              MYvev[k20,j20] = V1_12 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_12 
+              MYvev[k20,j20] = V2_12 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_12 
+              MYvev[k20,j20] = V3_12 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_12 
+              MYvev[k20,j20] = V4_12 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_12 
+              MYvev[k20,j20] = V5_12 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_12 
+              MYvev[k20,j20] = V6_12 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_12 
+              MYvev[k20,j20] = V7_12 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_12 
+              MYvev[k20,j20] = V8_12 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_12 
+              MYvev[k20,j20] = V9_12 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_12 
+              MYvev[k20,j20] = V10_12 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_12 
+              MYvev[k20,j20] = V11_12 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_12 
+              MYvev[k20,j20] = V12_12 
            endif 
         endif 
 #
 #
         if j20 == 13
            if k20 == 1 
-              MYvev(k20,j20) = V1_13 
+              MYvev[k20,j20] = V1_13 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_13 
+              MYvev[k20,j20] = V2_13 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_13 
+              MYvev[k20,j20] = V3_13 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_13 
+              MYvev[k20,j20] = V4_13 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_13 
+              MYvev[k20,j20] = V5_13 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_13 
+              MYvev[k20,j20] = V6_13 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_13 
+              MYvev[k20,j20] = V7_13 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_13 
+              MYvev[k20,j20] = V8_13 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_13 
+              MYvev[k20,j20] = V9_13 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_13 
+              MYvev[k20,j20] = V10_13 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_13 
+              MYvev[k20,j20] = V11_13 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_13 
+              MYvev[k20,j20] = V12_13 
            endif 
         endif 
 #
 #
         if j20 == 14
            if k20 == 1 
-              MYvev(k20,j20) = V1_14 
+              MYvev[k20,j20] = V1_14 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_14 
+              MYvev[k20,j20] = V2_14 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_14 
+              MYvev[k20,j20] = V3_14 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_14 
+              MYvev[k20,j20] = V4_14 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_14 
+              MYvev[k20,j20] = V5_14 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_14 
+              MYvev[k20,j20] = V6_14 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_14 
+              MYvev[k20,j20] = V7_14 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_14 
+              MYvev[k20,j20] = V8_14 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_14 
+              MYvev[k20,j20] = V9_14 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_14 
+              MYvev[k20,j20] = V10_14 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_14 
+              MYvev[k20,j20] = V11_14 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_14 
+              MYvev[k20,j20] = V12_14 
            endif 
         endif 
 #
 #
         if j20 == 15
            if k20 == 1 
-              MYvev(k20,j20) = V1_15 
+              MYvev[k20,j20] = V1_15 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_15 
+              MYvev[k20,j20] = V2_15 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_15 
+              MYvev[k20,j20] = V3_15 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_15 
+              MYvev[k20,j20] = V4_15 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_15 
+              MYvev[k20,j20] = V5_15 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_15 
+              MYvev[k20,j20] = V6_15 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_15 
+              MYvev[k20,j20] = V7_15 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_15 
+              MYvev[k20,j20] = V8_15 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_15 
+              MYvev[k20,j20] = V9_15 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_15 
+              MYvev[k20,j20] = V10_15 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_15 
+              MYvev[k20,j20] = V11_15 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_15 
+              MYvev[k20,j20] = V12_15 
            endif 
         endif 
 #
 #
         if j20 == 16
            if k20 == 1 
-              MYvev(k20,j20) = V1_16 
+              MYvev[k20,j20] = V1_16 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_16 
+              MYvev[k20,j20] = V2_16 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_16 
+              MYvev[k20,j20] = V3_16 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_16 
+              MYvev[k20,j20] = V4_16 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_16 
+              MYvev[k20,j20] = V5_16 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_16 
+              MYvev[k20,j20] = V6_16 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_16 
+              MYvev[k20,j20] = V7_16 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_16 
+              MYvev[k20,j20] = V8_16 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_16 
+              MYvev[k20,j20] = V9_16 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_16 
+              MYvev[k20,j20] = V10_16 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_16 
+              MYvev[k20,j20] = V11_16 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_16 
+              MYvev[k20,j20] = V12_16 
            endif 
         endif 
 #
 #
         if j20 == 17
            if k20 == 1 
-              MYvev(k20,j20) = V1_17 
+              MYvev[k20,j20] = V1_17 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_17 
+              MYvev[k20,j20] = V2_17 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_17 
+              MYvev[k20,j20] = V3_17 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_17 
+              MYvev[k20,j20] = V4_17 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_17 
+              MYvev[k20,j20] = V5_17 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_17 
+              MYvev[k20,j20] = V6_17 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_17 
+              MYvev[k20,j20] = V7_17 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_17 
+              MYvev[k20,j20] = V8_17 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_17 
+              MYvev[k20,j20] = V9_17 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_17 
+              MYvev[k20,j20] = V10_17 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_17 
+              MYvev[k20,j20] = V11_17 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_17 
+              MYvev[k20,j20] = V12_17 
            endif 
         endif 
 #
 #
         if j20 == 18
            if k20 == 1 
-              MYvev(k20,j20) = V1_18 
+              MYvev[k20,j20] = V1_18 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_18 
+              MYvev[k20,j20] = V2_18 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_18 
+              MYvev[k20,j20] = V3_18 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_18 
+              MYvev[k20,j20] = V4_18 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_18 
+              MYvev[k20,j20] = V5_18 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_18 
+              MYvev[k20,j20] = V6_18 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_18 
+              MYvev[k20,j20] = V7_18 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_18 
+              MYvev[k20,j20] = V8_18 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_18 
+              MYvev[k20,j20] = V9_18 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_18 
+              MYvev[k20,j20] = V10_18 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_18 
+              MYvev[k20,j20] = V11_18 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_18 
+              MYvev[k20,j20] = V12_18 
            endif 
         endif 
 #
 #
         if j20 == 19
            if k20 == 1 
-              MYvev(k20,j20) = V1_19 
+              MYvev[k20,j20] = V1_19 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_19 
+              MYvev[k20,j20] = V2_19 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_19 
+              MYvev[k20,j20] = V3_19 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_19 
+              MYvev[k20,j20] = V4_19 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_19 
+              MYvev[k20,j20] = V5_19 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_19 
+              MYvev[k20,j20] = V6_19 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_19 
+              MYvev[k20,j20] = V7_19 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_19 
+              MYvev[k20,j20] = V8_19 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_19 
+              MYvev[k20,j20] = V9_19 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_19 
+              MYvev[k20,j20] = V10_19 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_19 
+              MYvev[k20,j20] = V11_19 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_19 
+              MYvev[k20,j20] = V12_19 
            endif 
         endif 
 #
 #
         if j20 == 20
            if k20 == 1 
-              MYvev(k20,j20) = V1_20 
+              MYvev[k20,j20] = V1_20 
            endif 
            if k20 == 2 
-              MYvev(k20,j20) = V2_20 
+              MYvev[k20,j20] = V2_20 
            endif 
            if k20 == 3 
-              MYvev(k20,j20) = V3_20 
+              MYvev[k20,j20] = V3_20 
            endif 
            if k20 == 4 
-              MYvev(k20,j20) = V4_20 
+              MYvev[k20,j20] = V4_20 
            endif 
            if k20 == 5 
-              MYvev(k20,j20) = V5_20 
+              MYvev[k20,j20] = V5_20 
            endif 
            if k20 == 6 
-              MYvev(k20,j20) = V6_20 
+              MYvev[k20,j20] = V6_20 
            endif 
            if k20 == 7 
-              MYvev(k20,j20) = V7_20 
+              MYvev[k20,j20] = V7_20 
            endif 
            if k20 == 8 
-              MYvev(k20,j20) = V8_20 
+              MYvev[k20,j20] = V8_20 
            endif 
            if k20 == 9 
-              MYvev(k20,j20) = V9_20 
+              MYvev[k20,j20] = V9_20 
            endif 
            if k20 == 10
-              MYvev(k20,j20) = V10_20 
+              MYvev[k20,j20] = V10_20 
            endif 
            if k20 == 11
-              MYvev(k20,j20) = V11_20 
+              MYvev[k20,j20] = V11_20 
            endif 
            if k20 == 12
-              MYvev(k20,j20) = V12_20 
+              MYvev[k20,j20] = V12_20 
            endif 
         endif 
 #
@@ -22154,23 +22154,23 @@ import "aces_defs.sialx"
       PARDO a, i
             DO j20
                if j20 <= 12
-                  tai(a,i) = 0.0
+                  tai[a,i] = 0.0
                   DO k21
                      if k21 <= 20
-                        GET         VC1A(a,i,k21)
-                        t1ai(a,i) = VC1A(a,i,k21)
+                        GET         VC1A[a,i,k21]
+                        t1ai[a,i] = VC1A[a,i,k21]
                         do k20
                            if k20 == k21
-                              t20(j20,k20)      = MYvev(j20,k20)
+                              t20[j20,k20]      = MYvev[j20,k20]
                               execute return_sval t20 fact
                            endif
                         enddo k20
-                        t1ai(a,i)*= fact
-                        tai(a,i) += t1ai(a,i)
+                        t1ai[a,i]*= fact
+                        tai[a,i] += t1ai[a,i]
                      endif # k21 <= 20
                   ENDDO k21
-                  t2aiS(a,i,j20)       = tai(a,i)
-                  PUT VTEMP1A(a,i,j20) = t2aiS(a,i,j20)
+                  t2aiS[a,i,j20]       = tai[a,i]
+                  PUT VTEMP1A[a,i,j20] = t2aiS[a,i,j20]
                endif # j20 <= 12
             ENDDO j20
       ENDPARDO a, i
@@ -22183,12 +22183,12 @@ import "aces_defs.sialx"
       PARDO a, i
             DO k20
                if k20 <= 12
-                  GET        VTEMP1A(a,i,k20)
-                  tai(a,i) = VTEMP1A(a,i,k20)
+                  GET        VTEMP1A[a,i,k20]
+                  tai[a,i] = VTEMP1A[a,i,k20]
                   do k21
                      if k21 == k20
-                        tais(a,i,k21)         = tai(a,i)
-                        PUT VC1A(a,i,k21) = taiS(a,i,k21)
+                        tais[a,i,k21]         = tai[a,i]
+                        PUT VC1A[a,i,k21] = taiS[a,i,k21]
                      endif # k21 == k20
                   enddo k21
                endif # k20 <= 12
@@ -22208,17 +22208,17 @@ import "aces_defs.sialx"
       PARDO a, i
             DO k20
             IF k20 == spdim
-               GET         VCH1A(a,i,k20)
-               t1ai(a,i) = VCH1A(a,i,k20)
+               GET         VCH1A[a,i,k20]
+               t1ai[a,i] = VCH1A[a,i,k20]
                DO k21
                if k21 <= spdim
                   DO j20
                      IF j20 == k21
-                        GET                VC1A(a,i,k21)
-                        tai(a,i)         = VC1A(a,i,k21)
-                        etemp            = tai(a,i)*t1ai(a,i)
-                        t20(j20,k20)     = etemp
-                        Lax(j20,k20) += t20(j20,k20)
+                        GET                VC1A[a,i,k21]
+                        tai[a,i]         = VC1A[a,i,k21]
+                        etemp            = tai[a,i]*t1ai[a,i]
+                        t20[j20,k20]     = etemp
+                        Lax[j20,k20] += t20[j20,k20]
                      endif # j20 == k21
                   ENDDO j20
                endif
@@ -22232,15 +22232,15 @@ import "aces_defs.sialx"
             IF k21 == spdim
                   DO j20
                      IF j20 == k21
-                        GET        VC1A(a,i,k21)
-                        tai(a,i) = VC1A(a,i,k21)
+                        GET        VC1A[a,i,k21]
+                        tai[a,i] = VC1A[a,i,k21]
                         DO k20
                           if k20 < spdim
-                             GET                VCH1A(a,i,k20)
-                             t1ai(a,i)        = VCH1A(a,i,k20)
-                             etemp            = tai(a,i)*t1ai(a,i)
-                             t20(j20,k20)     = etemp
-                             Lax(j20,k20) += t20(j20,k20)
+                             GET                VCH1A[a,i,k20]
+                             t1ai[a,i]        = VCH1A[a,i,k20]
+                             etemp            = tai[a,i]*t1ai[a,i]
+                             t20[j20,k20]     = etemp
+                             Lax[j20,k20] += t20[j20,k20]
                           endif
                         ENDDO k20
                      endif # j20 == k21
@@ -22271,15 +22271,15 @@ import "aces_defs.sialx"
       if spdim < 13
 #
       create ax
-      allocate Lax(*,*) 
+      allocate Lax[*,*] 
       sip_barrier
       CALL ConstrA_a
       CALL ConstrA_b
       sip_barrier
       DO kindex20 
       DO jindex20 
-           #t20(jindex20,kindex20) = Lax(jindex20,kindex20) 
-            PUT ax(jindex20,kindex20) += Lax(jindex20,kindex20)
+           #t20[jindex20,kindex20] = Lax[jindex20,kindex20] 
+            PUT ax[jindex20,kindex20] += Lax[jindex20,kindex20]
       ENDDO jindex20
       ENDDO kindex20
 
@@ -22289,14 +22289,14 @@ import "aces_defs.sialx"
        DO jindex20
           if kindex20 == spdim
           if jindex20 <= spdim
-             GET                         ax(jindex20,kindex20)
-             sMAT20(jindex20,kindex20) = ax(jindex20,kindex20)
+             GET                         ax[jindex20,kindex20]
+             sMAT20[jindex20,kindex20] = ax[jindex20,kindex20]
           endif
           endif
           if kindex20 <= spdim
           if jindex20 == spdim
-             GET                         ax(jindex20,kindex20)
-             sMAT20(jindex20,kindex20) = ax(jindex20,kindex20)
+             GET                         ax[jindex20,kindex20]
+             sMAT20[jindex20,kindex20] = ax[jindex20,kindex20]
           endif
           endif
        ENDDO jindex20
@@ -22310,10 +22310,10 @@ import "aces_defs.sialx"
           DO jindex2
           DO jindex20
              if jindex20 == jindex2
-                t20(jindex20,kindex20)  = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]  = smat20[jindex20,kindex20]
                 execute return_sval   t20 etemp3
-                atemp2(jindex2,kindex2) = etemp3
-                sMAT2(jindex2,kindex2)  = atemp2(jindex2,kindex2)
+                atemp2[jindex2,kindex2] = etemp3
+                sMAT2[jindex2,kindex2]  = atemp2[jindex2,kindex2]
              endif
           ENDDO jindex20
           ENDDO jindex2
@@ -22329,10 +22329,10 @@ import "aces_defs.sialx"
           DO jindex3
           DO jindex20
              if jindex20 == jindex3
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp3(jindex3,kindex3)    = etemp3
-                sMAT3(jindex3,kindex3) = atemp3(jindex3,kindex3)
+                atemp3[jindex3,kindex3]    = etemp3
+                sMAT3[jindex3,kindex3] = atemp3[jindex3,kindex3]
              endif
           ENDDO jindex20
           ENDDO jindex3
@@ -22348,10 +22348,10 @@ import "aces_defs.sialx"
           DO jindex4
           DO jindex20
              if jindex20 == jindex4
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp4(jindex4,kindex4)    = etemp3
-                sMAT4(jindex4,kindex4) = atemp4(jindex4,kindex4)
+                atemp4[jindex4,kindex4]    = etemp3
+                sMAT4[jindex4,kindex4] = atemp4[jindex4,kindex4]
              endif
           ENDDO jindex20
           ENDDO jindex4
@@ -22367,10 +22367,10 @@ import "aces_defs.sialx"
           DO jindex5
           DO jindex20
              if jindex20 == jindex5
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp5(jindex5,kindex5)    = etemp3
-                sMAT5(jindex5,kindex5) = atemp5(jindex5,kindex5)
+                atemp5[jindex5,kindex5]    = etemp3
+                sMAT5[jindex5,kindex5] = atemp5[jindex5,kindex5]
              endif
           ENDDO jindex20
           ENDDO jindex5
@@ -22386,10 +22386,10 @@ import "aces_defs.sialx"
           DO jindex6
           DO jindex20
              if jindex20 == jindex6
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp6(jindex6,kindex6)    = etemp3
-                sMAT6(jindex6,kindex6) = atemp6(jindex6,kindex6)
+                atemp6[jindex6,kindex6]    = etemp3
+                sMAT6[jindex6,kindex6] = atemp6[jindex6,kindex6]
              endif
           ENDDO jindex20
           ENDDO jindex6
@@ -22405,10 +22405,10 @@ import "aces_defs.sialx"
           DO jindex7
           DO jindex20
              if jindex20 == jindex7
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp7(jindex7,kindex7)    = etemp3
-                sMAT7(jindex7,kindex7) = atemp7(jindex7,kindex7)
+                atemp7[jindex7,kindex7]    = etemp3
+                sMAT7[jindex7,kindex7] = atemp7[jindex7,kindex7]
              endif
           ENDDO jindex20
           ENDDO jindex7
@@ -22424,10 +22424,10 @@ import "aces_defs.sialx"
           DO jindex8
           DO jindex20
              if jindex20 == jindex8
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp8(jindex8,kindex8)    = etemp3
-                sMAT8(jindex8,kindex8) = atemp8(jindex8,kindex8)
+                atemp8[jindex8,kindex8]    = etemp3
+                sMAT8[jindex8,kindex8] = atemp8[jindex8,kindex8]
              endif
           ENDDO jindex20
           ENDDO jindex8
@@ -22443,10 +22443,10 @@ import "aces_defs.sialx"
           DO jindex9
           DO jindex20
              if jindex20 == jindex9
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp9(jindex9,kindex9)    = etemp3
-                sMAT9(jindex9,kindex9) = atemp9(jindex9,kindex9)
+                atemp9[jindex9,kindex9]    = etemp3
+                sMAT9[jindex9,kindex9] = atemp9[jindex9,kindex9]
              endif
           ENDDO jindex20
           ENDDO jindex9
@@ -22462,10 +22462,10 @@ import "aces_defs.sialx"
           DO jindex10
           DO jindex20
              if jindex20 == jindex10
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp10(jindex10,kindex10)    = etemp3
-                sMAT10(jindex10,kindex10) = atemp10(jindex10,kindex10)
+                atemp10[jindex10,kindex10]    = etemp3
+                sMAT10[jindex10,kindex10] = atemp10[jindex10,kindex10]
              endif
           ENDDO jindex20
           ENDDO jindex10
@@ -22481,10 +22481,10 @@ import "aces_defs.sialx"
           DO jindex11
           DO jindex20
              if jindex20 == jindex11
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp11(jindex11,kindex11)    = etemp3
-                sMAT11(jindex11,kindex11) = atemp11(jindex11,kindex11)
+                atemp11[jindex11,kindex11]    = etemp3
+                sMAT11[jindex11,kindex11] = atemp11[jindex11,kindex11]
              endif
           ENDDO jindex20
           ENDDO jindex11
@@ -22500,10 +22500,10 @@ import "aces_defs.sialx"
           DO jindex12
           DO jindex20
              if jindex20 == jindex12
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp12(jindex12,kindex12)    = etemp3
-                sMAT12(jindex12,kindex12) = atemp12(jindex12,kindex12)
+                atemp12[jindex12,kindex12]    = etemp3
+                sMAT12[jindex12,kindex12] = atemp12[jindex12,kindex12]
              endif
           ENDDO jindex20
           ENDDO jindex12
@@ -22513,7 +22513,7 @@ import "aces_defs.sialx"
        endif
 #
       sip_barrier
-      deallocate Lax(*,*) 
+      deallocate Lax[*,*] 
       delete ax
 #
       endif # spdim < 13
@@ -22530,15 +22530,15 @@ import "aces_defs.sialx"
 #     ------------
 #
       create ax
-      allocate Lax(*,*) 
+      allocate Lax[*,*] 
       sip_barrier
       CALL ConstrA_a
       CALL ConstrA_b 
       sip_barrier
       DO kindex20 
       DO jindex20 
-           #t20(jindex20,kindex20) = Lax(jindex20,kindex20) 
-            PUT ax(jindex20,kindex20) += Lax(jindex20,kindex20)
+           #t20[jindex20,kindex20] = Lax[jindex20,kindex20] 
+            PUT ax[jindex20,kindex20] += Lax[jindex20,kindex20]
       ENDDO jindex20
       ENDDO kindex20
 
@@ -22548,14 +22548,14 @@ import "aces_defs.sialx"
        DO jindex20
           if kindex20 == spdim
           if jindex20 <= spdim
-             GET                         ax(jindex20,kindex20)
-             sMAT20(jindex20,kindex20) = ax(jindex20,kindex20)
+             GET                         ax[jindex20,kindex20]
+             sMAT20[jindex20,kindex20] = ax[jindex20,kindex20]
           endif
           endif
           if kindex20 <= spdim
           if jindex20 == spdim
-             GET                         ax(jindex20,kindex20)
-             sMAT20(jindex20,kindex20) = ax(jindex20,kindex20)
+             GET                         ax[jindex20,kindex20]
+             sMAT20[jindex20,kindex20] = ax[jindex20,kindex20]
           endif
           endif
        ENDDO jindex20
@@ -22569,10 +22569,10 @@ import "aces_defs.sialx"
           DO jindex2
              if kindex20 == kindex2
              if jindex20 == jindex2
-                t20(jindex20,kindex20)  = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]  = smat20[jindex20,kindex20]
                 execute return_sval   t20 etemp3
-                atemp2(jindex2,kindex2) = etemp3
-                sMAT2(jindex2,kindex2)  = atemp2(jindex2,kindex2)
+                atemp2[jindex2,kindex2] = etemp3
+                sMAT2[jindex2,kindex2]  = atemp2[jindex2,kindex2]
              endif
              endif
           ENDDO jindex2
@@ -22588,10 +22588,10 @@ import "aces_defs.sialx"
           DO jindex3
              if kindex20 == kindex3
              if jindex20 == jindex3
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp3(jindex3,kindex3)    = etemp3
-                sMAT3(jindex3,kindex3) = atemp3(jindex3,kindex3)
+                atemp3[jindex3,kindex3]    = etemp3
+                sMAT3[jindex3,kindex3] = atemp3[jindex3,kindex3]
              endif
              endif
           ENDDO jindex3
@@ -22607,10 +22607,10 @@ import "aces_defs.sialx"
           DO jindex4
              if kindex20 == kindex4
              if jindex20 == jindex4
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp4(jindex4,kindex4)    = etemp3
-                sMAT4(jindex4,kindex4) = atemp4(jindex4,kindex4)
+                atemp4[jindex4,kindex4]    = etemp3
+                sMAT4[jindex4,kindex4] = atemp4[jindex4,kindex4]
              endif
              endif
           ENDDO jindex4
@@ -22626,10 +22626,10 @@ import "aces_defs.sialx"
           DO jindex5
              if kindex20 == kindex5
              if jindex20 == jindex5
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp5(jindex5,kindex5)    = etemp3
-                sMAT5(jindex5,kindex5) = atemp5(jindex5,kindex5)
+                atemp5[jindex5,kindex5]    = etemp3
+                sMAT5[jindex5,kindex5] = atemp5[jindex5,kindex5]
              endif
              endif
           ENDDO jindex5
@@ -22645,10 +22645,10 @@ import "aces_defs.sialx"
           DO jindex6
              if kindex20 == kindex6
              if jindex20 == jindex6
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp6(jindex6,kindex6)    = etemp3
-                sMAT6(jindex6,kindex6) = atemp6(jindex6,kindex6)
+                atemp6[jindex6,kindex6]    = etemp3
+                sMAT6[jindex6,kindex6] = atemp6[jindex6,kindex6]
              endif
              endif
           ENDDO jindex6
@@ -22664,10 +22664,10 @@ import "aces_defs.sialx"
           DO jindex7
              if kindex20 == kindex7
              if jindex20 == jindex7
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp7(jindex7,kindex7)    = etemp3
-                sMAT7(jindex7,kindex7) = atemp7(jindex7,kindex7)
+                atemp7[jindex7,kindex7]    = etemp3
+                sMAT7[jindex7,kindex7] = atemp7[jindex7,kindex7]
              endif
              endif
           ENDDO jindex7
@@ -22683,10 +22683,10 @@ import "aces_defs.sialx"
           DO jindex8
              if kindex20 == kindex8
              if jindex20 == jindex8
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp8(jindex8,kindex8)    = etemp3
-                sMAT8(jindex8,kindex8) = atemp8(jindex8,kindex8)
+                atemp8[jindex8,kindex8]    = etemp3
+                sMAT8[jindex8,kindex8] = atemp8[jindex8,kindex8]
              endif
              endif
           ENDDO jindex8
@@ -22702,10 +22702,10 @@ import "aces_defs.sialx"
           DO jindex9
              if kindex20 == kindex9
              if jindex20 == jindex9
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp9(jindex9,kindex9)    = etemp3
-                sMAT9(jindex9,kindex9) = atemp9(jindex9,kindex9)
+                atemp9[jindex9,kindex9]    = etemp3
+                sMAT9[jindex9,kindex9] = atemp9[jindex9,kindex9]
              endif
              endif
           ENDDO jindex9
@@ -22721,10 +22721,10 @@ import "aces_defs.sialx"
           DO jindex10
              if kindex20 == kindex10
              if jindex20 == jindex10
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp10(jindex10,kindex10)    = etemp3
-                sMAT10(jindex10,kindex10) = atemp10(jindex10,kindex10)
+                atemp10[jindex10,kindex10]    = etemp3
+                sMAT10[jindex10,kindex10] = atemp10[jindex10,kindex10]
              endif
              endif
           ENDDO jindex10
@@ -22740,10 +22740,10 @@ import "aces_defs.sialx"
           DO jindex11
              if kindex20 == kindex11
              if jindex20 == jindex11
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp11(jindex11,kindex11)    = etemp3
-                sMAT11(jindex11,kindex11) = atemp11(jindex11,kindex11)
+                atemp11[jindex11,kindex11]    = etemp3
+                sMAT11[jindex11,kindex11] = atemp11[jindex11,kindex11]
              endif
              endif
           ENDDO jindex11
@@ -22759,10 +22759,10 @@ import "aces_defs.sialx"
           DO jindex12
              if kindex20 == kindex12
              if jindex20 == jindex12
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp12(jindex12,kindex12)    = etemp3
-                sMAT12(jindex12,kindex12) = atemp12(jindex12,kindex12)
+                atemp12[jindex12,kindex12]    = etemp3
+                sMAT12[jindex12,kindex12] = atemp12[jindex12,kindex12]
              endif
              endif
           ENDDO jindex12
@@ -22778,10 +22778,10 @@ import "aces_defs.sialx"
           DO jindex13
              if kindex20 == kindex13
              if jindex20 == jindex13
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp13(jindex13,kindex13)    = etemp3
-                sMAT13(jindex13,kindex13) = atemp13(jindex13,kindex13)
+                atemp13[jindex13,kindex13]    = etemp3
+                sMAT13[jindex13,kindex13] = atemp13[jindex13,kindex13]
              endif
              endif
           ENDDO jindex13
@@ -22797,10 +22797,10 @@ import "aces_defs.sialx"
           DO jindex14
              if kindex20 == kindex14
              if jindex20 == jindex14
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp14(jindex14,kindex14)    = etemp3
-                sMAT14(jindex14,kindex14) = atemp14(jindex14,kindex14)
+                atemp14[jindex14,kindex14]    = etemp3
+                sMAT14[jindex14,kindex14] = atemp14[jindex14,kindex14]
              endif
              endif
           ENDDO jindex14
@@ -22816,10 +22816,10 @@ import "aces_defs.sialx"
           DO jindex15
              if kindex20 == kindex15
              if jindex20 == jindex15
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp15(jindex15,kindex15)    = etemp3
-                sMAT15(jindex15,kindex15) = atemp15(jindex15,kindex15)
+                atemp15[jindex15,kindex15]    = etemp3
+                sMAT15[jindex15,kindex15] = atemp15[jindex15,kindex15]
              endif
              endif
           ENDDO jindex15
@@ -22835,10 +22835,10 @@ import "aces_defs.sialx"
           DO jindex16
              if kindex20 == kindex16
              if jindex20 == jindex16
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp16(jindex16,kindex16)    = etemp3
-                sMAT16(jindex16,kindex16) = atemp16(jindex16,kindex16)
+                atemp16[jindex16,kindex16]    = etemp3
+                sMAT16[jindex16,kindex16] = atemp16[jindex16,kindex16]
              endif
              endif
           ENDDO jindex16
@@ -22854,10 +22854,10 @@ import "aces_defs.sialx"
           DO jindex17
              if kindex20 == kindex17
              if jindex20 == jindex17
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp17(jindex17,kindex17)    = etemp3
-                sMAT17(jindex17,kindex17) = atemp17(jindex17,kindex17)
+                atemp17[jindex17,kindex17]    = etemp3
+                sMAT17[jindex17,kindex17] = atemp17[jindex17,kindex17]
              endif
              endif
           ENDDO jindex17
@@ -22873,10 +22873,10 @@ import "aces_defs.sialx"
           DO jindex18
              if kindex20 == kindex18
              if jindex20 == jindex18
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp18(jindex18,kindex18)    = etemp3
-                sMAT18(jindex18,kindex18) = atemp18(jindex18,kindex18)
+                atemp18[jindex18,kindex18]    = etemp3
+                sMAT18[jindex18,kindex18] = atemp18[jindex18,kindex18]
              endif
              endif
           ENDDO jindex18
@@ -22892,10 +22892,10 @@ import "aces_defs.sialx"
           DO jindex19
              if kindex20 == kindex19
              if jindex20 == jindex19
-                t20(jindex20,kindex20)     = smat20(jindex20,kindex20)
+                t20[jindex20,kindex20]     = smat20[jindex20,kindex20]
                 execute return_sval    t20 etemp3
-                atemp19(jindex19,kindex19)    = etemp3
-                sMAT19(jindex19,kindex19) = atemp19(jindex19,kindex19)
+                atemp19[jindex19,kindex19]    = etemp3
+                sMAT19[jindex19,kindex19] = atemp19[jindex19,kindex19]
              endif
              endif
           ENDDO jindex19
@@ -22905,7 +22905,7 @@ import "aces_defs.sialx"
        endif
 #
       sip_barrier
-      deallocate Lax(*,*) 
+      deallocate Lax[*,*] 
       delete ax
 #
      ENDPROC Aconstr
@@ -22919,19 +22919,19 @@ import "aces_defs.sialx"
       PARDO a, i
             DO j20
                if j20 <= 12
-                  tai(a,i) = 0.0
+                  tai[a,i] = 0.0
                   DO k20
-                     GET                  VCH1A(a,i,k20)
-                     t1ai(a,i)          = VCH1A(a,i,k20)
+                     GET                  VCH1A[a,i,k20]
+                     t1ai[a,i]          = VCH1A[a,i,k20]
 
-                     t20(j20,k20)       = MYvev(j20,k20)
+                     t20[j20,k20]       = MYvev[j20,k20]
                      execute return_sval t20 fact
 
-                     t1ai(a,i)         *= fact
-                     tai(a,i)          += t1ai(a,i)
+                     t1ai[a,i]         *= fact
+                     tai[a,i]          += t1ai[a,i]
                   ENDDO k20
-                  t2aiS(a,i,j20)       = tai(a,i)
-                  PUT VTEMP1A(a,i,j20) = t2aiS(a,i,j20)
+                  t2aiS[a,i,j20]       = tai[a,i]
+                  PUT VTEMP1A[a,i,j20] = t2aiS[a,i,j20]
                endif # j20 <= 12
             ENDDO j20
       ENDPARDO a, i
@@ -22943,10 +22943,10 @@ import "aces_defs.sialx"
       PARDO a, i
             DO k20
                if k20 <= 12
-                  GET                  VTEMP1A(a,i,k20)
-                  tai(a,i)           = VTEMP1A(a,i,k20)
-                  t2ais(a,i,k20)     = tai(a,i)
-                  PUT VCH1A(a,i,k20) = t2aiS(a,i,k20)
+                  GET                  VTEMP1A[a,i,k20]
+                  tai[a,i]           = VTEMP1A[a,i,k20]
+                  t2ais[a,i,k20]     = tai[a,i]
+                  PUT VCH1A[a,i,k20] = t2aiS[a,i,k20]
                endif # k20 <= 12
             ENDDO k20
       ENDPARDO a, i
@@ -23925,52 +23925,52 @@ import "aces_defs.sialx"
 #
       PARDO a, i
       if iroot == 2.0
-      get VSTART1A2(a,i)
-      tai(a,i)=VSTART1A2(a,i)
+      get VSTART1A2[a,i]
+      tai[a,i]=VSTART1A2[a,i]
       endif
       if iroot == 3.0
-      get VSTART1A3(a,i)
-      tai(a,i)=VSTART1A3(a,i)
+      get VSTART1A3[a,i]
+      tai[a,i]=VSTART1A3[a,i]
       endif
       if iroot == 4.0
-      get VSTART1A4(a,i)
-      tai(a,i)=VSTART1A4(a,i)
+      get VSTART1A4[a,i]
+      tai[a,i]=VSTART1A4[a,i]
       endif
       if iroot == 5.0
-      get VSTART1A5(a,i)
-      tai(a,i)=VSTART1A5(a,i)
+      get VSTART1A5[a,i]
+      tai[a,i]=VSTART1A5[a,i]
       endif
       if iroot == 6.0
-      get VSTART1A6(a,i)
-      tai(a,i)=VSTART1A6(a,i)
+      get VSTART1A6[a,i]
+      tai[a,i]=VSTART1A6[a,i]
       endif
       if iroot == 7.0
-      get VSTART1A7(a,i)
-      tai(a,i)=VSTART1A7(a,i)
+      get VSTART1A7[a,i]
+      tai[a,i]=VSTART1A7[a,i]
       endif
       if iroot == 8.0
-      get VSTART1A8(a,i)
-      tai(a,i)=VSTART1A8(a,i)
+      get VSTART1A8[a,i]
+      tai[a,i]=VSTART1A8[a,i]
       endif
       if iroot == 9.0
-      get VSTART1A9(a,i)
-      tai(a,i)=VSTART1A9(a,i)
+      get VSTART1A9[a,i]
+      tai[a,i]=VSTART1A9[a,i]
       endif
       if iroot == 10.0
-      get VSTART1A10(a,i)
-      tai(a,i)=VSTART1A10(a,i)
+      get VSTART1A10[a,i]
+      tai[a,i]=VSTART1A10[a,i]
       endif
       if iroot == 11.0
-      get VSTART1A11(a,i)
-      tai(a,i)=VSTART1A11(a,i)
+      get VSTART1A11[a,i]
+      tai[a,i]=VSTART1A11[a,i]
       endif
       if iroot == 12.0
-      get VSTART1A12(a,i)
-      tai(a,i)=VSTART1A12(a,i)
+      get VSTART1A12[a,i]
+      tai[a,i]=VSTART1A12[a,i]
       endif
 #
-      PUT VCHACT1A(a,i)=tai(a,i)
-      PUT VCE1A(a,i)=tai(a,i)
+      PUT VCHACT1A[a,i]=tai[a,i]
+      PUT VCE1A[a,i]=tai[a,i]
 #
       ENDPARDO a, i
 #
@@ -23999,51 +23999,51 @@ import "aces_defs.sialx"
 #
       PARDO a, i
       if iroot == 2.0
-      get VSTART1A2(a,i)
-      tai(a,i)=VSTART1A2(a,i)
+      get VSTART1A2[a,i]
+      tai[a,i]=VSTART1A2[a,i]
       endif
       if iroot == 3.0
-      get VSTART1A3(a,i)
-      tai(a,i)=VSTART1A3(a,i)
+      get VSTART1A3[a,i]
+      tai[a,i]=VSTART1A3[a,i]
       endif
       if iroot == 4.0
-      get VSTART1A4(a,i)
-      tai(a,i)=VSTART1A4(a,i)
+      get VSTART1A4[a,i]
+      tai[a,i]=VSTART1A4[a,i]
       endif
       if iroot == 5.0
-      get VSTART1A5(a,i)
-      tai(a,i)=VSTART1A5(a,i)
+      get VSTART1A5[a,i]
+      tai[a,i]=VSTART1A5[a,i]
       endif
       if iroot == 6.0
-      get VSTART1A6(a,i)
-      tai(a,i)=VSTART1A6(a,i)
+      get VSTART1A6[a,i]
+      tai[a,i]=VSTART1A6[a,i]
       endif
       if iroot == 7.0
-      get VSTART1A7(a,i)
-      tai(a,i)=VSTART1A7(a,i)
+      get VSTART1A7[a,i]
+      tai[a,i]=VSTART1A7[a,i]
       endif
       if iroot == 8.0
-      get VSTART1A8(a,i)
-      tai(a,i)=VSTART1A8(a,i)
+      get VSTART1A8[a,i]
+      tai[a,i]=VSTART1A8[a,i]
       endif
       if iroot == 9.0
-      get VSTART1A9(a,i)
-      tai(a,i)=VSTART1A9(a,i)
+      get VSTART1A9[a,i]
+      tai[a,i]=VSTART1A9[a,i]
       endif
       if iroot == 10.0
-      get VSTART1A10(a,i)
-      tai(a,i)=VSTART1A10(a,i)
+      get VSTART1A10[a,i]
+      tai[a,i]=VSTART1A10[a,i]
       endif
       if iroot == 11.0
-      get VSTART1A11(a,i)
-      tai(a,i)=VSTART1A11(a,i)
+      get VSTART1A11[a,i]
+      tai[a,i]=VSTART1A11[a,i]
       endif
       if iroot == 12.0
-      get VSTART1A12(a,i)
-      tai(a,i)=VSTART1A12(a,i)
+      get VSTART1A12[a,i]
+      tai[a,i]=VSTART1A12[a,i]
       endif
 #
-      PUT VCACT1A(a,i)=tai(a,i)
+      PUT VCACT1A[a,i]=tai[a,i]
 #
       ENDPARDO a, i
 #
@@ -24218,92 +24218,92 @@ import "aces_defs.sialx"
       PARDO a, i
 #
         if imax == 1.0
-        get VCEND1A1(a,i)
-        tai(a,i)=VCEND1A1(a,i)
+        get VCEND1A1[a,i]
+        tai[a,i]=VCEND1A1[a,i]
         endif
         if imax == 2.0
-        get VCEND1A2(a,i)
-        tai(a,i)=VCEND1A2(a,i)
+        get VCEND1A2[a,i]
+        tai[a,i]=VCEND1A2[a,i]
         endif
         if imax == 3.0
-        get VCEND1A3(a,i)
-        tai(a,i)=VCEND1A3(a,i)
+        get VCEND1A3[a,i]
+        tai[a,i]=VCEND1A3[a,i]
         endif
         if imax == 4.0
-        get VCEND1A4(a,i)
-        tai(a,i)=VCEND1A4(a,i)
+        get VCEND1A4[a,i]
+        tai[a,i]=VCEND1A4[a,i]
         endif
         if imax == 5.0
-        get VCEND1A5(a,i)
-        tai(a,i)=VCEND1A5(a,i)
+        get VCEND1A5[a,i]
+        tai[a,i]=VCEND1A5[a,i]
         endif
         if imax == 6.0
-        get VCEND1A6(a,i)
-        tai(a,i)=VCEND1A6(a,i)
+        get VCEND1A6[a,i]
+        tai[a,i]=VCEND1A6[a,i]
         endif
         if imax == 7.0
-        get VCEND1A7(a,i)
-        tai(a,i)=VCEND1A7(a,i)
+        get VCEND1A7[a,i]
+        tai[a,i]=VCEND1A7[a,i]
         endif
         if imax == 8.0
-        get VCEND1A8(a,i)
-        tai(a,i)=VCEND1A8(a,i)
+        get VCEND1A8[a,i]
+        tai[a,i]=VCEND1A8[a,i]
         endif
         if imax == 9.0
-        get VCEND1A9(a,i)
-        tai(a,i)=VCEND1A9(a,i)
+        get VCEND1A9[a,i]
+        tai[a,i]=VCEND1A9[a,i]
         endif
         if imax == 10.0
-        get VCEND1A10(a,i)
-        tai(a,i)=VCEND1A10(a,i)
+        get VCEND1A10[a,i]
+        tai[a,i]=VCEND1A10[a,i]
         endif
         if imax == 11.0
-        get VCEND1A11(a,i)
-        tai(a,i)=VCEND1A11(a,i)
+        get VCEND1A11[a,i]
+        tai[a,i]=VCEND1A11[a,i]
         endif
         if imax == 12.0
-        get VCEND1A12(a,i)
-        tai(a,i)=VCEND1A12(a,i)
+        get VCEND1A12[a,i]
+        tai[a,i]=VCEND1A12[a,i]
         endif
 #
 #        execute print_scalar imax
 #        execute dump_block tai
 #
         if kindex12 == 1
-        PUT VSTART1A1(a,i) = tai(a,i)
+        PUT VSTART1A1[a,i] = tai[a,i]
         endif
         if kindex12 == 2
-        PUT VSTART1A2(a,i) = tai(a,i)
+        PUT VSTART1A2[a,i] = tai[a,i]
         endif
         if kindex12 == 3
-        PUT VSTART1A3(a,i) = tai(a,i)
+        PUT VSTART1A3[a,i] = tai[a,i]
         endif
         if kindex12 == 4
-        PUT VSTART1A4(a,i) = tai(a,i)
+        PUT VSTART1A4[a,i] = tai[a,i]
         endif
         if kindex12 == 5
-        PUT VSTART1A5(a,i) = tai(a,i)
+        PUT VSTART1A5[a,i] = tai[a,i]
         endif
         if kindex12 == 6
-        PUT VSTART1A6(a,i) = tai(a,i)
+        PUT VSTART1A6[a,i] = tai[a,i]
         endif
         if kindex12 == 7
-        PUT VSTART1A7(a,i) = tai(a,i)
+        PUT VSTART1A7[a,i] = tai[a,i]
         endif
         if kindex12 == 8
-        PUT VSTART1A8(a,i) = tai(a,i)
+        PUT VSTART1A8[a,i] = tai[a,i]
         endif
         if kindex12 == 9
-        PUT VSTART1A9(a,i) = tai(a,i)
+        PUT VSTART1A9[a,i] = tai[a,i]
         endif
         if kindex12 == 10
-        PUT VSTART1A10(a,i) = tai(a,i)
+        PUT VSTART1A10[a,i] = tai[a,i]
         endif
         if kindex12 == 11
-        PUT VSTART1A11(a,i) = tai(a,i)
+        PUT VSTART1A11[a,i] = tai[a,i]
         endif
         if kindex12 == 12
-        PUT VSTART1A12(a,i) = tai(a,i)
+        PUT VSTART1A12[a,i] = tai[a,i]
         endif
 #
 #
@@ -24337,13 +24337,13 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A1(a,i)
-      tai(a,i)=VSTART1A1(a,i)
+      get VSTART1A1[a,i]
+      tai[a,i]=VSTART1A1[a,i]
 #      execute dump_block tai
-      t2ai(a,i)=VSTART1A1(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      t2ai[a,i]=VSTART1A1[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A1(a,i)=tai(a,i)
+      put VCEND1A1[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24362,10 +24362,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A1(a,i)
-      tai(a,i)=VCEND1A1(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A1(a,i)=tai(a,i)
+      get VCEND1A1[a,i]
+      tai[a,i]=VCEND1A1[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A1[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24379,12 +24379,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A2(a,i)
-      tai(a,i)=VSTART1A2(a,i)
-      t2ai(a,i)=VSTART1A2(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A2[a,i]
+      tai[a,i]=VSTART1A2[a,i]
+      t2ai[a,i]=VSTART1A2[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A2(a,i)=tai(a,i)
+      put VCEND1A2[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24403,10 +24403,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A2(a,i)
-      tai(a,i)=VCEND1A2(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A2(a,i)=tai(a,i)
+      get VCEND1A2[a,i]
+      tai[a,i]=VCEND1A2[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A2[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24420,12 +24420,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A3(a,i)
-      tai(a,i)=VSTART1A3(a,i)
-      t2ai(a,i)=VSTART1A3(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A3[a,i]
+      tai[a,i]=VSTART1A3[a,i]
+      t2ai[a,i]=VSTART1A3[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A3(a,i)=tai(a,i)
+      put VCEND1A3[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24445,10 +24445,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A3(a,i)
-      tai(a,i)=VCEND1A3(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A3(a,i)=tai(a,i)
+      get VCEND1A3[a,i]
+      tai[a,i]=VCEND1A3[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A3[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24462,12 +24462,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A4(a,i)
-      tai(a,i)=VSTART1A4(a,i)
-      t2ai(a,i)=VSTART1A4(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A4[a,i]
+      tai[a,i]=VSTART1A4[a,i]
+      t2ai[a,i]=VSTART1A4[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A4(a,i)=tai(a,i)
+      put VCEND1A4[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24486,10 +24486,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A4(a,i)
-      tai(a,i)=VCEND1A4(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A4(a,i)=tai(a,i)
+      get VCEND1A4[a,i]
+      tai[a,i]=VCEND1A4[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A4[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24503,12 +24503,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A5(a,i)
-      tai(a,i)=VSTART1A5(a,i)
-      t2ai(a,i)=VSTART1A5(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A5[a,i]
+      tai[a,i]=VSTART1A5[a,i]
+      t2ai[a,i]=VSTART1A5[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A5(a,i)=tai(a,i)
+      put VCEND1A5[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24527,10 +24527,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A5(a,i)
-      tai(a,i)=VCEND1A5(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A5(a,i)=tai(a,i)
+      get VCEND1A5[a,i]
+      tai[a,i]=VCEND1A5[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A5[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24544,12 +24544,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A6(a,i)
-      tai(a,i)=VSTART1A6(a,i)
-      t2ai(a,i)=VSTART1A6(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A6[a,i]
+      tai[a,i]=VSTART1A6[a,i]
+      t2ai[a,i]=VSTART1A6[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A6(a,i)=tai(a,i)
+      put VCEND1A6[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24568,10 +24568,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A6(a,i)
-      tai(a,i)=VCEND1A6(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A6(a,i)=tai(a,i)
+      get VCEND1A6[a,i]
+      tai[a,i]=VCEND1A6[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A6[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24585,12 +24585,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A7(a,i)
-      tai(a,i)=VSTART1A7(a,i)
-      t2ai(a,i)=VSTART1A7(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A7[a,i]
+      tai[a,i]=VSTART1A7[a,i]
+      t2ai[a,i]=VSTART1A7[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A7(a,i)=tai(a,i)
+      put VCEND1A7[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24609,10 +24609,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A7(a,i)
-      tai(a,i)=VCEND1A7(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A7(a,i)=tai(a,i)
+      get VCEND1A7[a,i]
+      tai[a,i]=VCEND1A7[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A7[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24626,12 +24626,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A8(a,i)
-      tai(a,i)=VSTART1A8(a,i)
-      t2ai(a,i)=VSTART1A8(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A8[a,i]
+      tai[a,i]=VSTART1A8[a,i]
+      t2ai[a,i]=VSTART1A8[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A8(a,i)=tai(a,i)
+      put VCEND1A8[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24650,10 +24650,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A8(a,i)
-      tai(a,i)=VCEND1A8(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A8(a,i)=tai(a,i)
+      get VCEND1A8[a,i]
+      tai[a,i]=VCEND1A8[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A8[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24667,12 +24667,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A9(a,i)
-      tai(a,i)=VSTART1A9(a,i)
-      t2ai(a,i)=VSTART1A9(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A9[a,i]
+      tai[a,i]=VSTART1A9[a,i]
+      t2ai[a,i]=VSTART1A9[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A9(a,i)=tai(a,i)
+      put VCEND1A9[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24691,10 +24691,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A9(a,i)
-      tai(a,i)=VCEND1A9(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A9(a,i)=tai(a,i)
+      get VCEND1A9[a,i]
+      tai[a,i]=VCEND1A9[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A9[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24708,12 +24708,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A10(a,i)
-      tai(a,i)=VSTART1A10(a,i)
-      t2ai(a,i)=VSTART1A10(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A10[a,i]
+      tai[a,i]=VSTART1A10[a,i]
+      t2ai[a,i]=VSTART1A10[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A10(a,i)=tai(a,i)
+      put VCEND1A10[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24732,10 +24732,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A10(a,i)
-      tai(a,i)=VCEND1A10(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A10(a,i)=tai(a,i)
+      get VCEND1A10[a,i]
+      tai[a,i]=VCEND1A10[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A10[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24749,12 +24749,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A11(a,i)
-      tai(a,i)=VSTART1A11(a,i)
-      t2ai(a,i)=VSTART1A11(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A11[a,i]
+      tai[a,i]=VSTART1A11[a,i]
+      t2ai[a,i]=VSTART1A11[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A11(a,i)=tai(a,i)
+      put VCEND1A11[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24773,10 +24773,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A11(a,i)
-      tai(a,i)=VCEND1A11(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A11(a,i)=tai(a,i)
+      get VCEND1A11[a,i]
+      tai[a,i]=VCEND1A11[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A11[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier
@@ -24790,12 +24790,12 @@ import "aces_defs.sialx"
       sum1=0.0
 #
       PARDO a, i
-      get VSTART1A12(a,i)
-      tai(a,i)=VSTART1A12(a,i)
-      t2ai(a,i)=VSTART1A12(a,i)
-      etemp=tai(a,i)*t2ai(a,i)
+      get VSTART1A12[a,i]
+      tai[a,i]=VSTART1A12[a,i]
+      t2ai[a,i]=VSTART1A12[a,i]
+      etemp=tai[a,i]*t2ai[a,i]
       sum1+=etemp
-      put VCEND1A12(a,i)=tai(a,i)
+      put VCEND1A12[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sum2=0.0
@@ -24814,10 +24814,10 @@ import "aces_defs.sialx"
       execute norm_fac sqr exponent
 #
       PARDO a, i
-      get VCEND1A12(a,i)
-      tai(a,i)=VCEND1A12(a,i)
-      tai(a,i)*=sqr
-      put VSTART1A12(a,i)=tai(a,i)
+      get VCEND1A12[a,i]
+      tai[a,i]=VCEND1A12[a,i]
+      tai[a,i]*=sqr
+      put VSTART1A12[a,i]=tai[a,i]
       ENDPARDO a, i
 #
       sip_barrier

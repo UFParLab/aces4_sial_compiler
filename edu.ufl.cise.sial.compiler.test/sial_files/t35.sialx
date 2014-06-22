@@ -12,12 +12,12 @@ sial t35
       moaindex a2= bavirt, eavirt
       moaindex a3= bavirt, eavirt 
 
-served VSpipi(p,i1,p1,i2)
-served Vaaii(a,a1,i2,i2)
+served VSpipi[p,i1,p1,i2]
+served Vaaii[a,a1,i2,i2]
 
  
      server_barrier
-      execute list_to_blocks                VSpipi(p,i1,p1,i2)
+      execute list_to_blocks                VSpipi[p,i1,p1,i2]
       execute list_to_blocks                Vaaii
 endsial t35
 

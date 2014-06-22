@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 69:  Statement ::= exit$
+ *<li>Rule 71:  Statement ::= exit$
  *</b>
  */
 public class ExitStatement extends ASTNodeToken implements IStatement

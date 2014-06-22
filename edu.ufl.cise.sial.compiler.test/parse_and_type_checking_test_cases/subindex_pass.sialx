@@ -4,21 +4,21 @@ moaindex j = 1, 10
 subindex ii of i
 subindex jj of j
 
-distributed a(i,j)
-local b(ii,jj)
-local c(ii,j)
-local d(i,jj)
+distributed a[i,j]
+local b[ii,jj]
+local c[ii,j]
+local d[i,jj]
 
 do i
 do j
 do ii in i
 do jj in j
-b(ii,jj) = a(ii,jj)
-c(ii,j) = a(ii,j)
-d(i,jj) = a(i,jj)
-a(ii,jj) = b(ii,jj)
-a(ii,j) = c(ii,j)
-a(i,jj) = d(i,jj)
+b[ii,jj] = a[ii,jj]
+c[ii,j] = a[ii,j]
+d[i,jj] = a[i,jj]
+a[ii,jj] = b[ii,jj]
+a[ii,j] = c[ii,j]
+a[i,jj] = d[i,jj]
 enddo jj in j
 enddo ii in i
 enddo j

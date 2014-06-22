@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 53:  SpecialDec ::= special$ Ident IdentOpt$Signature
+ *<li>Rule 55:  SpecialDec ::= special$ Ident IdentOpt$Signature
  *</b>
  */
 public class SpecialDec extends ASTNode implements ISpecialDec

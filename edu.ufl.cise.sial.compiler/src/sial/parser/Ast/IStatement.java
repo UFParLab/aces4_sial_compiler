@@ -31,15 +31,18 @@ package sial.parser.Ast;
  *<li>PrintStatement
  *<li>PrintIndexStatement
  *<li>PrintScalarStatement
+ *<li>PrintIntStatement
  *<li>ExecuteStatement
- *<li>AssignStatement
- *<li>GpuStatement
- *<li>GpuAllocate
- *<li>GpuFree
- *<li>GpuPut
- *<li>GpuGet
+ *<li>AssignToIdent
+ *<li>AssignToBlock
+ *<li>GPUSection
+ *<li>GPUAllocateBlock
+ *<li>GPUFreeBlock
+ *<li>GPUPutBlock
+ *<li>GPUGetBlock
  *<li>SetPersistent
  *<li>RestorePersistent
+ *<li>AssertSame
  *</ul>
  *</b>
  */

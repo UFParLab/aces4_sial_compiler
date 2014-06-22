@@ -7,39 +7,41 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<em>
- *<li>Rule 113:  AllocIndexListopt ::= $Empty
+ *<li>Rule 118:  AllocIndexListopt ::= $Empty
  *</em>
  *<p>
  *<b>
- *<li>Rule 114:  AllocIndexListopt ::= ( AllocIndexList )
+ *<li>Rule 119:  AllocIndexListopt ::= [ AllocIndexList ]
  *</b>
  */
 public class AllocIndexListopt extends ASTNode implements IAllocIndexListopt
 {
-    private ASTNodeToken _LEFTPAREN;
+    private ASTNodeToken _LEFTSQUARE;
     private AllocIndexList _AllocIndexList;
-    private ASTNodeToken _RIGHTPAREN;
+    private ASTNodeToken _RIGHTSQUARE;
 
-    public ASTNodeToken getLEFTPAREN() { return _LEFTPAREN; }
+    public ASTNodeToken getLEFTSQUARE() { return _LEFTSQUARE; }
     public AllocIndexList getAllocIndexList() { return _AllocIndexList; }
-    public ASTNodeToken getRIGHTPAREN() { return _RIGHTPAREN; }
+    public ASTNodeToken getRIGHTSQUARE() { return _RIGHTSQUARE; }
 
     public AllocIndexListopt(IToken leftIToken, IToken rightIToken,
-                             ASTNodeToken _LEFTPAREN,
+                             ASTNodeToken _LEFTSQUARE,
                              AllocIndexList _AllocIndexList,
-                             ASTNodeToken _RIGHTPAREN)
+                             ASTNodeToken _RIGHTSQUARE)
     {
         super(leftIToken, rightIToken);
 
-        this._LEFTPAREN = _LEFTPAREN;
-        ((ASTNode) _LEFTPAREN).setParent(this);
+        this._LEFTSQUARE = _LEFTSQUARE;
+        ((ASTNode) _LEFTSQUARE).setParent(this);
         this._AllocIndexList = _AllocIndexList;
         ((ASTNode) _AllocIndexList).setParent(this);
-        this._RIGHTPAREN = _RIGHTPAREN;
-        ((ASTNode) _RIGHTPAREN).setParent(this);
+        this._RIGHTSQUARE = _RIGHTSQUARE;
+        ((ASTNode) _RIGHTSQUARE).setParent(this);
         initialize();
     }
 
@@ -49,9 +51,9 @@ public class AllocIndexListopt extends ASTNode implements IAllocIndexListopt
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_LEFTPAREN);
+        list.add(_LEFTSQUARE);
         list.add(_AllocIndexList);
-        list.add(_RIGHTPAREN);
+        list.add(_RIGHTSQUARE);
         return list;
     }
 
@@ -61,18 +63,18 @@ public class AllocIndexListopt extends ASTNode implements IAllocIndexListopt
         if (! (o instanceof AllocIndexListopt)) return false;
         if (! super.equals(o)) return false;
         AllocIndexListopt other = (AllocIndexListopt) o;
-        if (! _LEFTPAREN.equals(other._LEFTPAREN)) return false;
+        if (! _LEFTSQUARE.equals(other._LEFTSQUARE)) return false;
         if (! _AllocIndexList.equals(other._AllocIndexList)) return false;
-        if (! _RIGHTPAREN.equals(other._RIGHTPAREN)) return false;
+        if (! _RIGHTSQUARE.equals(other._RIGHTSQUARE)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_LEFTPAREN.hashCode());
+        hash = hash * 31 + (_LEFTSQUARE.hashCode());
         hash = hash * 31 + (_AllocIndexList.hashCode());
-        hash = hash * 31 + (_RIGHTPAREN.hashCode());
+        hash = hash * 31 + (_RIGHTSQUARE.hashCode());
         return hash;
     }
 
@@ -88,9 +90,9 @@ public class AllocIndexListopt extends ASTNode implements IAllocIndexListopt
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            _LEFTPAREN.accept(v);
+            _LEFTSQUARE.accept(v);
             _AllocIndexList.accept(v);
-            _RIGHTPAREN.accept(v);
+            _RIGHTSQUARE.accept(v);
         }
         v.endVisit(this);
     }

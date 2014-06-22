@@ -7,25 +7,27 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 82:  Statement ::= collective$ Ident$LHSIdent AssignOp Ident$RHSIdent
+ *<li>Rule 84:  Statement ::= collective$ Ident$LHSIdent AssignOp Ident$RHSIdent
  *</b>
  */
 public class CollectiveStatement extends ASTNode implements IStatement
 {
     private Ident _LHSIdent;
-    private IAssignOp _AssignOp;
+    private AssignOp _AssignOp;
     private Ident _RHSIdent;
 
     public Ident getLHSIdent() { return _LHSIdent; }
-    public IAssignOp getAssignOp() { return _AssignOp; }
+    public AssignOp getAssignOp() { return _AssignOp; }
     public Ident getRHSIdent() { return _RHSIdent; }
 
     public CollectiveStatement(IToken leftIToken, IToken rightIToken,
                                Ident _LHSIdent,
-                               IAssignOp _AssignOp,
+                               AssignOp _AssignOp,
                                Ident _RHSIdent)
     {
         super(leftIToken, rightIToken);

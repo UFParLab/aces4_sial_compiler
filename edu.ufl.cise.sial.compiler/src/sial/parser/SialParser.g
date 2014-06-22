@@ -13,8 +13,8 @@
 	  import java.util.Date;
 	  import java.util.ArrayList;
 	  import java.util.List;
-	  import sial.parser.context.ExpressionTypes.ExpressionType;
-	  import static sial.parser.context.ExpressionTypes.ExpressionType.*;
+	  import sial.parser.context.ExpressionType.EType;
+	  import java.util.EnumSet;
     ./
 %End
 
@@ -130,30 +130,39 @@
 	Modifiers$$Modifier ::= Modifier
                           | Modifiers Modifier
 
-    Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
-    Modifier$PredefinedModifier ::= 'predefined'
---    Modifier$PersistentModifier ::= 'persistent'
-	Modifier$ScopedExtentModifier ::= 'scoped_extent'
-	Modifier$ContiguousModifier ::= 'contiguous'
-	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
-	Modifier$SparseModifier ::= 'sparse'
+    Modifier$Modifier ::=  'predefined'$modifier |  'contiguous'$modifier |  'sparse'$modifier
 
+ --   Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
+ --   Modifier$PredefinedModifier ::= 'predefined'
+--    Modifier$PersistentModifier ::= 'persistent'
+--	Modifier$ScopeExtentModifier ::= 'scoped_extent'
+--	Modifier$ContiguousModifier ::= 'contiguous'
+--	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
+--	Modifier$SparseModifier ::= 'sparse'
+
+	
+---	Modifier$Modifier ::= 'sip_consistent'$modifier | 'predefined'$modifier | 'scoped_extent'$modifier | 'contiguous'$modifier | 'auto_allocate'$modifier | 'sparse'
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
 	 Dec ::= ScalarDec  | ArrayDec  |  IndexDec | SubIndexDec | IntDec  | ProcDec | SpecialDec
 	 
-	 ScalarDec ::= Modifiersopt scalar$ Ident
+	 ScalarDec ::= Modifiersopt scalar$ Ident ScalarInitializationOpt
 	 /.  public String getName(){
 	   return getIdent().getName();
 	   }
 	  ./
 	  
-	  IntDec ::= Modifiersopt   int$  Ident
+	  ScalarInitializationOpt$ScalarInitialValue ::= %empty | '=' DOUBLELIT
+	  
+	  IntDec ::= Modifiersopt   int$  Ident  IntInitializationOpt
 	  /.  public String getName(){
 		return getIdent().getName();
 		}
 	   ./
 	   
-	   ArrayDec ::= Modifiersopt  ArrayKind Ident '('$ DimensionList ')'$
+	   IntInitializationOpt$IntInitialValue ::= %empty | '=' INTLIT
+	   
+	   
+	   ArrayDec ::= Modifiersopt  ArrayKind Ident '['$ DimensionList ']'$
 	   /.  public String getName(){
 		 return getIdent().getName();
 		 }
@@ -331,7 +340,7 @@
 	
 	Statement$PrepareStatement ::= prepare$ DataBlock$LHSDataBlock  AssignOp DataBlock$RHSDataBlock
 	
-	Statement$RequestStatement ::= request$ DataBlock Ident
+	Statement$RequestStatement ::= request$ DataBlock IdentOpt
 	
 	Statement$PrequestStatement ::= prequest$  DataBlock$LHSDataBlock '=' $ DataBlock$RHSDataBlock
 	
@@ -344,12 +353,31 @@
 	Statement$PrintStatement ::= print$ StringLiteral
 	Statement$PrintIndexStatement ::= print_index$ Ident
     Statement$PrintScalarStatement::= print_scalar$ Ident --TODO rework this to take a unary expression
-	
-	Arg ::= Primary  
-	ArgList$$Arg ::=  %empty | ArgList Arg
+	Statement$PrintIntStatement::= print_int$ Ident
+
+--	Arg ::= Primary  
+Arg$DataBlockArg ::= DataBlock
+Arg$IdentArg ::= IDENTIFIER
+	/.
+	  IDec dec;
+	  public void setDec(IDec dec) { this.dec = dec; }
+	  public IDec getDec() { return dec; }
+      public boolean equals(Object obj){
+	       
+	       if (!(obj instanceof Ident)) return false;
+	       return  obj == null? false : (getIDENTIFIER().toString().equalsIgnoreCase(((Ident)obj).getIDENTIFIER().toString()));
+	  }
+
+	  public String getName(){
+	       return toString().toLowerCase();
+	  }
+	 ./
+Arg$DoubleLitArg ::= DOUBLELIT
+    ArgList$$Arg ::=  %empty | ArgList Arg
 	Statement$ExecuteStatement ::= execute$ Ident ArgList
 	--It would be better to have a comma separating the args
 	
+
 	--Statement$AssignStatement ::=  ScalarOrBlockVar AssignOp Expression
 Statement$AssignToIdent ::=  Ident AssignOp Expression
 	/. boolean slice;
@@ -369,14 +397,15 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 	   public void setInsert(boolean val){insert = val;}
 	 ./ 
 
-	 Statement$GpuStatement ::= gpu_on$ EOLs$
+
+Statement$GPUSection ::= gpu_on$ EOLs$
 	 StatementList
 	 gpu_off$
 	 
-	 Statement$GpuAllocate ::= gpu_allocate$ Primary
-	 Statement$GpuFree ::= gpu_free$ Primary
-	 Statement$GpuPut ::= gpu_put$ Primary
-	 Statement$GpuGet ::= gpu_get$ Primary
+Statement$GPUAllocateBlock ::= gpu_allocate$ Arg
+Statement$GPUFreeBlock ::= gpu_free$ Arg
+Statement$GPUPutBlock ::= gpu_put$ Arg
+Statement$GPUGetBlock ::= gpu_get$ Arg
 	 
 	 Statement$SetPersistent ::= set_persistent$ Ident StringLiteral
 	 --	/. 
@@ -404,11 +433,12 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 	 --./
 --	 StringLiteralopt ::= %empty | StringLiteral
 	
-	AssignOp$AssignOpEqual  ::=    '='
-	AssignOp$AssignOpPlus  ::=    '+='
-	AssignOp$AssignOpMinus  ::=   '-='
-	AssignOp$AssignOpStar   ::= '*='
+--	AssignOp$AssignOpEqual  ::=    '='
+---	AssignOp$AssignOpPlus  ::=    '+='
+--	AssignOp$AssignOpMinus  ::=   '-='
+--	AssignOp$AssignOpStar   ::= '*='
 	
+	AssignOp$AssignOp ::= '='$op | '+='$op | '-='$op | '*='$op
 --	ScalarOrBlockVar ::= Ident | DataBlock
 
  --	DataBlock ::= Ident '('$ Indices ')'$
@@ -429,9 +459,10 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
  --   AllocIndexListopt ::= %empty | '(' AllocIndexList ')'
     AllocIndexListopt ::= %empty | '[' AllocIndexList ']'
 	
-	RelationalExpression ::= UnaryExpression$UnaryExpressionLeft RelOp UnaryExpression$UnaryExpressionRight
+--	RelationalExpression ::= UnaryExpression$UnaryExpressionLeft RelOp UnaryExpression$UnaryExpressionRight
 	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op 
 	
+	RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
 --	Expression ::= UnaryExpression$UnaryExpression | BinaryExpression$BinaryExpression
 --	BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
 --	BinOp$BinOpStar ::= '*' 
@@ -443,17 +474,33 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 -- NEW STUFF STARTS HERE
     Expression ::= Term
 	Expression$AddExpr ::= Expression '+' Term
-	/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
+	/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	 
 	Expression$SubtractExpr ::= Expression '-' Term
-	/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
+
 	
 --  MulOp$Star ::= '*'
 --	MulOp$Div ::= '/'
@@ -465,69 +512,151 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
     Term ::= CastExpression
 --	Term$MulOpExpr ::= Term MulOp CastExpression
 	Term$StarExpr ::= Term '*'$ CastExpression
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	Term$DivExpr ::= Term '/'$ CastExpression
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
-	Term$HatExpr ::= Term '^' CastExpression
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+	Term$TensorExpr ::= Term '^' CastExpression
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	
 	CastExpression ::= UnaryExpression
 	CastExpression$IntCastExpr ::= '('$  int$ ')'$ CastExpression
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	CastExpression$ScalarCastExpr ::= '('$  scalar$ ')'$ CastExpression
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
     
 	UnaryExpression ::= Primary
 	UnaryExpression$NegatedUnaryExpr ::= '-'$ Primary
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	
 	Primary$ParenExpr ::= '('$ Expression ')'$
-	 /. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  
+	  	  public void addType(EnumSet<EType> t){
+	  if (typeSet == null){ 
+	     typeSet = t.clone();
+		 }
+	     else typeSet.addAll(t);
+	  }
+	  
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
-	Primary$IntLitExpr ::= INTLIT
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+
+		Primary$IntLitExpr ::= INTLIT
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	Primary$DoubleLitExpr ::= DOUBLELIT
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
+	 
 	Primary$IdentExpr  ::= Ident
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
+	 
+	 
 	  IDec dec;
 	  public void setDec(IDec dec) { this.dec = dec; }
 	  public IDec getDec() { return dec; }
@@ -545,16 +674,30 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 	  }
 	 ./
 	Primary$DataBlockExpr ::= DataBlock
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
     Primary$StringLitExpr ::= StringLiteral
-		/. ExpressionType type = null;
-	  public void setType(ExpressionType type){this.type = type;}
-	  public ExpressionType getType(){return type;}
-	   
+	/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
 	 ./
 	
 	StringLiteral ::= STRINGLIT
@@ -587,15 +730,14 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 	 
 	%End
 		
-	
 	%Headers
-
 
 /.
   
 
  private SymbolTable symbolTable;
  public  SymbolTable getSymbolTable(){return symbolTable;}
+
 
  public void resolve(ASTNode root) {
     if (root != null) {

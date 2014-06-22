@@ -1,0 +1,35 @@
+sial nested_pardo_and_barrier_fail
+
+aoindex aoi = 1,100
+aoindex aoj = 1,200
+
+proc p0
+sip_barrier
+#pardo aoi
+#println "hello"
+#endpardo aoi
+#sip_barrier
+#pardo aoi
+#println "hello 2"
+#endpardo aoi
+endproc p0
+
+proc p1
+call p0
+#sip_barrier
+endproc p1
+
+call p0
+call p1
+pardo aoj
+call p1
+println "hello"
+endPardo aoj
+sip_barrier
+call p1
+
+
+
+
+
+endsial nested_pardo_and_barrier_fail

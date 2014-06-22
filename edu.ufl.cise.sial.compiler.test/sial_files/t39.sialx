@@ -5,27 +5,27 @@ sial t38
       aoindex lambda = 1, norb
       aoindex sigma  = 1, norb
       moaindex i = baocc, eaocc
-      local Txxxi(mu,nu,lambda,i)
-      temp T1xxxi(mu,nu,lambda,i)
-      temp AOINT(mu,nu,lambda,sigma) 
+      local Txxxi[mu,nu,lambda,i]
+      temp T1xxxi[mu,nu,lambda,i]
+      temp AOINT[mu,nu,lambda,sigma] 
      PARDO mu, nu, lambda
 #
-          allocate Txxxi(mu,nu,lambda,*)
+          allocate Txxxi[mu,nu,lambda,*]
 #
           DO sigma
 #
-#             compute_integrals            aoint(mu,nu,lambda,sigma)
+#             compute_integrals            aoint[mu,nu,lambda,sigma]
 #
              DO i   
 #
-                 T1xxxi(mu,nu,lambda,i)  = aoint(mu,nu,lambda,sigma)*ca(sigma,i)
-                 Txxxi(mu,nu,lambda,i)  += T1xxxi(mu,nu,lambda,i)  
+                 T1xxxi[mu,nu,lambda,i]  = aoint[mu,nu,lambda,sigma]*ca[sigma,i]
+                 Txxxi[mu,nu,lambda,i]  += T1xxxi[mu,nu,lambda,i]  
 #
              ENDDO i   
 #
           ENDDO sigma
 
-          deallocate Txxxi(mu,nu,lambda,*)
+          deallocate Txxxi[mu,nu,lambda,*]
 #
 endpardo mu, nu, lambda
  

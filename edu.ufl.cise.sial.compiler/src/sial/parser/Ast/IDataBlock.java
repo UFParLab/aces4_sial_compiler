@@ -3,6 +3,6 @@ package sial.parser.Ast;
 /**
  * is implemented by <b>DataBlock</b>
  */
-public interface IDataBlock extends IScalarOrBlockVar, IPrimary {}
+public interface IDataBlock extends IArg, IPrimary {}
 
 

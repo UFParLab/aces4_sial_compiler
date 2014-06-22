@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 68:  Statement ::= section$ EOLs$ StatementList endsection$
+ *<li>Rule 70:  Statement ::= section$ EOLs$ StatementList endsection$
  *</b>
  */
 public class Section extends ASTNode implements IStatement
@@ -76,6 +78,7 @@ public class Section extends ASTNode implements IStatement
         v.endVisit(this);
     }
 
+		//NOT CLEAR WHY THIS IS HERE!!!!
   IDec dec;
   public void setDec(IDec dec) { this.dec = dec; }
   public IDec getDec() { return dec; }

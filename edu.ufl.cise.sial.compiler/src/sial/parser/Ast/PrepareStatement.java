@@ -7,25 +7,27 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 79:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+ *<li>Rule 81:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
  *</b>
  */
 public class PrepareStatement extends ASTNode implements IStatement
 {
     private DataBlock _LHSDataBlock;
-    private IAssignOp _AssignOp;
+    private AssignOp _AssignOp;
     private DataBlock _RHSDataBlock;
 
     public DataBlock getLHSDataBlock() { return _LHSDataBlock; }
-    public IAssignOp getAssignOp() { return _AssignOp; }
+    public AssignOp getAssignOp() { return _AssignOp; }
     public DataBlock getRHSDataBlock() { return _RHSDataBlock; }
 
     public PrepareStatement(IToken leftIToken, IToken rightIToken,
                             DataBlock _LHSDataBlock,
-                            IAssignOp _AssignOp,
+                            AssignOp _AssignOp,
                             DataBlock _RHSDataBlock)
     {
         super(leftIToken, rightIToken);

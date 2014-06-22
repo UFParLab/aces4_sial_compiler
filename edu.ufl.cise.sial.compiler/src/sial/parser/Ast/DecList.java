@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 20:  DecList ::= $Empty
- *<li>Rule 21:  DecList ::= DecList Dec EOLs$
+ *<li>Rule 18:  DecList ::= $Empty
+ *<li>Rule 19:  DecList ::= DecList Dec EOLs$
  *</b>
  */
 public class DecList extends AbstractASTNodeList implements IDecList

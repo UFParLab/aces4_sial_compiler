@@ -5,16 +5,17 @@ package sial.parser.Ast;
  *<b>
  *<ul>
  *<li>DataBlock
- *<li>IntLitPrimary
- *<li>DoubleLitPrimary
- *<li>IdentPrimary
- *<li>DataBlockPrimary
- *<li>StringLitPrimary
+ *<li>ParenExpr
+ *<li>IntLitExpr
+ *<li>DoubleLitExpr
+ *<li>IdentExpr
+ *<li>DataBlockExpr
+ *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident
  *</ul>
  *</b>
  */
-public interface IPrimary extends IArg, IUnaryExpression, IASTNodeToken {}
+public interface IPrimary extends IUnaryExpression, IASTNodeToken {}
 
 

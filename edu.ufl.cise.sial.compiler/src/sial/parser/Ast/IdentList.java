@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 107:  Indices ::= Ident
- *<li>Rule 108:  Indices ::= Indices ,$ Ident
+ *<li>Rule 112:  Indices ::= Ident
+ *<li>Rule 113:  Indices ::= Indices ,$ Ident
  *</b>
  */
 public class IdentList extends AbstractASTNodeList implements IIndices

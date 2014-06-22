@@ -7,6 +7,15 @@
     <thead><tr bgcolor="#ccccff"><td><b>Non-terminal</b></td><td><b>Description</b></td><td><b>Rules</b></td></tr></thead>
   <tbody>
   <tr>
+    <td width="10%"><a name="-Arg"><b>-Arg</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>DoubleLiteral</p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="AllocIndex"><b>AllocIndex</b></a>
     </td>
     <td width="50%">
@@ -32,7 +41,7 @@
     </td>
     <td width="40%">
       <p>%empty</p>
-      <p>'(' <a href="#AllocIndexList">AllocIndexList</a> ')'</p>
+      <p>'[' <a href="#AllocIndexList">AllocIndexList</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -41,7 +50,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Primary">Primary</a></p>
+      <p>DOUBLELIT</p>
     </td>
   </tr>
   <tr>
@@ -60,7 +69,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Modifiersopt">Modifiersopt</a> <a href="#ArrayKind">ArrayKind</a> <a href="#Ident">Ident</a> '(' <a href="#DimensionList">DimensionList</a> ')'</p>
+      <p><a href="#Modifiersopt">Modifiersopt</a> <a href="#ArrayKind">ArrayKind</a> <a href="#Ident">Ident</a> '[' <a href="#DimensionList">DimensionList</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -82,25 +91,19 @@
     <td width="50%">
     </td>
     <td width="40%">
+      <p>'='</p>
+      <p>'+='</p>
+      <p>'-='</p>
       <p>'*='</p>
     </td>
   </tr>
   <tr>
-    <td width="10%"><a name="BinOp"><b>BinOp</b></a>
+    <td width="10%"><a name="CastExpression"><b>CastExpression</b></a>
     </td>
     <td width="50%">
     </td>
     <td width="40%">
-      <p>'^'</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="BinaryExpression"><b>BinaryExpression</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#BinOp">BinOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
+      <p>'(' scalar ')' <a href="#CastExpression">CastExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -109,7 +112,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Ident">Ident</a> '(' <a href="#Indices">Indices</a> ')'</p>
+      <p><a href="#Ident">Ident</a> '[' <a href="#Indices">Indices</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -183,8 +186,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#UnaryExpression">UnaryExpression</a></p>
-      <p><a href="#BinaryExpression">BinaryExpression</a></p>
+      <p><a href="#Expression">Expression</a> '-' <a href="#Term">Term</a></p>
     </td>
   </tr>
   <tr>
@@ -264,7 +266,17 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Modifiersopt">Modifiersopt</a> int <a href="#Ident">Ident</a></p>
+      <p><a href="#Modifiersopt">Modifiersopt</a> int <a href="#Ident">Ident</a> <a href="#IntInitializationOpt">IntInitializationOpt</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IntInitializationOpt"><b>IntInitializationOpt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p>'=' INTLIT</p>
     </td>
   </tr>
   <tr>
@@ -328,10 +340,8 @@
       <p>p r i n t l n</p>
       <p>p r i n t _ i n d e x</p>
       <p>p r i n t _ s c a l a r</p>
-      <p>s i p _ c o n s i s t e n t</p>
-      <p>s c o p e d _ e x t e n t</p>
+      <p>p r i n t _ i n t</p>
       <p>c o n t i g u o u s</p>
-      <p>a u t o _ a l l o c a t e</p>
       <p>g p u _ o n</p>
       <p>g p u _ o f f</p>
       <p>g p u _ a l l o c a t e</p>
@@ -340,6 +350,8 @@
       <p>g p u _ p u t</p>
       <p>s e t _ p e r s i s t e n t</p>
       <p>r e s t o r e _ p e r s i s t e n t</p>
+      <p>s p a r s e</p>
+      <p>a s s e r t _ s a m e</p>
     </td>
   </tr>
   <tr>
@@ -348,7 +360,9 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>'auto_allocate'</p>
+      <p>'predefined'</p>
+      <p>'contiguous'</p>
+      <p>'sparse'</p>
     </td>
   </tr>
   <tr>
@@ -448,7 +462,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#RelOp">RelOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
+      <p><a href="#Expression">Expression</a> <a href="#RelOp">RelOp</a> <a href="#Expression">Expression</a></p>
     </td>
   </tr>
   <tr>
@@ -467,17 +481,17 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Modifiersopt">Modifiersopt</a> scalar <a href="#Ident">Ident</a></p>
+      <p><a href="#Modifiersopt">Modifiersopt</a> scalar <a href="#Ident">Ident</a> <a href="#ScalarInitializationOpt">ScalarInitializationOpt</a></p>
     </td>
   </tr>
   <tr>
-    <td width="10%"><a name="ScalarOrBlockVar"><b>ScalarOrBlockVar</b></a>
+    <td width="10%"><a name="ScalarInitializationOpt"><b>ScalarInitializationOpt</b></a>
     </td>
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Ident">Ident</a></p>
-      <p><a href="#DataBlock">DataBlock</a></p>
+      <p>%empty</p>
+      <p>'=' DOUBLELIT</p>
     </td>
   </tr>
   <tr>
@@ -495,7 +509,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+      <p>special <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
     </td>
   </tr>
   <tr>
@@ -504,7 +518,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>restore_persistent <a href="#Ident">Ident</a> <a href="#StringLiteral">StringLiteral</a></p>
+      <p>assert_same <a href="#Ident">Ident</a></p>
     </td>
   </tr>
   <tr>
@@ -533,6 +547,15 @@
     </td>
     <td width="40%">
       <p>subindex <a href="#Ident">Ident</a> of <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="Term"><b>Term</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Term">Term</a> '^' <a href="#CastExpression">CastExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -566,6 +589,8 @@
       <p>'-' '='</p>
       <p>'*' '='</p>
       <p><a href="#eol">eol</a></p>
+      <p>'['</p>
+      <p>']'</p>
     </td>
   </tr>
   <tr>
@@ -840,7 +865,7 @@
     <td width="40%">
       <p><a href="#letter">letter</a></p>
       <p><a href="#digit">digit</a></p>
-      <p><a href="#special">special</a></p>
+      <p>special</p>
       <p><a href="#whiteChar">whiteChar</a></p>
     </td>
   </tr>
@@ -902,16 +927,6 @@
     <td width="40%">
       <p>'#'</p>
       <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="special"><b>special</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#specialNotDQ">specialNotDQ</a></p>
-      <p>'&quot;'</p>
     </td>
   </tr>
   <tr>

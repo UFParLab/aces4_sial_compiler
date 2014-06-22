@@ -568,6 +568,20 @@ public class SialLexer implements RuleAction, ILexer
                 makeToken(SialParsersym.TK_EOL);
             break;
             }
+            //
+            // Rule 26:  Token ::= [
+            //
+            case 26: { 
+             makeToken(SialParsersym.TK_LEFTSQUARE);
+            break;
+            }
+            //
+            // Rule 27:  Token ::= ]
+            //
+            case 27: { 
+             makeToken(SialParsersym.TK_RIGHTSQUARE);
+            break;
+            }
     
             default:
                 break;

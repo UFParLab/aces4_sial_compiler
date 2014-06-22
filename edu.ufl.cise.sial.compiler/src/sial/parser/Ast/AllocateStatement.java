@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 73:  Statement ::= allocate$ Ident AllocIndexListopt
+ *<li>Rule 75:  Statement ::= allocate$ Ident AllocIndexListopt
  *</b>
  */
 public class AllocateStatement extends ASTNode implements IStatement

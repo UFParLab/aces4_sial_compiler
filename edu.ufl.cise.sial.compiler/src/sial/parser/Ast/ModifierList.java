@@ -7,6 +7,8 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
@@ -18,20 +20,20 @@ import org.eclipse.imp.parser.IParser;
  */
 public class ModifierList extends AbstractASTNodeList implements IModifiersopt, IModifiers
 {
-    public IModifier getModifierAt(int i) { return (IModifier) getElementAt(i); }
+    public Modifier getModifierAt(int i) { return (Modifier) getElementAt(i); }
 
     public ModifierList(IToken leftIToken, IToken rightIToken, boolean leftRecursive)
     {
         super(leftIToken, rightIToken, leftRecursive);
     }
 
-    public ModifierList(IModifier _Modifier, boolean leftRecursive)
+    public ModifierList(Modifier _Modifier, boolean leftRecursive)
     {
         super((ASTNode) _Modifier, leftRecursive);
         ((ASTNode) _Modifier).setParent(this);
     }
 
-    public void add(IModifier _Modifier)
+    public void add(Modifier _Modifier)
     {
         super.add((ASTNode) _Modifier);
         ((ASTNode) _Modifier).setParent(this);
@@ -46,7 +48,7 @@ public class ModifierList extends AbstractASTNodeList implements IModifiersopt, 
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
         {
-            IModifier element = getModifierAt(i);
+            Modifier element = getModifierAt(i);
             if (! element.equals(other.getModifierAt(i))) return false;
         }
         return true;
@@ -73,8 +75,10 @@ public class ModifierList extends AbstractASTNodeList implements IModifiersopt, 
         {
             for (int i = 0; i < size(); i++)
             {
-                IModifier element = getModifierAt(i);
-                element.accept(v);
+                Modifier element = getModifierAt(i);
+                if (! v.preVisit(element)) continue;
+                element.enter(v);
+                v.postVisit(element);
             }
         }
         v.endVisit(this);

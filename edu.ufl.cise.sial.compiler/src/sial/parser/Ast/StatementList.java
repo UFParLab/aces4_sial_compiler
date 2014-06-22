@@ -7,11 +7,13 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 56:  StatementList ::= $Empty
- *<li>Rule 57:  StatementList ::= StatementList Statement EOLs$
+ *<li>Rule 58:  StatementList ::= $Empty
+ *<li>Rule 59:  StatementList ::= StatementList Statement EOLs$
  *</b>
  */
 public class StatementList extends AbstractASTNodeList implements IStatementList

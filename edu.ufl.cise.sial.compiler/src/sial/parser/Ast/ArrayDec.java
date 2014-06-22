@@ -8,10 +8,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 31:  ArrayDec ::= Modifiersopt ArrayKind Ident ($ DimensionList )$
+ *<li>Rule 33:  ArrayDec ::= Modifiersopt ArrayKind Ident [$ DimensionList ]$
  *</b>
  */
 public class ArrayDec extends ASTNode implements IArrayDec

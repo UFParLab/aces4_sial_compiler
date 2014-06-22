@@ -3,7 +3,7 @@ import "aces_defs.sialx"
 sial t46
       index j20 = 1, 20 
       index k20 = 1, 20 
-      temp t20(k20,j20)   
+      temp t20[k20,j20]   
             scalar etemp3
 
 

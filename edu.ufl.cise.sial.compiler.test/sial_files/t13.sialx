@@ -5,11 +5,11 @@ aoindex b = 1,norb
 moindex mo = bvirt,evirt
 moaindex moa = bavirt,eavirt
 mobindex mob = boccorb,eoccorb
-local L1(a,b)
-distributed D1(a,b)
-local L2(b,a)
-L1(a,b) = D1(a,b)
-L2(b,a) = D1(a,b)
+local L1[a,b]
+distributed D1[a,b]
+local L2[b,a]
+L1[a,b] = D1[a,b]
+L2[b,a] = D1[a,b]
 endsial t13
 
 

@@ -5,52 +5,53 @@ package sial.parser.context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.EnumSet;
 import java.util.List;
-import static sial.code_gen.SipConstants.static_array_t;
-
-
-//import org.eclipse.core.runtime.IPath;
-//import org.eclipse.core.runtime.IProgressMonitor;
-//import org.eclipse.core.runtime.NullProgressMonitor;
-//import org.eclipse.core.runtime.Path;
-//import org.eclipse.imp.model.ICompilationUnit;
-//import org.eclipse.imp.model.ISourceProject;
-//import org.eclipse.imp.model.ModelFactory;
-//import org.eclipse.imp.parser.IParseController;
 
 import lpg.runtime.IAst;
 import lpg.runtime.IToken;
+import sial.code_gen.SipConstants;
 import sial.code_gen.TypeConstantMap;
 import sial.parser.SialParsersym;
-import sial.parser.Ast.ASTNode;
 import sial.parser.Ast.ASTNodeToken;
+import sial.parser.Ast.AddExpr;
 import sial.parser.Ast.ArrayDec;
 import sial.parser.Ast.CallStatement;
-import sial.parser.Ast.ContiguousModifier;
+import sial.parser.Ast.DataBlockExpr;
+import sial.parser.Ast.DivExpr;
 import sial.parser.Ast.DoStatement;
-import sial.parser.Ast.IASTNodeToken;
+import sial.parser.Ast.DoubleLitExpr;
+import sial.parser.Ast.ExecuteStatement;
 import sial.parser.Ast.IDec;
+import sial.parser.Ast.IExpression;
 import sial.parser.Ast.IRangeVal;
 import sial.parser.Ast.Ident;
+import sial.parser.Ast.IdentExpr;
 import sial.parser.Ast.IdentList;
-import sial.parser.Ast.ImportProg;
-import sial.parser.Ast.ImportProgList;
 import sial.parser.Ast.IndexDec;
+import sial.parser.Ast.IntCastExpr;
 import sial.parser.Ast.IntDec;
+import sial.parser.Ast.IntLitExpr;
 import sial.parser.Ast.IntLitRangeVal;
+import sial.parser.Ast.Modifier;
 import sial.parser.Ast.NegRangeVal;
+import sial.parser.Ast.NegatedUnaryExpr;
 import sial.parser.Ast.PardoStatement;
-import sial.parser.Ast.SparseModifier;
-//import sial.parser.Ast.PersistentModifier;
-import sial.parser.Ast.PredefinedModifier;
+import sial.parser.Ast.ParenExpr;
 import sial.parser.Ast.ProcDec;
 import sial.parser.Ast.Program;
+import sial.parser.Ast.ScalarCastExpr;
 import sial.parser.Ast.ScalarDec;
 import sial.parser.Ast.Sial;
+import sial.parser.Ast.StarExpr;
+import sial.parser.Ast.StringLitExpr;
 import sial.parser.Ast.SubIndexDec;
+import sial.parser.Ast.SubtractExpr;
+import sial.parser.Ast.TensorExpr;
+import sial.parser.context.ExpressionType.EType;
 
-public class ASTUtils implements SialParsersym{
+
+public class ASTUtils implements SialParsersym, SipConstants{
 	private ASTUtils(){}
 	
 	/** returns the root of the AST containing the given IAst node */
@@ -80,6 +81,8 @@ public class ASTUtils implements SialParsersym{
 			tnode = tnode.getParent();
 		return (ProcDec) tnode;
 	}
+	
+
 	
 	/**
 	 * 
@@ -213,8 +216,8 @@ public class ASTUtils implements SialParsersym{
 	}
 	
 	/** returns the int value of the given IToken, which is required to an int literal*/
-	public static int getIntVal(IToken intlit) {
-		assert intlit.getKind()== TK_INTLIT;
+	public static int getIntLitVal(ASTNodeToken intlit) {
+		assert intlit.getIToken().getKind() == TK_INTLIT : "error at token " + intlit + " at line " + intlit.getLeftIToken().getLine();
 		String text = intlit.toString();
 		return Integer.parseInt(text);
 	}
@@ -319,7 +322,7 @@ public class ASTUtils implements SialParsersym{
     		//check for contiguous declaration
     		List modifiers = arrayDec.getModifiersopt().getList();
         	for( Object m: modifiers){
-        		if (m instanceof ContiguousModifier) return true;
+        		if (((Modifier) m).getmodifier().getKind() == TK_contiguous) return true;
         	}
     	}
     	return false;
@@ -334,8 +337,7 @@ public class ASTUtils implements SialParsersym{
 				// check for contiguous declaration
 				List modifiers = arrayDec.getModifiersopt().getList();
 				for (Object m : modifiers) {
-					if (m instanceof SparseModifier)
-						return true;
+					if (((Modifier) m).getmodifier().getKind() == TK_sparse) return true;
 				}
 			}
 		}
@@ -356,10 +358,35 @@ public class ASTUtils implements SialParsersym{
     		modifiers = ((ScalarDec) n).getModifiersopt().getList();
     	if (modifiers== null || modifiers.isEmpty()) return false;
     	for( Object m: modifiers){
-    		if (m instanceof PredefinedModifier) return true;
+    		if (((Modifier) m).getmodifier().getKind() == TK_predefined) return true;
     	}
     	return false;
-    }	    
+    }
+    
+    public static int getModifierAttributes(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return 0;
+    	int attributes = 0;
+    	for( Object modifier: modifiers){
+    		int m = ((Modifier) modifier).getmodifier().getKind();
+    		if (m == TK_predefined) attributes = attributes | attr_predefined;
+    		else if (m == TK_contiguous) attributes = attributes | attr_contiguous;
+    		else if (m == TK_sparse) attributes = attributes | attr_sparse;
+    		else assert false: "compiler bug:  illegal modifier in list";
+    	} 
+    	return attributes;
+    }
+    
 //    public static boolean isPersistent(IDec n){
 //    	List modifiers = null;
 //    	if (n instanceof ScalarDec)
@@ -368,7 +395,7 @@ public class ASTUtils implements SialParsersym{
 //    		modifiers = ((IndexDec) n).getModifiersopt().getList();
 //    	else if (n instanceof IntDec)
 //    		modifiers = ((IntDec) n).getModifiersopt().getList();
-//    	else if (n instanceof ArrayDec)
+//    	else if (n instanceof ArrayDec
 //    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
 //    	else if (n instanceof ScalarDec)
 //    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
@@ -408,6 +435,122 @@ public class ASTUtils implements SialParsersym{
 		IAst tnode = node.getParent();
 		while (tnode != null && !(tnode instanceof ProcDec || tnode instanceof PardoStatement)) tnode = tnode.getParent();
 		return tnode;
+	}
+	
+	/** here is a list of classes implementing IExpression
+	 *  *<li>DataBlock
+	 *<li>AddExpr
+	 *<li>SubtractExpr
+	 *<li>StarExpr
+	 *<li>DivExpr
+	 *<li>HatExpr
+	 *<li>IntCastExpr
+	 *<li>ScalarCastExpr
+	 *<li>NegatedUnaryExpr
+	 *<li>ParenExpr
+	 *<li>IntLitExpr
+	 *<li>DoubleLitExpr
+	 *<li>IdentExpr
+	 *<li>DataBlockExpr
+	 *<li>StringLitExpr
+	 *<li>StringLiteral
+	 *<li>Ident
+    */
+	
+	/**
+	 * @param e
+	 * @return
+	 */
+	
+//    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
+//    public static EType getIExprType(IExpression e){
+//    	if (e instanceof IdentExpr) return ((IdentExpr)e).type.getType();
+//    	if (e instanceof IntLitExpr) return ((IntLitExpr)e).type.getType();
+//    	if (e instanceof DoubleLitExpr) return ((DoubleLitExpr)e).type.getType();
+//    	if (e instanceof NegatedUnaryExpr) return ((NegatedUnaryExpr)e).type.getType();
+//    	if (e instanceof ParenExpr) return getIExprType( ((ParenExpr)e).getExpression() );
+//    	if (e instanceof ScalarCastExpr) return ((ScalarCastExpr)e).type.getType();
+//    	if (e instanceof IntCastExpr) return ((IntCastExpr)e).type.getType();
+//    	if (e instanceof StarExpr) return ((StarExpr)e).type.getType();
+//    	if (e instanceof DivExpr) return ((DivExpr)e).type.getType();
+//    	if (e instanceof TensorExpr) return ((TensorExpr)e).type.getType();
+//    	if (e instanceof AddExpr) return ((AddExpr)e).type.getType();
+//    	if (e instanceof SubtractExpr) return ((SubtractExpr)e).type.getType();
+//    	if (e instanceof DataBlockExpr) return ((DataBlockExpr)e).type.getType();
+//    	if (e instanceof StringLitExpr) return ((StringLitExpr)e).type.getType();
+//    	assert false;
+//    	return null;
+//    }
+	
+//	  EnumSet<EType>  typeSet;
+//	  public EnumSet<EType> getTypeSet() { return typeSet;}
+//	  public void addType(EType t){
+//	  if (typeSet == null){ 
+//	     typeSet = EnumSet.of(t);
+//		 }
+//	     else typeSet.add(t);
+//	  }
+//	  public boolean hasType(EType t){
+//	  return typeSet.contains(t);
+//	  }
+    
+    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
+    public static EnumSet<EType> getIExprTypes(IExpression e){
+    	if (e instanceof IdentExpr) return ((IdentExpr)e).getTypeSet();
+    	if (e instanceof IntLitExpr) return ((IntLitExpr)e).getTypeSet();
+    	if (e instanceof DoubleLitExpr) return ((DoubleLitExpr)e).getTypeSet();
+    	if (e instanceof NegatedUnaryExpr) return ((NegatedUnaryExpr)e).getTypeSet();
+    	if (e instanceof ParenExpr) return getIExprTypes( ((ParenExpr)e).getExpression() );
+    	if (e instanceof ScalarCastExpr) return ((ScalarCastExpr)e).getTypeSet();
+    	if (e instanceof IntCastExpr) return ((IntCastExpr)e).getTypeSet();
+    	if (e instanceof StarExpr) return ((StarExpr)e).getTypeSet();
+    	if (e instanceof DivExpr) return ((DivExpr)e).getTypeSet();
+    	if (e instanceof TensorExpr) return ((TensorExpr)e).getTypeSet();
+    	if (e instanceof AddExpr) return ((AddExpr)e).getTypeSet();
+    	if (e instanceof SubtractExpr) return ((SubtractExpr)e).getTypeSet();
+    	if (e instanceof DataBlockExpr) return ((DataBlockExpr)e).getTypeSet();
+    	if (e instanceof StringLitExpr) return ((StringLitExpr)e).getTypeSet();
+    	assert false;
+    	return null;
+    }
+    
+    
+    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
+    public static void addExprType(IExpression e, EType t){
+    	if (e instanceof IdentExpr)  ((IdentExpr)e).addType(t);
+    	if (e instanceof IntLitExpr) ((IntLitExpr)e).addType(t);
+    	if (e instanceof DoubleLitExpr) ((DoubleLitExpr)e).addType(t);
+    	if (e instanceof NegatedUnaryExpr) ((NegatedUnaryExpr)e).addType(t);
+    	if (e instanceof ParenExpr) getIExprTypes( ((ParenExpr)e).getExpression() );
+    	if (e instanceof ScalarCastExpr) ((ScalarCastExpr)e).addType(t);
+    	if (e instanceof IntCastExpr) ((IntCastExpr)e).addType(t);
+    	if (e instanceof StarExpr) ((StarExpr)e).addType(t);
+    	if (e instanceof DivExpr) ((DivExpr)e).addType(t);
+    	if (e instanceof TensorExpr) ((TensorExpr)e).addType(t);
+    	if (e instanceof AddExpr) ((AddExpr)e).addType(t);
+    	if (e instanceof SubtractExpr) ((SubtractExpr)e).addType(t);
+    	if (e instanceof DataBlockExpr) ((DataBlockExpr)e).addType(t);
+    	if (e instanceof StringLitExpr) ((StringLitExpr)e).addType(t);
+    	assert false;
+    }
+	
+	public static boolean isBinary(IExpression e){
+    	if (e instanceof IdentExpr) return false;
+    	if (e instanceof IntLitExpr) return false;
+    	if (e instanceof DoubleLitExpr) return false;
+    	if (e instanceof NegatedUnaryExpr) return false;
+    	if (e instanceof ParenExpr) return isBinary( ((ParenExpr)e).getExpression() );
+    	if (e instanceof ScalarCastExpr) return false;
+    	if (e instanceof IntCastExpr) return false; 
+    	if (e instanceof StarExpr) return true;
+    	if (e instanceof DivExpr) return true;
+    	if (e instanceof TensorExpr) return true;
+    	if (e instanceof AddExpr) return true;
+    	if (e instanceof SubtractExpr) return true;
+    	if (e instanceof DataBlockExpr) return false;
+    	if (e instanceof StringLitExpr) return false;
+    	assert false;
+    	return false;
 	}
      
 /*

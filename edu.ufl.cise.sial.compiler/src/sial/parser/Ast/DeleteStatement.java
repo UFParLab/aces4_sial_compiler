@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 76:  Statement ::= delete$ Ident AllocIndexListopt
+ *<li>Rule 78:  Statement ::= delete$ Ident AllocIndexListopt
  *</b>
  */
 public class DeleteStatement extends ASTNode implements IStatement

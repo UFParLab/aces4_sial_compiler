@@ -31,34 +31,34 @@ public class ScalarTable {
 	
 	BiMap<ScalarDec, Integer> scalarBiMap; // maps scalar names to 
 	                                       // index in scalar array
-	BiMap<String, Integer> intBiMap; //maps int names to index in integer array
+//	BiMap<String, Integer> intBiMap; //maps int names to index in integer array
 
 	BiMap<Double, Integer> doubleLiteralBiMap; //maps double literals to
 	                                 //index in scalar array
-	BiMap<Integer, Integer> intLiteralBiMap;  //maps int literals to 
+//	BiMap<Integer, Integer> intLiteralBiMap;  //maps int literals to 
 	                                 //index in int (or scalar) array
 	static ArrayList<Double> global_scalars;
  
 	ArrayList<Double> scalars; // scalar table
-	ArrayList<Integer> integers; // integer table.  
-	ArrayList<Integer> constants; //AcesHacks: for aces symbolic constants
+//	ArrayList<Integer> integers; // integer table.  
+//	ArrayList<Integer> constants; //AcesHacks: for aces symbolic constants
 	int nScalars; // number of scalars
-	int nIntegers; //number of ints
-	int nConstants; //number of constants
+//	int nIntegers; //number of ints
+//	int nConstants; //number of constants
 	
 	ScalarTable() {
 		scalarBiMap = HashBiMap.create();
-		intBiMap = HashBiMap.create();
+//		intBiMap = HashBiMap.create();
 		doubleLiteralBiMap = HashBiMap.create();
-		intLiteralBiMap = HashBiMap.create();
+//		intLiteralBiMap = HashBiMap.create();
 		
 		scalars = new ArrayList<Double>();
 		global_scalars = scalars;
-		integers = new ArrayList<Integer>();
-		constants = new ArrayList<Integer>();
+//		integers = new ArrayList<Integer>();
+//		constants = new ArrayList<Integer>();
 		nScalars = 0;
-		nIntegers = 0;
-		nConstants = 0;
+//		nIntegers = 0;
+//		nConstants = 0;
 	}
 	
 	public String toString(){  //currently shows only scalars,
@@ -74,29 +74,29 @@ public class ScalarTable {
 	}
 	
 	
-	public String constantsToString(){  //symbolic constant names
-		 StringBuilder sb = new StringBuilder();
-		 int size = intBiMap.size();
-		 sb.append(size);
-		 sb.append('\n');
-		 assert size == nConstants : "mismatch between intBiMap.size()=" + size +  " and nConstants=" + nConstants;
-		 BiMap<Integer,String> names = intBiMap.inverse();
-			for (int i = 0; i < size; i++){
-				sb.append(names.get(i) + '\n');  //NO LONGER -1
-			}
-		return sb.toString();
-	}
+//	public String constantsToString(){  //symbolic constant names
+//		 StringBuilder sb = new StringBuilder();
+//		 int size = intBiMap.size();
+//		 sb.append(size);
+//		 sb.append('\n');
+//		 assert size == nConstants : "mismatch between intBiMap.size()=" + size +  " and nConstants=" + nConstants;
+//		 BiMap<Integer,String> names = intBiMap.inverse();
+//			for (int i = 0; i < size; i++){
+//				sb.append(names.get(i) + '\n');  //NO LONGER -1
+//			}
+//		return sb.toString();
+//	}
 
-	//all of these getName and getIndex methods will fail
-	//with a null pointer exception if the object is not present.
-	public String getIntName(int index) {
-		return intBiMap.inverse().get(index);
-	}
-
-	public int getIntIndex(IDec dec) {
-		assert dec instanceof IntDec: dec.toString();
-		return intBiMap.get(((IntDec)dec).getName());
-	}
+//	//all of these getName and getIndex methods will fail
+//	//with a null pointer exception if the object is not present.
+//	public String getIntName(int index) {
+//		return intBiMap.inverse().get(index);
+//	}
+//
+//	public int getIntIndex(IDec dec) {
+//		assert dec instanceof IntDec: dec.toString();
+//		return intBiMap.get(((IntDec)dec).getName());
+//	}
 	
 
 	int addScalar(ScalarDec dec) {
@@ -128,14 +128,14 @@ public class ScalarTable {
 //		return addScalar(dec) + 1;
 //	}
 	
-	//AcesHack: constants go in the special constant array in the sip
-	//currently they cannot be given a value when assigned.
-	int addConstant(String name){
-		int index = nConstants++;
-		Integer oldVal = intBiMap.put(name, index);  //ADDED EXTRA FIELD TO DETECT SYMBOLIC CONSTANTS, NO LONGER THE NEGATIVE OF INDEX.
-		assert oldVal == null: "adding duplicate constant name";
-		return index;
-	}
+//	//AcesHack: constants go in the special constant array in the sip
+//	//currently they cannot be given a value when assigned.
+//	int addConstant(String name){
+//		int index = nConstants++;
+//		Integer oldVal = intBiMap.put(name, index);  //ADDED EXTRA FIELD TO DETECT SYMBOLIC CONSTANTS, NO LONGER THE NEGATIVE OF INDEX.
+//		assert oldVal == null: "adding duplicate constant name";
+//		return index;
+//	}
 
 
 	//if double literal already exists, return its index,
@@ -150,13 +150,15 @@ public class ScalarTable {
 		return index;
 	}
 	
+int getScalarSlot(ScalarDec dec){
+	return scalarBiMap.get(dec);
+}
 
-
-	// AcesHack: convert the int to a double and treat as double literal
-	int addIntLiteral(int value) {
-		double doubleValue = (double) value;
-		return addDoubleLiteral(doubleValue);
-	}
+//	// AcesHack: convert the int to a double and treat as double literal
+//	int addIntLiteral(int value) {
+//		double doubleValue = (double) value;
+//		return addDoubleLiteral(doubleValue);
+//	}
 
 	/* reads n values from input into this ScalarTable, n can be found in header */
 	public void read(int n, DataInput input) throws IOException{
@@ -167,15 +169,15 @@ public class ScalarTable {
 		}
 	}
 	
-	public void readConstants(SIADataInput input) throws IOException{
-	int nConstantsToRead = input.readInt();
-		for (int i = 0; i != nConstantsToRead; i++){
-			int index = input.readInt();
-			String name = input.readString();
-			Integer oldVal = intBiMap.put(name, index);  //insert negative of index  NOT NOW
-			assert oldVal == null;
-		}
-	}
+//	public void readConstants(SIADataInput input) throws IOException{
+//	int nConstantsToRead = input.readInt();
+//		for (int i = 0; i != nConstantsToRead; i++){
+//			int index = input.readInt();
+//			String name = input.readString();
+//			Integer oldVal = intBiMap.put(name, index);  //insert negative of index  NOT NOW
+//			assert oldVal == null;
+//		}
+//	}
 	
 	public void write(DataOutput out) throws IOException{
 		out.writeInt(nScalars);
@@ -186,16 +188,17 @@ public class ScalarTable {
 			}
 	}
 	
-	public void writeConstants(SIADataOutput output) throws IOException{
-		assert nConstants == intBiMap.size();
-		output.writeInt(nConstants);
-		BiMap<Integer, String> inverse = intBiMap.inverse();
-		for (int i = 0; i != nConstants; i++){
-			String name = inverse.get(i); //no longer need to negate constant index
-			//output.write(i);
-		    output.writeString(name);	
-		}
-	}
+//	public void writeConstants(SIADataOutput output) throws IOException{
+//		assert nConstants == intBiMap.size();
+//		output.writeInt(nConstants);
+//		BiMap<Integer, String> inverse = intBiMap.inverse();
+//		for (int i = 0; i != nConstants; i++){
+//			
+//			String name = inverse.get(i); //no longer need to negate constant index
+//			//output.write(i);
+//		    output.writeString(name);	
+//		}
+//	}
 	
 	
 	public static ScalarTable readScalarTable(SIADataInput input) throws IOException {

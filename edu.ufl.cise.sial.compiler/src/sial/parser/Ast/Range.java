@@ -7,10 +7,12 @@ import org.eclipse.imp.parser.IParser;
   import java.util.Date;
   import java.util.ArrayList;
   import java.util.List;
+  import sial.parser.context.ExpressionType.EType;
+  import java.util.EnumSet;
 
 /**
  *<b>
- *<li>Rule 48:  Range ::= RangeVal$RangeValStart ,$ RangeVal$RangeValEnd
+ *<li>Rule 50:  Range ::= RangeVal$RangeValStart ,$ RangeVal$RangeValEnd
  *</b>
  */
 public class Range extends ASTNode implements IRange

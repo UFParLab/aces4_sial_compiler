@@ -1,10 +1,10 @@
-#  Copyright (c) 2003-2010 University of Florida
+#  Copyright [c] 2003-2010 University of Florida
 import "aces_defs.sialx"
 import "common.sialx"
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  [at your option] any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,35 +16,35 @@ import "common.sialx"
 #
                            SIAL CCSD_RHF_SV1
 #
-    local Laixj(a,i,mu,j)   
+    local Laixj[a,i,mu,j]   
 # CIS vectors
 # -----------
 #
-      distributed VSTART1A1(a,i)
-      distributed VSTART1A2(a,i)
-      distributed VSTART1A3(a,i)
-      distributed VSTART1A4(a,i)
-      distributed VSTART1A5(a,i)
-      distributed VSTART1A6(a,i)
-      distributed VSTART1A7(a,i)
-      distributed VSTART1A8(a,i)
-      distributed VSTART1A9(a,i)
-      distributed VSTART1A10(a,i)
-      distributed VSTART1A11(a,i)
-      distributed VSTART1A12(a,i)
+      distributed VSTART1A1[a,i]
+      distributed VSTART1A2[a,i]
+      distributed VSTART1A3[a,i]
+      distributed VSTART1A4[a,i]
+      distributed VSTART1A5[a,i]
+      distributed VSTART1A6[a,i]
+      distributed VSTART1A7[a,i]
+      distributed VSTART1A8[a,i]
+      distributed VSTART1A9[a,i]
+      distributed VSTART1A10[a,i]
+      distributed VSTART1A11[a,i]
+      distributed VSTART1A12[a,i]
 #
-      distributed VSTART1B1(b,j)
-      distributed VSTART1B2(b,j)
-      distributed VSTART1B3(b,j)
-      distributed VSTART1B4(b,j)
-      distributed VSTART1B5(b,j)
-      distributed VSTART1B6(b,j)
-      distributed VSTART1B7(b,j)
-      distributed VSTART1B8(b,j)
-      distributed VSTART1B9(b,j)
-      distributed VSTART1B10(b,j)
-      distributed VSTART1B11(b,j)
-      distributed VSTART1B12(b,j)
+      distributed VSTART1B1[b,j]
+      distributed VSTART1B2[b,j]
+      distributed VSTART1B3[b,j]
+      distributed VSTART1B4[b,j]
+      distributed VSTART1B5[b,j]
+      distributed VSTART1B6[b,j]
+      distributed VSTART1B7[b,j]
+      distributed VSTART1B8[b,j]
+      distributed VSTART1B9[b,j]
+      distributed VSTART1B10[b,j]
+      distributed VSTART1B11[b,j]
+      distributed VSTART1B12[b,j]
 
 
 
@@ -172,21 +172,21 @@ import "common.sialx"
 #
       PARDO a, i, a1, i1 
 #
-            REQUEST T2old_aa(a,i,a1,i1) i1  
-            GET t1a_old(a1,i1) 
-            GET t1a_old(a1,i) 
-            GET t1a_old(a,i1) 
-            GET t1a_old(a,i) 
+            REQUEST T2old_aa[a,i,a1,i1] i1  
+            GET t1a_old[a1,i1] 
+            GET t1a_old[a1,i] 
+            GET t1a_old[a,i1] 
+            GET t1a_old[a,i] 
 # 
-            tai(a1,i1)                 = t1a_old(a1,i1) 
-            tmp1_aiai(a,i,a1,i1)       = t1a_old(a,i)^tai(a1,i1)  
-            tai(a1,i)                  = t1a_old(a1,i) 
-            tmp2_aiai(a,i,a1,i1)       = t1a_old(a,i1)^tai(a1,i)  
-            tmp1_aiai(a,i,a1,i1)      -= tmp2_aiai(a,i,a1,i1)  
+            tai[a1,i1]                 = t1a_old[a1,i1] 
+            tmp1_aiai[a,i,a1,i1]       = t1a_old[a,i]^tai[a1,i1]  
+            tai[a1,i]                  = t1a_old[a1,i] 
+            tmp2_aiai[a,i,a1,i1]       = t1a_old[a,i1]^tai[a1,i]  
+            tmp1_aiai[a,i,a1,i1]      -= tmp2_aiai[a,i,a1,i1]  
 #
-            tmp1_aiai(a,i,a1,i1)      *= 0.5  
-            tmp1_aiai(a,i,a1,i1)      += T2old_aa(a,i,a1,i1) 
-            PREPARE Taup_aa(a,i,a1,i1) = tmp1_aiai(a,i,a1,i1)  
+            tmp1_aiai[a,i,a1,i1]      *= 0.5  
+            tmp1_aiai[a,i,a1,i1]      += T2old_aa[a,i,a1,i1] 
+            PREPARE Taup_aa[a,i,a1,i1] = tmp1_aiai[a,i,a1,i1]  
 #
       ENDPARDO a, i, a1, i1 
 #
@@ -202,19 +202,19 @@ import "common.sialx"
 #
       PARDO a, i, b, j 
 #
-            REQUEST T2old_ab(a,i,b,j) j  
-            GET t1a_old(a,i) 
-            GET t1a_old(b,j) 
-            tai(a,i) = t1a_old(a,i) 
+            REQUEST T2old_ab[a,i,b,j] j  
+            GET t1a_old[a,i] 
+            GET t1a_old[b,j] 
+            tai[a,i] = t1a_old[a,i] 
 #
-            tmp1_aibj(a,i,b,j)       = tai(a,i)^t1a_old(b,j)  
-            tmp2_aibj(a,i,b,j)       = tmp1_aibj(a,i,b,j)  
-            tmp2_aibj(a,i,b,j)      *= 0.5  
+            tmp1_aibj[a,i,b,j]       = tai[a,i]^t1a_old[b,j]  
+            tmp2_aibj[a,i,b,j]       = tmp1_aibj[a,i,b,j]  
+            tmp2_aibj[a,i,b,j]      *= 0.5  
 #
-            tmp1_aibj(a,i,b,j)      += T2old_ab(a,i,b,j) 
-            tmp2_aibj(a,i,b,j)      += T2old_ab(a,i,b,j) 
-            PREPARE Tau_ab(a,i,b,j)  = tmp1_aibj(a,i,b,j)  
-            PREPARE Taup_ab(a,i,b,j) = tmp2_aibj(a,i,b,j)  
+            tmp1_aibj[a,i,b,j]      += T2old_ab[a,i,b,j] 
+            tmp2_aibj[a,i,b,j]      += T2old_ab[a,i,b,j] 
+            PREPARE Tau_ab[a,i,b,j]  = tmp1_aibj[a,i,b,j]  
+            PREPARE Taup_ab[a,i,b,j] = tmp2_aibj[a,i,b,j]  
 #
       ENDPARDO a, i, b, j 
 #
@@ -230,20 +230,20 @@ import "common.sialx"
 #
       PARDO a, i, a1, i1 
 #
-            REQUEST T2old_aa(a,i,a1,i1) i1  
-            GET t1a_old(a1,i1) 
-            GET t1a_old(a1,i) 
-            GET t1a_old(a,i1) 
-            GET t1a_old(a,i) 
+            REQUEST T2old_aa[a,i,a1,i1] i1  
+            GET t1a_old[a1,i1] 
+            GET t1a_old[a1,i] 
+            GET t1a_old[a,i1] 
+            GET t1a_old[a,i] 
 #
-            tai(a1,i1)                 = t1a_old(a1,i1) 
-            tmp1_aiai(a,i,a1,i1)       = t1a_old(a,i)^tai(a1,i1)  
-            tai(a1,i)                  = t1a_old(a1,i) 
-            tmp2_aiai(a,i,a1,i1)       = t1a_old(a,i1)^tai(a1,i)  
-            tmp1_aiai(a,i,a1,i1)      -= tmp2_aiai(a,i,a1,i1) 
-            tmp1_aiai(a,i,a1,i1)      *= 0.5  
-            tmp1_aiai(a,i,a1,i1)      += T2old_aa(a,i,a1,i1) 
-            PREPARE Taup_aa(a,i,a1,i1) = tmp1_aiai(a,i,a1,i1)  
+            tai[a1,i1]                 = t1a_old[a1,i1] 
+            tmp1_aiai[a,i,a1,i1]       = t1a_old[a,i]^tai[a1,i1]  
+            tai[a1,i]                  = t1a_old[a1,i] 
+            tmp2_aiai[a,i,a1,i1]       = t1a_old[a,i1]^tai[a1,i]  
+            tmp1_aiai[a,i,a1,i1]      -= tmp2_aiai[a,i,a1,i1] 
+            tmp1_aiai[a,i,a1,i1]      *= 0.5  
+            tmp1_aiai[a,i,a1,i1]      += T2old_aa[a,i,a1,i1] 
+            PREPARE Taup_aa[a,i,a1,i1] = tmp1_aiai[a,i,a1,i1]  
 #
       ENDPARDO a, i, a1, i1 
 #
@@ -258,15 +258,15 @@ import "common.sialx"
 #
       PARDO a, i, b, j 
 #
-            REQUEST T2old_ab(a,i,b,j) j  
-            GET t1a_old(a,i) 
-            GET t1a_old(b,j) 
-            tai(a,i) = t1a_old(a,i) 
+            REQUEST T2old_ab[a,i,b,j] j  
+            GET t1a_old[a,i] 
+            GET t1a_old[b,j] 
+            tai[a,i] = t1a_old[a,i] 
 # 
-            tmp1_aibj(a,i,b,j)       = tai(a,i)^t1a_old(b,j)  
-            tmp1_aibj(a,i,b,j)      *= 0.5  
-            tmp1_aibj(a,i,b,j)      += T2old_ab(a,i,b,j) 
-            PREPARE Taup_ab(a,i,b,j) = tmp1_aibj(a,i,b,j)  
+            tmp1_aibj[a,i,b,j]       = tai[a,i]^t1a_old[b,j]  
+            tmp1_aibj[a,i,b,j]      *= 0.5  
+            tmp1_aibj[a,i,b,j]      += T2old_ab[a,i,b,j] 
+            PREPARE Taup_ab[a,i,b,j] = tmp1_aibj[a,i,b,j]  
 #
       ENDPARDO a, i, b, j 
 #
@@ -299,26 +299,26 @@ import "common.sialx"
 #
       PARDO a, a2, i
 #     
-               allocate LWiaai(*,a,a2,i)
+               allocate LWiaai[*,a,a2,i]
 #     
                DO a1
 #     
-                  REQUEST            Vaaai(a1,a,a2,i) i
-                  REQUEST            Vaaai(a2,a,a1,i) i
-                  GET                t1a_old(a2,i)
+                  REQUEST            Vaaai[a1,a,a2,i] i
+                  REQUEST            Vaaai[a2,a,a1,i] i
+                  GET                t1a_old[a2,i]
 #     
-                  taaai(a1,a,a2,i) = Vaaai(a1,a,a2,i)
-                  t1aaai(a1,a,a2,i)= Vaaai(a2,a,a1,i)
-                  taaai(a1,a,a2,i)-= t1aaai(a1,a,a2,i)
+                  taaai[a1,a,a2,i] = Vaaai[a1,a,a2,i]
+                  t1aaai[a1,a,a2,i]= Vaaai[a2,a,a1,i]
+                  taaai[a1,a,a2,i]-= t1aaai[a1,a,a2,i]
 #     
-                  Taa(a,a1)        = taaai(a1,a,a2,i)*t1a_old(a2,i)
-                  PUT Fae_a(a,a1) += Taa(a,a1)
+                  Taa[a,a1]        = taaai[a1,a,a2,i]*t1a_old[a2,i]
+                  PUT Fae_a[a,a1] += Taa[a,a1]
 #     
                   DO i1
 #
-                     GET                  t1a_old(a1,i1)
-                     tiaai(i1,a,a2,i)   = taaai(a1,a,a2,i)*t1a_old(a1,i1)
-                     LWiaai(i1,a,a2,i) += tiaai(i1,a,a2,i)
+                     GET                  t1a_old[a1,i1]
+                     tiaai[i1,a,a2,i]   = taaai[a1,a,a2,i]*t1a_old[a1,i1]
+                     LWiaai[i1,a,a2,i] += tiaai[i1,a,a2,i]
 #
                   ENDDO i1
 #
@@ -326,62 +326,62 @@ import "common.sialx"
 #
                DO i1
 #
-                  Taiai(a2,i,a,i1)          = LWiaai(i1,a,a2,i)
-                  PREPARE e5aiai(a2,i,a,i1) = Taiai(a2,i,a,i1)
+                  Taiai[a2,i,a,i1]          = LWiaai[i1,a,a2,i]
+                  PREPARE e5aiai[a2,i,a,i1] = Taiai[a2,i,a,i1]
 #
                ENDDO i1
 #
-               deallocate LWiaai(*,a,a2,i)
+               deallocate LWiaai[*,a,a2,i]
 #
       ENDPARDO a, a2, i
 #
       PARDO a, b, j
 #
-            allocate LWaibj(a,*,b,j)
+            allocate LWaibj[a,*,b,j]
 #
             DO a1
 #
-               REQUEST            Vaaai(a1,a,b,j) j
-               GET                t1a_old(b,j)
+               REQUEST            Vaaai[a1,a,b,j] j
+               GET                t1a_old[b,j]
 #
                DO i
 #
-                  GET                t1a_old(a1,i)
-                  taibj(a,i,b,j)   = Vaaai(a1,a,b,j)*t1a_old(a1,i)
-                  LWaibj(a,i,b,j) += taibj(a,i,b,j)
+                  GET                t1a_old[a1,i]
+                  taibj[a,i,b,j]   = Vaaai[a1,a,b,j]*t1a_old[a1,i]
+                  LWaibj[a,i,b,j] += taibj[a,i,b,j]
 #
                ENDDO i
 #
-               Taa(a,a1)        = Vaaai(a1,a,b,j)*t1a_old(b,j)
-               PUT Fae_a(a,a1) += Taa(a,a1)
+               Taa[a,a1]        = Vaaai[a1,a,b,j]*t1a_old[b,j]
+               PUT Fae_a[a,a1] += Taa[a,a1]
 #
             ENDDO a1
 #
             DO i
 #
-               Taibj(a,i,b,j)          = LWaibj(a,i,b,j)
-               T1aibj(b,j,a,i)         = LWaibj(a,i,b,j)
-               PREPARE e6aibj(a,i,b,j) = Taibj(a,i,b,j)
-               PREPARE e5aibj(b,j,a,i) = T1aibj(b,j,a,i) 
+               Taibj[a,i,b,j]          = LWaibj[a,i,b,j]
+               T1aibj[b,j,a,i]         = LWaibj[a,i,b,j]
+               PREPARE e6aibj[a,i,b,j] = Taibj[a,i,b,j]
+               PREPARE e5aibj[b,j,a,i] = T1aibj[b,j,a,i] 
 #
             ENDDO i
 #
-            deallocate LWaibj(a,*,b,j)
+            deallocate LWaibj[a,*,b,j]
 #
       ENDPARDO a, b, j
 #
       PARDO a1, i, b, j
 #
-           REQUEST Vpiqj(a1,i,b,j) j
+           REQUEST Vpiqj[a1,i,b,j] j
 #
            DO a
 #
-              REQUEST            Taup_ab(a,i,b,j) j
+              REQUEST            Taup_ab[a,i,b,j] j
 #
-              Taa(a,a1)        = Taup_ab(a,i,b,j)*Vpiqj(a1,i,b,j)
-              Taa(a,a1)       *= -1.0
+              Taa[a,a1]        = Taup_ab[a,i,b,j]*Vpiqj[a1,i,b,j]
+              Taa[a,a1]       *= -1.0
 #
-              PUT Fae_a(a,a1) += Taa(a,a1)
+              PUT Fae_a[a,a1] += Taa[a,a1]
 #
            ENDDO a
 #
@@ -389,16 +389,16 @@ import "common.sialx"
 #
       PARDO a1, i, a2, i1
 #
-           REQUEST VSpipi(a1,i1,a2,i) i
+           REQUEST VSpipi[a1,i1,a2,i] i
 #
            DO a
 #
-               REQUEST Taup_aa(a,i,a2,i1) i
+               REQUEST Taup_aa[a,i,a2,i1] i
 #
-               Taa(a,a1)        = Taup_aa(a,i,a2,i1)*VSpipi(a1,i1,a2,i)
-               Taa(a,a1)       *= 0.5
+               Taa[a,a1]        = Taup_aa[a,i,a2,i1]*VSpipi[a1,i1,a2,i]
+               Taa[a,a1]       *= 0.5
 #
-               PUT Fae_a(a,a1) += Taa(a,a1)
+               PUT Fae_a[a,a1] += Taa[a,a1]
 #
             ENDDO a
 #
@@ -416,18 +416,18 @@ import "common.sialx"
 #
       PARDO a, i, b
 #
-            allocate LWjbai(*,b,a,i)
+            allocate LWjbai[*,b,a,i]
 #              
             DO b1
 #           
-               REQUEST Vaaai(b1,b,a,i) i
-               GET     t1a_old(a,i) 
+               REQUEST Vaaai[b1,b,a,i] i
+               GET     t1a_old[a,i] 
 #
                DO j  
 #
-                  GET                t1a_old(b1,j)
-                  tjbai(j,b,a,i)   = Vaaai(b1,b,a,i)*t1a_old(b1,j)
-                  LWjbai(j,b,a,i) += tjbai(j,b,a,i)
+                  GET                t1a_old[b1,j]
+                  tjbai[j,b,a,i]   = Vaaai[b1,b,a,i]*t1a_old[b1,j]
+                  LWjbai[j,b,a,i] += tjbai[j,b,a,i]
 #    
                ENDDO j
 #    
@@ -435,12 +435,12 @@ import "common.sialx"
 #     
             DO j
 #        
-               Taibj(a,i,b,j)          = LWjbai(j,b,a,i)
-               PREPARE e5aibj(a,i,b,j) = Taibj(a,i,b,j)
+               Taibj[a,i,b,j]          = LWjbai[j,b,a,i]
+               PREPARE e5aibj[a,i,b,j] = Taibj[a,i,b,j]
 #     
             ENDDO j
 #    
-            deallocate LWjbai(*,b,a,i)
+            deallocate LWjbai[*,b,a,i]
 #    
       ENDPARDO a, i, b
 #
@@ -467,16 +467,16 @@ import "common.sialx"
 #
       PARDO i, a 
 #
-            Tme_a(i,a) = 0.0
+            Tme_a[i,a] = 0.0
 # 
             DO i1 
             DO a1 
 #
-               REQUEST VSpipi(a,i,a1,i1) i1  
-               GET     t1a_old(a1,i1) 
+               REQUEST VSpipi[a,i,a1,i1] i1  
+               GET     t1a_old[a1,i1] 
 #
-               Tia(i,a)    = VSpipi(a,i,a1,i1)*t1a_old(a1,i1) 
-               Tme_a(i,a) += Tia(i,a) 
+               Tia[i,a]    = VSpipi[a,i,a1,i1]*t1a_old[a1,i1] 
+               Tme_a[i,a] += Tia[i,a] 
 #
             ENDDO a1 
             ENDDO i1 
@@ -484,16 +484,16 @@ import "common.sialx"
             DO j 
             DO b 
 #
-               REQUEST Vpiqj(a,i,b,j) j  
-               GET     t1a_old(b,j) 
+               REQUEST Vpiqj[a,i,b,j] j  
+               GET     t1a_old[b,j] 
 #
-               Tia(i,a)    = Vpiqj(a,i,b,j)*t1a_old(b,j) 
-               Tme_a(i,a) += Tia(i,a) 
+               Tia[i,a]    = Vpiqj[a,i,b,j]*t1a_old[b,j] 
+               Tme_a[i,a] += Tia[i,a] 
 #
             ENDDO b 
             ENDDO j 
 #
-            PUT Fme_a(i,a) = Tme_a(i,a) 
+            PUT Fme_a[i,a] = Tme_a[i,a] 
 #
       ENDPARDO i, a 
 # 
@@ -509,50 +509,50 @@ import "common.sialx"
 #
       PARDO i1, i, a, i2
 #
-            REQUEST VSpipi(a,i2,i,i1) i1  
-            GET t1a_old(a,i2) 
+            REQUEST VSpipi[a,i2,i,i1] i1  
+            GET t1a_old[a,i2] 
 #
-            Tii(i1,i)        = VSpipi(a,i2,i,i1)*t1a_old(a,i2) 
-            PUT Fmi_a(i1,i) += Tii(i1,i) 
+            Tii[i1,i]        = VSpipi[a,i2,i,i1]*t1a_old[a,i2] 
+            PUT Fmi_a[i1,i] += Tii[i1,i] 
 #
       ENDPARDO i1, i, a, i2  
 #
       PARDO a, a2, i2  
 #
-            allocate L3aiai(a2,*,a,i2) 
+            allocate L3aiai[a2,*,a,i2] 
 #
             DO i1 
 #
-               REQUEST VSpipi(a2,i1,a,i2) i2 
-               L3aiai(a2,i1,a,i2) = VSpipi(a2,i1,a,i2) 
+               REQUEST VSpipi[a2,i1,a,i2] i2 
+               L3aiai[a2,i1,a,i2] = VSpipi[a2,i1,a,i2] 
 #
             ENDDO i1 
 #
             DO i   
 #
-               REQUEST Taup_aa(a2,i,a,i2) i2 
+               REQUEST Taup_aa[a2,i,a,i2] i2 
 # 
                DO i1    
 #
-                  Tii(i1,i)        = L3aiai(a2,i1,a,i2)*Taup_aa(a2,i,a,i2) 
-                  Tii(i1,i)       *= 0.5 
-                  PUT Fmi_a(i1,i) += Tii(i1,i) 
+                  Tii[i1,i]        = L3aiai[a2,i1,a,i2]*Taup_aa[a2,i,a,i2] 
+                  Tii[i1,i]       *= 0.5 
+                  PUT Fmi_a[i1,i] += Tii[i1,i] 
 #
                ENDDO i1  
 #
             ENDDO i   
 #
-            deallocate L3aiai(a2,*,a,i2) 
+            deallocate L3aiai[a2,*,a,i2] 
 #
       ENDPARDO a, a2, i2  
 #
       PARDO i1, i, b, j  
 #
-            REQUEST Vpiqj(i,i1,b,j) j  
-            GET t1a_old(b,j) 
+            REQUEST Vpiqj[i,i1,b,j] j  
+            GET t1a_old[b,j] 
 #
-            Tii(i1,i)        = Vpiqj(i,i1,b,j)*t1a_old(b,j) 
-            PUT Fmi_a(i1,i) += Tii(i1,i) 
+            Tii[i1,i]        = Vpiqj[i,i1,b,j]*t1a_old[b,j] 
+            PUT Fmi_a[i1,i] += Tii[i1,i] 
 #
       ENDPARDO i1, i, b, j  
 #
@@ -560,11 +560,11 @@ import "common.sialx"
 #
             DO a 
 #
-               REQUEST Vpiqj(a,i1,b,j)  j  
-               REQUEST Taup_ab(a,i,b,j) j 
+               REQUEST Vpiqj[a,i1,b,j]  j  
+               REQUEST Taup_ab[a,i,b,j] j 
  
-               Tii(i1,i)        = Taup_ab(a,i,b,j)*Vpiqj(a,i1,b,j) 
-               PUT Fmi_a(i1,i) += Tii(i1,i) 
+               Tii[i1,i]        = Taup_ab[a,i,b,j]*Vpiqj[a,i1,b,j] 
+               PUT Fmi_a[i1,i] += Tii[i1,i] 
 #
             ENDDO a 
 #
@@ -585,188 +585,188 @@ import "common.sialx"
 #
       PARDO a, i
 #
-            tai(a,i) = 0.0
+            tai[a,i] = 0.0
 #
             DO i1
 #
-               GET t1a_old(a,i1)
-               GET Fmi_a(i1,i)
+               GET t1a_old[a,i1]
+               GET Fmi_a[i1,i]
 #
-               t1ai(a,i) = t1a_old(a,i1)*Fmi_a(i1,i)
-               tai(a,i) -= t1ai(a,i)
+               t1ai[a,i] = t1a_old[a,i1]*Fmi_a[i1,i]
+               tai[a,i] -= t1ai[a,i]
 #
             ENDDO i1
 #
             DO b
             DO j
 #
-               REQUEST T2old_ab(a,i,b,j) j
-               REQUEST Viaai(i,a,b,j) j
-               GET Fme_a(j,b)
-               GET t1a_old(b,j)
+               REQUEST T2old_ab[a,i,b,j] j
+               REQUEST Viaai[i,a,b,j] j
+               GET Fme_a[j,b]
+               GET t1a_old[b,j]
 #
-               t1ai(a,i) = T2old_ab(a,i,b,j)*Fme_a(j,b)
-               tai(a,i) += t1ai(a,i)
+               t1ai[a,i] = T2old_ab[a,i,b,j]*Fme_a[j,b]
+               tai[a,i] += t1ai[a,i]
 #
-               t2ai(a,i)  = Viaai(i,a,b,j)*t1a_old(b,j)
-               tai(a,i) += t2ai(a,i)
+               t2ai[a,i]  = Viaai[i,a,b,j]*t1a_old[b,j]
+               tai[a,i] += t2ai[a,i]
 #
             ENDDO j
             ENDDO b
 #
             DO a1
 #
-               GET t1a_old(a1,i)
-               GET Fae_a(a,a1)
+               GET t1a_old[a1,i]
+               GET Fae_a[a,a1]
 #
-               t1ai(a,i) = t1a_old(a1,i)*Fae_a(a,a1)
-               tai(a,i) += t1ai(a,i)
+               t1ai[a,i] = t1a_old[a1,i]*Fae_a[a,a1]
+               tai[a,i] += t1ai[a,i]
 #
                DO i1
 #
-                  REQUEST T2old_aa(a,i,a1,i1) i1
-                  REQUEST Vaaii(a,a1,i1,i) i
-                  REQUEST Viaai(i1,a1,a,i) i
-                  GET Fme_a(i1,a1)
-                  GET t1a_old(a1,i1)
+                  REQUEST T2old_aa[a,i,a1,i1] i1
+                  REQUEST Vaaii[a,a1,i1,i] i
+                  REQUEST Viaai[i1,a1,a,i] i
+                  GET Fme_a[i1,a1]
+                  GET t1a_old[a1,i1]
 #
-                  t1ai(a,i) = T2old_aa(a,i,a1,i1)*Fme_a(i1,a1)
-                  tai(a,i) += t1ai(a,i)
+                  t1ai[a,i] = T2old_aa[a,i,a1,i1]*Fme_a[i1,a1]
+                  tai[a,i] += t1ai[a,i]
 #
-                  Tpppp(i1,a1,a,i)  = Vaaii(a,a1,i1,i)
-                  Tpppp(i1,a1,a,i) -= Viaai(i1,a1,a,i)
+                  Tpppp[i1,a1,a,i]  = Vaaii[a,a1,i1,i]
+                  Tpppp[i1,a1,a,i] -= Viaai[i1,a1,a,i]
 #
-                  t2ai(a,i) = Tpppp(i1,a1,a,i)*t1a_old(a1,i1)
-                  tai(a,i) -= t2ai(a,i)
+                  t2ai[a,i] = Tpppp[i1,a1,a,i]*t1a_old[a1,i1]
+                  tai[a,i] -= t2ai[a,i]
 #
                ENDDO i1
 #
             ENDDO a1
 #
-            PUT t1a_new(a,i) += tai(a,i)
+            PUT t1a_new[a,i] += tai[a,i]
 #
       ENDPARDO a, i
 #
       PARDO a1, a2, i1
 #
-            allocate L4aiai(a1,*,a2,i1)
+            allocate L4aiai[a1,*,a2,i1]
 #
             DO i
 #
-               REQUEST T2old_aa(a1,i,a2,i1) i1
-               L4aiai(a1,i,a2,i1) = T2old_aa(a1,i,a2,i1)
+               REQUEST T2old_aa[a1,i,a2,i1] i1
+               L4aiai[a1,i,a2,i1] = T2old_aa[a1,i,a2,i1]
 #
             ENDDO i
 #
             DO a
 #
-               REQUEST Vaaai(a2,a,a1,i1)   i1
-               REQUEST Vaaai(a1,a,a2,i1)   i1
-               taaai(a2,a,a1,i1) = Vaaai(a2,a,a1,i1) 
-               t1aaai(a2,a,a1,i1)= Vaaai(a1,a,a2,i1) 
-               taaai(a2,a,a1,i1)-= t1aaai(a2,a,a1,i1) 
+               REQUEST Vaaai[a2,a,a1,i1]   i1
+               REQUEST Vaaai[a1,a,a2,i1]   i1
+               taaai[a2,a,a1,i1] = Vaaai[a2,a,a1,i1] 
+               t1aaai[a2,a,a1,i1]= Vaaai[a1,a,a2,i1] 
+               taaai[a2,a,a1,i1]-= t1aaai[a2,a,a1,i1] 
 #
                DO i
 #
-                  tai(a,i)  = taaai(a2,a,a1,i1)*L4aiai(a1,i,a2,i1)
-                  tai(a,i) *= -0.5
+                  tai[a,i]  = taaai[a2,a,a1,i1]*L4aiai[a1,i,a2,i1]
+                  tai[a,i] *= -0.5
 #
-                  PUT t1a_new(a,i) += tai(a,i)
+                  PUT t1a_new[a,i] += tai[a,i]
 #
                ENDDO i
 #
             ENDDO a
 #
-            deallocate L4aiai(a1,*,a2,i1)
+            deallocate L4aiai[a1,*,a2,i1]
 #
       ENDPARDO a1, a2, i1
 #
       PARDO a1, i1, i2
 #
-            allocate L1aiii(a1,i2,*,i1)
+            allocate L1aiii[a1,i2,*,i1]
 #
             DO i
 #
-               REQUEST VSpipi(a1,i2,i,i1) i1
-               L1aiii(a1,i2,i,i1) = VSpipi(a1,i2,i,i1)
+               REQUEST VSpipi[a1,i2,i,i1] i1
+               L1aiii[a1,i2,i,i1] = VSpipi[a1,i2,i,i1]
 #
             ENDDO i
 #
             DO a
 #
-               REQUEST T2old_aa(a,i1,a1,i2) i1
+               REQUEST T2old_aa[a,i1,a1,i2] i1
 #
                DO i
 #
-                  tai(a,i)  = L1aiii(a1,i2,i,i1)*T2old_aa(a,i1,a1,i2)
-                  tai(a,i) *= -0.5
+                  tai[a,i]  = L1aiii[a1,i2,i,i1]*T2old_aa[a,i1,a1,i2]
+                  tai[a,i] *= -0.5
 #
-                  PUT t1a_new(a,i) += tai(a,i)
+                  PUT t1a_new[a,i] += tai[a,i]
 #
                ENDDO i
 #
             ENDDO a
 #
-            deallocate L1aiii(a1,i2,*,i1)
+            deallocate L1aiii[a1,i2,*,i1]
 #
       ENDPARDO a1, i1, i2
 #
       PARDO a1, b, j
 #
-            allocate L1aibj(a1,*,b,j)
+            allocate L1aibj[a1,*,b,j]
 #
             DO i
 #
-               REQUEST T2old_ab(a1,i,b,j) j
-               L1aibj(a1,i,b,j) = T2old_ab(a1,i,b,j)
+               REQUEST T2old_ab[a1,i,b,j] j
+               L1aibj[a1,i,b,j] = T2old_ab[a1,i,b,j]
 #
             ENDDO i
 #
             DO a
 #
-               REQUEST Vaaai(a1,a,b,j) j
+               REQUEST Vaaai[a1,a,b,j] j
 #
                DO i
 #
-                  tai(a,i)  = Vaaai(a1,a,b,j)*L1aibj(a1,i,b,j)
+                  tai[a,i]  = Vaaai[a1,a,b,j]*L1aibj[a1,i,b,j]
 #
-                  PUT t1a_new(a,i) += tai(a,i)
+                  PUT t1a_new[a,i] += tai[a,i]
 #
                ENDDO i
 #
             ENDDO a
 #
-            deallocate L1aibj(a1,*,b,j)
+            deallocate L1aibj[a1,*,b,j]
 #
       ENDPARDO a1, b, j
 #
       PARDO b, j, i1
 #
-            allocate L1iibj(*,i1,b,j)
+            allocate L1iibj[*,i1,b,j]
 #
             DO i
 #
-               REQUEST Vpiqj(i,i1,b,j) j
-               L1iibj(i,i1,b,j) = Vpiqj(i,i1,b,j)
+               REQUEST Vpiqj[i,i1,b,j] j
+               L1iibj[i,i1,b,j] = Vpiqj[i,i1,b,j]
 #
             ENDDO i
 #
             DO a
 #
-               REQUEST T2old_ab(a,i1,b,j) j
+               REQUEST T2old_ab[a,i1,b,j] j
 #
                DO i
 #
-                  tai(a,i)  = L1iibj(i,i1,b,j)*T2old_ab(a,i1,b,j)
-                  tai(a,i) *= -1.0
+                  tai[a,i]  = L1iibj[i,i1,b,j]*T2old_ab[a,i1,b,j]
+                  tai[a,i] *= -1.0
 #
-                  PUT t1a_new(a,i) += tai(a,i)
+                  PUT t1a_new[a,i] += tai[a,i]
 #
                ENDDO i
 #
             ENDDO a
 #
-            deallocate L1iibj(*,i1,b,j)
+            deallocate L1iibj[*,i1,b,j]
 #
       ENDPARDO b, j, i1
 #
@@ -784,23 +784,23 @@ import "common.sialx"
       sip_barrier
       PARDO i, i1, j, j1
 #
-            REQUEST                    Vpiqj(i1,i,j1,j) j
-            Tiijj(i1,i,j1,j)         = Vpiqj(i1,i,j1,j)
-            PUT Wminj_ab(i1,i,j1,j) += Tiijj(i1,i,j1,j)
+            REQUEST                    Vpiqj[i1,i,j1,j] j
+            Tiijj[i1,i,j1,j]         = Vpiqj[i1,i,j1,j]
+            PUT Wminj_ab[i1,i,j1,j] += Tiijj[i1,i,j1,j]
 #
       ENDPARDO i, i1, j, j1
 #
       PARDO i,i1,b,j1
 #
-         REQUEST Vpiqj(i,i1,b,j1) j1
+         REQUEST Vpiqj[i,i1,b,j1] j1
 
          DO j
 #
-            GET                        t1a_old(b,j)
-            Tiijj(i1,i,j1,j)         = Vpiqj(i,i1,b,j1)*t1a_old(b,j)
-            T1iijj(j1,j,i1,i)        = Tiijj(i1,i,j1,j)  
-            PUT Wminj_ab(i1,i,j1,j) += Tiijj(i1,i,j1,j)
-            PUT Wminj_ab(j1,j,i1,i) += T1iijj(j1,j,i1,i)
+            GET                        t1a_old[b,j]
+            Tiijj[i1,i,j1,j]         = Vpiqj[i,i1,b,j1]*t1a_old[b,j]
+            T1iijj[j1,j,i1,i]        = Tiijj[i1,i,j1,j]  
+            PUT Wminj_ab[i1,i,j1,j] += Tiijj[i1,i,j1,j]
+            PUT Wminj_ab[j1,j,i1,i] += T1iijj[j1,j,i1,i]
 #
          ENDDO j
 #
@@ -808,15 +808,15 @@ import "common.sialx"
 #
       PARDO i1, j1, a, b
 #
-         REQUEST Vpiqj(a,i1,b,j1) j1
+         REQUEST Vpiqj[a,i1,b,j1] j1
 #
          DO j
          DO i
 #
-            REQUEST                    Tau_ab(a,i,b,j)  j
-            Tiijj(i1,i,j1,j)         = Tau_ab(a,i,b,j)*Vpiqj(a,i1,b,j1)
-            Tiijj(i1,i,j1,j)        *= 0.5
-            PUT Wminj_ab(i1,i,j1,j) += Tiijj(i1,i,j1,j)
+            REQUEST                    Tau_ab[a,i,b,j]  j
+            Tiijj[i1,i,j1,j]         = Tau_ab[a,i,b,j]*Vpiqj[a,i1,b,j1]
+            Tiijj[i1,i,j1,j]        *= 0.5
+            PUT Wminj_ab[i1,i,j1,j] += Tiijj[i1,i,j1,j]
 #
          ENDDO i
          ENDDO j
@@ -826,14 +826,14 @@ import "common.sialx"
 #
       PARDO i1, j1, a, b
 #
-            REQUEST Tau_ab(a,i1,b,j1) j1
+            REQUEST Tau_ab[a,i1,b,j1] j1
 #
             DO i
             DO j
 #
-               GET                          Wminj_ab(i1,i,j1,j)
-               T1aibj(a,i,b,j)            = Tau_ab(a,i1,b,j1)*Wminj_ab(i1,i,j1,j)
-               PREPARE T2new_ab(a,i,b,j) += T1aibj(a,i,b,j)
+               GET                          Wminj_ab[i1,i,j1,j]
+               T1aibj[a,i,b,j]            = Tau_ab[a,i1,b,j1]*Wminj_ab[i1,i,j1,j]
+               PREPARE T2new_ab[a,i,b,j] += T1aibj[a,i,b,j]
 #
             ENDDO j
             ENDDO i
@@ -861,10 +861,10 @@ import "common.sialx"
 #
 # In PROCEDURE T2NEWAB the new amplitudes T2new_ab are computed. Contributions 
 # involving large two-particle intermediates are computed in the corresponding  
-# procedures where these intermediates(temp) are computed. Thus the 
+# procedures where these intermediates[temp] are computed. Thus the 
 # intermediate Wminj is stored and its contribution computed here.  
 #
-# Contributions coming from P_(ij)P_(ab)t^e_i t^a_m <mb||ej> are computed 
+# Contributions coming from P_[ij]P_[ab]t^e_i t^a_m <mb||ej> are computed 
 # elsewhere. 
 #
       PROC T2NEWAB    
@@ -872,130 +872,130 @@ import "common.sialx"
 #
       PARDO i, b, j 
 #
-            allocate Liibj(*,i,b,j) 
-            allocate L1aibj(*,i,b,j)   
+            allocate Liibj[*,i,b,j] 
+            allocate L1aibj[*,i,b,j]   
 #
             DO i1 
 #
-               REQUEST           Vpiqj(i1,i,b,j) j 
-               Liibj(i1,i,b,j) = Vpiqj(i1,i,b,j) 
+               REQUEST           Vpiqj[i1,i,b,j] j 
+               Liibj[i1,i,b,j] = Vpiqj[i1,i,b,j] 
 #
             ENDDO i1 
 #
             DO a1 
 #
-               REQUEST            T2old_ab(a1,i,b,j) j 
-               L1aibj(a1,i,b,j) = T2old_ab(a1,i,b,j) 
+               REQUEST            T2old_ab[a1,i,b,j] j 
+               L1aibj[a1,i,b,j] = T2old_ab[a1,i,b,j] 
 #
             ENDDO a1 
 #
             DO a 
 #
-               REQUEST          Vpiqj(a,i,b,j) j 
-               Taibj(a,i,b,j) = Vpiqj(a,i,b,j)   
-               Taibj(a,i,b,j)*= 0.5  
+               REQUEST          Vpiqj[a,i,b,j] j 
+               Taibj[a,i,b,j] = Vpiqj[a,i,b,j]   
+               Taibj[a,i,b,j]*= 0.5  
 #
                DO i1 
 #
-                  GET t1a_old(a,i1) 
+                  GET t1a_old[a,i1] 
 #
-                  T1aibj(a,i,b,j) = Liibj(i1,i,b,j)*t1a_old(a,i1) 
-                  Taibj(a,i,b,j) -= T1aibj(a,i,b,j) 
+                  T1aibj[a,i,b,j] = Liibj[i1,i,b,j]*t1a_old[a,i1] 
+                  Taibj[a,i,b,j] -= T1aibj[a,i,b,j] 
 #
                ENDDO i1 
 #
                DO a1 
 #
-                  GET Fae_a(a,a1) 
-                  tmp_aa(a,a1) = Fae_a(a,a1)    
+                  GET Fae_a[a,a1] 
+                  tmp_aa[a,a1] = Fae_a[a,a1]    
 #
                   DO i1 
 #
-                     GET t1a_old(a,i1) 
-                     GET Fme_a(i1,a1) 
-                     tmp1_aa(a,a1)  = t1a_old(a,i1)*Fme_a(i1,a1) 
-                     tmp1_aa(a,a1) *= 0.5 
-                     tmp_aa(a,a1)  -= tmp1_aa(a,a1)  
+                     GET t1a_old[a,i1] 
+                     GET Fme_a[i1,a1] 
+                     tmp1_aa[a,a1]  = t1a_old[a,i1]*Fme_a[i1,a1] 
+                     tmp1_aa[a,a1] *= 0.5 
+                     tmp_aa[a,a1]  -= tmp1_aa[a,a1]  
 #
                   ENDDO i1 
 #
-                  T1aibj(a,i,b,j) = L1aibj(a1,i,b,j)*tmp_aa(a,a1)  
-                  Taibj(a,i,b,j) += T1aibj(a,i,b,j) 
+                  T1aibj[a,i,b,j] = L1aibj[a1,i,b,j]*tmp_aa[a,a1]  
+                  Taibj[a,i,b,j] += T1aibj[a,i,b,j] 
 #
                ENDDO a1 
 #
-               T1aibj(b,j,a,i)            = Taibj(a,i,b,j)  
-               PREPARE T2NEW_AB(a,i,b,j) += Taibj(a,i,b,j)  
-               PREPARE T2NEW_AB(b,j,a,i) += T1aibj(b,j,a,i)  
+               T1aibj[b,j,a,i]            = Taibj[a,i,b,j]  
+               PREPARE T2NEW_AB[a,i,b,j] += Taibj[a,i,b,j]  
+               PREPARE T2NEW_AB[b,j,a,i] += T1aibj[b,j,a,i]  
 #
             ENDDO a 
 #
-            deallocate Liibj(*,i,b,j) 
-            deallocate L1aibj(*,i,b,j)   
+            deallocate Liibj[*,i,b,j] 
+            deallocate L1aibj[*,i,b,j]   
 #
       ENDPARDO i, b, j 
 #
       PARDO a, b, j 
 #
-            allocate L3aibj(a,*,b,j) 
-            allocate Laabj(a,*,b,j) 
+            allocate L3aibj[a,*,b,j] 
+            allocate Laabj[a,*,b,j] 
 #
             DO i1 
 #
-               REQUEST T2old_ab(a,i1,b,j) j 
-               L3aibj(a,i1,b,j) = T2old_ab(a,i1,b,j) 
+               REQUEST T2old_ab[a,i1,b,j] j 
+               L3aibj[a,i1,b,j] = T2old_ab[a,i1,b,j] 
 #
             ENDDO i1 
 #
             DO a1 
 #
-               REQUEST Vaaai(a,a1,b,j) j  
-               Laabj(a,a1,b,j) = Vaaai(a,a1,b,j)  
+               REQUEST Vaaai[a,a1,b,j] j  
+               Laabj[a,a1,b,j] = Vaaai[a,a1,b,j]  
 #
             ENDDO a1 
 #
             DO i 
 #
-               Taibj(a,i,b,j) = 0.0  
+               Taibj[a,i,b,j] = 0.0  
 #
                DO i1 
 #
-                  GET Fmi_a(i1,i) 
-                  tmp_ii(i1,i) = Fmi_a(i1,i) 
+                  GET Fmi_a[i1,i] 
+                  tmp_ii[i1,i] = Fmi_a[i1,i] 
 #
                   DO a1 
 #
-                     GET t1a_old(a1,i) 
-                     GET Fme_a(i1,a1) 
+                     GET t1a_old[a1,i] 
+                     GET Fme_a[i1,a1] 
 #
-                     tmp1_ii(i1,i)  = t1a_old(a1,i)*Fme_a(i1,a1) 
-                     tmp1_ii(i1,i) *= 0.5 
-                     tmp_ii(i1,i)  += tmp1_ii(i1,i) 
+                     tmp1_ii[i1,i]  = t1a_old[a1,i]*Fme_a[i1,a1] 
+                     tmp1_ii[i1,i] *= 0.5 
+                     tmp_ii[i1,i]  += tmp1_ii[i1,i] 
 #
                   ENDDO a1  
 #
-                  T1aibj(a,i,b,j) = L3aibj(a,i1,b,j)*tmp_ii(i1,i) 
-                  Taibj(a,i,b,j) -= T1aibj(a,i,b,j) 
+                  T1aibj[a,i,b,j] = L3aibj[a,i1,b,j]*tmp_ii[i1,i] 
+                  Taibj[a,i,b,j] -= T1aibj[a,i,b,j] 
 #
                ENDDO i1 
 #
                DO a1 
 #
-                  GET t1a_old(a1,i) 
+                  GET t1a_old[a1,i] 
 #
-                  T1aibj(a,i,b,j) = Laabj(a,a1,b,j)*t1a_old(a1,i)  
-                  Taibj(a,i,b,j) += T1aibj(a,i,b,j) 
+                  T1aibj[a,i,b,j] = Laabj[a,a1,b,j]*t1a_old[a1,i]  
+                  Taibj[a,i,b,j] += T1aibj[a,i,b,j] 
 #
                ENDDO a1 
 #
-               T1aibj(b,j,a,i)            = Taibj(a,i,b,j)  
-               PREPARE T2NEW_AB(a,i,b,j) += Taibj(a,i,b,j)  
-               PREPARE T2NEW_AB(b,j,a,i) += T1aibj(b,j,a,i)  
+               T1aibj[b,j,a,i]            = Taibj[a,i,b,j]  
+               PREPARE T2NEW_AB[a,i,b,j] += Taibj[a,i,b,j]  
+               PREPARE T2NEW_AB[b,j,a,i] += T1aibj[b,j,a,i]  
 #
             ENDDO i 
 #
-            deallocate L3aibj(a,*,b,j) 
-            deallocate Laabj(a,*,b,j) 
+            deallocate L3aibj[a,*,b,j] 
+            deallocate Laabj[a,*,b,j] 
 #
       ENDPARDO a, b, j 
 #
@@ -1014,9 +1014,9 @@ import "common.sialx"
 #    ---------------------------------------------
 #
      PARDO mu, nu, i, j
-           Txixj(mu,i,nu,j)           = 0.0
-           PREPARE TAO_ab(mu,i,nu,j)  = Txixj(mu,i,nu,j)
-           PREPARE T2AO_ab(mu,i,nu,j) = Txixj(mu,i,nu,j)
+           Txixj[mu,i,nu,j]           = 0.0
+           PREPARE TAO_ab[mu,i,nu,j]  = Txixj[mu,i,nu,j]
+           PREPARE T2AO_ab[mu,i,nu,j] = Txixj[mu,i,nu,j]
      ENDPARDO mu, nu, i, j
 #
      server_barrier 
@@ -1028,27 +1028,27 @@ import "common.sialx"
 #     -------------------
 #
      PARDO a, j, i
-        allocate Laixj(a,i,*,j) 
+        allocate Laixj[a,i,*,j] 
 #
         DO b 
 #
-           REQUEST Tau_ab(a,i,b,j) a
+           REQUEST Tau_ab[a,i,b,j] a
 #
            DO mu
-              Taixj(a,i,mu,j) = Tau_ab(a,i,b,j)*ca(mu,b)
-              Laixj(a,i,mu,j)+= Taixj(a,i,mu,j)  
+              Taixj[a,i,mu,j] = Tau_ab[a,i,b,j]*ca[mu,b]
+              Laixj[a,i,mu,j]+= Taixj[a,i,mu,j]  
            ENDDO mu
 #
         ENDDO b 
 #
         DO mu
            DO nu
-              Txixj(nu,i,mu,j)           = Laixj(a,i,mu,j)*ca(nu,a)
-              PREPARE TAO_ab(nu,i,mu,j) += Txixj(nu,i,mu,j)
+              Txixj[nu,i,mu,j]           = Laixj[a,i,mu,j]*ca[nu,a]
+              PREPARE TAO_ab[nu,i,mu,j] += Txixj[nu,i,mu,j]
            ENDDO nu
         ENDDO mu
 #
-        deallocate Laixj(a,i,*,j) 
+        deallocate Laixj[a,i,*,j] 
       ENDPARDO a, j, i
 #
      create t1a_ax 
@@ -1060,17 +1060,17 @@ import "common.sialx"
      PARDO mu, nu, lambda, sigma
         WHERE mu < nu
 #
-           execute compute_integrals aoint(lambda,mu,sigma,nu)
+           execute compute_integrals aoint[lambda,mu,sigma,nu]
 #
            DO i
            DO j
 #
-              REQUEST                       TAO_ab(lambda,i,sigma,j) j
-              Yab(mu,i,nu,j)              = aoint(lambda,mu,sigma,nu)*TAO_ab(lambda,i,sigma,j)
-              Y1ab(nu,j,mu,i)             = Yab(mu,i,nu,j)
+              REQUEST                       TAO_ab[lambda,i,sigma,j] j
+              Yab[mu,i,nu,j]              = aoint[lambda,mu,sigma,nu]*TAO_ab[lambda,i,sigma,j]
+              Y1ab[nu,j,mu,i]             = Yab[mu,i,nu,j]
 #
-              PREPARE T2AO_ab(mu,i,nu,j) += Yab(mu,i,nu,j)
-              PREPARE T2AO_ab(nu,j,mu,i) += Y1ab(nu,j,mu,i)
+              PREPARE T2AO_ab[mu,i,nu,j] += Yab[mu,i,nu,j]
+              PREPARE T2AO_ab[nu,j,mu,i] += Y1ab[nu,j,mu,i]
 #
            ENDDO j
            ENDDO i
@@ -1080,14 +1080,14 @@ import "common.sialx"
      PARDO mu, nu, lambda, sigma
         WHERE mu == nu
 #
-           execute compute_integrals aoint(mu,lambda,nu,sigma)
+           execute compute_integrals aoint[mu,lambda,nu,sigma]
 #
            DO i
            DO j
 #
-              REQUEST                       TAO_ab(lambda,i,sigma,j) j
-              Yab(mu,i,nu,j)              = aoint(mu,lambda,nu,sigma)*TAO_ab(lambda,i,sigma,j)
-              PREPARE T2AO_ab(mu,i,nu,j) += Yab(mu,i,nu,j)
+              REQUEST                       TAO_ab[lambda,i,sigma,j] j
+              Yab[mu,i,nu,j]              = aoint[mu,lambda,nu,sigma]*TAO_ab[lambda,i,sigma,j]
+              PREPARE T2AO_ab[mu,i,nu,j] += Yab[mu,i,nu,j]
 #
            ENDDO j
            ENDDO i
@@ -1099,17 +1099,17 @@ import "common.sialx"
 #
      PARDO a, mu
 #
-           tpx(a,mu) = 0.0 
+           tpx[a,mu] = 0.0 
 #
            DO i  
 #
-              GET          t1a_old(a,i) 
-              t1px(a,mu) = t1a_old(a,i)*ca(mu,i) 
-              tpx(a,mu) += t1px(a,mu) 
+              GET          t1a_old[a,i] 
+              t1px[a,mu] = t1a_old[a,i]*ca[mu,i] 
+              tpx[a,mu] += t1px[a,mu] 
 #
            ENDDO i  
 #
-           PUT t1a_ax(a,mu) = tpx(a,mu) 
+           PUT t1a_ax[a,mu] = tpx[a,mu] 
 #
      ENDPARDO a, mu
 #
@@ -1121,44 +1121,44 @@ import "common.sialx"
 #
         PARDO nu, i, j
 #
-              allocate LDaixj(*,i,nu,j)
+              allocate LDaixj[*,i,nu,j]
 #
               DO mu
 #
-                 REQUEST T2AO_ab(mu,i,nu,j) j
+                 REQUEST T2AO_ab[mu,i,nu,j] j
 #
                  DO a
-                    Taixj(a,i,nu,j)   = T2AO_ab(mu,i,nu,j)*ca(mu,a)
-                    LDaixj(a,i,nu,j) += Taixj(a,i,nu,j)
+                    Taixj[a,i,nu,j]   = T2AO_ab[mu,i,nu,j]*ca[mu,a]
+                    LDaixj[a,i,nu,j] += Taixj[a,i,nu,j]
                  ENDDO a
 #
               ENDDO mu
 #
               DO a
-                 PREPARE TDaixj(a,i,nu,j) = LDaixj(a,i,nu,j)
+                 PREPARE TDaixj[a,i,nu,j] = LDaixj[a,i,nu,j]
               ENDDO a
 #
-              deallocate LDaixj(*,i,nu,j)
+              deallocate LDaixj[*,i,nu,j]
 #
         ENDPARDO nu, i, j
         server_barrier
 #
         PARDO a, i, j, nu
 #
-              REQUEST TDaixj(a,i,nu,j) a
+              REQUEST TDaixj[a,i,nu,j] a
 #
               DO b
 #
-                 GET                          t1a_ax(b,nu)
+                 GET                          t1a_ax[b,nu]
 #
-                 Taibj(a,i,b,j)             = TDaixj(a,i,nu,j)*ca(nu,b)
-                 T1aibj(a,i,b,j)            = TDaixj(a,i,nu,j)*t1a_ax(b,nu)
-                 T1aibj(a,i,b,j)           *= -1.0
-                 T2aibj(b,j,a,i)            = T1aibj(a,i,b,j)
+                 Taibj[a,i,b,j]             = TDaixj[a,i,nu,j]*ca[nu,b]
+                 T1aibj[a,i,b,j]            = TDaixj[a,i,nu,j]*t1a_ax[b,nu]
+                 T1aibj[a,i,b,j]           *= -1.0
+                 T2aibj[b,j,a,i]            = T1aibj[a,i,b,j]
 #
-                 PREPARE T2new_ab(a,i,b,j) += Taibj(a,i,b,j)
-                 PREPARE T2new_ab(a,i,b,j) += T1aibj(a,i,b,j)
-                 PREPARE T2new_ab(b,j,a,i) += T2aibj(b,j,a,i)
+                 PREPARE T2new_ab[a,i,b,j] += Taibj[a,i,b,j]
+                 PREPARE T2new_ab[a,i,b,j] += T1aibj[a,i,b,j]
+                 PREPARE T2new_ab[b,j,a,i] += T2aibj[b,j,a,i]
 #
               ENDDO b
 #
@@ -1184,21 +1184,21 @@ import "common.sialx"
 #
 # --------------------------------------------------------------------- 
 # Comute contribution coming from:  
-# 1/2 tau^{ab}_{mn} * [ 1/4 tau^{ef}_{ij} * (V^{mn}_{ef} - V^{mn}_{fe}]  
+# 1/2 tau^{ab}_{mn} * [ 1/4 tau^{ef}_{ij} * [V^{mn}_{ef} - V^{mn}_{fe}]  
 # --------------------------------------------------------------------- 
 #
       create Wminj_ab 
       sip_barrier 
       PARDO i, j, a, b  
 #
-            REQUEST Tau_ab(a,i,b,j)  j  
+            REQUEST Tau_ab[a,i,b,j]  j  
 #
             DO i1   
             DO j1  
 #
-               REQUEST                    Vpiqj(a,i1,b,j1) j1  
-               Tiijj(i1,i,j1,j)         = Vpiqj(a,i1,b,j1)*Tau_ab(a,i,b,j) 
-               PUT Wminj_ab(i1,i,j1,j) += Tiijj(i1,i,j1,j) 
+               REQUEST                    Vpiqj[a,i1,b,j1] j1  
+               Tiijj[i1,i,j1,j]         = Vpiqj[a,i1,b,j1]*Tau_ab[a,i,b,j] 
+               PUT Wminj_ab[i1,i,j1,j] += Tiijj[i1,i,j1,j] 
 #
             ENDDO j1  
             ENDDO i1   
@@ -1208,15 +1208,15 @@ import "common.sialx"
 #
       PARDO a, b, i1, j1  
 #
-            REQUEST Tau_ab(a,i1,b,j1) j1  
+            REQUEST Tau_ab[a,i1,b,j1] j1  
 #
             DO i   
             DO j  
 #
-               GET                          Wminj_ab(i1,i,j1,j) 
-               Taibj(a,i,b,j)             = Tau_ab(a,i1,b,j1)*Wminj_ab(i1,i,j1,j) 
-               Taibj(a,i,b,j)            *= 0.5  
-               PREPARE T2new_ab(a,i,b,j) += Taibj(a,i,b,j) 
+               GET                          Wminj_ab[i1,i,j1,j] 
+               Taibj[a,i,b,j]             = Tau_ab[a,i1,b,j1]*Wminj_ab[i1,i,j1,j] 
+               Taibj[a,i,b,j]            *= 0.5  
+               PREPARE T2new_ab[a,i,b,j] += Taibj[a,i,b,j] 
 #
             ENDDO j  
             ENDDO i  
@@ -1252,51 +1252,51 @@ import "common.sialx"
 #
       PARDO a, a1, i, i1  
 #
-               REQUEST              Viaai(i1,a1,a,i) i  
-               REQUEST              Vaaii(a,a1,i1,i) i  
-               REQUEST              e5aiai(a1,i1,a,i) i 
+               REQUEST              Viaai[i1,a1,a,i] i  
+               REQUEST              Vaaii[a,a1,i1,i] i  
+               REQUEST              e5aiai[a1,i1,a,i] i 
 #
-               TYaiai(a1,i1,a,i) = 0.0 
+               TYaiai[a1,i1,a,i] = 0.0 
 #
                DO i2
 #
-                  REQUEST              VSpipi(a1,i1,i,i2) i2
-                  GET                  t1a_old(a,i2)
+                  REQUEST              VSpipi[a1,i1,i,i2] i2
+                  GET                  t1a_old[a,i2]
 #
-                  T1aiai(a1,i1,a,i)  = VSpipi(a1,i1,i,i2)*t1a_old(a,i2)
-                  TYaiai(a1,i1,a,i) -= T1aiai(a1,i1,a,i)
+                  T1aiai[a1,i1,a,i]  = VSpipi[a1,i1,i,i2]*t1a_old[a,i2]
+                  TYaiai[a1,i1,a,i] -= T1aiai[a1,i1,a,i]
 #
                ENDDO i2
 
-               Taiai(a1,i1,a,i)           = Vaaii(a,a1,i1,i)
-               TYaiai(a1,i1,a,i)         -= Taiai(a1,i1,a,i)
-               Taiai(a1,i1,a,i)           = Viaai(i1,a1,a,i)
-               TYaiai(a1,i1,a,i)         += Taiai(a1,i1,a,i)
-               TYaiai(a1,i1,a,i)         += e5aiai(a1,i1,a,i)
-               PREPARE TAUP_aa(a1,i1,a,i) = TYaiai(a1,i1,a,i) 
+               Taiai[a1,i1,a,i]           = Vaaii[a,a1,i1,i]
+               TYaiai[a1,i1,a,i]         -= Taiai[a1,i1,a,i]
+               Taiai[a1,i1,a,i]           = Viaai[i1,a1,a,i]
+               TYaiai[a1,i1,a,i]         += Taiai[a1,i1,a,i]
+               TYaiai[a1,i1,a,i]         += e5aiai[a1,i1,a,i]
+               PREPARE TAUP_aa[a1,i1,a,i] = TYaiai[a1,i1,a,i] 
 #
       ENDPARDO a, a1, i, i1  
       server_barrier 
 #
       PARDO a, i, a2, i2
 #
-         REQUEST              T2old_aa(a2,i,a,i2) i2  
-         GET                  t1a_old(a2,i) 
-         GET                  t1a_old(a,i2) 
+         REQUEST              T2old_aa[a2,i,a,i2] i2  
+         GET                  t1a_old[a2,i] 
+         GET                  t1a_old[a,i2] 
  
-         tai(a,i2)          = t1a_old(a,i2) 
-         T1aiai(a2,i2,a,i)  = t1a_old(a2,i)^tai(a,i2) 
-         T2aiai(a2,i2,a,i)  = t2old_aa(a2,i,a,i2) 
-         T2aiai(a2,i2,a,i) *= 0.5 
-         T2aiai(a2,i2,a,i) += T1aiai(a2,i2,a,i) 
+         tai[a,i2]          = t1a_old[a,i2] 
+         T1aiai[a2,i2,a,i]  = t1a_old[a2,i]^tai[a,i2] 
+         T2aiai[a2,i2,a,i]  = t2old_aa[a2,i,a,i2] 
+         T2aiai[a2,i2,a,i] *= 0.5 
+         T2aiai[a2,i2,a,i] += T1aiai[a2,i2,a,i] 
 
          DO i1
          DO a1 
 #
-            REQUEST                       VSpipi(a1,i1,a2,i2) i2  
-            T3aiai(a1,i1,a,i)           = VSpipi(a1,i1,a2,i2)*T2aiai(a2,i2,a,i) 
-            T3aiai(a1,i1,a,i)          *= -1.0  
-            PREPARE TAUP_aa(a1,i1,a,i) += T3aiai(a1,i1,a,i)
+            REQUEST                       VSpipi[a1,i1,a2,i2] i2  
+            T3aiai[a1,i1,a,i]           = VSpipi[a1,i1,a2,i2]*T2aiai[a2,i2,a,i] 
+            T3aiai[a1,i1,a,i]          *= -1.0  
+            PREPARE TAUP_aa[a1,i1,a,i] += T3aiai[a1,i1,a,i]
 #
          ENDDO a1
          ENDDO i1
@@ -1305,15 +1305,15 @@ import "common.sialx"
 
       PARDO a, i, b, j 
 #
-         REQUEST T2old_ab(a,i,b,j) j 
+         REQUEST T2old_ab[a,i,b,j] j 
 #
          DO i1
          DO a1 
 #
-            REQUEST                       Vpiqj(a1,i1,b,j) j 
-            T1aiai(a1,i1,a,i)           = Vpiqj(a1,i1,b,j)*T2old_ab(a,i,b,j)
-            T1aiai(a1,i1,a,i)          *= 0.5
-            PREPARE TAUP_aa(a1,i1,a,i) += T1aiai(a1,i1,a,i)
+            REQUEST                       Vpiqj[a1,i1,b,j] j 
+            T1aiai[a1,i1,a,i]           = Vpiqj[a1,i1,b,j]*T2old_ab[a,i,b,j]
+            T1aiai[a1,i1,a,i]          *= 0.5
+            PREPARE TAUP_aa[a1,i1,a,i] += T1aiai[a1,i1,a,i]
 #
          ENDDO a1
          ENDDO i1
@@ -1326,16 +1326,16 @@ import "common.sialx"
 #
       PARDO a, i, a1, i1 
 #
-            REQUEST TAUP_aa(a1,i1,a,i)  i 
+            REQUEST TAUP_aa[a1,i1,a,i]  i 
 #
             DO j  
             DO b
 #
-               REQUEST                      T2old_ab(a1,i1,b,j) j  
-               R1aibj(a,i,b,j)            = TAUP_aa(a1,i1,a,i)*T2old_ab(a1,i1,b,j) 
-               Taibj(b,j,a,i)             = R1aibj(a,i,b,j) 
-               PREPARE T2new_ab(a,i,b,j) += R1aibj(a,i,b,j)
-               PREPARE T2new_ab(b,j,a,i) += Taibj(b,j,a,i)
+               REQUEST                      T2old_ab[a1,i1,b,j] j  
+               R1aibj[a,i,b,j]            = TAUP_aa[a1,i1,a,i]*T2old_ab[a1,i1,b,j] 
+               Taibj[b,j,a,i]             = R1aibj[a,i,b,j] 
+               PREPARE T2new_ab[a,i,b,j] += R1aibj[a,i,b,j]
+               PREPARE T2new_ab[b,j,a,i] += Taibj[b,j,a,i]
 #
             ENDDO b  
             ENDDO j  
@@ -1354,46 +1354,46 @@ import "common.sialx"
 #
       PARDO j, b, i, a
 #
-               REQUEST           Viaai(i,a,b,j) j  
-               REQUEST           e5aibj(a,i,b,j) a 
+               REQUEST           Viaai[i,a,b,j] j  
+               REQUEST           e5aibj[a,i,b,j] a 
 #
-               Taibj(a,i,b,j) = 0.
+               Taibj[a,i,b,j] = 0.
 #
                DO j1
 #
-                  REQUEST           Vpiqj(a,i,j,j1) j1  
-                  GET               t1a_old(b,j1) 
-                  T1aibj(a,i,b,j) = Vpiqj(a,i,j,j1)*t1a_old(b,j1) 
-                  Taibj(a,i,b,j) -= T1aibj(a,i,b,j) 
+                  REQUEST           Vpiqj[a,i,j,j1] j1  
+                  GET               t1a_old[b,j1] 
+                  T1aibj[a,i,b,j] = Vpiqj[a,i,j,j1]*t1a_old[b,j1] 
+                  Taibj[a,i,b,j] -= T1aibj[a,i,b,j] 
 #
                ENDDO j1
 
-               T1aibj(a,i,b,j)          = Viaai(i,a,b,j) 
-               Taibj(a,i,b,j)          += T1aibj(a,i,b,j)
-               Taibj(a,i,b,j)          += e5aibj(a,i,b,j) 
-               PREPARE TAUP_ab(a,i,b,j) = Taibj(a,i,b,j) 
+               T1aibj[a,i,b,j]          = Viaai[i,a,b,j] 
+               Taibj[a,i,b,j]          += T1aibj[a,i,b,j]
+               Taibj[a,i,b,j]          += e5aibj[a,i,b,j] 
+               PREPARE TAUP_ab[a,i,b,j] = Taibj[a,i,b,j] 
 #
       ENDPARDO j, b, i, a
       server_barrier
 
       PARDO j, b, j1, b1
 #
-               REQUEST              T2old_aa(b1,j,b,j1) j1 
-               GET                  t1a_old(b1,j) 
-               GET                  t1a_old(b,j1) 
+               REQUEST              T2old_aa[b1,j,b,j1] j1 
+               GET                  t1a_old[b1,j] 
+               GET                  t1a_old[b,j1] 
 # 
-               tbj(b,j1)          = t1a_old(b,j1) 
-               T2bjbj(b1,j,b,j1)  = t1a_old(b1,j)^tbj(b,j1) 
-               T1bjbj(b1,j,b,j1)  = 0.5*T2old_aa(b1,j,b,j1) 
-               T1bjbj(b1,j,b,j1) += T2bjbj(b1,j,b,j1) 
+               tbj[b,j1]          = t1a_old[b,j1] 
+               T2bjbj[b1,j,b,j1]  = t1a_old[b1,j]^tbj[b,j1] 
+               T1bjbj[b1,j,b,j1]  = 0.5*T2old_aa[b1,j,b,j1] 
+               T1bjbj[b1,j,b,j1] += T2bjbj[b1,j,b,j1] 
 #
                DO i  
                DO a 
 #
-                  REQUEST                     Vpiqj(a,i,b1,j1) j1  
-                  Taibj(a,i,b,j)            = T1bjbj(b1,j,b,j1)*Vpiqj(a,i,b1,j1) 
-                  Taibj(a,i,b,j)           *= -1.0  
-                  PREPARE TAUP_ab(a,i,b,j) += Taibj(a,i,b,j)
+                  REQUEST                     Vpiqj[a,i,b1,j1] j1  
+                  Taibj[a,i,b,j]            = T1bjbj[b1,j,b,j1]*Vpiqj[a,i,b1,j1] 
+                  Taibj[a,i,b,j]           *= -1.0  
+                  PREPARE TAUP_ab[a,i,b,j] += Taibj[a,i,b,j]
 #   
                ENDDO a 
                ENDDO i  
@@ -1402,15 +1402,15 @@ import "common.sialx"
 #
       PARDO b, j, a1, i1
 #
-            REQUEST T2old_ab(a1,i1,b,j) j      
+            REQUEST T2old_ab[a1,i1,b,j] j      
 #
             DO a
             DO i
 #
-               REQUEST                     VSpipi(a1,i1,a,i) i
-               T1aibj(a,i,b,j)           = T2old_ab(a1,i1,b,j)*VSpipi(a1,i1,a,i)
-               T1aibj(a,i,b,j)          *= 0.5
-               PREPARE TAUP_ab(a,i,b,j) += T1aibj(a,i,b,j)
+               REQUEST                     VSpipi[a1,i1,a,i] i
+               T1aibj[a,i,b,j]           = T2old_ab[a1,i1,b,j]*VSpipi[a1,i1,a,i]
+               T1aibj[a,i,b,j]          *= 0.5
+               PREPARE TAUP_ab[a,i,b,j] += T1aibj[a,i,b,j]
 #
             ENDDO i
             ENDDO a
@@ -1424,16 +1424,16 @@ import "common.sialx"
 #
       PARDO i1, a1, a, i
 #
-            REQUEST T2old_aa(a1,i1,a,i) i 
+            REQUEST T2old_aa[a1,i1,a,i] i 
 #
             DO j 
             DO b 
 #
-               REQUEST                        TAUP_ab(a,i,b,j) j  
-               R1aibj(a1,i1,b,j)            = T2old_aa(a1,i1,a,i)*TAUP_ab(a,i,b,j)  
-               Taibj(b,j,a1,i1)             = R1aibj(a1,i1,b,j) 
-               PREPARE T2new_ab(a1,i1,b,j) += R1aibj(a1,i1,b,j) 
-               PREPARE T2new_ab(b,j,a1,i1) += Taibj(b,j,a1,i1) 
+               REQUEST                        TAUP_ab[a,i,b,j] j  
+               R1aibj[a1,i1,b,j]            = T2old_aa[a1,i1,a,i]*TAUP_ab[a,i,b,j]  
+               Taibj[b,j,a1,i1]             = R1aibj[a1,i1,b,j] 
+               PREPARE T2new_ab[a1,i1,b,j] += R1aibj[a1,i1,b,j] 
+               PREPARE T2new_ab[b,j,a1,i1] += Taibj[b,j,a1,i1] 
 #
             ENDDO b 
             ENDDO j 
@@ -1455,34 +1455,34 @@ import "common.sialx"
 #
       PARDO i, j, i1, b  
 #
-           Tiibj(i1,i,b,j) = 0.0 
+           Tiibj[i1,i,b,j] = 0.0 
 #
            DO a1 
 # 
-              REQUEST            Viaai(i1,a1,b,j) j  
-              GET                t1a_old(a1,i) 
+              REQUEST            Viaai[i1,a1,b,j] j  
+              GET                t1a_old[a1,i] 
 #
-              T1iibj(i1,i,b,j) = Viaai(i1,a1,b,j)*t1a_old(a1,i) 
-              Tiibj(i1,i,b,j) += T1iibj(i1,i,b,j) 
+              T1iibj[i1,i,b,j] = Viaai[i1,a1,b,j]*t1a_old[a1,i] 
+              Tiibj[i1,i,b,j] += T1iibj[i1,i,b,j] 
 #
            ENDDO a1  
 #
            DO b1 
 #
-              REQUEST            Vaaii(b,b1,i1,i) i  
-              GET                t1a_old(b1,j) 
+              REQUEST            Vaaii[b,b1,i1,i] i  
+              GET                t1a_old[b1,j] 
 #
-              T1iibj(i1,i,b,j) = Vaaii(b,b1,i1,i)*t1a_old(b1,j)  
-              Tiibj(i1,i,b,j) += T1iibj(i1,i,b,j) 
+              T1iibj[i1,i,b,j] = Vaaii[b,b1,i1,i]*t1a_old[b1,j]  
+              Tiibj[i1,i,b,j] += T1iibj[i1,i,b,j] 
 #
           ENDDO b1  
 #
           DO a 
 #
-             GET                          t1a_old(a,i1) 
-             Taibj(a,i,b,j)             = Tiibj(i1,i,b,j)*t1a_old(a,i1) 
-             Taibj(a,i,b,j)            *= -1.0 
-             PREPARE T2new_ab(a,i,b,j) += Taibj(a,i,b,j) 
+             GET                          t1a_old[a,i1] 
+             Taibj[a,i,b,j]             = Tiibj[i1,i,b,j]*t1a_old[a,i1] 
+             Taibj[a,i,b,j]            *= -1.0 
+             PREPARE T2new_ab[a,i,b,j] += Taibj[a,i,b,j] 
 #
           ENDDO a 
 #
@@ -1490,34 +1490,34 @@ import "common.sialx"
 #
       PARDO i, j, j1, a 
 #
-            Tjjai(j1,j,a,i) = 0.0 
+            Tjjai[j1,j,a,i] = 0.0 
 #
             DO a1 
 #
-               REQUEST            Vaaii(a,a1,j1,j) j  
-               GET                t1a_old(a1,i) 
+               REQUEST            Vaaii[a,a1,j1,j] j  
+               GET                t1a_old[a1,i] 
 #
-               T1jjai(j1,j,a,i) = Vaaii(a,a1,j1,j)*t1a_old(a1,i) 
-               Tjjai(j1,j,a,i) += T1jjai(j1,j,a,i)
+               T1jjai[j1,j,a,i] = Vaaii[a,a1,j1,j]*t1a_old[a1,i] 
+               Tjjai[j1,j,a,i] += T1jjai[j1,j,a,i]
 #
             ENDDO a1 
 #
             DO b1 
 # 
-               REQUEST            Viaai(i,a,b1,j1) j1  
-               GET                t1a_old(b1,j) 
+               REQUEST            Viaai[i,a,b1,j1] j1  
+               GET                t1a_old[b1,j] 
 #
-               T1jjai(j1,j,a,i) = Viaai(i,a,b1,j1)*t1a_old(b1,j) 
-               Tjjai(j1,j,a,i) += T1jjai(j1,j,a,i) 
+               T1jjai[j1,j,a,i] = Viaai[i,a,b1,j1]*t1a_old[b1,j] 
+               Tjjai[j1,j,a,i] += T1jjai[j1,j,a,i] 
 #
             ENDDO b1  
 #
             DO b 
 #
-               GET                          t1a_old(b,j1) 
-               Taibj(a,i,b,j)             = Tjjai(j1,j,a,i)*t1a_old(b,j1) 
-               Taibj(a,i,b,j)            *= -1.0 
-               PREPARE T2new_ab(a,i,b,j) += Taibj(a,i,b,j) 
+               GET                          t1a_old[b,j1] 
+               Taibj[a,i,b,j]             = Tjjai[j1,j,a,i]*t1a_old[b,j1] 
+               Taibj[a,i,b,j]            *= -1.0 
+               PREPARE T2new_ab[a,i,b,j] += Taibj[a,i,b,j] 
 #
             ENDDO b 
 #
@@ -1535,34 +1535,34 @@ import "common.sialx"
 #
       PARDO b, i, b1, i1
 #
-            REQUEST            Vaaii(b,b1,i1,i) i
-            Tiiqq(i1,i,b,b1) = Vaaii(b,b1,i1,i)
+            REQUEST            Vaaii[b,b1,i1,i] i
+            Tiiqq[i1,i,b,b1] = Vaaii[b,b1,i1,i]
 #
             DO j1
 #
-               REQUEST             Vpiqj(i,i1,b1,j1) j1
-               GET                 t1a_old(b,j1)
+               REQUEST             Vpiqj[i,i1,b1,j1] j1
+               GET                 t1a_old[b,j1]
 #
-               tbj(b,j1)         = t1a_old(b,j1)
-               T1iiqq(i1,i,b,b1) = Vpiqj(i,i1,b1,j1)*tbj(b,j1)
-               Tiiqq(i1,i,b,b1) -= T1iiqq(i1,i,b,b1)
+               tbj[b,j1]         = t1a_old[b,j1]
+               T1iiqq[i1,i,b,b1] = Vpiqj[i,i1,b1,j1]*tbj[b,j1]
+               Tiiqq[i1,i,b,b1] -= T1iiqq[i1,i,b,b1]
 #
             ENDDO j1
 #
-            PREPARE Wiibb(i1,i,b,b1) = Tiiqq(i1,i,b,b1)
+            PREPARE Wiibb[i1,i,b,b1] = Tiiqq[i1,i,b,b1]
 #
       ENDPARDO b, i, b1, i1
       server_barrier
 
       PARDO a1, b, i1, b1
 #
-         REQUEST Vaaai(b1,b,a1,i1) i1
+         REQUEST Vaaai[b1,b,a1,i1] i1
 #
          DO i
 #
-            GET                          t1a_old(a1,i)
-            T1iiqq(i1,i,b,b1)          = Vaaai(b1,b,a1,i1)*t1a_old(a1,i)
-            PREPARE Wiibb(i1,i,b,b1)  += T1iiqq(i1,i,b,b1)
+            GET                          t1a_old[a1,i]
+            T1iiqq[i1,i,b,b1]          = Vaaai[b1,b,a1,i1]*t1a_old[a1,i]
+            PREPARE Wiibb[i1,i,b,b1]  += T1iiqq[i1,i,b,b1]
 #
          ENDDO i
 #
@@ -1570,22 +1570,22 @@ import "common.sialx"
 
       PARDO i, b, a1, j1
 #
-         REQUEST     T2old_ab(a1,i,b,j1) j1
-         GET         t1a_old(a1,i)
-         GET         t1a_old(b,j1)
-         tai(a1,i) = t1a_old(a1,i) 
+         REQUEST     T2old_ab[a1,i,b,j1] j1
+         GET         t1a_old[a1,i]
+         GET         t1a_old[b,j1]
+         tai[a1,i] = t1a_old[a1,i] 
 
-         Taibj(a1,i,b,j1)   = tai(a1,i)^t1a_old(b,j1)
-         T1aibj(a1,i,b,j1)  = 0.5*T2old_ab(a1,i,b,j1)
-         T1aibj(a1,i,b,j1) += Taibj(a1,i,b,j1)
+         Taibj[a1,i,b,j1]   = tai[a1,i]^t1a_old[b,j1]
+         T1aibj[a1,i,b,j1]  = 0.5*T2old_ab[a1,i,b,j1]
+         T1aibj[a1,i,b,j1] += Taibj[a1,i,b,j1]
 #
          DO i1
          DO b1
 #
-            REQUEST                     Vpiqj(a1,i1,b1,j1) j1
-            Tiiqq(i1,i,b,b1)          = T1aibj(a1,i,b,j1)*Vpiqj(a1,i1,b1,j1)
-            Tiiqq(i1,i,b,b1)         *= -1.0  
-            PREPARE Wiibb(i1,i,b,b1) += Tiiqq(i1,i,b,b1)
+            REQUEST                     Vpiqj[a1,i1,b1,j1] j1
+            Tiiqq[i1,i,b,b1]          = T1aibj[a1,i,b,j1]*Vpiqj[a1,i1,b1,j1]
+            Tiiqq[i1,i,b,b1]         *= -1.0  
+            PREPARE Wiibb[i1,i,b,b1] += Tiiqq[i1,i,b,b1]
 #
          ENDDO b1
          ENDDO i1
@@ -1598,19 +1598,19 @@ import "common.sialx"
 #
       PARDO a, j, i1, b1
 #
-            REQUEST T2old_ab(a,i1,b1,j) j
+            REQUEST T2old_ab[a,i1,b1,j] j
 #
             DO i
             DO b
 #
-               REQUEST                      Wiibb(i1,i,b,b1) i
+               REQUEST                      Wiibb[i1,i,b,b1] i
 #
-               Taibj(a,i,b,j)             = T2old_ab(a,i1,b1,j)*Wiibb(i1,i,b,b1)
-               Taibj(a,i,b,j)            *= -1.0  
+               Taibj[a,i,b,j]             = T2old_ab[a,i1,b1,j]*Wiibb[i1,i,b,b1]
+               Taibj[a,i,b,j]            *= -1.0  
 #
-               T2aibj(b,j,a,i)            = Taibj(a,i,b,j) 
-               PREPARE T2new_ab(a,i,b,j) += Taibj(a,i,b,j)
-               PREPARE T2new_ab(b,j,a,i) += T2aibj(b,j,a,i)
+               T2aibj[b,j,a,i]            = Taibj[a,i,b,j] 
+               PREPARE T2new_ab[a,i,b,j] += Taibj[a,i,b,j]
+               PREPARE T2new_ab[b,j,a,i] += T2aibj[b,j,a,i]
 #
             ENDDO b
             ENDDO i
@@ -1646,23 +1646,23 @@ import "common.sialx"
      sip_barrier 
      PARDO a, b, i, j 
 #
-           REQUEST Vpiqj(a,i,b,j) j  
-           REQUEST Vpiqj(a,j,b,i) j  
+           REQUEST Vpiqj[a,i,b,j] j  
+           REQUEST Vpiqj[a,j,b,i] j  
 #
-           REQUEST T2old_ab(a,i,b,j) j  
-           GET     t1a_old(a,i) 
-           GET     t1a_old(b,j) 
-           tai(a,i) = t1a_old(a,i) 
+           REQUEST T2old_ab[a,i,b,j] j  
+           GET     t1a_old[a,i] 
+           GET     t1a_old[b,j] 
+           tai[a,i] = t1a_old[a,i] 
 #
-           Taibj(a,i,b,j)  = tai(a,i)^t1a_old(b,j) 
-           Taibj(a,i,b,j) += T2old_ab(a,i,b,j)  
+           Taibj[a,i,b,j]  = tai[a,i]^t1a_old[b,j] 
+           Taibj[a,i,b,j] += T2old_ab[a,i,b,j]  
 #
-           T1aibj(a,i,b,j) = Vpiqj(a,i,b,j)  
-           T2aibj(a,i,b,j) = Vpiqj(a,j,b,i)  
-           T1aibj(a,i,b,j)*= 2.0  
-           T1aibj(a,i,b,j)-= T2aibj(a,i,b,j)  
+           T1aibj[a,i,b,j] = Vpiqj[a,i,b,j]  
+           T2aibj[a,i,b,j] = Vpiqj[a,j,b,i]  
+           T1aibj[a,i,b,j]*= 2.0  
+           T1aibj[a,i,b,j]-= T2aibj[a,i,b,j]  
 #
-           etemp = Taibj(a,i,b,j)*T1aibj(a,i,b,j) 
+           etemp = Taibj[a,i,b,j]*T1aibj[a,i,b,j] 
            esumab += etemp 
 #
      ENDPARDO a, b, i, j 
@@ -1689,16 +1689,16 @@ import "common.sialx"
 #     ---------------------------------------- 
 #
           PARDO a, i 
-                tai(a,i) = 0.0 
-                PUT t1a_new(a,i) = tai(a,i) 
+                tai[a,i] = 0.0 
+                PUT t1a_new[a,i] = tai[a,i] 
           ENDPARDO a, i 
 #
 #     Zero out new 2-particle amplitude arrays 
 #     ---------------------------------------- 
 #
           PARDO a, b, i, j 
-                Taibj(a,i,b,j) = 0.0
-                PREPARE T2new_ab(a,i,b,j) = Taibj(a,i,b,j) 
+                Taibj[a,i,b,j] = 0.0
+                PREPARE T2new_ab[a,i,b,j] = Taibj[a,i,b,j] 
           ENDPARDO a, b, i, j 
 # 
      ENDPROC T2NEW_ZERO
@@ -1712,38 +1712,38 @@ import "common.sialx"
 #
       PARDO b, a, j, i
 #
-            REQUEST                    T2old_ab(b,j,a,i) b 
-            REQUEST                    T2new_ab(b,j,a,i) b 
-            Taibj(a,i,b,j)           = T2new_ab(b,j,a,i)
-            T1aibj(a,i,b,j)          = T2old_ab(b,j,a,i)
+            REQUEST                    T2old_ab[b,j,a,i] b 
+            REQUEST                    T2new_ab[b,j,a,i] b 
+            Taibj[a,i,b,j]           = T2new_ab[b,j,a,i]
+            T1aibj[a,i,b,j]          = T2old_ab[b,j,a,i]
 #
-            REQUEST                    T2old_ab(a,i,b,j) b 
-            REQUEST                    T2new_ab(a,i,b,j) b 
-            Taibj(a,i,b,j)          += T2new_ab(a,i,b,j)
-            T1aibj(a,i,b,j)         += T2old_ab(a,i,b,j)
+            REQUEST                    T2old_ab[a,i,b,j] b 
+            REQUEST                    T2new_ab[a,i,b,j] b 
+            Taibj[a,i,b,j]          += T2new_ab[a,i,b,j]
+            T1aibj[a,i,b,j]         += T2old_ab[a,i,b,j]
 
-            execute energy_denominator Taibj(a,i,b,j)
-            T1aibj(a,i,b,j) -= Taibj(a,i,b,j)
-            T1aibj(a,i,b,j) *= -0.5
+            execute energy_denominator Taibj[a,i,b,j]
+            T1aibj[a,i,b,j] -= Taibj[a,i,b,j]
+            T1aibj[a,i,b,j] *= -0.5
 #
             if kiter == 1
-               PREPARE e1aibj(a,i,b,j) = T1aibj(a,i,b,j)
+               PREPARE e1aibj[a,i,b,j] = T1aibj[a,i,b,j]
             endif
 #
             if kiter == 2
-               PREPARE e2aibj(a,i,b,j) = T1aibj(a,i,b,j)
+               PREPARE e2aibj[a,i,b,j] = T1aibj[a,i,b,j]
             endif
 #
             if kiter == 3
-               PREPARE e3aibj(a,i,b,j) = T1aibj(a,i,b,j)
+               PREPARE e3aibj[a,i,b,j] = T1aibj[a,i,b,j]
             endif
 #
             if kiter == 4
-               PREPARE e4aibj(a,i,b,j) = T1aibj(a,i,b,j)
+               PREPARE e4aibj[a,i,b,j] = T1aibj[a,i,b,j]
             endif
 #
             if kiter >= 5
-               PREPARE e5aibj(a,i,b,j) = T1aibj(a,i,b,j)
+               PREPARE e5aibj[a,i,b,j] = T1aibj[a,i,b,j]
             endif
 #
       ENDPARDO b, a, j, i
@@ -1751,13 +1751,13 @@ import "common.sialx"
 #
       PARDO b, a, j, i
 #
-            REQUEST                    T2new_ab(a,i,b,j) a
-            REQUEST                    T2new_ab(b,j,a,i) a
-            Taibj(a,i,b,j)           = T2new_ab(b,j,a,i)
-            Taibj(a,i,b,j)          += T2new_ab(a,i,b,j)
-            Taibj(a,i,b,j)          *= 0.5  
-            execute energy_denominator Taibj(a,i,b,j)
-            PREPARE T2old_ab(a,i,b,j)    = Taibj(a,i,b,j)
+            REQUEST                    T2new_ab[a,i,b,j] a
+            REQUEST                    T2new_ab[b,j,a,i] a
+            Taibj[a,i,b,j]           = T2new_ab[b,j,a,i]
+            Taibj[a,i,b,j]          += T2new_ab[a,i,b,j]
+            Taibj[a,i,b,j]          *= 0.5  
+            execute energy_denominator Taibj[a,i,b,j]
+            PREPARE T2old_ab[a,i,b,j]    = Taibj[a,i,b,j]
 #
       ENDPARDO b, a, j, i
 #
@@ -1773,32 +1773,32 @@ import "common.sialx"
 #
       PARDO a, i 
 #
-            GET                t1a_new(a,i) 
-            GET                t1a_old(a,i) 
-            tai(a,i)         = t1a_new(a,i) 
-            t1ai(a,i)        = t1a_old(a,i) 
-            execute energy_denominator tai(a,i) 
-           #PUT t1a_old(a,i) = tai(a,i) 
-            tai(a,i)        -= t1ai(a,i) 
+            GET                t1a_new[a,i] 
+            GET                t1a_old[a,i] 
+            tai[a,i]         = t1a_new[a,i] 
+            t1ai[a,i]        = t1a_old[a,i] 
+            execute energy_denominator tai[a,i] 
+           #PUT t1a_old[a,i] = tai[a,i] 
+            tai[a,i]        -= t1ai[a,i] 
 #
             if kiter == 1 
-               PUT e1ai(a,i) = Tai(a,i) 
+               PUT e1ai[a,i] = Tai[a,i] 
             endif 
 #
             if kiter == 2 
-               PUT e2ai(a,i) = Tai(a,i) 
+               PUT e2ai[a,i] = Tai[a,i] 
             endif 
 #
             if kiter == 3 
-               PUT e3ai(a,i) = Tai(a,i) 
+               PUT e3ai[a,i] = Tai[a,i] 
             endif 
 #
             if kiter == 4 
-               PUT e4ai(a,i) = Tai(a,i) 
+               PUT e4ai[a,i] = Tai[a,i] 
             endif 
 #
             if kiter >= 5 
-               PUT e5ai(a,i) = Tai(a,i) 
+               PUT e5ai[a,i] = Tai[a,i] 
             endif 
 #
       ENDPARDO a, i 
@@ -1807,10 +1807,10 @@ import "common.sialx"
 #
       PARDO a, i 
 #
-            GET                t1a_new(a,i) 
-            tai(a,i)         = t1a_new(a,i) 
-            execute energy_denominator tai(a,i)
-            PUT t1a_old(a,i) = tai(a,i) 
+            GET                t1a_new[a,i] 
+            tai[a,i]         = t1a_new[a,i] 
+            execute energy_denominator tai[a,i]
+            PUT t1a_old[a,i] = tai[a,i] 
 #
       ENDPARDO a, i 
 #
@@ -1825,27 +1825,27 @@ import "common.sialx"
 #
       PARDO b, a, j, i
 #
-            REQUEST                    T2old_ab(a,i,b,j) a 
-            Taibj(a,i,b,j)           = T2old_ab(a,i,b,j)
+            REQUEST                    T2old_ab[a,i,b,j] a 
+            Taibj[a,i,b,j]           = T2old_ab[a,i,b,j]
 #
             if kiter == 1
-               PREPARE d1aibj(a,i,b,j) = Taibj(a,i,b,j)
+               PREPARE d1aibj[a,i,b,j] = Taibj[a,i,b,j]
             endif
 #
             if kiter == 2
-               PREPARE d2aibj(a,i,b,j) = Taibj(a,i,b,j)
+               PREPARE d2aibj[a,i,b,j] = Taibj[a,i,b,j]
             endif
 #
             if kiter == 3
-               PREPARE d3aibj(a,i,b,j) = Taibj(a,i,b,j)
+               PREPARE d3aibj[a,i,b,j] = Taibj[a,i,b,j]
             endif
 #
             if kiter == 4
-               PREPARE d4aibj(a,i,b,j) = Taibj(a,i,b,j)
+               PREPARE d4aibj[a,i,b,j] = Taibj[a,i,b,j]
             endif
 #
             if kiter >= 5
-               PREPARE d4aibj(a,i,b,j) = Taibj(a,i,b,j)
+               PREPARE d4aibj[a,i,b,j] = Taibj[a,i,b,j]
             endif
 #
       ENDPARDO b, a, j, i
@@ -1858,27 +1858,27 @@ import "common.sialx"
 #
       PARDO a, i 
 #
-            GET        t1a_old(a,i)
-            tai(a,i) = t1a_old(a,i)
+            GET        t1a_old[a,i]
+            tai[a,i] = t1a_old[a,i]
 #
             if kiter == 1
-               PUT d1ai(a,i) = tai(a,i)
+               PUT d1ai[a,i] = tai[a,i]
             endif
 #
             if kiter == 2
-               PUT d2ai(a,i) = Tai(a,i)
+               PUT d2ai[a,i] = Tai[a,i]
             endif
 #
             if kiter == 3
-               PUT d3ai(a,i) = Tai(a,i)
+               PUT d3ai[a,i] = Tai[a,i]
             endif
 #
             if kiter == 4
-               PUT d4ai(a,i) = Tai(a,i)
+               PUT d4ai[a,i] = Tai[a,i]
             endif
 #
             if kiter >= 5
-               PUT d4ai(a,i) = Tai(a,i)
+               PUT d4ai[a,i] = Tai[a,i]
             endif
 #
       ENDPARDO a, i
@@ -1893,7 +1893,7 @@ import "common.sialx"
      PROC ZERO_DSCALAR  
 #    ----------------- 
 #
-#    The scalars used (overlap of error arrays and coeffients) in the DIIS 
+#    The scalars used [overlap of error arrays and coeffients] in the DIIS 
 #    expansion are zero'd out. 
 #
 #      Zero out scalars.
@@ -2147,19 +2147,19 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 2 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-0 amplitudes
 #
-           REQUEST e1aibj(a,j,b,i) a # kiter-1 amplitudes
-           REQUEST e2aibj(a,j,b,i) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,j,b,i] a # kiter-1 amplitudes
+           REQUEST e2aibj[a,j,b,i] a # kiter-0 amplitudes
 #
-           taibj(a,i,b,j)  = e1aibj(a,j,b,i) 
-           t1aibj(a,i,b,j) = e1aibj(a,i,b,j) 
-           t1aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e1aibj[a,j,b,i] 
+           t1aibj[a,i,b,j] = e1aibj[a,i,b,j] 
+           t1aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e2aibj(a,j,b,i) 
-           t2aibj(a,i,b,j) = e2aibj(a,i,b,j) 
-           t2aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e2aibj[a,j,b,i] 
+           t2aibj[a,i,b,j] = e2aibj[a,i,b,j] 
+           t2aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
 #          Compute contributions to the 'B-matrix'.
 #          ----------------------------------------
@@ -2167,34 +2167,34 @@ import "common.sialx"
 #             b1x x=1,2
 #             ---------
 #
-              etemp = e1aibj(a,i,b,j)*e1aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e1aibj[a,i,b,j]
               etemp *= 2.0
               b11  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b12  += etemp
 #
 #             b1x x=2,2
 #             ---------
 #
-              etemp = e2aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b22  += etemp
 #
 #             b1x x=1,2
 #             ---------
 #
-              etemp = t1aibj(a,i,b,j)*t1aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t1aibj[a,i,b,j]
               b11  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b12  += etemp
 #
 #             b1x x=2,2
 #             ---------
 #
-              etemp = t2aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b22  += etemp
 #
      ENDPARDO a, i, b, j
@@ -2207,8 +2207,8 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 2 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET e1ai(a,i)    # kiter-1 amplitudes  
-           GET e2ai(a,i)    # kiter-0 amplitudes  
+           GET e1ai[a,i]    # kiter-1 amplitudes  
+           GET e2ai[a,i]    # kiter-0 amplitudes  
 #
 #          Compute contributions to the 'B-matrix'. 
 #          ---------------------------------------- 
@@ -2216,18 +2216,18 @@ import "common.sialx"
 #             b1x x=1,2 
 #             --------- 
 #
-              etemp = e1ai(a,i)*e1ai(a,i) 
+              etemp = e1ai[a,i]*e1ai[a,i] 
               etemp *= 4.0
               b11  += etemp            
 #
-              etemp = e1ai(a,i)*e2ai(a,i) 
+              etemp = e1ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b12  += etemp            
 #
 #             b1x x=2,2 
 #             --------- 
 #
-              etemp = e2ai(a,i)*e2ai(a,i) 
+              etemp = e2ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b22  += etemp            
 #
@@ -2278,26 +2278,26 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 2 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST D0aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST D1aibj(a,i,b,j) a # kiter-1 amplitudes
+           REQUEST D0aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST D1aibj[a,i,b,j] a # kiter-1 amplitudes
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-0 amplitudes
 #
 #          Compute contributions to updated amplitudes --> T2old_ab.
 #          ---------------------------------------------------------
 #
-           t2aibj(a,i,b,j)            = d0aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c1
-           taibj(a,i,b,j)             = t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d0aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c1
+           taibj[a,i,b,j]             = t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c2
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c2
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           PREPARE T2old_ab(a,i,b,j)      = taibj(a,i,b,j)
+           PREPARE T2old_ab[a,i,b,j]      = taibj[a,i,b,j]
 #
      ENDPARDO a, i, b, j
 #
@@ -2309,26 +2309,26 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 2 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET D0ai(a,i)     # kiter-2 amplitudes  
-           GET D1ai(a,i)     # kiter-1 amplitudes  
+           GET D0ai[a,i]     # kiter-2 amplitudes  
+           GET D1ai[a,i]     # kiter-1 amplitudes  
 #
-           GET e1ai(a,i)     # kiter-1 amplitudes  
-           GET e2ai(a,i)     # kiter-0 amplitudes  
+           GET e1ai[a,i]     # kiter-1 amplitudes  
+           GET e2ai[a,i]     # kiter-0 amplitudes  
 #
 #          Compute contributions to updated amplitudes --> tai_old. 
 #          --------------------------------------------------------  
 # 
-           t1ai(a,i)     = d0ai(a,i) 
-           t1ai(a,i)    += e1ai(a,i) 
-           t1ai(a,i)    *= c1  
-           tai(a,i)      = t1ai(a,i) 
+           t1ai[a,i]     = d0ai[a,i] 
+           t1ai[a,i]    += e1ai[a,i] 
+           t1ai[a,i]    *= c1  
+           tai[a,i]      = t1ai[a,i] 
 #
-           t1ai(a,i)     = d1ai(a,i) 
-           t1ai(a,i)    += e2ai(a,i) 
-           t1ai(a,i)    *= c2  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d1ai[a,i] 
+           t1ai[a,i]    += e2ai[a,i] 
+           t1ai[a,i]    *= c2  
+           tai[a,i]     += t1ai[a,i] 
 # 
-           PUT t1a_old(a,i) = tai(a,i) 
+           PUT t1a_old[a,i] = tai[a,i] 
 #
      ENDPARDO a, i  
 #
@@ -2361,25 +2361,25 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 3 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-0 amplitudes
 #
-           REQUEST e1aibj(a,j,b,i) a # kiter-2 amplitudes
-           REQUEST e2aibj(a,j,b,i) a # kiter-1 amplitudes
-           REQUEST e3aibj(a,j,b,i) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,j,b,i] a # kiter-2 amplitudes
+           REQUEST e2aibj[a,j,b,i] a # kiter-1 amplitudes
+           REQUEST e3aibj[a,j,b,i] a # kiter-0 amplitudes
 #
-           taibj(a,i,b,j)  = e1aibj(a,j,b,i) 
-           t1aibj(a,i,b,j) = e1aibj(a,i,b,j) 
-           t1aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e1aibj[a,j,b,i] 
+           t1aibj[a,i,b,j] = e1aibj[a,i,b,j] 
+           t1aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e2aibj(a,j,b,i) 
-           t2aibj(a,i,b,j) = e2aibj(a,i,b,j) 
-           t2aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e2aibj[a,j,b,i] 
+           t2aibj[a,i,b,j] = e2aibj[a,i,b,j] 
+           t2aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e3aibj(a,j,b,i) 
-           t3aibj(a,i,b,j) = e3aibj(a,i,b,j) 
-           t3aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e3aibj[a,j,b,i] 
+           t3aibj[a,i,b,j] = e3aibj[a,i,b,j] 
+           t3aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
 #          Compute contributions to the 'B-matrix'.
 #          ----------------------------------------
@@ -2387,61 +2387,61 @@ import "common.sialx"
 #             b1x x=1,3
 #             ---------
 #
-              etemp = e1aibj(a,i,b,j)*e1aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e1aibj[a,i,b,j]
               etemp *= 2.0
               b11  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b12  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b13  += etemp
 #
 #             b1x x=2,3
 #             ---------
 #
-              etemp = e2aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b22  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b23  += etemp
 #
 #             b1x x=3,3
 #             ---------
 #
-              etemp = e3aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b33  += etemp
 #
 #             b1x x=1,3
 #             ---------
 #
-              etemp = t1aibj(a,i,b,j)*t1aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t1aibj[a,i,b,j]
               b11  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b12  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b13  += etemp
 #
 #             b1x x=2,3
 #             ---------
 #
-              etemp = t2aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b22  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b23  += etemp
 #
 #             b1x x=3,3
 #             ---------
 #
-              etemp = t3aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b33  += etemp
 #
      ENDPARDO a, i, b, j
@@ -2454,9 +2454,9 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 4 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET e1ai(a,i)    # kiter-2 amplitudes  
-           GET e2ai(a,i)    # kiter-1 amplitudes  
-           GET e3ai(a,i)    # kiter-0 amplitudes  
+           GET e1ai[a,i]    # kiter-2 amplitudes  
+           GET e2ai[a,i]    # kiter-1 amplitudes  
+           GET e3ai[a,i]    # kiter-0 amplitudes  
 #
 #          Compute contributions to the 'B-matrix'. 
 #          ---------------------------------------- 
@@ -2464,33 +2464,33 @@ import "common.sialx"
 #             b1x x=1,3 
 #             --------- 
 #
-              etemp = e1ai(a,i)*e1ai(a,i) 
+              etemp = e1ai[a,i]*e1ai[a,i] 
               etemp *= 4.0
               b11  += etemp            
 #
-              etemp = e1ai(a,i)*e2ai(a,i) 
+              etemp = e1ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b12  += etemp            
 #
-              etemp = e1ai(a,i)*e3ai(a,i) 
+              etemp = e1ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b13  += etemp            
 #
 #             b1x x=2,3 
 #             --------- 
 #
-              etemp = e2ai(a,i)*e2ai(a,i) 
+              etemp = e2ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b22  += etemp            
 #
-              etemp = e2ai(a,i)*e3ai(a,i) 
+              etemp = e2ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b23  += etemp            
 #
 #             b1x x=3,3 
 #             --------- 
 #
-              etemp = e3ai(a,i)*e3ai(a,i) 
+              etemp = e3ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b33  += etemp            
 #
@@ -2545,33 +2545,33 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 3 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST D0aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST D1aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST D2aibj(a,i,b,j) a # kiter-1 amplitudes
+           REQUEST D0aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST D1aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST D2aibj[a,i,b,j] a # kiter-1 amplitudes
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-0 amplitudes
 #
 #          Compute contributions to updated amplitudes --> T2old_ab.
 #          ---------------------------------------------------------
 #
-           t2aibj(a,i,b,j)            = d0aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c1
-           taibj(a,i,b,j)             = t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d0aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c1
+           taibj[a,i,b,j]             = t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c2
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c2
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e3aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c3
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e3aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c3
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           PREPARE T2old_ab(a,i,b,j)      = taibj(a,i,b,j)
+           PREPARE T2old_ab[a,i,b,j]      = taibj[a,i,b,j]
 #
      ENDPARDO a, i, b, j
 #
@@ -2583,33 +2583,33 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 3 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET D0ai(a,i)     # kiter-3 amplitudes  
-           GET D1ai(a,i)     # kiter-2 amplitudes  
-           GET D2ai(a,i)     # kiter-1 amplitudes  
+           GET D0ai[a,i]     # kiter-3 amplitudes  
+           GET D1ai[a,i]     # kiter-2 amplitudes  
+           GET D2ai[a,i]     # kiter-1 amplitudes  
 #
-           GET e1ai(a,i)     # kiter-2 amplitudes  
-           GET e2ai(a,i)     # kiter-1 amplitudes  
-           GET e3ai(a,i)     # kiter-0 amplitudes  
+           GET e1ai[a,i]     # kiter-2 amplitudes  
+           GET e2ai[a,i]     # kiter-1 amplitudes  
+           GET e3ai[a,i]     # kiter-0 amplitudes  
 #
 #          Compute contributions to updated amplitudes --> tai_old. 
 #          --------------------------------------------------------  
 # 
-           t1ai(a,i)     = d0ai(a,i) 
-           t1ai(a,i)    += e1ai(a,i) 
-           t1ai(a,i)    *= c1  
-           tai(a,i)      = t1ai(a,i) 
+           t1ai[a,i]     = d0ai[a,i] 
+           t1ai[a,i]    += e1ai[a,i] 
+           t1ai[a,i]    *= c1  
+           tai[a,i]      = t1ai[a,i] 
 #
-           t1ai(a,i)     = d1ai(a,i) 
-           t1ai(a,i)    += e2ai(a,i) 
-           t1ai(a,i)    *= c2  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d1ai[a,i] 
+           t1ai[a,i]    += e2ai[a,i] 
+           t1ai[a,i]    *= c2  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d2ai(a,i) 
-           t1ai(a,i)    += e3ai(a,i) 
-           t1ai(a,i)    *= c3  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d2ai[a,i] 
+           t1ai[a,i]    += e3ai[a,i] 
+           t1ai[a,i]    *= c3  
+           tai[a,i]     += t1ai[a,i] 
 # 
-           PUT t1a_old(a,i) = tai(a,i) 
+           PUT t1a_old[a,i] = tai[a,i] 
 #
      ENDPARDO a, i  
 #
@@ -2642,31 +2642,31 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 4 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e4aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e4aibj[a,i,b,j] a # kiter-0 amplitudes
 #
-           REQUEST e1aibj(a,j,b,i) a # kiter-3 amplitudes
-           REQUEST e2aibj(a,j,b,i) a # kiter-2 amplitudes
-           REQUEST e3aibj(a,j,b,i) a # kiter-1 amplitudes
-           REQUEST e4aibj(a,j,b,i) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,j,b,i] a # kiter-3 amplitudes
+           REQUEST e2aibj[a,j,b,i] a # kiter-2 amplitudes
+           REQUEST e3aibj[a,j,b,i] a # kiter-1 amplitudes
+           REQUEST e4aibj[a,j,b,i] a # kiter-0 amplitudes
 #
-           taibj(a,i,b,j)  = e1aibj(a,j,b,i) 
-           t1aibj(a,i,b,j) = e1aibj(a,i,b,j) 
-           t1aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e1aibj[a,j,b,i] 
+           t1aibj[a,i,b,j] = e1aibj[a,i,b,j] 
+           t1aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e2aibj(a,j,b,i) 
-           t2aibj(a,i,b,j) = e2aibj(a,i,b,j) 
-           t2aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e2aibj[a,j,b,i] 
+           t2aibj[a,i,b,j] = e2aibj[a,i,b,j] 
+           t2aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e3aibj(a,j,b,i) 
-           t3aibj(a,i,b,j) = e3aibj(a,i,b,j) 
-           t3aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e3aibj[a,j,b,i] 
+           t3aibj[a,i,b,j] = e3aibj[a,i,b,j] 
+           t3aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e4aibj(a,j,b,i) 
-           t4aibj(a,i,b,j) = e4aibj(a,i,b,j) 
-           t4aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e4aibj[a,j,b,i] 
+           t4aibj[a,i,b,j] = e4aibj[a,i,b,j] 
+           t4aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
 #          Compute contributions to the 'B-matrix'.
 #          ----------------------------------------
@@ -2674,95 +2674,95 @@ import "common.sialx"
 #             b1x x=1,4
 #             ---------
 #
-              etemp = e1aibj(a,i,b,j)*e1aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e1aibj[a,i,b,j]
               etemp *= 2.0
               b11  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b12  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b13  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b14  += etemp
 #
 #             b1x x=2,4
 #             ---------
 #
-              etemp = e2aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b22  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b23  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b24  += etemp
 #
 #             b1x x=3,4
 #             ---------
 #
-              etemp = e3aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b33  += etemp
 #
-              etemp = e3aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b34  += etemp
 #
 #             b1x x=4,4
 #             ---------
 #
-              etemp = e4aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e4aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b44  += etemp
 #
 #             b1x x=1,4
 #             ---------
 #
-              etemp = t1aibj(a,i,b,j)*t1aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t1aibj[a,i,b,j]
               b11  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b12  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b13  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b14  += etemp
 #
 #             b1x x=2,4
 #             ---------
 #
-              etemp = t2aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b22  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b23  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b24  += etemp
 #
 #             b1x x=3,4
 #             ---------
 #
-              etemp = t3aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b33  += etemp
 #
-              etemp = t3aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b34  += etemp
 #
 #             b1x x=4,4
 #             ---------
 #
-              etemp = t4aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t4aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b44  += etemp
 #
      ENDPARDO a, i, b, j
@@ -2775,10 +2775,10 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 4 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET e1ai(a,i)    # kiter-3 amplitudes  
-           GET e2ai(a,i)    # kiter-2 amplitudes  
-           GET e3ai(a,i)    # kiter-1 amplitudes  
-           GET e4ai(a,i)    # kiter-0 amplitudes  
+           GET e1ai[a,i]    # kiter-3 amplitudes  
+           GET e2ai[a,i]    # kiter-2 amplitudes  
+           GET e3ai[a,i]    # kiter-1 amplitudes  
+           GET e4ai[a,i]    # kiter-0 amplitudes  
 #
 #          Compute contributions to the 'B-matrix'. 
 #          ---------------------------------------- 
@@ -2786,52 +2786,52 @@ import "common.sialx"
 #             b1x x=1,4 
 #             --------- 
 #
-              etemp = e1ai(a,i)*e1ai(a,i) 
+              etemp = e1ai[a,i]*e1ai[a,i] 
               etemp *= 4.0
               b11  += etemp            
 #
-              etemp = e1ai(a,i)*e2ai(a,i) 
+              etemp = e1ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b12  += etemp            
 #
-              etemp = e1ai(a,i)*e3ai(a,i) 
+              etemp = e1ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b13  += etemp            
 #
-              etemp = e1ai(a,i)*e4ai(a,i) 
+              etemp = e1ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b14  += etemp            
 #
 #             b1x x=2,4 
 #             --------- 
 #
-              etemp = e2ai(a,i)*e2ai(a,i) 
+              etemp = e2ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b22  += etemp            
 #
-              etemp = e2ai(a,i)*e3ai(a,i) 
+              etemp = e2ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b23  += etemp            
 #
-              etemp = e2ai(a,i)*e4ai(a,i) 
+              etemp = e2ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b24  += etemp            
 #
 #             b1x x=3,4 
 #             --------- 
 #
-              etemp = e3ai(a,i)*e3ai(a,i) 
+              etemp = e3ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b33  += etemp            
 #
-              etemp = e3ai(a,i)*e4ai(a,i) 
+              etemp = e3ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b34  += etemp            
 #
 #             b1x x=4,4 
 #             --------- 
 #
-              etemp = e4ai(a,i)*e4ai(a,i) 
+              etemp = e4ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b44  += etemp            
 #
@@ -2892,40 +2892,40 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 4 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST D0aibj(a,i,b,j) a # kiter-4 amplitudes
-           REQUEST D1aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST D2aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST D3aibj(a,i,b,j) a # kiter-1 amplitudes
+           REQUEST D0aibj[a,i,b,j] a # kiter-4 amplitudes
+           REQUEST D1aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST D2aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST D3aibj[a,i,b,j] a # kiter-1 amplitudes
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e4aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e4aibj[a,i,b,j] a # kiter-0 amplitudes
 #
 #          Compute contributions to updated amplitudes --> T2old_ab.
 #          ---------------------------------------------------------
 #
-           t2aibj(a,i,b,j)            = d0aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c1
-           taibj(a,i,b,j)             = t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d0aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c1
+           taibj[a,i,b,j]             = t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c2
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c2
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e3aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c3
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e3aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c3
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d3aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e4aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c4
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d3aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e4aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c4
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           PREPARE T2old_ab(a,i,b,j)      = taibj(a,i,b,j)
+           PREPARE T2old_ab[a,i,b,j]      = taibj[a,i,b,j]
 #
      ENDPARDO a, i, b, j
 #
@@ -2937,40 +2937,40 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 4 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET D0ai(a,i)     # kiter-4 amplitudes  
-           GET D1ai(a,i)     # kiter-3 amplitudes  
-           GET D2ai(a,i)     # kiter-2 amplitudes  
-           GET D3ai(a,i)     # kiter-1 amplitudes  
+           GET D0ai[a,i]     # kiter-4 amplitudes  
+           GET D1ai[a,i]     # kiter-3 amplitudes  
+           GET D2ai[a,i]     # kiter-2 amplitudes  
+           GET D3ai[a,i]     # kiter-1 amplitudes  
 #
-           GET e1ai(a,i)     # kiter-3 amplitudes  
-           GET e2ai(a,i)     # kiter-2 amplitudes  
-           GET e3ai(a,i)     # kiter-1 amplitudes  
-           GET e4ai(a,i)     # kiter-0 amplitudes  
+           GET e1ai[a,i]     # kiter-3 amplitudes  
+           GET e2ai[a,i]     # kiter-2 amplitudes  
+           GET e3ai[a,i]     # kiter-1 amplitudes  
+           GET e4ai[a,i]     # kiter-0 amplitudes  
 #
 #          Compute contributions to updated amplitudes --> tai_old. 
 #          --------------------------------------------------------  
 # 
-           t1ai(a,i)     = d0ai(a,i) 
-           t1ai(a,i)    += e1ai(a,i) 
-           t1ai(a,i)    *= c1  
-           tai(a,i)      = t1ai(a,i) 
+           t1ai[a,i]     = d0ai[a,i] 
+           t1ai[a,i]    += e1ai[a,i] 
+           t1ai[a,i]    *= c1  
+           tai[a,i]      = t1ai[a,i] 
 #
-           t1ai(a,i)     = d1ai(a,i) 
-           t1ai(a,i)    += e2ai(a,i) 
-           t1ai(a,i)    *= c2  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d1ai[a,i] 
+           t1ai[a,i]    += e2ai[a,i] 
+           t1ai[a,i]    *= c2  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d2ai(a,i) 
-           t1ai(a,i)    += e3ai(a,i) 
-           t1ai(a,i)    *= c3  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d2ai[a,i] 
+           t1ai[a,i]    += e3ai[a,i] 
+           t1ai[a,i]    *= c3  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d3ai(a,i) 
-           t1ai(a,i)    += e4ai(a,i) 
-           t1ai(a,i)    *= c4  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d3ai[a,i] 
+           t1ai[a,i]    += e4ai[a,i] 
+           t1ai[a,i]    *= c4  
+           tai[a,i]     += t1ai[a,i] 
 # 
-           PUT t1a_old(a,i) = tai(a,i) 
+           PUT t1a_old[a,i] = tai[a,i] 
 #
      ENDPARDO a, i  
 #
@@ -3003,37 +3003,37 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 5 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-4 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e4aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e5aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-4 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e4aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e5aibj[a,i,b,j] a # kiter-0 amplitudes
 #
-           REQUEST e1aibj(a,j,b,i) a # kiter-4 amplitudes
-           REQUEST e2aibj(a,j,b,i) a # kiter-3 amplitudes
-           REQUEST e3aibj(a,j,b,i) a # kiter-2 amplitudes
-           REQUEST e4aibj(a,j,b,i) a # kiter-1 amplitudes
-           REQUEST e5aibj(a,j,b,i) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,j,b,i] a # kiter-4 amplitudes
+           REQUEST e2aibj[a,j,b,i] a # kiter-3 amplitudes
+           REQUEST e3aibj[a,j,b,i] a # kiter-2 amplitudes
+           REQUEST e4aibj[a,j,b,i] a # kiter-1 amplitudes
+           REQUEST e5aibj[a,j,b,i] a # kiter-0 amplitudes
 #
-           taibj(a,i,b,j)  = e1aibj(a,j,b,i) 
-           t1aibj(a,i,b,j) = e1aibj(a,i,b,j) 
-           t1aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e1aibj[a,j,b,i] 
+           t1aibj[a,i,b,j] = e1aibj[a,i,b,j] 
+           t1aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e2aibj(a,j,b,i) 
-           t2aibj(a,i,b,j) = e2aibj(a,i,b,j) 
-           t2aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e2aibj[a,j,b,i] 
+           t2aibj[a,i,b,j] = e2aibj[a,i,b,j] 
+           t2aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e3aibj(a,j,b,i) 
-           t3aibj(a,i,b,j) = e3aibj(a,i,b,j) 
-           t3aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e3aibj[a,j,b,i] 
+           t3aibj[a,i,b,j] = e3aibj[a,i,b,j] 
+           t3aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e4aibj(a,j,b,i) 
-           t4aibj(a,i,b,j) = e4aibj(a,i,b,j) 
-           t4aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e4aibj[a,j,b,i] 
+           t4aibj[a,i,b,j] = e4aibj[a,i,b,j] 
+           t4aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
-           taibj(a,i,b,j)  = e5aibj(a,j,b,i) 
-           t5aibj(a,i,b,j) = e5aibj(a,i,b,j) 
-           t5aibj(a,i,b,j)-= taibj(a,i,b,j) 
+           taibj[a,i,b,j]  = e5aibj[a,j,b,i] 
+           t5aibj[a,i,b,j] = e5aibj[a,i,b,j] 
+           t5aibj[a,i,b,j]-= taibj[a,i,b,j] 
 #
 #          Compute contributions to the 'B-matrix'.
 #          ----------------------------------------
@@ -3041,75 +3041,75 @@ import "common.sialx"
 #             b1x x=1,5
 #             ---------
 #
-              etemp = e1aibj(a,i,b,j)*e1aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e1aibj[a,i,b,j]
               etemp *= 2.0
               b11  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b12  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b13  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b14  += etemp
 #
-              etemp = e1aibj(a,i,b,j)*e5aibj(a,i,b,j)
+              etemp = e1aibj[a,i,b,j]*e5aibj[a,i,b,j]
               etemp *= 2.0
               b15  += etemp
 #
 #             b1x x=2,5
 #             ---------
 #
-              etemp = e2aibj(a,i,b,j)*e2aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e2aibj[a,i,b,j]
               etemp *= 2.0
               b22  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b23  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b24  += etemp
 #
-              etemp = e2aibj(a,i,b,j)*e5aibj(a,i,b,j)
+              etemp = e2aibj[a,i,b,j]*e5aibj[a,i,b,j]
               etemp *= 2.0
               b25  += etemp
 #
 #             b1x x=3,5
 #             ---------
 #
-              etemp = e3aibj(a,i,b,j)*e3aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e3aibj[a,i,b,j]
               etemp *= 2.0
               b33  += etemp
 #
-              etemp = e3aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b34  += etemp
 #
-              etemp = e3aibj(a,i,b,j)*e5aibj(a,i,b,j)
+              etemp = e3aibj[a,i,b,j]*e5aibj[a,i,b,j]
               etemp *= 2.0
               b35  += etemp
 #
 #             b1x x=4,5
 #             ---------
 #
-              etemp = e4aibj(a,i,b,j)*e4aibj(a,i,b,j)
+              etemp = e4aibj[a,i,b,j]*e4aibj[a,i,b,j]
               etemp *= 2.0
               b44  += etemp
 #
-              etemp = e4aibj(a,i,b,j)*e5aibj(a,i,b,j)
+              etemp = e4aibj[a,i,b,j]*e5aibj[a,i,b,j]
               etemp *= 2.0
               b45  += etemp
 #
 #             b1x x=5,5
 #             ---------
 #
-              etemp = e5aibj(a,i,b,j)*e5aibj(a,i,b,j)
+              etemp = e5aibj[a,i,b,j]*e5aibj[a,i,b,j]
               etemp *= 2.0
               b55  += etemp
 #
@@ -3117,61 +3117,61 @@ import "common.sialx"
 #             b1x x=1,5
 #             ---------
 #
-              etemp = t1aibj(a,i,b,j)*t1aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t1aibj[a,i,b,j]
               b11  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b12  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b13  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b14  += etemp
 #
-              etemp = t1aibj(a,i,b,j)*t5aibj(a,i,b,j)
+              etemp = t1aibj[a,i,b,j]*t5aibj[a,i,b,j]
               b15  += etemp
 #
 #             b1x x=2,5
 #             ---------
 #
-              etemp = t2aibj(a,i,b,j)*t2aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t2aibj[a,i,b,j]
               b22  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b23  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b24  += etemp
 #
-              etemp = t2aibj(a,i,b,j)*t5aibj(a,i,b,j)
+              etemp = t2aibj[a,i,b,j]*t5aibj[a,i,b,j]
               b25  += etemp
 #
 #             b1x x=3,5
 #             ---------
 #
-              etemp = t3aibj(a,i,b,j)*t3aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t3aibj[a,i,b,j]
               b33  += etemp
 #
-              etemp = t3aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b34  += etemp
 #
-              etemp = t3aibj(a,i,b,j)*t5aibj(a,i,b,j)
+              etemp = t3aibj[a,i,b,j]*t5aibj[a,i,b,j]
               b35  += etemp
 #
 #             b1x x=4,5
 #             ---------
 #
-              etemp = t4aibj(a,i,b,j)*t4aibj(a,i,b,j)
+              etemp = t4aibj[a,i,b,j]*t4aibj[a,i,b,j]
               b44  += etemp
 #
-              etemp = t4aibj(a,i,b,j)*t5aibj(a,i,b,j)
+              etemp = t4aibj[a,i,b,j]*t5aibj[a,i,b,j]
               b45  += etemp
 #
 #             b1x x=5,5
 #             ---------
 #
-              etemp = t5aibj(a,i,b,j)*t5aibj(a,i,b,j)
+              etemp = t5aibj[a,i,b,j]*t5aibj[a,i,b,j]
               b55  += etemp
 #
      ENDPARDO a, i, b, j
@@ -3184,11 +3184,11 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 5 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET e1ai(a,i)    # kiter-4 amplitudes  
-           GET e2ai(a,i)    # kiter-3 amplitudes  
-           GET e3ai(a,i)    # kiter-2 amplitudes  
-           GET e4ai(a,i)    # kiter-1 amplitudes  
-           GET e5ai(a,i)    # kiter-0 amplitudes  
+           GET e1ai[a,i]    # kiter-4 amplitudes  
+           GET e2ai[a,i]    # kiter-3 amplitudes  
+           GET e3ai[a,i]    # kiter-2 amplitudes  
+           GET e4ai[a,i]    # kiter-1 amplitudes  
+           GET e5ai[a,i]    # kiter-0 amplitudes  
 #
 #          Compute contributions to the 'B-matrix'. 
 #          ---------------------------------------- 
@@ -3196,75 +3196,75 @@ import "common.sialx"
 #             b1x x=1,5 
 #             --------- 
 #
-              etemp = e1ai(a,i)*e1ai(a,i) 
+              etemp = e1ai[a,i]*e1ai[a,i] 
               etemp *= 4.0
               b11  += etemp            
 #
-              etemp = e1ai(a,i)*e2ai(a,i) 
+              etemp = e1ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b12  += etemp            
 #
-              etemp = e1ai(a,i)*e3ai(a,i) 
+              etemp = e1ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b13  += etemp            
 #
-              etemp = e1ai(a,i)*e4ai(a,i) 
+              etemp = e1ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b14  += etemp            
 #
-              etemp = e1ai(a,i)*e5ai(a,i) 
+              etemp = e1ai[a,i]*e5ai[a,i] 
               etemp *= 4.0
               b15  += etemp            
 #
 #             b1x x=2,5 
 #             --------- 
 #
-              etemp = e2ai(a,i)*e2ai(a,i) 
+              etemp = e2ai[a,i]*e2ai[a,i] 
               etemp *= 4.0
               b22  += etemp            
 #
-              etemp = e2ai(a,i)*e3ai(a,i) 
+              etemp = e2ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b23  += etemp            
 #
-              etemp = e2ai(a,i)*e4ai(a,i) 
+              etemp = e2ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b24  += etemp            
 #
-              etemp = e2ai(a,i)*e5ai(a,i) 
+              etemp = e2ai[a,i]*e5ai[a,i] 
               etemp *= 4.0
               b25  += etemp            
 #
 #             b1x x=3,5 
 #             --------- 
 #
-              etemp = e3ai(a,i)*e3ai(a,i) 
+              etemp = e3ai[a,i]*e3ai[a,i] 
               etemp *= 4.0
               b33  += etemp            
 #
-              etemp = e3ai(a,i)*e4ai(a,i) 
+              etemp = e3ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b34  += etemp            
 #
-              etemp = e3ai(a,i)*e5ai(a,i) 
+              etemp = e3ai[a,i]*e5ai[a,i] 
               etemp *= 4.0
               b35  += etemp            
 #
 #             b1x x=4,5 
 #             --------- 
 #
-              etemp = e4ai(a,i)*e4ai(a,i) 
+              etemp = e4ai[a,i]*e4ai[a,i] 
               etemp *= 4.0
               b44  += etemp            
 #
-              etemp = e4ai(a,i)*e5ai(a,i) 
+              etemp = e4ai[a,i]*e5ai[a,i] 
               etemp *= 4.0
               b45  += etemp            
 #
 #             b1x x=5,5 
 #             --------- 
 #
-              etemp = e5ai(a,i)*e5ai(a,i) 
+              etemp = e5ai[a,i]*e5ai[a,i] 
               etemp *= 4.0
               b55  += etemp            
 #
@@ -3332,47 +3332,47 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 5 previous iterations.
 #          ----------------------------------------------------------
 #
-           REQUEST D0aibj(a,i,b,j) a # kiter-5 amplitudes
-           REQUEST D1aibj(a,i,b,j) a # kiter-4 amplitudes
-           REQUEST D2aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST D3aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST D4aibj(a,i,b,j) a # kiter-1 amplitudes
+           REQUEST D0aibj[a,i,b,j] a # kiter-5 amplitudes
+           REQUEST D1aibj[a,i,b,j] a # kiter-4 amplitudes
+           REQUEST D2aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST D3aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST D4aibj[a,i,b,j] a # kiter-1 amplitudes
 #
-           REQUEST e1aibj(a,i,b,j) a # kiter-4 amplitudes
-           REQUEST e2aibj(a,i,b,j) a # kiter-3 amplitudes
-           REQUEST e3aibj(a,i,b,j) a # kiter-2 amplitudes
-           REQUEST e4aibj(a,i,b,j) a # kiter-1 amplitudes
-           REQUEST e5aibj(a,i,b,j) a # kiter-0 amplitudes
+           REQUEST e1aibj[a,i,b,j] a # kiter-4 amplitudes
+           REQUEST e2aibj[a,i,b,j] a # kiter-3 amplitudes
+           REQUEST e3aibj[a,i,b,j] a # kiter-2 amplitudes
+           REQUEST e4aibj[a,i,b,j] a # kiter-1 amplitudes
+           REQUEST e5aibj[a,i,b,j] a # kiter-0 amplitudes
 #
 #          Compute contributions to updated amplitudes --> T2old_ab.
 #          ---------------------------------------------------------
 #
-           t2aibj(a,i,b,j)            = d0aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c1
-           taibj(a,i,b,j)             = t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d0aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c1
+           taibj[a,i,b,j]             = t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d1aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c2
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d1aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c2
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d2aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e3aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c3
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d2aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e3aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c3
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d3aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e4aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c4
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d3aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e4aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c4
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           t2aibj(a,i,b,j)            = d4aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           += e5aibj(a,i,b,j)
-           t2aibj(a,i,b,j)           *= c5
-           taibj(a,i,b,j)            += t2aibj(a,i,b,j)
+           t2aibj[a,i,b,j]            = d4aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           += e5aibj[a,i,b,j]
+           t2aibj[a,i,b,j]           *= c5
+           taibj[a,i,b,j]            += t2aibj[a,i,b,j]
 #
-           PREPARE T2old_ab(a,i,b,j)      = taibj(a,i,b,j)
+           PREPARE T2old_ab[a,i,b,j]      = taibj[a,i,b,j]
 #
      ENDPARDO a, i, b, j
 #
@@ -3384,47 +3384,47 @@ import "common.sialx"
 #          REQUEST/GET amplitude data from all 5 previous iterations. 
 #          ---------------------------------------------------------- 
 #
-           GET D0ai(a,i)     # kiter-5 amplitudes  
-           GET D1ai(a,i)     # kiter-4 amplitudes  
-           GET D2ai(a,i)     # kiter-3 amplitudes  
-           GET D3ai(a,i)     # kiter-2 amplitudes  
-           GET D4ai(a,i)     # kiter-1 amplitudes  
+           GET D0ai[a,i]     # kiter-5 amplitudes  
+           GET D1ai[a,i]     # kiter-4 amplitudes  
+           GET D2ai[a,i]     # kiter-3 amplitudes  
+           GET D3ai[a,i]     # kiter-2 amplitudes  
+           GET D4ai[a,i]     # kiter-1 amplitudes  
 #
-           GET e1ai(a,i)     # kiter-4 amplitudes  
-           GET e2ai(a,i)     # kiter-3 amplitudes  
-           GET e3ai(a,i)     # kiter-2 amplitudes  
-           GET e4ai(a,i)     # kiter-1 amplitudes  
-           GET e5ai(a,i)     # kiter-0 amplitudes  
+           GET e1ai[a,i]     # kiter-4 amplitudes  
+           GET e2ai[a,i]     # kiter-3 amplitudes  
+           GET e3ai[a,i]     # kiter-2 amplitudes  
+           GET e4ai[a,i]     # kiter-1 amplitudes  
+           GET e5ai[a,i]     # kiter-0 amplitudes  
 #
 #          Compute contributions to updated amplitudes --> tai_old. 
 #          --------------------------------------------------------  
 # 
-           t1ai(a,i)     = d0ai(a,i) 
-           t1ai(a,i)    += e1ai(a,i) 
-           t1ai(a,i)    *= c1  
-           tai(a,i)      = t1ai(a,i) 
+           t1ai[a,i]     = d0ai[a,i] 
+           t1ai[a,i]    += e1ai[a,i] 
+           t1ai[a,i]    *= c1  
+           tai[a,i]      = t1ai[a,i] 
 #
-           t1ai(a,i)     = d1ai(a,i) 
-           t1ai(a,i)    += e2ai(a,i) 
-           t1ai(a,i)    *= c2  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d1ai[a,i] 
+           t1ai[a,i]    += e2ai[a,i] 
+           t1ai[a,i]    *= c2  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d2ai(a,i) 
-           t1ai(a,i)    += e3ai(a,i) 
-           t1ai(a,i)    *= c3  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d2ai[a,i] 
+           t1ai[a,i]    += e3ai[a,i] 
+           t1ai[a,i]    *= c3  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d3ai(a,i) 
-           t1ai(a,i)    += e4ai(a,i) 
-           t1ai(a,i)    *= c4  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d3ai[a,i] 
+           t1ai[a,i]    += e4ai[a,i] 
+           t1ai[a,i]    *= c4  
+           tai[a,i]     += t1ai[a,i] 
 #
-           t1ai(a,i)     = d4ai(a,i) 
-           t1ai(a,i)    += e5ai(a,i) 
-           t1ai(a,i)    *= c5  
-           tai(a,i)     += t1ai(a,i) 
+           t1ai[a,i]     = d4ai[a,i] 
+           t1ai[a,i]    += e5ai[a,i] 
+           t1ai[a,i]    *= c5  
+           tai[a,i]     += t1ai[a,i] 
 # 
-           PUT t1a_old(a,i) = tai(a,i) 
+           PUT t1a_old[a,i] = tai[a,i] 
 #
      ENDPARDO a, i  
 #
@@ -3477,51 +3477,51 @@ import "common.sialx"
      sip_barrier
 #
      PARDO a, i
-           GET d1ai(a,i)
-           PUT d0ai(a,i) = d1ai(a,i)
+           GET d1ai[a,i]
+           PUT d0ai[a,i] = d1ai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
 #
      PARDO a, i
-           GET e2ai(a,i)
-           PUT e1ai(a,i) = e2ai(a,i)
+           GET e2ai[a,i]
+           PUT e1ai[a,i] = e2ai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           GET d2ai(a,i)
-           PUT d1ai(a,i) = d2ai(a,i)
-     ENDPARDO a, i
-#
-     sip_barrier
-#
-     PARDO a, i
-           GET e3ai(a,i)
-           PUT e2ai(a,i) = e3ai(a,i)
-     ENDPARDO a, i
-#
-     PARDO a, i
-           GET d3ai(a,i)
-           PUT d2ai(a,i) = d3ai(a,i)
+           GET d2ai[a,i]
+           PUT d1ai[a,i] = d2ai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
 #
      PARDO a, i
-           GET e4ai(a,i)
-           PUT e3ai(a,i) = e4ai(a,i)
+           GET e3ai[a,i]
+           PUT e2ai[a,i] = e3ai[a,i]
      ENDPARDO a, i
 #
      PARDO a, i
-           GET d4ai(a,i)
-           PUT d3ai(a,i) = d4ai(a,i)
+           GET d3ai[a,i]
+           PUT d2ai[a,i] = d3ai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
 #
      PARDO a, i
-           GET e5ai(a,i)
-           PUT e4ai(a,i) = e5ai(a,i)
+           GET e4ai[a,i]
+           PUT e3ai[a,i] = e4ai[a,i]
+     ENDPARDO a, i
+#
+     PARDO a, i
+           GET d4ai[a,i]
+           PUT d3ai[a,i] = d4ai[a,i]
+     ENDPARDO a, i
+#
+     sip_barrier
+#
+     PARDO a, i
+           GET e5ai[a,i]
+           PUT e4ai[a,i] = e5ai[a,i]
      ENDPARDO a, i
 #
      sip_barrier
@@ -3604,12 +3604,12 @@ import "common.sialx"
       server_barrier  
 #
       PARDO a, i, b, j 
-            REQUEST                     T2old_ab(a,i,b,j) a 
-            REQUEST                     T2old_ab(a,j,b,i) a 
-            taiai(a,i,b,j)            = T2old_ab(a,i,b,j) 
-            t1aiai(a,i,b,j)           = T2old_ab(a,j,b,i) 
-            taiai(a,i,b,j)           -= t1aiai(a,i,b,j) 
-            PREPARE T2old_aa(a,i,b,j) = taiai(a,i,b,j) 
+            REQUEST                     T2old_ab[a,i,b,j] a 
+            REQUEST                     T2old_ab[a,j,b,i] a 
+            taiai[a,i,b,j]            = T2old_ab[a,i,b,j] 
+            t1aiai[a,i,b,j]           = T2old_ab[a,j,b,i] 
+            taiai[a,i,b,j]           -= t1aiai[a,i,b,j] 
+            PREPARE T2old_aa[a,i,b,j] = taiai[a,i,b,j] 
       ENDPARDO a, i, b, j 
 #
       server_barrier  
@@ -3625,12 +3625,12 @@ import "common.sialx"
       server_barrier  
 #
       PARDO a, i, b, j 
-            REQUEST                     T2old_ab(a,i,b,j) a 
-            REQUEST                     T2old_ab(a,j,b,i) a 
-            taiai(a,i,b,j)            = T2old_ab(a,i,b,j) 
-            t1aiai(a,i,b,j)           = T2old_ab(a,j,b,i) 
-            taiai(a,i,b,j)           -= t1aiai(a,i,b,j) 
-            PREPARE T2old_aa(a,i,b,j) = taiai(a,i,b,j) 
+            REQUEST                     T2old_ab[a,i,b,j] a 
+            REQUEST                     T2old_ab[a,j,b,i] a 
+            taiai[a,i,b,j]            = T2old_ab[a,i,b,j] 
+            t1aiai[a,i,b,j]           = T2old_ab[a,j,b,i] 
+            taiai[a,i,b,j]           -= t1aiai[a,i,b,j] 
+            PREPARE T2old_aa[a,i,b,j] = taiai[a,i,b,j] 
       ENDPARDO a, i, b, j 
 #
       server_barrier  
@@ -3733,12 +3733,12 @@ import "common.sialx"
 #
          server_barrier  
          PARDO a, i, b, j 
-               REQUEST                     T2old_ab(a,i,b,j) a 
-               REQUEST                     T2old_ab(a,j,b,i) a 
-               taiai(a,i,b,j)            = T2old_ab(a,i,b,j) 
-               t1aiai(a,i,b,j)           = T2old_ab(a,j,b,i) 
-               taiai(a,i,b,j)           -= t1aiai(a,i,b,j) 
-               PREPARE T2old_aa(a,i,b,j) = taiai(a,i,b,j) 
+               REQUEST                     T2old_ab[a,i,b,j] a 
+               REQUEST                     T2old_ab[a,j,b,i] a 
+               taiai[a,i,b,j]            = T2old_ab[a,i,b,j] 
+               t1aiai[a,i,b,j]           = T2old_ab[a,j,b,i] 
+               taiai[a,i,b,j]           -= t1aiai[a,i,b,j] 
+               PREPARE T2old_aa[a,i,b,j] = taiai[a,i,b,j] 
          ENDPARDO a, i, b, j 
          server_barrier  
 #
