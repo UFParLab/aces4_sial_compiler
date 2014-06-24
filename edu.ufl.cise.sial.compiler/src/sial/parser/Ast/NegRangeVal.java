@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 50:  RangeVal ::= -$ INTLIT
+ *<li>Rule 48:  RangeVal ::= -$ INTLIT
  *</b>
  */
 public class NegRangeVal extends ASTNode implements IRangeVal

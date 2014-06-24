@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 95:  Statement ::= gpu_free$ Primary
+ *<li>Rule 93:  Statement ::= gpu_free$ Primary
  *</b>
  */
 public class GpuFree extends ASTNode implements IStatement

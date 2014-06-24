@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 61:  Statement ::= call$ Ident
+ *<li>Rule 59:  Statement ::= call$ Ident
  *</b>
  */
 public class CallStatement extends ASTNode implements IStatement

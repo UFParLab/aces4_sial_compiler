@@ -31,20 +31,14 @@ public interface Visitor extends IAstVisitor
     boolean visit(ModifierList n);
     void endVisit(ModifierList n);
 
-    boolean visit(Sip_ConsistentModifier n);
-    void endVisit(Sip_ConsistentModifier n);
-
     boolean visit(PredefinedModifier n);
     void endVisit(PredefinedModifier n);
-
-    boolean visit(ScopedExtentModifier n);
-    void endVisit(ScopedExtentModifier n);
 
     boolean visit(ContiguousModifier n);
     void endVisit(ContiguousModifier n);
 
-    boolean visit(Auto_AllocateModifier n);
-    void endVisit(Auto_AllocateModifier n);
+    boolean visit(SparseModifier n);
+    void endVisit(SparseModifier n);
 
     boolean visit(DecList n);
     void endVisit(DecList n);

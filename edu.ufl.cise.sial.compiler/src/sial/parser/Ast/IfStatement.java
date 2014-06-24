@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 71:  Statement ::= if$ RelationalExpression EOLs$ StatementList endif$
+ *<li>Rule 69:  Statement ::= if$ RelationalExpression EOLs$ StatementList endif$
  *</b>
  */
 public class IfStatement extends ASTNode implements IStatement

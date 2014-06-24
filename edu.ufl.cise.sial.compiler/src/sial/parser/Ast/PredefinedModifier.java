@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 16:  Modifier ::= predefined
+ *<li>Rule 15:  Modifier ::= predefined
  *</b>
  */
 public class PredefinedModifier extends ASTNodeToken implements IModifier

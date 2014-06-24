@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 29:  ScalarDec ::= Modifiersopt scalar$ Ident
+ *<li>Rule 27:  ScalarDec ::= Modifiersopt scalar$ Ident
  *</b>
  */
 public class ScalarDec extends ASTNode implements IScalarDec

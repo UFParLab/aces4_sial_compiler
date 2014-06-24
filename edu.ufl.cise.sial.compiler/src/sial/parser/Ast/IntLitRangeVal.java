@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 49:  RangeVal ::= INTLIT
+ *<li>Rule 47:  RangeVal ::= INTLIT
  *</b>
  */
 public class IntLitRangeVal extends ASTNodeToken implements IRangeVal

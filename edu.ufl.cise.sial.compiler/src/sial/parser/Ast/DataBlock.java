@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 106:  DataBlock ::= Ident ($ Indices )$
+ *<li>Rule 104:  DataBlock ::= Ident ($ Indices )$
  *</b>
  */
 public class DataBlock extends ASTNode implements IDataBlock

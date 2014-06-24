@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 63:  Statement ::= server_barrier$ IdentOpt
+ *<li>Rule 61:  Statement ::= server_barrier$ IdentOpt
  *</b>
  */
 public class ServerBarrierStatement extends ASTNode implements IStatement

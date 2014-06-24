@@ -10,8 +10,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 56:  StatementList ::= $Empty
- *<li>Rule 57:  StatementList ::= StatementList Statement EOLs$
+ *<li>Rule 54:  StatementList ::= $Empty
+ *<li>Rule 55:  StatementList ::= StatementList Statement EOLs$
  *</b>
  */
 public class StatementList extends AbstractASTNodeList implements IStatementList

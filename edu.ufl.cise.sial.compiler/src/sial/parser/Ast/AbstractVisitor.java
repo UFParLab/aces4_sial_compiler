@@ -34,20 +34,14 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ModifierList n) { unimplementedVisitor("visit(ModifierList)"); return true; }
     public void endVisit(ModifierList n) { unimplementedVisitor("endVisit(ModifierList)"); }
 
-    public boolean visit(Sip_ConsistentModifier n) { unimplementedVisitor("visit(Sip_ConsistentModifier)"); return true; }
-    public void endVisit(Sip_ConsistentModifier n) { unimplementedVisitor("endVisit(Sip_ConsistentModifier)"); }
-
     public boolean visit(PredefinedModifier n) { unimplementedVisitor("visit(PredefinedModifier)"); return true; }
     public void endVisit(PredefinedModifier n) { unimplementedVisitor("endVisit(PredefinedModifier)"); }
-
-    public boolean visit(ScopedExtentModifier n) { unimplementedVisitor("visit(ScopedExtentModifier)"); return true; }
-    public void endVisit(ScopedExtentModifier n) { unimplementedVisitor("endVisit(ScopedExtentModifier)"); }
 
     public boolean visit(ContiguousModifier n) { unimplementedVisitor("visit(ContiguousModifier)"); return true; }
     public void endVisit(ContiguousModifier n) { unimplementedVisitor("endVisit(ContiguousModifier)"); }
 
-    public boolean visit(Auto_AllocateModifier n) { unimplementedVisitor("visit(Auto_AllocateModifier)"); return true; }
-    public void endVisit(Auto_AllocateModifier n) { unimplementedVisitor("endVisit(Auto_AllocateModifier)"); }
+    public boolean visit(SparseModifier n) { unimplementedVisitor("visit(SparseModifier)"); return true; }
+    public void endVisit(SparseModifier n) { unimplementedVisitor("endVisit(SparseModifier)"); }
 
     public boolean visit(DecList n) { unimplementedVisitor("visit(DecList)"); return true; }
     public void endVisit(DecList n) { unimplementedVisitor("endVisit(DecList)"); }
@@ -301,11 +295,9 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) return visit((ImportProgList) n);
         else if (n instanceof ImportProg) return visit((ImportProg) n);
         else if (n instanceof ModifierList) return visit((ModifierList) n);
-        else if (n instanceof Sip_ConsistentModifier) return visit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) return visit((PredefinedModifier) n);
-        else if (n instanceof ScopedExtentModifier) return visit((ScopedExtentModifier) n);
         else if (n instanceof ContiguousModifier) return visit((ContiguousModifier) n);
-        else if (n instanceof Auto_AllocateModifier) return visit((Auto_AllocateModifier) n);
+        else if (n instanceof SparseModifier) return visit((SparseModifier) n);
         else if (n instanceof DecList) return visit((DecList) n);
         else if (n instanceof ScalarDec) return visit((ScalarDec) n);
         else if (n instanceof IntDec) return visit((IntDec) n);
@@ -397,11 +389,9 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ImportProgList) endVisit((ImportProgList) n);
         else if (n instanceof ImportProg) endVisit((ImportProg) n);
         else if (n instanceof ModifierList) endVisit((ModifierList) n);
-        else if (n instanceof Sip_ConsistentModifier) endVisit((Sip_ConsistentModifier) n);
         else if (n instanceof PredefinedModifier) endVisit((PredefinedModifier) n);
-        else if (n instanceof ScopedExtentModifier) endVisit((ScopedExtentModifier) n);
         else if (n instanceof ContiguousModifier) endVisit((ContiguousModifier) n);
-        else if (n instanceof Auto_AllocateModifier) endVisit((Auto_AllocateModifier) n);
+        else if (n instanceof SparseModifier) endVisit((SparseModifier) n);
         else if (n instanceof DecList) endVisit((DecList) n);
         else if (n instanceof ScalarDec) endVisit((ScalarDec) n);
         else if (n instanceof IntDec) endVisit((IntDec) n);

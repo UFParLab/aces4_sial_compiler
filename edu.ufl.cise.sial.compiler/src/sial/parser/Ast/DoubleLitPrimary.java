@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 133:  Primary ::= DOUBLELIT
+ *<li>Rule 131:  Primary ::= DOUBLELIT
  *</b>
  */
 public class DoubleLitPrimary extends ASTNodeToken implements IPrimary

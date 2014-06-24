@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 98:  Statement ::= set_persistent$ Ident StringLiteral
+ *<li>Rule 96:  Statement ::= set_persistent$ Ident StringLiteral
  *</b>
  */
 public class SetPersistent extends ASTNode implements IStatement

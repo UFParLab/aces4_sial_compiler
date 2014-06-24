@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 62:  Statement ::= return$
+ *<li>Rule 60:  Statement ::= return$
  *</b>
  */
 public class ReturnStatement extends ASTNodeToken implements IStatement

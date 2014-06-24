@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 94:  Statement ::= gpu_allocate$ Primary
+ *<li>Rule 92:  Statement ::= gpu_allocate$ Primary
  *</b>
  */
 public class GpuAllocate extends ASTNode implements IStatement

@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 93:  Statement ::= gpu_on$ EOLs$ StatementList gpu_off$
+ *<li>Rule 91:  Statement ::= gpu_on$ EOLs$ StatementList gpu_off$
  *</b>
  */
 public class GpuStatement extends ASTNode implements IStatement

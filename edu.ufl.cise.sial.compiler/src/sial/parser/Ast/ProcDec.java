@@ -11,7 +11,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 52:  ProcDec ::= proc$ Ident EOLs$ StatementList endproc Ident$endIdent
+ *<li>Rule 50:  ProcDec ::= proc$ Ident EOLs$ StatementList endproc Ident$endIdent
  *</b>
  */
 public class ProcDec extends ASTNode implements IProcDec

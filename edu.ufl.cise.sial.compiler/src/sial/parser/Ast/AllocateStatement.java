@@ -10,7 +10,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 73:  Statement ::= allocate$ Ident AllocIndexListopt
+ *<li>Rule 71:  Statement ::= allocate$ Ident AllocIndexListopt
  *</b>
  */
 public class AllocateStatement extends ASTNode implements IStatement
