@@ -118,9 +118,12 @@ import sial.parser.context.ExpressionType;
 import sial.parser.context.ExpressionType.EType;
 import static sial.parser.context.ExpressionType.EType.*;
 
+import sial.code_gen.*;
+import static sial.code_gen.Opcode.*;
+
 /** Visits AST and generates code for the SIAL program */
-public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
-		SipConstants {
+public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, SipConstants
+		 {
 
 	SipTable sipTable; // main data structure of code generation
 	Sial ast; // for debugging convenience
@@ -162,6 +165,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 							// entries, so do it once.
 	static int[] defaultUndefInd; // array initialized to -1
 	
+	static int[] defaultUnusedInd;
+	
 	int noArgExecuteArg = -1;
 	
 	static {
@@ -172,6 +177,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 			defaultUndefInd[i] = -1;
 		}
 		defaultZeroInd = new int[TypeConstantMap.max_rank];
+		defaultUnusedInd = defaultUndefInd;
 	}
 
 	public CodeGenVisitor(SipTable sipTable) {
@@ -222,7 +228,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 									// insert the jump instruction to the value
 									// needed for an empty program.
 
-			opTable.addOptableEntry(go_to_op, 1, defaultOneInd, lineno(n));
+			opTable.addOptableEntry(goto_op, 1, -1, -1, defaultUnusedInd, lineno(n));
 
 		}
 
@@ -724,8 +730,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		assert jmpzPC == opTable.nOps - 1 : "backpatch stack had unexpected value in IfElseStatement";
 		// visit the statements of the if block
 		n.getifStatements().accept(this);
-		// add a goto to jump over the else part
-		int gotoPC = opTable.addOptableEntry(go_to_op, 0, defaultOneInd,
+		// add a goto to jump over the else part, destination will be added later
+		int gotoPC = opTable.addOptableEntry(goto_op, 0, 0,0, defaultUnusedInd,
 				lineno(n));
 		// patch the jmpz instruction
 		opTable.backpatchBranch(jmpzPC);
@@ -823,7 +829,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int[] lhsInd = indexArrayStack.pop();
 		int rhsRank = arrayTable.getRank(rhsIndex);
 		int lhsRank = arrayTable.getRank(lhsIndex);
-		int opcode = 0;
+		Opcode opcode = null;
 		if (n.getAssignOp().getop().getKind() == TK_ASSIGN) {
 			opcode = put_replace_op;
 		} else if (n.getAssignOp().getop().getKind() == TK_PLUS_ASSIGN) {
@@ -865,11 +871,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		int[] lhsInd = indexArrayStack.pop();
 		int rhsRank = arrayTable.getRank(rhsIndex);
 		int lhsRank = arrayTable.getRank(lhsIndex);
-		int opcode = 0;
+		Opcode opcode = null;
 		if (n.getAssignOp().getop().getKind() == TK_ASSIGN) {
 			opcode = prepare_op;
 		} else if (n.getAssignOp().getop().getKind() == TK_PLUS_ASSIGN) {
-			opcode = prepare_increment_op;
+			opcode = prepare_accumulate_op;
 		} else
 			assert false : "illegal operator for prepare statement";
 		opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsIndex, lhsInd,
@@ -962,7 +968,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 //					lineno(n)); 
 //		}
 		int functionAddr = operandStack.pop();
-		opTable.addOptableEntry(user_sub_op, functionAddr, 0, numArgs,
+		opTable.addOptableEntry(execute_op, functionAddr, 0, numArgs,
 				defaultUndefInd, lineno(n));
 	}
 	
@@ -1109,25 +1115,25 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		IExpression eleft = n.getUnaryExpressionLeft();
 		EnumSet<EType> argType = ASTUtils.getIExprTypes(eleft); 
 		//type checking already checked that both args have same type												
-		int opcode;
+		Opcode opcode;
 		if (argType.contains(SCALAR)) {
 			opcode = getRelOpcodeScalar(n.getRelOp());
 		} else if (argType.contains(INT) || argType.contains(INDEX)) {
 			opcode = getRelOpcodeInt(n.getRelOp());
 		} else {
 			assert false : "compiler bug:  unexpected type in relational expression at line " + lineno(n) + ": " + n;
-			opcode = -1;
+			opcode = invalid_op;
 		}
 		opTable.addOptableEntry(opcode, defaultUndefInd, lineno(n));
 		// add a jz and push its index onto the
 		// backPatchInstructionStack
-		int opTableIndex = opTable.addOptableEntry(jz_op, defaultUndefInd,
+		int opTableIndex = opTable.addOptableEntry(jump_if_zero_op, defaultUndefInd,
 				lineno(n));
 		backpatchInstructionStack.push(opTableIndex); // TODO move to parent
 		return;
 	}
 
-	int getRelOpcodeScalar(RelOp relOp) {
+	Opcode getRelOpcodeScalar(RelOp relOp) {
 		int kind = relOp.getop().getKind();
 		switch (kind) {
 		case TK_GREATER:
@@ -1145,10 +1151,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		default:
 			assert false : relOp + "is illegal operator";
 		}
-		return -1;
+		return invalid_op;
 	}
 
-	int getRelOpcodeInt(RelOp relOp) {
+	Opcode getRelOpcodeInt(RelOp relOp) {
 		int kind = relOp.getop().getKind();
 		switch (kind) {
 		case TK_GREATER:
@@ -1166,7 +1172,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym,
 		default:
 			assert false : relOp + " illegal operator";
 		}
-		return -1;
+		return invalid_op;
 	}
 
 

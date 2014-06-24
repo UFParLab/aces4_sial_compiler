@@ -7,15 +7,6 @@
     <thead><tr bgcolor="#ccccff"><td><b>Non-terminal</b></td><td><b>Description</b></td><td><b>Rules</b></td></tr></thead>
   <tbody>
   <tr>
-    <td width="10%"><a name="-Arg"><b>-Arg</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p>DoubleLiteral</p>
-    </td>
-  </tr>
-  <tr>
     <td width="10%"><a name="AllocIndex"><b>AllocIndex</b></a>
     </td>
     <td width="50%">
@@ -95,6 +86,24 @@
       <p>'+='</p>
       <p>'-='</p>
       <p>'*='</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="BinOp"><b>BinOp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'^'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="BinaryExpression"><b>BinaryExpression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#BinOp">BinOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -495,6 +504,16 @@
     </td>
   </tr>
   <tr>
+    <td width="10%"><a name="ScalarOrBlockVar"><b>ScalarOrBlockVar</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+      <p><a href="#DataBlock">DataBlock</a></p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="Sial"><b>Sial</b></a>
     </td>
     <td width="50%">
@@ -509,7 +528,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>special <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
     </td>
   </tr>
   <tr>
@@ -865,7 +884,7 @@
     <td width="40%">
       <p><a href="#letter">letter</a></p>
       <p><a href="#digit">digit</a></p>
-      <p>special</p>
+      <p><a href="#special">special</a></p>
       <p><a href="#whiteChar">whiteChar</a></p>
     </td>
   </tr>
@@ -927,6 +946,16 @@
     <td width="40%">
       <p>'#'</p>
       <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="special"><b>special</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#specialNotDQ">specialNotDQ</a></p>
+      <p>'&quot;'</p>
     </td>
   </tr>
   <tr>

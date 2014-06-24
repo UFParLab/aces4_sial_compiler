@@ -64,10 +64,12 @@ public final static int
     
 
 
-//opcodes
+
+
+/*//opcodes
 public final static int 
-	contraction_op = 101,
-	sum_op         = 102,
+//	contraction_op = 101,
+//	sum_opp         = 102,
 	push_block_selector_op       = 103,
 	do_op          = 104,
 	enddo_op       = 105,
@@ -96,15 +98,15 @@ public final static int
 	pardo_op       = 128,
 	endpardo_op    = 129,
 	exit_op        = 130,
-	int_assignment_op  = 131,      // =
+//	int_assignment_op  = 131,      // =
 	cycle_op       = 132,
-	self_multiply_op = 134,    // *= scalar
-	subtract_op    = 135,      // -
+//	self_multiply_op = 134,    // *= scalar
+//	subtract_op    = 135,      // -
 	collective_sum_op = 136,
-	divide_op      = 137,
+//	divide_op      = 137,
 	prepare_op     = 138,
 	request_op     = 139,
-	compute_integrals_op = 140,
+//	compute_integrals_op = 140,
 	put_replace_op = 141,
 	tensor_op      = 142,
 	scalar_add_op      = 146,
@@ -129,10 +131,10 @@ public final static int
 	println_op     = 166,
 	print_index_op = 167,
 	print_scalar_op = 168,
-	assign_scalar_op = 169,
-	assign_block_op = 170,
-	assign_fill_op = 180,
-	assign_transpose_op = 181,
+//	assign_scalar_op = 169,
+//	assign_block_op = 170,
+//	assign_fill_op = 180,
+//	assign_transpose_op = 181,
 	dosubindex_op = 182,
 	enddosubindex_op = 183,
 	slice_op = 184,
@@ -154,7 +156,7 @@ public final static int
 	print_int_op = 100,
 	cast_to_int_op = 101,
 	cast_to_scalar_op = 102,
-	scalar_assignment_op = 103,
+//	scalar_assignment_op = 103,
 	contraction_accumulate_op = 104,
 	begin_pardo_section_op = 105,
 	end_pardo_section_op = 106,
@@ -171,6 +173,11 @@ public final static int
 	assert_same_op = 117,
 	int_modulo_op = 118,
 	int_store_op = 119,
-	scalar_store_op = 120,
-	last_opcode = scalar_store_op;
+	scalar_store_op = 120
+//	,
+//	last_opcode = scalar_store_op
+	;
+}*/
+
+	;
 }
