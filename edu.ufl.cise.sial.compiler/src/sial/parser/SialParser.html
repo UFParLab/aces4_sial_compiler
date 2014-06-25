@@ -36,6 +36,15 @@
     </td>
   </tr>
   <tr>
+    <td width="10%"><a name="AllocateStatement"><b>AllocateStatement</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>allocate contiguous <a href="#Ident">Ident</a> <a href="#ContiguousAllocIndexListopt">ContiguousAllocIndexListopt</a></p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="Arg"><b>Arg</b></a>
     </td>
     <td width="50%">
@@ -107,12 +116,124 @@
     </td>
   </tr>
   <tr>
+    <td width="10%"><a name="CAllocIndex"><b>CAllocIndex</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="CastExpression"><b>CastExpression</b></a>
     </td>
     <td width="50%">
     </td>
     <td width="40%">
       <p>'(' scalar ')' <a href="#CastExpression">CastExpression</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="CoAllocIndex"><b>CoAllocIndex</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ConAllocIndex"><b>ConAllocIndex</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndex"><b>ContiguousAllocIndex</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexE"><b>ContiguousAllocIndexE</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexEList"><b>ContiguousAllocIndexEList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+      <p><a href="#ContiguousAllocIndexExprList">ContiguousAllocIndexExprList</a> ',' <a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexEx"><b>ContiguousAllocIndexEx</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexExp"><b>ContiguousAllocIndexExp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexExpr"><b>ContiguousAllocIndexExpr</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'*'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexExprList"><b>ContiguousAllocIndexExprList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+      <p><a href="#ContiguousAllocIndexExprList">ContiguousAllocIndexExprList</a> ',' <a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexList"><b>ContiguousAllocIndexList</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+      <p><a href="#ContiguousAllocIndexExprList">ContiguousAllocIndexExprList</a> ',' <a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousAllocIndexListopt"><b>ContiguousAllocIndexListopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p>'[' <a href="#ContiguousAllocIndexList">ContiguousAllocIndexList</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -439,7 +560,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#RangeVal">RangeVal</a> ',' <a href="#RangeVal">RangeVal</a></p>
+      <p><a href="#RangeVal">RangeVal</a> ':' <a href="#RangeVal">RangeVal</a></p>
     </td>
   </tr>
   <tr>
@@ -528,7 +649,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+      <p>special <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
     </td>
   </tr>
   <tr>
@@ -610,6 +731,7 @@
       <p><a href="#eol">eol</a></p>
       <p>'['</p>
       <p>']'</p>
+      <p>':'</p>
     </td>
   </tr>
   <tr>
@@ -884,7 +1006,7 @@
     <td width="40%">
       <p><a href="#letter">letter</a></p>
       <p><a href="#digit">digit</a></p>
-      <p><a href="#special">special</a></p>
+      <p>special</p>
       <p><a href="#whiteChar">whiteChar</a></p>
     </td>
   </tr>
@@ -946,16 +1068,6 @@
     <td width="40%">
       <p>'#'</p>
       <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="special"><b>special</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#specialNotDQ">specialNotDQ</a></p>
-      <p>'&quot;'</p>
     </td>
   </tr>
   <tr>

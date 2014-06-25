@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 90:  Statement ::= print_int$ Ident
+ *<li>Rule 103:  Statement ::= print_int$ Ident
  *</b>
  */
 public class PrintIntStatement extends ASTNode implements IStatement

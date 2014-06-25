@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 88:  Statement ::= print_index$ Ident
+ *<li>Rule 101:  Statement ::= print_index$ Ident
  *</b>
  */
 public class PrintIndexStatement extends ASTNode implements IStatement

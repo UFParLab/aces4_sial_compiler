@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 81:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+ *<li>Rule 94:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
  *</b>
  */
 public class PrepareStatement extends ASTNode implements IStatement

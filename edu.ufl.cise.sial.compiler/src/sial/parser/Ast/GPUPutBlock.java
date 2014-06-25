@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 102:  Statement ::= gpu_put$ Arg
+ *<li>Rule 115:  Statement ::= gpu_put$ Arg
  *</b>
  */
 public class GPUPutBlock extends ASTNode implements IStatement

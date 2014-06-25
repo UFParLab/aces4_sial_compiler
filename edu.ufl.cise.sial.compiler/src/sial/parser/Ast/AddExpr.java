@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 128:  Expression ::= Expression + Term
+ *<li>Rule 135:  Expression ::= Expression + Term
  *</b>
  */
 public class AddExpr extends ASTNode implements IExpression

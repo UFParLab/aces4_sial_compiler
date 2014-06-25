@@ -4,6 +4,9 @@ package sial.parser.Ast;
  * is implemented by:
  *<b>
  *<ul>
+ *<li>ContiguousAllocIndexSingleExpr
+ *<li>ContiguousAllocIndexRangeExpr
+ *<li>ContiguousAllocIndexWildExpr
  *<li>DataBlock
  *<li>AddExpr
  *<li>SubtractExpr
@@ -24,6 +27,6 @@ package sial.parser.Ast;
  *</ul>
  *</b>
  */
-public interface IExpression extends IContiguousAllocIndexExpr {}
+public interface IContiguousAllocIndexExpr extends IASTNodeToken {}
 
 

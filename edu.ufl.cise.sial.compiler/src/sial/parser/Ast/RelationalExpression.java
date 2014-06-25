@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 126:  RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
+ *<li>Rule 133:  RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
  *</b>
  */
 public class RelationalExpression extends ASTNode implements IRelationalExpression

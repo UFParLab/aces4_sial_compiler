@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 105:  Statement ::= restore_persistent$ Ident StringLiteral
+ *<li>Rule 118:  Statement ::= restore_persistent$ Ident StringLiteral
  *</b>
  */
 public class RestorePersistent extends ASTNode implements IStatement

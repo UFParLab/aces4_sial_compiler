@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 131:  Term ::= Term *$ CastExpression
+ *<li>Rule 138:  Term ::= Term *$ CastExpression
  *</b>
  */
 public class StarExpr extends ASTNode implements ITerm

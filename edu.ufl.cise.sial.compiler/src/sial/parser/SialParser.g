@@ -47,6 +47,7 @@
 	RIGHTPAREN ::= ')'
 	LEFTSQUARE ::= '['
 	RIGHTSQUARE ::= ']'
+	COLON ::= ':'
 	
 	%End
 
@@ -132,15 +133,7 @@
 
     Modifier$Modifier ::=  'predefined'$modifier |  'contiguous'$modifier |  'sparse'$modifier
 
- --   Modifier$Sip_ConsistentModifier ::= 'sip_consistent'
- --   Modifier$PredefinedModifier ::= 'predefined'
---    Modifier$PersistentModifier ::= 'persistent'
---	Modifier$ScopeExtentModifier ::= 'scoped_extent'
---	Modifier$ContiguousModifier ::= 'contiguous'
---	Modifier$Auto_AllocateModifier ::= 'auto_allocate'
---	Modifier$SparseModifier ::= 'sparse'
 
-	
 ---	Modifier$Modifier ::= 'sip_consistent'$modifier | 'predefined'$modifier | 'scoped_extent'$modifier | 'contiguous'$modifier | 'auto_allocate'$modifier | 'sparse'
 	 DecList$$Dec ::= %empty | DecList Dec EOLs$
 	 Dec ::= ScalarDec  | ArrayDec  |  IndexDec | SubIndexDec | IntDec  | ProcDec | SpecialDec
@@ -209,7 +202,7 @@
 	  }
 	 ./
 	 
-	 Range ::= RangeVal$RangeValStart ','$ RangeVal$RangeValEnd
+	 Range ::= RangeVal$RangeValStart ':'$ RangeVal$RangeValEnd
 	 RangeVal$IntLitRangeVal ::= INTLIT  
 	 RangeVal$NegRangeVal ::= '-'$ INTLIT
 	 RangeVal$IdentRangeVal ::=  Ident
@@ -310,12 +303,12 @@
 	 Statement$Section ::= section$ EOLs$  --the endsection is treated like a server barrier
 	 StatementList  -- all statements must be PardoStatements, but this will be verified during type checking
 	 endsection$ 
-	 	 /.
-			//NOT CLEAR WHY THIS IS HERE!!!!
-	  IDec dec;
-	  public void setDec(IDec dec) { this.dec = dec; }
-	  public IDec getDec() { return dec; }
-	  ./
+	-- 	 /.
+	--		//NOT CLEAR WHY THIS IS HERE!!!!
+	 -- IDec dec;
+	--  public void setDec(IDec dec) { this.dec = dec; }
+	--  public IDec getDec() { return dec; }
+	--  ./
 	 
 	 Statement$ExitStatement ::= exit$
 	 
@@ -324,11 +317,40 @@
 	 Statement$IfStatement ::=  if$ RelationalExpression EOLs$ StatementList endif$
 	 
 	 Statement$IfElseStatement ::= if$ RelationalExpression EOLs$ StatementList$ifStatements  else$ EOLs$ StatementList$elseStatements endif$
+
 	 
-	 Statement$AllocateStatement ::= allocate$ Ident AllocIndexListopt
+	 	 
+	Statement$AllocateStatement ::= allocate$ Ident AllocIndexListopt
 	
 	Statement$DeallocateStatement ::= deallocate$ Ident AllocIndexListopt
 	
+	AllocIndex$AllocIndexIdent ::= Ident
+		/.
+	  IDec dec;
+	  public void setDec(IDec dec) { this.dec = dec; }
+	  public IDec getDec() { return dec; }
+      public boolean equals(Object obj){
+       
+       if (!(obj instanceof Ident)) return false;
+       return  obj == null? false : (getIdent().toString().equalsIgnoreCase(((Ident)obj).getIDENTIFIER().toString()));
+     }
+	  public String getName(){
+	       return toString().toLowerCase();
+	  }
+	 ./
+	AllocIndex$AllocIndexWildCard ::= '*'$
+	AllocIndexList$$AllocIndex ::= AllocIndex | AllocIndexList ',' $ AllocIndex
+    AllocIndexListopt ::= %empty | '[' AllocIndexList ']'
+	
+	Statement$ContiguousAllocateStatement ::= allocate contiguous$ Ident '['$ ContiguousAllocIndexExprList ']'$
+
+	Statement$ContiguousDeallocateStatement ::= deallocate contiguous$ Ident '['$ ContiguousAllocIndexExprList ']'$
+	
+	ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
+	ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::=  Expression$StartExpr ':' Expression$EndExpr
+	ContiguousAllocIndexExpr$ContiguousAllocIndexWildExpr ::= '*'$ 
+	ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr | ContiguousAllocIndexExprList ',' $ ContiguousAllocIndexExpr
+
 	 --Statement$CreateStatement ::= create$ Ident DimensionListopt
     Statement$CreateStatement ::= create$ Ident AllocIndexListopt
 	 
@@ -445,33 +467,16 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
     DataBlock ::= Ident '['$ Indices ']'$
 	Indices$$Ident ::= Ident | Indices ','$ Ident
 	
-	AllocIndex$AllocIndexIdent ::= Ident
-	/.
-	  IDec dec;
-	  public void setDec(IDec dec) { this.dec = dec; }
-	  public IDec getDec() { return dec; }
-	  public String getName(){
-	         return toString().toLowerCase();
-	  }
-	  ./
-	AllocIndex$AllocIndexWildCard ::= '*'$
-	AllocIndexList$$AllocIndex ::= AllocIndex | AllocIndexList ',' $ AllocIndex
- --   AllocIndexListopt ::= %empty | '(' AllocIndexList ')'
-    AllocIndexListopt ::= %empty | '[' AllocIndexList ']'
+
 	
---	RelationalExpression ::= UnaryExpression$UnaryExpressionLeft RelOp UnaryExpression$UnaryExpressionRight
+	
+
+	
 	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op 
 	
 	RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
---	Expression ::= UnaryExpression$UnaryExpression | BinaryExpression$BinaryExpression
---	BinaryExpression ::= UnaryExpression$Expr1 BinOp UnaryExpression$Expr2
---	BinOp$BinOpStar ::= '*' 
---	BinOp$BinOpDiv ::= '/'
---	BinOp$BinOpPlus ::= '+'
---	BinOp$BinOpMinus  ::= '-'
---	BinOp$BinOpTensor ::= '^'
 
--- NEW STUFF STARTS HERE
+
     Expression ::= Term
 	Expression$AddExpr ::= Expression '+' Term
 	/.  EnumSet<EType>  typeSet;
@@ -502,15 +507,7 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	 ./
 
 	
---  MulOp$Star ::= '*'
---	MulOp$Div ::= '/'
---	MulOp$Tensor ::= '^'
-	
---	Term ::= UnaryExpression
---	Term$MulOpExpr ::= Term MulOp UnaryExpression
--- 
     Term ::= CastExpression
---	Term$MulOpExpr ::= Term MulOp CastExpression
 	Term$StarExpr ::= Term '*'$ CastExpression
 		/.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}

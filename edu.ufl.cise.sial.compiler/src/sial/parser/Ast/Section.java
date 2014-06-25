@@ -1,6 +1,5 @@
 package sial.parser.Ast;
 
-import sial.parser.*;
 import lpg.runtime.*;
 
 import org.eclipse.imp.parser.IParser;
@@ -18,19 +17,15 @@ import org.eclipse.imp.parser.IParser;
  */
 public class Section extends ASTNode implements IStatement
 {
-    private SialParser environment;
-    public SialParser getEnvironment() { return environment; }
-
     private StatementList _StatementList;
 
     public StatementList getStatementList() { return _StatementList; }
 
-    public Section(SialParser environment, IToken leftIToken, IToken rightIToken,
+    public Section(IToken leftIToken, IToken rightIToken,
                    StatementList _StatementList)
     {
         super(leftIToken, rightIToken);
 
-        this.environment = environment;
         this._StatementList = _StatementList;
         ((ASTNode) _StatementList).setParent(this);
         initialize();
@@ -77,11 +72,6 @@ public class Section extends ASTNode implements IStatement
             _StatementList.accept(v);
         v.endVisit(this);
     }
-
-		//NOT CLEAR WHY THIS IS HERE!!!!
-  IDec dec;
-  public void setDec(IDec dec) { this.dec = dec; }
-  public IDec getDec() { return dec; }
-  }
+}
 
 

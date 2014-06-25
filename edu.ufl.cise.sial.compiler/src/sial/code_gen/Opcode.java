@@ -47,6 +47,10 @@ public enum Opcode {
 	get_block_for_update_op("","","","",""),
 	allocate_op("","","","",""),
 	deallocate_op("","","","",""),
+	allocate_contiguous_op("array","rank","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
+	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
+	deallocate_contiguous_op("array","rank","","","deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
+	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
 	
 //distributed arrays
 	get_op("","","","",""),
@@ -138,6 +142,8 @@ public enum Opcode {
 	set_persistent_op("","","","",""),
 	restore_persistent_op("","","","",""),
 
+	//stack management
+	idup_op("","","","","duplicates the value on top of the integer stack"),
 	//sentinal
 	invalid_op("","","","","");
 	

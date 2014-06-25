@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 138:  UnaryExpression ::= -$ Primary
+ *<li>Rule 145:  UnaryExpression ::= -$ Primary
  *</b>
  */
 public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression

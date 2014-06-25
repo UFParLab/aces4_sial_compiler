@@ -12,12 +12,12 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 78:  AllocIndex ::= *$
+ *<li>Rule 87:  ContiguousAllocIndexExpr ::= *$
  *</b>
  */
-public class AllocIndexWildCard extends ASTNodeToken implements IAllocIndex
+public class ContiguousAllocIndexWildExpr extends ASTNodeToken implements IContiguousAllocIndexExpr
 {
-    public AllocIndexWildCard(IToken token) { super(token); initialize(); }
+    public ContiguousAllocIndexWildExpr(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

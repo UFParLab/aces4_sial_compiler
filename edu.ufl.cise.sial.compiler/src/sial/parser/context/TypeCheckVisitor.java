@@ -27,7 +27,7 @@ import static sial.parser.context.ASTUtils.*;
 
 
 /** Performs type checking on SIAL programs */
-public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, SipConstants {
+public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym, SipConstants {
 
 	SymbolTable symbolTable;
 	SialParser parser;
@@ -157,6 +157,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			return null;
 		}
 	}
+	
 
 	/**
 	 * Finds and returns the declaration of the given IdentRangeVal and sets its
@@ -1055,55 +1056,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return null;
 	}
 
-	// private void checkCompatibleBlockWithTranspose(ASTNode n, DataBlock lhs,
-	// DataBlock rhs) {
-	// // check that indices on both sides match exactly, or are a permutation
-	// IdentList lhsIndices = lhs.getIndices();
-	// IdentList rhsIndices = rhs.getIndices();
-	// int lhsSize = lhsIndices.size();
-	// int rhsSize = rhsIndices.size();
-	// int minIndices = lhsSize < rhsSize ? lhsSize : rhsSize;
-	// if (lhsSize == rhsSize) {// must be a permutation
-	//
-	// for (int i = 0; i < lhsSize; i++) {
-	// if (!check(contains(rhsIndices, lhsIndices.getIdentAt(i)), n,
-	// "incompatible index lists"))
-	// return;
-	// }
-	// return;
-	// }
-	// // otherwise one is longer than the other--extras must be simple indices
-	// for (int i = 0; i < minIndices; i++) { // check that common "positions"
-	// // have the same contents
-	// if (!check(
-	// lhsIndices.getIdentAt(i).getName()
-	// .equals(rhsIndices.getIdentAt(i).getName()), n,
-	// "inconsistent index lists"))
-	// return;
-	// }
-	// for (int i = minIndices; i < lhsSize; i++) { // if there are more
-	// // indices on the lhs,
-	// // make sure they are
-	// // simple
-	// if (!check(
-	// ((IndexDec) lhsIndices.getIdentAt(i).getDec())
-	// .getTypeName().equals("index"),
-	// n,
-	// "extra indices on left side must be simple indices, i.e. the index type must be \"index\""))
-	// return;
-	// }
-	// for (int i = minIndices; i < rhsSize; i++) { // if there are more
-	// // indices on the rhs,
-	// // make sure they are
-	// // simple
-	// if (!check(
-	// ((IndexDec) rhsIndices.getIdentAt(i).getDec())
-	// .getTypeName().equals("index"),
-	// n,
-	// "extra indices on right side must be simple indices, i.e. the index type must be \"index\""))
-	// return;
-	// }
-	// }
+
 
 	private void checkCompatibleBlocks(ASTNode n, DataBlock lhs, DataBlock rhs) {
 		// check that indices on both sides match exactly, or that there is an
@@ -1412,8 +1365,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public boolean visit(AllocIndexIdent n) {
-		IDec decl = findAndSetDec(n);
-		check(decl != null, n, n.toString() + " not declared");
+		IDec dec = findAndSetDec(n);
+		check(dec != null, n, n.toString() + " not declared");
+		check(dec instanceof IntDec || dec instanceof IndexDec, n, "illegal argument to allocate.  Must be int");
 		return false;
 	}
 
@@ -1438,6 +1392,78 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(AllocIndexList n) { /* nop */
 	}
+	
+
+	@Override
+	public  boolean visit(ContiguousAllocateStatement n) {
+		return true;
+	}
+	
+	@Override
+	public void endVisit(ContiguousAllocateStatement n) {
+		IDec arrayDec = n.getIdent().getDec();
+		check (arrayDec instanceof ArrayDec && ASTUtils.isLocal(arrayDec) && ASTUtils.isContiguous(arrayDec), n , "array " + n + " must be declared as contiguous local array");
+		int rank = ((ArrayDec)arrayDec).getDimensionList().size();
+		check (n.getContiguousAllocIndexExprList().size() == rank, n, "number of indices does not match delcaration of array");		
+	}
+
+	@Override
+	public boolean visit(ContiguousDeallocateStatement n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousDeallocateStatement n) {
+		IDec arrayDec = n.getIdent().getDec();
+		check (arrayDec instanceof ArrayDec && ASTUtils.isLocal(arrayDec) && ASTUtils.isContiguous(arrayDec), n , "array " + n + " must be declared as contiguous local array");
+		int rank = ((ArrayDec)arrayDec).getDimensionList().size();
+		check (n.getContiguousAllocIndexExprList().size() == rank, n, "number of indices does not match delcaration of array");		
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexSingleExpr n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexSingleExpr n) {
+		EnumSet<EType> t  = ASTUtils.getIExprTypes(n.getExpression());
+		check(t.contains(INT), n, "illegal type of allocate argument " + n);
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexRangeExpr n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexRangeExpr n) {
+		EnumSet<EType> ts  = ASTUtils.getIExprTypes(n.getStartExpr());
+		check(ts.contains(INT), n, "illegal type of allocate argument " + n);		
+		EnumSet<EType> te  = ASTUtils.getIExprTypes(n.getStartExpr());
+		check(te.contains(INT), n, "illegal type of allocate argument " + n);				
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexWildExpr n) { /* nothing to check*/
+		return false;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexWildExpr n) {
+		/*nop*/
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexExprList n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexExprList n) {
+		/*nop*/
+	}
+
 
 	@Override
 	public boolean visit(RelationalExpression n) { /* visit children */
@@ -2784,69 +2810,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	}
 
-	// @Override
-	// public boolean visit(IdentArg n) {
-	// System.out.println("Ident Arg " + n);
-	// IDec dec = null;
-	// try {
-	// dec = findAndSetDec(n);
-	// } catch (AmbiguousNameException e) {
-	// emitError(n, e.getMessage());
-	// }
-	//
-	// check(dec != null, n, n.toString() + " not declared");
-	// check(dec instanceof ScalarDec || dec instanceof ArrayDec, n,
-	// "illegal argument for super instruction ");
-	// if (dec instanceof ArrayDec){
-	// check(isStaticOrContiguousArray(dec) ||
-	// nonstatic_noselector_array_allowed(n), n,
-	// "super instruction argument needs selector");
-	// }
-	// return false;
-	// }
-	//
-	//
-	//
-	// @Override
-	// public void endVisit(IdentArg n) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public boolean visit(DataBlockArg n) {
-	// // TODO Auto-generated method stub
-	// return true;
-	// }
-	//
-	// @Override
-	// public void endVisit(DataBlockArg n) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public boolean visit(DoubleLitArg n) {
-	// // TODO Auto-generated method stub
-	// return false;
-	// }
-	//
-	// @Override
-	// public void endVisit(DoubleLitArg n) {
-	// // TODO Auto-generated method stub
-	//
-	// }
 
-	@Override
-	public boolean visit(AssignOp n) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public void endVisit(AssignOp n) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

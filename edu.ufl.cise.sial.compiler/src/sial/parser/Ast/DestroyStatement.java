@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 85:  Statement ::= destroy$ Ident
+ *<li>Rule 98:  Statement ::= destroy$ Ident
  *</b>
  */
 public class DestroyStatement extends ASTNode implements IStatement

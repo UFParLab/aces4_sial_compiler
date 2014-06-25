@@ -58,6 +58,7 @@
 		RIGHTSQUARE
         EOL
 		STRINGLIT
+		COLON
 %End
 
 %Terminals
@@ -111,6 +112,7 @@
     LeftParen    ::= '('
     RightParen   ::= ')'
     Equal        ::= '='
+
 %End
 
 %Start
@@ -147,7 +149,8 @@
             | '*' '='	    /.    makeToken($_STAR_ASSIGN);./
             | eol           /.    makeToken($_EOL);./
 		     | '['       /. makeToken($_LEFTSQUARE);./
-           | ']'      /. makeToken($_RIGHTSQUARE);./   
+            | ']'      /. makeToken($_RIGHTSQUARE);./   
+            | ':'      /.makeToken($_COLON);./
 --	    mlc  ::= '/' '#' Inside Hashes '/'
 
 	stringlit ::=  '"' SLBody '"'

@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 133:  Term ::= Term ^ CastExpression
+ *<li>Rule 140:  Term ::= Term ^ CastExpression
  *</b>
  */
 public class TensorExpr extends ASTNode implements ITerm

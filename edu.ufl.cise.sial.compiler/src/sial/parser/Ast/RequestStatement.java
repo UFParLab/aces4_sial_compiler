@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 82:  Statement ::= request$ DataBlock IdentOpt
+ *<li>Rule 95:  Statement ::= request$ DataBlock IdentOpt
  *</b>
  */
 public class RequestStatement extends ASTNode implements IStatement

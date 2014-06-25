@@ -1,0 +1,28 @@
+Changes in Version 2.0
+
+Syntax Changes:
+
+    Syntax for blocks has changed to use square brackets instead of parentheses  i.e.   a[i,j] instead of a(i,j)
+
+    Scalar and int valued expressions can be arbitrarily nested (i.e. (i+4)/k)
+
+    An int type has been introduced.  Previously only predefined ints were allowed.
+
+    Scalars and int are not automatically coerced into the other type, but they may be explicitly cast.
+
+    Request statements do no need the ignored argument.
+
+    Values of ranges are separated by :, so an index declaration now looks like 1:norb instead of 1,norb
+
+    A new statement allocate_contiguous has been introduced which takes ranges as arguments, *, or single value as an argument:   allocate_contiguous a[i, *, 1:5] would allocate a contiguous "block"
+       containing data from the following blocks a[i,1,1], a[i,2,1], ...a [i,n, 1]...a [i,n,5], where the second index was declared with range 1:n
+    
+    Scalars and ints can be initialized in their declaration:  int i = 1, or scalar pi = 3.14159.  Only literals can appear on the right had side.
+
+       
+Implementation Changes:
+
+   The set of opcodes has been cleaned up and regularized.  The opcodes are simpler and apply to a single type, which is determined by the compiler.  The have been specified by an enum that can
+   be used to generate the c++ header file needed by the sip.  They can also generate a latex table for documentation.  These programs are in the util directory.
+   
+   

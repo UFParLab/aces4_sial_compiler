@@ -18,6 +18,8 @@ package sial.parser.Ast;
  *<li>IfElseStatement
  *<li>AllocateStatement
  *<li>DeallocateStatement
+ *<li>ContiguousAllocateStatement
+ *<li>ContiguousDeallocateStatement
  *<li>CreateStatement
  *<li>DeleteStatement
  *<li>PutStatement

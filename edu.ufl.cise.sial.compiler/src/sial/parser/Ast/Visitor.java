@@ -138,6 +138,36 @@ public interface Visitor extends IAstVisitor
     boolean visit(DeallocateStatement n);
     void endVisit(DeallocateStatement n);
 
+    boolean visit(AllocIndexIdent n);
+    void endVisit(AllocIndexIdent n);
+
+    boolean visit(AllocIndexWildCard n);
+    void endVisit(AllocIndexWildCard n);
+
+    boolean visit(AllocIndexList n);
+    void endVisit(AllocIndexList n);
+
+    boolean visit(AllocIndexListopt n);
+    void endVisit(AllocIndexListopt n);
+
+    boolean visit(ContiguousAllocateStatement n);
+    void endVisit(ContiguousAllocateStatement n);
+
+    boolean visit(ContiguousDeallocateStatement n);
+    void endVisit(ContiguousDeallocateStatement n);
+
+    boolean visit(ContiguousAllocIndexSingleExpr n);
+    void endVisit(ContiguousAllocIndexSingleExpr n);
+
+    boolean visit(ContiguousAllocIndexRangeExpr n);
+    void endVisit(ContiguousAllocIndexRangeExpr n);
+
+    boolean visit(ContiguousAllocIndexWildExpr n);
+    void endVisit(ContiguousAllocIndexWildExpr n);
+
+    boolean visit(ContiguousAllocIndexExprList n);
+    void endVisit(ContiguousAllocIndexExprList n);
+
     boolean visit(CreateStatement n);
     void endVisit(CreateStatement n);
 
@@ -233,18 +263,6 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(IdentList n);
     void endVisit(IdentList n);
-
-    boolean visit(AllocIndexIdent n);
-    void endVisit(AllocIndexIdent n);
-
-    boolean visit(AllocIndexWildCard n);
-    void endVisit(AllocIndexWildCard n);
-
-    boolean visit(AllocIndexList n);
-    void endVisit(AllocIndexList n);
-
-    boolean visit(AllocIndexListopt n);
-    void endVisit(AllocIndexListopt n);
 
     boolean visit(RelOp n);
     void endVisit(RelOp n);

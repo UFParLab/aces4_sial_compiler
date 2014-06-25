@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 89:  Statement ::= print_scalar$ Ident
+ *<li>Rule 102:  Statement ::= print_scalar$ Ident
  *</b>
  */
 public class PrintScalarStatement extends ASTNode implements IStatement

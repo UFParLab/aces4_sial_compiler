@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 86:  Statement ::= println$ StringLiteral
+ *<li>Rule 99:  Statement ::= println$ StringLiteral
  *</b>
  */
 public class PrintlnStatement extends ASTNode implements IStatement

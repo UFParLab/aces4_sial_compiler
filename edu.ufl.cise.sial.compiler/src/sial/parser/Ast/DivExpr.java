@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 132:  Term ::= Term /$ CastExpression
+ *<li>Rule 139:  Term ::= Term /$ CastExpression
  *</b>
  */
 public class DivExpr extends ASTNode implements ITerm

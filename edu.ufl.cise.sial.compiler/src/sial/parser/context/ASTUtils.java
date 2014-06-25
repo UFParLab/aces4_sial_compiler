@@ -363,6 +363,44 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return false;
     }
     
+    public static boolean isContiguous(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return false;
+    	for( Object m: modifiers){
+    		if (((Modifier) m).getmodifier().getKind() == TK_contiguous) return true; 
+    	}
+    	return false;
+    }
+    
+    public static boolean isLocal(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return false;
+    	for( Object m: modifiers){
+    		if (((Modifier) m).getmodifier().getKind() == TK_local) return true; 
+    	}
+    	return false;
+    }
+    
     public static int getModifierAttributes(IDec n){
     	List modifiers = null;
     	if (n instanceof ScalarDec)

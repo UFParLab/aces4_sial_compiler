@@ -34,6 +34,13 @@ import org.eclipse.imp.parser.IParser;
  *<li>IfElseStatement
  *<li>AllocateStatement
  *<li>DeallocateStatement
+ *<li>AllocIndexIdent
+ *<li>AllocIndexWildCard
+ *<li>ContiguousAllocateStatement
+ *<li>ContiguousDeallocateStatement
+ *<li>ContiguousAllocIndexSingleExpr
+ *<li>ContiguousAllocIndexRangeExpr
+ *<li>ContiguousAllocIndexWildExpr
  *<li>CreateStatement
  *<li>DeleteStatement
  *<li>PutStatement
@@ -64,9 +71,15 @@ import org.eclipse.imp.parser.IParser;
  *<li>AssertSame
  *<li>AssignOp
  *<li>DataBlock
- *<li>AllocIndexIdent
- *<li>AllocIndexWildCard
  *<li>RelOp
+ *<li>AddExpr
+ *<li>SubtractExpr
+ *<li>StarExpr
+ *<li>DivExpr
+ *<li>TensorExpr
+ *<li>IntCastExpr
+ *<li>ScalarCastExpr
+ *<li>NegatedUnaryExpr
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr

@@ -14,102 +14,7 @@ import lpg.runtime.IAst;
 
 import sial.compiler.CommandLine;
 import sial.parser.SialParsersym;
-import sial.parser.Ast.ASTNode;
-import sial.parser.Ast.ASTNodeToken;
-import sial.parser.Ast.AbstractVisitor;
-import sial.parser.Ast.AddExpr;
-import sial.parser.Ast.AllocIndexIdent;
-import sial.parser.Ast.AllocIndexList;
-import sial.parser.Ast.AllocIndexListopt;
-import sial.parser.Ast.AllocIndexWildCard;
-import sial.parser.Ast.AllocateStatement;
-import sial.parser.Ast.ArgList;
-import sial.parser.Ast.ArrayDec;
-import sial.parser.Ast.AssertSame;
-import sial.parser.Ast.AssignToBlock;
-import sial.parser.Ast.AssignToIdent;
-import sial.parser.Ast.CallStatement;
-import sial.parser.Ast.CollectiveStatement;
-import sial.parser.Ast.CreateStatement;
-import sial.parser.Ast.CycleStatement;
-import sial.parser.Ast.DataBlock;
-import sial.parser.Ast.DataBlockArg;
-import sial.parser.Ast.DataBlockExpr;
-import sial.parser.Ast.DeallocateStatement;
-import sial.parser.Ast.DecList;
-import sial.parser.Ast.DeleteStatement;
-import sial.parser.Ast.DestroyStatement;
-import sial.parser.Ast.DimensionList;
-import sial.parser.Ast.DivExpr;
-import sial.parser.Ast.DoStatement;
-import sial.parser.Ast.DoStatementSubIndex;
-import sial.parser.Ast.DoubleLitArg;
-import sial.parser.Ast.DoubleLitExpr;
-import sial.parser.Ast.ExecuteStatement;
-import sial.parser.Ast.ExitStatement;
-import sial.parser.Ast.GPUAllocateBlock;
-import sial.parser.Ast.GPUFreeBlock;
-import sial.parser.Ast.GPUGetBlock;
-import sial.parser.Ast.GPUPutBlock;
-import sial.parser.Ast.GPUSection;
-import sial.parser.Ast.GetStatement;
-import sial.parser.Ast.IDec;
-import sial.parser.Ast.IExpression;
-import sial.parser.Ast.IRangeVal;
-import sial.parser.Ast.IUnaryExpression;
-import sial.parser.Ast.Ident;
-import sial.parser.Ast.IdentArg;
-import sial.parser.Ast.IdentExpr;
-import sial.parser.Ast.IdentList;
-import sial.parser.Ast.IdentRangeVal;
-import sial.parser.Ast.IfElseStatement;
-import sial.parser.Ast.IfStatement;
-import sial.parser.Ast.ImportProg;
-import sial.parser.Ast.ImportProgList;
-import sial.parser.Ast.IndexDec;
-import sial.parser.Ast.IndexKind;
-import sial.parser.Ast.IntCastExpr;
-import sial.parser.Ast.IntDec;
-import sial.parser.Ast.IntLitExpr;
-import sial.parser.Ast.IntLitRangeVal;
-import sial.parser.Ast.ModifierList;
-import sial.parser.Ast.NegRangeVal;
-import sial.parser.Ast.NegatedUnaryExpr;
-import sial.parser.Ast.PardoStatement;
-import sial.parser.Ast.ParenExpr;
-import sial.parser.Ast.PrepareStatement;
-import sial.parser.Ast.PrequestStatement;
-import sial.parser.Ast.PrintIndexStatement;
-import sial.parser.Ast.PrintIntStatement;
-import sial.parser.Ast.PrintScalarStatement;
-import sial.parser.Ast.PrintStatement;
-import sial.parser.Ast.PrintlnStatement;
-import sial.parser.Ast.ProcDec;
-import sial.parser.Ast.Program;
-import sial.parser.Ast.PutStatement;
-import sial.parser.Ast.Range;
-import sial.parser.Ast.RelOp;
-import sial.parser.Ast.RelationalExpression;
-import sial.parser.Ast.RequestStatement;
-import sial.parser.Ast.RestorePersistent;
-import sial.parser.Ast.ReturnStatement;
-import sial.parser.Ast.ScalarCastExpr;
-import sial.parser.Ast.ScalarDec;
-import sial.parser.Ast.Section;
-import sial.parser.Ast.ServerBarrierStatement;
-import sial.parser.Ast.SetPersistent;
-import sial.parser.Ast.Sial;
-import sial.parser.Ast.SipBarrierStatement;
-import sial.parser.Ast.SpecialDec;
-import sial.parser.Ast.StarExpr;
-import sial.parser.Ast.StatementList;
-import sial.parser.Ast.StringLitExpr;
-import sial.parser.Ast.StringLiteral;
-import sial.parser.Ast.SubIndexDec;
-import sial.parser.Ast.SubtractExpr;
-import sial.parser.Ast.TensorExpr;
-import sial.parser.Ast.WhereClause;
-import sial.parser.Ast.WhereClauseList;
+import sial.parser.Ast.*;
 import sial.parser.context.ASTUtils;
 import sial.parser.context.AmbiguousNameException;
 import sial.parser.context.ExpressionType;
@@ -1103,6 +1008,82 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		}
 		indexArrayStack.push(ind);
 	}
+
+	@Override
+	public  boolean visit(ContiguousAllocateStatement n) {
+		return true;
+	}
+	
+	@Override
+	public void endVisit(ContiguousAllocateStatement n) {
+		int arraySlot = operandStack.pop();
+		IDec dec = n.getIdent().getDec();
+		int rank = ((ArrayDec)dec).getDimensionList().size();
+		opTable.addOptableEntry (allocate_contiguous_op,arraySlot, rank, -1, defaultZeroInd, lineno(n) );
+	}
+
+	@Override
+	public boolean visit(ContiguousDeallocateStatement n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousDeallocateStatement n) {
+		int arraySlot = operandStack.pop();
+		IDec dec = n.getIdent().getDec();
+		int rank = ((ArrayDec)dec).getDimensionList().size();
+		opTable.addOptableEntry (deallocate_contiguous_op,arraySlot, rank, -1, defaultZeroInd, lineno(n) );
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexSingleExpr n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexSingleExpr n) {
+		opTable.addOptableEntry(idup_op, -1,-1,-1, defaultZeroInd, lineno(n));
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexRangeExpr n) {
+		return true;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexRangeExpr n) {
+        /*nothing to do, values have been pushed by children */		
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexWildExpr n) { /* nothing to check*/
+		return false;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexWildExpr n) {
+		/*nop*/
+	}
+
+	@Override
+	public boolean visit(ContiguousAllocIndexExprList n) {
+		int rank = n.size();
+		for (int i = rank-1 ; i >= 0 ; --i){ //visit backwards so the sip can retrieve in order
+			ASTNode expr = n.getElementAt(i);
+			if( n.getElementAt(i) instanceof ContiguousAllocIndexWildExpr){
+				//TODO implement this  look up bounds, for now skip this
+				assert false: "wild cards in contiguous array allocate and deallocate not yet implemented";
+			}
+			else expr.accept(this);
+		}
+		return false;
+	}
+
+	@Override
+	public void endVisit(ContiguousAllocIndexExprList n) {
+		/*nop*/
+	}
+
 
 	@Override
 	public boolean visit(RelationalExpression n) {/* visit children */

@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 98:  Statement ::= DataBlock AssignOp Expression
+ *<li>Rule 111:  Statement ::= DataBlock AssignOp Expression
  *</b>
  */
 public class AssignToBlock extends ASTNode implements IStatement

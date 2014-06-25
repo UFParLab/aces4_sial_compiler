@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 80:  Statement ::= get$ DataBlock
+ *<li>Rule 93:  Statement ::= get$ DataBlock
  *</b>
  */
 public class GetStatement extends ASTNode implements IStatement

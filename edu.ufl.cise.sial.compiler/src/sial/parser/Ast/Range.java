@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 50:  Range ::= RangeVal$RangeValStart ,$ RangeVal$RangeValEnd
+ *<li>Rule 50:  Range ::= RangeVal$RangeValStart :$ RangeVal$RangeValEnd
  *</b>
  */
 public class Range extends ASTNode implements IRange

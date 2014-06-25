@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 114:  AllocIndex ::= Ident
+ *<li>Rule 77:  AllocIndex ::= Ident
  *</b>
  */
 public class AllocIndexIdent extends ASTNodeToken implements IAllocIndex
@@ -45,9 +45,14 @@ public class AllocIndexIdent extends ASTNodeToken implements IAllocIndex
   IDec dec;
   public void setDec(IDec dec) { this.dec = dec; }
   public IDec getDec() { return dec; }
+  public boolean equals(Object obj){
+   
+   if (!(obj instanceof Ident)) return false;
+   return  obj == null? false : (getIdent().toString().equalsIgnoreCase(((Ident)obj).getIDENTIFIER().toString()));
+ }
   public String getName(){
-         return toString().toLowerCase();
+       return toString().toLowerCase();
   }
-  }
+ }
 
 
