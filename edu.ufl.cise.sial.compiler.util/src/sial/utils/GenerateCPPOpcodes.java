@@ -14,6 +14,7 @@ public class GenerateCPPOpcodes {
 	 */
 	public static void main(String[] args) throws IOException {
 		
+		//TODO add rest of header file
 		String header = Opcode.generateCPPHeader();
 		System.out.println(header);
 		

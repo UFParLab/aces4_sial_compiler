@@ -144,6 +144,7 @@ public enum Opcode {
 
 	//stack management
 	idup_op("","","","","duplicates the value on top of the integer stack"),
+	
 	//sentinal
 	invalid_op("","","","","");
 	
@@ -182,10 +183,11 @@ public enum Opcode {
 		return sb.toString();
 	}
 	
+	
+	
 	public static String generateCPPHeader(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("#define SIP_OPCODES \\\n"); 
-
 		for (Opcode op : Opcode.values()){
 			sb.append(op.getMacro());
 			sb.append("\\\n");					
