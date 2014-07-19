@@ -48,6 +48,7 @@
 	LEFTSQUARE ::= '['
 	RIGHTSQUARE ::= ']'
 	COLON ::= ':'
+	EXP ::= '**'
 	
 	%End
 
@@ -264,24 +265,14 @@
 	--TODO AcesHack decl is there to easily allow "binary compatibility" with existing sip
      --  and should be removed once the sip supports reading function names
      --this is treated as a call to execute _server_barrier
-	 Statement$ServerBarrierStatement ::= server_barrier$ IdentOpt
-	 	/.
-	  IDec dec;
-	  public void setDec(IDec dec) { this.dec = dec; }
-	  public IDec getDec() { return dec; }
-	  ./
+	 Statement$ServerBarrierStatement ::= server_barrier$ 
 	  
 	 --TODO  check need for IdentOpt
 	--TODO AcesHack decl is there to easily allow "binary compatibility" with existing sip
      --  and should be removed once the sip supports reading function names
      --this is treated as a call to execute _sip_barrier, so the IDec is for the barrier superinstruction, not the IdentOpt
 	 --Statement$SipBarrierStatement ::= sip_barrier$ IdentOpt
-     Statement$SipBarrierStatement ::= sip_barrier$ IdentOpt
-	 /.
-	  IDec dec;
-	  public void setDec(IDec dec) { this.dec = dec; }
-	  public IDec getDec() { return dec; }
-	  ./
+     Statement$SipBarrierStatement ::= sip_barrier$ 
 	  
 	 Statement$DoStatement ::= do$ Ident$StartIndex  EOLs$ 
 	 WhereClauseList
@@ -312,7 +303,7 @@
 	 
 	 Statement$ExitStatement ::= exit$
 	 
-	 Statement$CycleStatement ::=  cycle$ Ident
+--	 Statement$CycleStatement ::=  cycle$ Ident
 	 
 	 Statement$IfStatement ::=  if$ RelationalExpression EOLs$ StatementList endif$
 	 
@@ -348,13 +339,12 @@
 	
 	ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
 	ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::=  Expression$StartExpr ':' Expression$EndExpr
-	ContiguousAllocIndexExpr$ContiguousAllocIndexWildExpr ::= '*'$ 
+--	ContiguousAllocIndexExpr$ContiguousAllocIndexWildExpr ::= '*'$ 
 	ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr | ContiguousAllocIndexExprList ',' $ ContiguousAllocIndexExpr
 
-	 --Statement$CreateStatement ::= create$ Ident DimensionListopt
-    Statement$CreateStatement ::= create$ Ident AllocIndexListopt
+    Statement$CreateStatement ::= create$ Ident 
 	 
-	 Statement$DeleteStatement ::=  delete$ Ident AllocIndexListopt
+	 Statement$DeleteStatement ::=  delete$ Ident 
 	
 	Statement$PutStatement ::= put$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
 	
@@ -364,20 +354,18 @@
 	
 	Statement$RequestStatement ::= request$ DataBlock IdentOpt
 	
-	Statement$PrequestStatement ::= prequest$  DataBlock$LHSDataBlock '=' $ DataBlock$RHSDataBlock
-	
 	Statement$CollectiveStatement ::= collective$ Ident$LHSIdent AssignOp Ident$RHSIdent
 	
-	--	Statement$ComputeIntegralsStatement ::= compute_integrals$ DataBlock
 	Statement$DestroyStatement::= destroy$ Ident
 	
-    Statement$PrintlnStatement ::= println$ StringLiteral
-	Statement$PrintStatement ::= print$ StringLiteral
-	Statement$PrintIndexStatement ::= print_index$ Ident
-    Statement$PrintScalarStatement::= print_scalar$ Ident --TODO rework this to take a unary expression
-	Statement$PrintIntStatement::= print_int$ Ident
-
---	Arg ::= Primary  
+--   Statement$PrintlnStatement ::= println$ StringLiteral
+--	Statement$PrintStatement ::= print$ StringLiteral
+--	Statement$PrintIndexStatement ::= print_index$ Ident
+--    Statement$PrintScalarStatement::= print_scalar$ Ident --TODO rework this to take a unary expression
+--	Statement$PrintIntStatement::= print_int$ Ident
+    Statement$PrintStatement ::= print$ Expression
+	Statement$PrintlnStatement ::= println$ Expression
+ 
 Arg$DataBlockArg ::= DataBlock
 Arg$IdentArg ::= IDENTIFIER
 	/.
@@ -395,6 +383,7 @@ Arg$IdentArg ::= IDENTIFIER
 	  }
 	 ./
 Arg$DoubleLitArg ::= DOUBLELIT
+Arg$IntLitArg ::= INTLIT
     ArgList$$Arg ::=  %empty | ArgList Arg
 	Statement$ExecuteStatement ::= execute$ Ident ArgList
 	--It would be better to have a comma separating the args
@@ -424,10 +413,10 @@ Statement$GPUSection ::= gpu_on$ EOLs$
 	 StatementList
 	 gpu_off$
 	 
-Statement$GPUAllocateBlock ::= gpu_allocate$ Arg
-Statement$GPUFreeBlock ::= gpu_free$ Arg
-Statement$GPUPutBlock ::= gpu_put$ Arg
-Statement$GPUGetBlock ::= gpu_get$ Arg
+Statement$GPUAllocate ::= gpu_allocate$ Arg
+Statement$GPUFree ::= gpu_free$ Arg
+Statement$GPUPut ::= gpu_put$ Arg
+Statement$GPUGet ::= gpu_get$ Arg
 	 
 	 Statement$SetPersistent ::= set_persistent$ Ident StringLiteral
 	 --	/. 
@@ -443,6 +432,7 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	 Statement$RestorePersistent ::= restore_persistent$ Ident StringLiteral
 	 
 	 Statement$AssertSame ::= assert_same$  Ident
+	 Statement$BroadcastStatic ::= broadcast_from$ Primary Ident
 	 --	/. 
 	 -- String stringValue;
 	 -- public void setStringValue(String stringValue){
@@ -507,8 +497,8 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	 ./
 
 	
-    Term ::= CastExpression
-	Term$StarExpr ::= Term '*'$ CastExpression
+    Term ::= ExponentExpression
+	Term$StarExpr ::= Term '*'$ ExponentExpression
 		/.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){
@@ -521,7 +511,7 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	  return typeSet.contains(t);
 	  }
 	 ./
-	Term$DivExpr ::= Term '/'$ CastExpression
+	Term$DivExpr ::= Term '/'$ ExponentExpression
 		/.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){
@@ -534,7 +524,7 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	  return typeSet.contains(t);
 	  }
 	 ./
-	Term$TensorExpr ::= Term '^' CastExpression
+	Term$TensorExpr ::= Term '^' ExponentExpression
 		/.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){
@@ -548,6 +538,21 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	  }
 	 ./
 	
+	ExponentExpression ::= CastExpression
+	ExponentExpression$ExponentExpr ::= CastExpression  '**'  ExponentExpression 
+			/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
+	 ./
+	 
 	CastExpression ::= UnaryExpression
 	CastExpression$IntCastExpr ::= '('$  int$ ')'$ CastExpression
 		/.  EnumSet<EType>  typeSet;
@@ -579,6 +584,19 @@ Statement$GPUGetBlock ::= gpu_get$ Arg
 	UnaryExpression ::= Primary
 	UnaryExpression$NegatedUnaryExpr ::= '-'$ Primary
 		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
+	 ./
+	 UnaryExpression$SqrtUnaryExpr ::= 'sqrt'$ Primary
+	 /.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){
 	  if (typeSet == null){ 

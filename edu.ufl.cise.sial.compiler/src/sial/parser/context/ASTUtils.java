@@ -328,6 +328,20 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return false;
     }	    
     
+    /** returns true if the given IDec is an array, and is static */
+    public static boolean isStatic(IDec n){
+    	if (n instanceof ArrayDec){
+    		ArrayDec arrayDec = (ArrayDec)n;
+    		if (arrayDec.getArrayKind().toString().equals("static")) return true;
+//    		//check for contiguous declaration
+//    		List modifiers = arrayDec.getModifiersopt().getList();
+//        	for( Object m: modifiers){
+//        		if (((Modifier) m).getmodifier().getKind() == TK_contiguous) return true;
+//        	}
+    	}
+    	return false;
+    }	   
+    
     
 	public static boolean isSparseDistributedOrServed(IDec n) {
 		if (n instanceof ArrayDec) {
@@ -444,19 +458,49 @@ public class ASTUtils implements SialParsersym, SipConstants{
 //    	return false;
 //    }
 
-    public static int[] getContractedIndices(int[] a1, int[] a2) {
+    public static int getContractionRank(ArrayList<Integer> a1, ArrayList<Integer> a2){
+    	int numContractedIndices = getContractedIndices(a1,a2).length;
+    	return (a1.size() - numContractedIndices) + (a2.size() - numContractedIndices);   	
+    }
+    
+//    public static int[] getContractedIndices(int[] a1, int[] a2) {
+//    	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];
+//    	//size of interesection not more than smallest input array
+//    	int[] intersection = new int[ a1.length>=a2.length? a2.length : a1.length];
+//    	int count = 0;
+//    	//find the intersection we have
+//    	//this alg is OK for the small number of indices
+//    	int val1;
+//    	for (int i = 0; i < a1.length && 0 < (val1 = a1[i]) ; i++){
+//    		//search for val in a2
+//    		int j;
+//    		int val2;
+//    		for (j = 0; j < a2.length && 0 < (val2 = a2[j]) ; j++){
+//    			if (val2 == val1){
+//    				intersection[count++]=val1;
+//    				break;
+//    			}
+//    		}
+//    	}
+//    	//sort the nonzero elements
+//    	Arrays.sort(intersection,0,count);
+//    	//return, padding with zeros
+//    	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
+//	}
+    
+    public static int[] getContractedIndices(ArrayList<Integer> a1, ArrayList<Integer> a2) {
     	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];
     	//size of interesection not more than smallest input array
-    	int[] intersection = new int[ a1.length>=a2.length? a2.length : a1.length];
+    	int[] intersection = new int[ a1.size()>=a2.size()? a2.size() : a1.size()];
     	int count = 0;
     	//find the intersection we have
     	//this alg is OK for the small number of indices
     	int val1;
-    	for (int i = 0; i < a1.length && 0 < (val1 = a1[i]) ; i++){
+    	for (int i = 0; i < a1.size() && 0 < (val1 = a1.get(i)) ; i++){
     		//search for val in a2
     		int j;
     		int val2;
-    		for (j = 0; j < a2.length && 0 < (val2 = a2[j]) ; j++){
+    		for (j = 0; j < a2.size() && 0 < (val2 = a2.get(j)) ; j++){
     			if (val2 == val1){
     				intersection[count++]=val1;
     				break;
@@ -468,6 +512,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	//return, padding with zeros
     	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
 	}
+
 
 	public static IAst getEnclosingPardoOrProcDec(IAst node) {
 		IAst tnode = node.getParent();

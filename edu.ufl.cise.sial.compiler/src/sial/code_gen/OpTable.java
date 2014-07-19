@@ -198,24 +198,24 @@ public class OpTable {
 //		return index;
 //	}
 	
-	public int addOptableEntry(Opcode opcode, int lineno){
-		return addOptableEntry(opcode, 0,0,0, defaultZeroInd, lineno);
-	}
-
-	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int lineno) {
-		 int index = nOps++;
-		 assert ind.length <= TypeConstantMap.max_rank;
-		 entries.add(new Entry(opcode.ordinal(), result_array, ind, lineno));
-		 return index;
-	}
-
-	public int addOptableEntry(Opcode opcode, int operandIndex, int resultIndex, int[] ind, 
-			 int lineno){
-		int index = nOps++;
-		assert ind.length <= TypeConstantMap.max_rank;
-		entries.add(new Entry(opcode.ordinal(), operandIndex, resultIndex, ind, lineno));
-		return index;
-	}
+//	public int addOptableEntry(Opcode opcode, int lineno){
+//		return addOptableEntry(opcode, 0,0,0, defaultZeroInd, lineno);
+//	}
+//
+//	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int lineno) {
+//		 int index = nOps++;
+//		 assert ind.length <= TypeConstantMap.max_rank;
+//		 entries.add(new Entry(opcode.ordinal(), result_array, ind, lineno));
+//		 return index;
+//	}
+//
+//	public int addOptableEntry(Opcode opcode, int operandIndex, int resultIndex, int[] ind, 
+//			 int lineno){
+//		int index = nOps++;
+//		assert ind.length <= TypeConstantMap.max_rank;
+//		entries.add(new Entry(opcode.ordinal(), operandIndex, resultIndex, ind, lineno));
+//		return index;
+//	}
 	
 
 	public int addOptableEntry(Opcode opcode, int operand1, int operand2,
@@ -226,23 +226,23 @@ public class OpTable {
 		return index;	
 	}
 	
-	//do_op, enddo_op, exit_op
-	public int addOptableEntry(Opcode opcode, int[] ind, int lineno) {
-		int index = nOps++;
-		assert ind.length <= TypeConstantMap.max_rank;
-		entries.add(new Entry(opcode.ordinal(), 0, 0, 0, ind, lineno));
-		return index;
-	}
-	
-
-	
-	//execute instruction
-	//ACES4  TODO  check this!  
-	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int user_sub, int lineno){
-		int index = nOps++;
-		entries.add(new Entry(opcode.ordinal(), result_array, ind, user_sub, lineno));
-		return index;
-	}
+//	//do_op, enddo_op, exit_op
+//	public int addOptableEntry(Opcode opcode, int[] ind, int lineno) {
+//		int index = nOps++;
+//		assert ind.length <= TypeConstantMap.max_rank;
+//		entries.add(new Entry(opcode.ordinal(), 0, 0, 0, ind, lineno));
+//		return index;
+//	}
+//	
+//
+//	
+//	//execute instruction
+//	//ACES4  TODO  check this!  
+//	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int user_sub, int lineno){
+//		int index = nOps++;
+//		entries.add(new Entry(opcode.ordinal(), result_array, ind, user_sub, lineno));
+//		return index;
+//	}
 	
 	public int addOptableEntry(Entry e){
 		int index = nOps++;

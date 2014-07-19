@@ -86,6 +86,8 @@ set_persistent
 restore_persistent
 sparse
 assert_same
+broadcast_from
+sqrt
 
 %End
 
@@ -179,7 +181,11 @@ assert_same
 	    | s e t _ p e r s i s t e n t        /.$setResult($_set_persistent);./									   
 	    | r e s t o r e _ p e r s i s t e n t       /.$setResult($_restore_persistent);./																	   											  
         | s p a r s e      /.$setResult($_sparse);./
-		| a s s e r t _ s a m e  /.$setResult($_assert_same);./				 
+		| a s s e r t _ s a m e  /.$setResult($_assert_same);./		
+		| b r o a d c a s t _ f r o m /.$setResult($_broadcast_from);./
+		| s q r t  /.$setResult($_sqrt);./						
+									  						   
+								  		 
 
 														
 	%End

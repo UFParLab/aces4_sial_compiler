@@ -59,6 +59,7 @@
         EOL
 		STRINGLIT
 		COLON
+		EXP
 %End
 
 %Terminals
@@ -112,6 +113,7 @@
     LeftParen    ::= '('
     RightParen   ::= ')'
     Equal        ::= '='
+	Exp ::= '**'
 
 %End
 
@@ -151,6 +153,7 @@
 		     | '['       /. makeToken($_LEFTSQUARE);./
             | ']'      /. makeToken($_RIGHTSQUARE);./   
             | ':'      /.makeToken($_COLON);./
+			| '**'   /.makeToken($_EXP);./			 
 --	    mlc  ::= '/' '#' Inside Hashes '/'
 
 	stringlit ::=  '"' SLBody '"'
