@@ -1,8 +1,8 @@
 sial gpu_ops
-aoindex i = 1,4
-aoindex j = 1,4
-aoindex k = 1,4
-aoindex l = 1,4
+aoindex i = 1:4
+aoindex j = 1:4
+aoindex k = 1:4
+aoindex l = 1:4
 static a[i,j]
 distributed b[i,j,k,l]
 

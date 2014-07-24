@@ -1,6 +1,6 @@
 
 sial simpleIndexRange_pass
-index mr = 0, 3
-index n = -2,2
+index mr = 0: 3
+index n = -2:2
 
 endsial simpleIndexRange_pass

@@ -1,9 +1,9 @@
 
 
 sial index_in_proc_not_defined
-index i = 1,30
-index j = 30,50
-index k = 1,20
+index i = 1:30
+index j = 30:50
+index k = 1:20
 
 distributed a[i,j]
 distributed b[i,j]

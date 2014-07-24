@@ -3,17 +3,17 @@ sial scf_defs
 
 #These values are inserted into the sips predefined int
 predefined  int norb #total number of atomic orbital segments 
-predefined  int bocc  # begin of occupied orbital segment range [no spin]
-predefined  int naocc # number of occupied molecular orbital segments [alpha]
-predefined  int nbocc # number of occupied molecular orbital segments [beta]
-predefined  int baocc  # begin of occupied orbital segment range [alpha]
-predefined  int bbocc  # begin of occupied orbital segment range [beta]
-predefined  int eaocc  # end occupied orbital segment range [alpha]
-predefined  int ebocc  # end occupied orbital segment range [beta]
-predefined  int bavirt  # begin of virtual orbital segment range [alpha]
-predefined  int bbvirt  # begin of virtual orbital segment range [beta]
-predefined  int eavirt  # end of virtual orbital segment range [alpha]
-predefined  int ebvirt  # end of virtual orbital segment range [beta]
+predefined  int bocc  # begin of occupied orbital segment range (no spin)
+predefined  int naocc # number of occupied molecular orbital segments (alpha)
+predefined  int nbocc # number of occupied molecular orbital segments (beta)
+predefined  int baocc  # begin of occupied orbital segment range (alpha)
+predefined  int bbocc  # begin of occupied orbital segment range (beta)
+predefined  int eaocc  # end occupied orbital segment range (alpha)
+predefined  int ebocc  # end occupied orbital segment range (beta)
+predefined  int bavirt  # begin of virtual orbital segment range (alpha)
+predefined  int bbvirt  # begin of virtual orbital segment range (beta)
+predefined  int eavirt  # end of virtual orbital segment range (alpha)
+predefined  int ebvirt  # end of virtual orbital segment range (beta)
 predefined  int bvirtorb
 predefined  int evirtorb
 predefined  int bavirtorb
@@ -27,10 +27,10 @@ predefined  int scf_beg #value of SCF_EXPSTAR from ZMAT
 
 
 #these are predefined in the index table         
-moindex aces_defs_p = 1, norb   
-moaindex aces_defs_pa = 1,norb  
-mobindex aces_defs_pb = 1, norb  
-aoindex aces_defs_mu = 1, norb  
+moindex aces_defs_p = 1: norb   
+moaindex aces_defs_pa = 1:norb  
+mobindex aces_defs_pb = 1: norb  
+aoindex aces_defs_mu = 1: norb  
 
 
 #these s are predefined in the array and scalar tables

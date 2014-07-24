@@ -14,7 +14,7 @@ do j
 get a [i,j]
 get b [j, i]
 x = a[i,j] * b[j,i]
-print_scalar x
+print x
 enddo j
 enddo i 
 endproc F

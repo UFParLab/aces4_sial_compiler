@@ -3,16 +3,16 @@ aoindex i = 1,4
 aoindex j = 1,4
 aoindex k = 1,4
 aoindex l = 1,4
-static a[i,j]
-distributed b[i,j,k,l]
+static a(i,j)
+distributed b(i,j,k,l)
 
 gpu_on
 gpu_allocate a
 pardo i, j, k, l
-gpu_allocate b[i,j,k, l]
-gpu_put b[i,j,k, l]
-gpu_get b[i,j,k, l]
-gpu_free b[i,j,k, l]
+gpu_allocate b(i,j,k, l)
+gpu_put b(i,j,k, l)
+gpu_get b(i,j,k, l)
+gpu_free b(i,j,k, l)
 endpardo i, j, k, l
 gpu_free a
 gpu_off

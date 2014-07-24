@@ -2,8 +2,8 @@ sial fill_sequential
 predefined int norb
 special fill_block_sequential wr
 special print_block r
-aoindex i = 1,norb
-aoindex j = 1,norb
+aoindex i = 1:norb
+aoindex j = 1:norb
 local a[i,j]
 local b[j,i]
 do i

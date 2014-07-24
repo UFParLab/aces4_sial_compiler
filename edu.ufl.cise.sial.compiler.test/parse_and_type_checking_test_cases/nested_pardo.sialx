@@ -2,9 +2,9 @@ import "aces_defs.sialx"
 
 sial nested_pardo
 
-aoindex a = 1,norb
-aoindex b = 1,norb
-aoindex ccc = 1,norb
+aoindex a = 1:norb
+aoindex b = 1:norb
+aoindex ccc = 1:norb
 
 distributed x[a,b]
 distributed y[b,ccc]

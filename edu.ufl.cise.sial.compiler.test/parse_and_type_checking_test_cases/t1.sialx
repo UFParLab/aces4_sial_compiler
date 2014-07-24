@@ -1,8 +1,8 @@
 import "aces_defs.sialx"
 
 sial t1
-index i = 1,30
-index j = 30,50
+index i = 1:30
+index j = 30:50
 
 distributed a[i,j]
 distributed b[j,i]
@@ -16,7 +16,7 @@ do j
 get a [i,j]
 get b [j, i]
 x = a[i,j] * b[j,i]
-print_scalar x
+print x
 enddo j
 
 enddo i 

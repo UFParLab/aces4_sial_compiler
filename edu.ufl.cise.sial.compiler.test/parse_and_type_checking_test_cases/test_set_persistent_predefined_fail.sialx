@@ -2,15 +2,15 @@ import "aces_defs.sialx"
 sial t45
 
      
-    aoindex mu     = 1, norb
-      aoindex nu     = 1, norb
-      aoindex lambda = 1, norb
-      aoindex sigma  = 1, norb
+    aoindex mu     = 1: norb
+      aoindex nu     = 1: norb
+      aoindex lambda = 1: norb
+      aoindex sigma  = 1: norb
 #
-      moaindex i = baocc, eaocc
-      moaindex i1= baocc, eaocc
+      moaindex i = baocc: eaocc
+      moaindex i1= baocc: eaocc
 
-      moaindex a = bavirt, eavirt
+      moaindex a = bavirt: eavirt
 
       temp Txxxi[mu,nu,lambda,i]
       temp Txixi[mu,i1,lambda,i]

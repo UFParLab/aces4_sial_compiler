@@ -4,10 +4,10 @@ sial restore_persistent_test_fail
 	special print_block r
 	predefined int norb
 	
-	aoindex k = 1,1
-	aoindex k1 = 1,2
-	aoindex l = 1,1
-	aoindex l2 = 1,2
+	aoindex k = 1:1
+	aoindex k1 = 1:2
+	aoindex l = 1:1
+	aoindex l2 = 1:2
 	local a[k,l]
 	distributed b[k,l]
 	distributed c[k,l]
@@ -15,7 +15,7 @@ sial restore_persistent_test_fail
 	scalar y
 	
 	restore_persistent y "s1"
-	print_scalar y
+	print y
 	println ""
 	restore_persistent c "arr1"
 	restore_persistent b "arr2"

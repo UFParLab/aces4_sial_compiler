@@ -2,17 +2,17 @@ sial rccsdpt_aaa_defs
 
 #
 predefined  int norb   #total number of atomic orbital segments 
-###predefined  int bocc   # begin of occupied orbital segment range [no spin]
-predefined  int naocc  # number of occupied molecular orbital segments [alpha]
-predefined  int nbocc  # number of occupied molecular orbital segments [beta]
-predefined  int baocc  # begin of occupied orbital segment range [alpha]
-predefined  int bbocc  # begin of occupied orbital segment range [beta]
-predefined  int eaocc  # end occupied orbital segment range [alpha]
-predefined  int ebocc   # end occupied orbital segment range [beta]
-predefined  int bavirt  # begin of virtual orbital segment range [alpha]
-predefined  int bbvirt  # begin of virtual orbital segment range [beta]
-predefined  int eavirt  # end of virtual orbital segment range [alpha]
-predefined  int ebvirt  # end of virtual orbital segment range [beta]
+###predefined  int bocc   # begin of occupied orbital segment range (no spin)
+predefined  int naocc  # number of occupied molecular orbital segments (alpha)
+predefined  int nbocc  # number of occupied molecular orbital segments (beta)
+predefined  int baocc  # begin of occupied orbital segment range (alpha)
+predefined  int bbocc  # begin of occupied orbital segment range (beta)
+predefined  int eaocc  # end occupied orbital segment range (alpha)
+predefined  int ebocc   # end occupied orbital segment range (beta)
+predefined  int bavirt  # begin of virtual orbital segment range (alpha)
+predefined  int bbvirt  # begin of virtual orbital segment range (beta)
+predefined  int eavirt  # end of virtual orbital segment range (alpha)
+predefined  int ebvirt  # end of virtual orbital segment range (beta)
 ###predefined  int bvirtorb
 ###predefined  int evirtorb
 predefined  int bavirtorb
@@ -26,9 +26,9 @@ predefined  int scf_beg #value of SCF_EXPSTAR from ZMAT
 
 
 #these are predefined in the index table         
-moaindex aces_defs_pa = baocc, eavirt  
-mobindex aces_defs_pb = bbocc, ebvirt   
-aoindex aces_defs_mu = 1, norb  
+moaindex aces_defs_pa = baocc: eavirt  
+mobindex aces_defs_pb = bbocc: ebvirt   
+aoindex aces_defs_mu = 1: norb  
 
 predefined scalar scfeneg  # ???? 
 predefined scalar totenerg  #Total energy read in from JOBARC.

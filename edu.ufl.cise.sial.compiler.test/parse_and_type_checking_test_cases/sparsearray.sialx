@@ -1,6 +1,6 @@
 sial sparsearray
-index i = 1,10
-index j = 1,10
+index i = 1:10
+index j = 1:10
 sparse distributed a[i,j]
 sparse served b[i,j]
 endsial sparsearray

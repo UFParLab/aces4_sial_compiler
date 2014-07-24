@@ -1,8 +1,8 @@
 import "aces_defs.sialx"
 sial t0_defs
 
-index i = 1,30
-index j = 30,50
+index i = 1:30
+index j = 30:50
 
 distributed a[i,j]
 

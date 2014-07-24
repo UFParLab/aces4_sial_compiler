@@ -1,6 +1,6 @@
 sial subindex_pass
-moaindex i = 1, 10
-moaindex j = 1, 10
+moaindex i = 1: 10
+moaindex j = 1: 10
 subindex ii of i
 subindex jj of j
 

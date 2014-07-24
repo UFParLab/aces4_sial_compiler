@@ -1,7 +1,7 @@
 sial non_nested_pardo_and_barrier_pass
 
-aoindex aoi = 1,100
-aoindex aoj = 1,200
+aoindex aoi = 1:100
+aoindex aoj = 1:200
 
 proc p0
 pardo aoi

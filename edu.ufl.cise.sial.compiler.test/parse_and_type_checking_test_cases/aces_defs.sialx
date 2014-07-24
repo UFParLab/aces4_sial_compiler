@@ -1,24 +1,24 @@
 sial aces_defs
 
 predefined  int norb #total number of atomic orbital segments 
-predefined  int nocc  # number of occupied molecular orbital segments [no spin]
-predefined  int nvirt # number of unoccupied or virtual orbital segments [no spin]
-predefined  int bocc  # begin of occupied orbital segment range [no spin]
-predefined  int eocc  # end occupied orbital segment range [no spin]
-predefined  int bvirt  # begin of virtual orbital segment range [no spin]
-predefined  int evirt  # end of virtual orbital segment range [no spin]
-predefined  int naocc # number of occupied molecular orbital segments [alpha]
-predefined  int nbocc # number of occupied molecular orbital segments [beta]
-predefined  int navirt # number of unoccupied or virtual orbital segments [alpha]
-predefined  int nbvirt # number of unoccupied or virtual orbital segments [beta]
-predefined  int baocc  # begin of occupied orbital segment range [alpha]
-predefined  int bbocc  # begin of occupied orbital segment range [beta]
-predefined  int eaocc  # end occupied orbital segment range [alpha]
-predefined  int ebocc  # end occupied orbital segment range [beta]
-predefined  int bavirt  # begin of virtual orbital segment range [alpha]
-predefined  int bbvirt  # begin of virtual orbital segment range [beta]
-predefined  int eavirt  # end of virtual orbital segment range [alpha]
-predefined  int ebvirt  # end of virtual orbital segment range [beta]
+predefined  int nocc  # number of occupied molecular orbital segments (no spin)
+predefined  int nvirt # number of unoccupied or virtual orbital segments (no spin)
+predefined  int bocc  # begin of occupied orbital segment range (no spin)
+predefined  int eocc  # end occupied orbital segment range (no spin)
+predefined  int bvirt  # begin of virtual orbital segment range (no spin)
+predefined  int evirt  # end of virtual orbital segment range (no spin)
+predefined  int naocc # number of occupied molecular orbital segments (alpha)
+predefined  int nbocc # number of occupied molecular orbital segments (beta)
+predefined  int navirt # number of unoccupied or virtual orbital segments (alpha)
+predefined  int nbvirt # number of unoccupied or virtual orbital segments (beta)
+predefined  int baocc  # begin of occupied orbital segment range (alpha)
+predefined  int bbocc  # begin of occupied orbital segment range (beta)
+predefined  int eaocc  # end occupied orbital segment range (alpha)
+predefined  int ebocc  # end occupied orbital segment range (beta)
+predefined  int bavirt  # begin of virtual orbital segment range (alpha)
+predefined  int bbvirt  # begin of virtual orbital segment range (beta)
+predefined  int eavirt  # end of virtual orbital segment range (alpha)
+predefined  int ebvirt  # end of virtual orbital segment range (beta)
 predefined  int noccorb #  TODO used in any code?
 predefined  int nvirtorb #  TODO used in code?
 predefined  int boccorb
@@ -59,10 +59,10 @@ predefined  int sip_sub_ao_segsize
 
 
 #these are predefined in the index table         
-moindex aces_defs_p = 1, norb   
-moaindex aces_defs_pa = 1,norb  
-mobindex aces_defs_pb = 1, norb  
-aoindex aces_defs_mu = 1, norb  
+moindex aces_defs_p = 1: norb   
+moaindex aces_defs_pa = 1:norb  
+mobindex aces_defs_pb = 1: norb  
+aoindex aces_defs_mu = 1: norb  
 
 
 #these s are predefined in the array and scalar tables

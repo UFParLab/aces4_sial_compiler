@@ -1,15 +1,15 @@
 import "aces_defs.sialx"
 sial set_persistent_pass
 
-    aoindex mu     = 1, norb
-      aoindex nu     = 1, norb
-      aoindex lambda = 1, norb
-      aoindex sigma  = 1, norb
+    aoindex mu     = 1: norb
+      aoindex nu     = 1: norb
+      aoindex lambda = 1: norb
+      aoindex sigma  = 1: norb
 #
-      moaindex i = baocc, eaocc
-      moaindex i1= baocc, eaocc
+      moaindex i = baocc: eaocc
+      moaindex i1= baocc: eaocc
 
-      moaindex a = bavirt, eavirt
+      moaindex a = bavirt: eavirt
       
       scalar my_scalar 
       scalar your_scalar

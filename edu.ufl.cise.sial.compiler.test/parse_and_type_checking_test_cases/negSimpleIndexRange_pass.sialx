@@ -1,6 +1,6 @@
 
 sial negSimpleIndexRange_pass
-index mr = -3, 3
+index mr = -3: 3
 
 
 endsial negSimpleIndexRange_pass

@@ -1,8 +1,8 @@
 
 sial assignments_fail
-index a = 1,30
-index b = 2,40
-moindex c = 1,10
+index a = 1:30
+index b = 2:40
+moindex c = 1:10
 scalar x
 distributed t1[a,b,c]
 
