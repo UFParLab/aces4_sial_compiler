@@ -103,7 +103,8 @@ public class SialCompiler {
 			if (importedProgAst == null) {
 				parser.emitError(importedProg, "error parsing imported file "
 						+ importedFilePath);
-				continue; // go to next import
+//				continue; // go to next import
+				return null;
 			}
 			if (!importedProgAst.isSymbolTablePopulated()) {
 				parser.emitError(importedProg,
@@ -163,8 +164,10 @@ public class SialCompiler {
 			ast = (Sial) compiler.parseFile(options.getINPUT_FILE(), false);
 		} catch (ImportedFileNotFoundException e) {
 			compiler.msgHandler.handleFileNotFoundMessage(e.getMessage());
+			errs = Integer.MAX_VALUE;
 		} catch (IOException e) {
 			compiler.msgHandler.handleFileNotFoundMessage(e.getMessage());
+			errs = Integer.MAX_VALUE;
 		}
 
 		/* Check for successful parse and output error messages */

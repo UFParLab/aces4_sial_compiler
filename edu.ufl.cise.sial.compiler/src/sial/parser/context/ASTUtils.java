@@ -600,20 +600,20 @@ public class ASTUtils implements SialParsersym, SipConstants{
     
     //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
     public static void addExprType(IExpression e, EType t){
-    	if (e instanceof IdentExpr)  ((IdentExpr)e).addType(t);
-    	if (e instanceof IntLitExpr) ((IntLitExpr)e).addType(t);
-    	if (e instanceof DoubleLitExpr) ((DoubleLitExpr)e).addType(t);
-    	if (e instanceof NegatedUnaryExpr) ((NegatedUnaryExpr)e).addType(t);
-    	if (e instanceof ParenExpr) getIExprTypes( ((ParenExpr)e).getExpression() );
-    	if (e instanceof ScalarCastExpr) ((ScalarCastExpr)e).addType(t);
-    	if (e instanceof IntCastExpr) ((IntCastExpr)e).addType(t);
-    	if (e instanceof StarExpr) ((StarExpr)e).addType(t);
-    	if (e instanceof DivExpr) ((DivExpr)e).addType(t);
-    	if (e instanceof TensorExpr) ((TensorExpr)e).addType(t);
-    	if (e instanceof AddExpr) ((AddExpr)e).addType(t);
-    	if (e instanceof SubtractExpr) ((SubtractExpr)e).addType(t);
-    	if (e instanceof DataBlockExpr) ((DataBlockExpr)e).addType(t);
-    	if (e instanceof StringLitExpr) ((StringLitExpr)e).addType(t);
+    	if (e instanceof IdentExpr) { ((IdentExpr)e).addType(t); return;}
+    	if (e instanceof IntLitExpr){ ((IntLitExpr)e).addType(t); return; }
+    	if (e instanceof DoubleLitExpr) {((DoubleLitExpr)e).addType(t); return;}
+    	if (e instanceof NegatedUnaryExpr) {((NegatedUnaryExpr)e).addType(t); return;}
+    	if (e instanceof ParenExpr) {getIExprTypes( ((ParenExpr)e).getExpression() ); return;}  //TODO FIXME 
+    	if (e instanceof ScalarCastExpr) {((ScalarCastExpr)e).addType(t); return;}
+    	if (e instanceof IntCastExpr) {((IntCastExpr)e).addType(t); return;}
+    	if (e instanceof StarExpr) {((StarExpr)e).addType(t); return;}
+    	if (e instanceof DivExpr){ ((DivExpr)e).addType(t); return;}
+    	if (e instanceof TensorExpr){ ((TensorExpr)e).addType(t); return;}
+    	if (e instanceof AddExpr) {((AddExpr)e).addType(t); return;}
+    	if (e instanceof SubtractExpr){ ((SubtractExpr)e).addType(t); return;}
+    	if (e instanceof DataBlockExpr){ ((DataBlockExpr)e).addType(t); return;}
+    	if (e instanceof StringLitExpr) {((StringLitExpr)e).addType(t); return;}
     	assert false;
     }
 	

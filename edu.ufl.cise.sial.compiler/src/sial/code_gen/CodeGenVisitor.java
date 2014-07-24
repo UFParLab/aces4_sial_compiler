@@ -114,8 +114,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		operandStack = new LinkedList<Integer>();
 		indexArrayStack = new LinkedList<int[]>();
 		backpatchInstructionStack = new LinkedList<Integer>();
-
-
 	}
 
 	public SipTable getSipTable() {
@@ -137,7 +135,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		if (opTable.nOps == 0) { // this program is the main program being compiled.
 									// insert the jump instruction to the value
 									// needed for an empty program.
-			opTable.addOptableEntry(goto_op, unused, unused, 1, defaultUnusedInd, lineno(n));
+			opTable.addOptableEntry(goto_op, 1, unused, unused, defaultUnusedInd, lineno(n));
 
 		}
 
@@ -162,13 +160,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		// the destination of the first instruction has not already
 		// been initialized, do it now
 		if (n.getStatementList().size() > 0 && !opTable.isFirstOpInitialized()) {
-			opTable.backpatchBranch(0);
+			opTable.backpatchArg0(0);
 			opTable.setFirstOpInitialized(true);
 		}
 		// this takes care of the degenerate case where there is no "main"
 		// program which may be useful for testing
 		if (!opTable.isFirstOpInitialized() && !getRoot(n).isImported()) {
-			opTable.backpatchBranch(0);
+			opTable.backpatchArg0(0);
 			opTable.setFirstOpInitialized(true);
 		}
 		n.getStatementList().accept(this);
@@ -227,7 +225,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		if (initialValueToken != null){
 			value = ASTUtils.getIntLitVal(initialValueToken);
 		}
-		intTable.addInteger(n,value);   
+        intTable.addInteger(n, value);
 		return false;
 	}
 
@@ -409,12 +407,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	}
 
 	@Override
-	public boolean visit(WhereClause n) { /* visit child */
+	public boolean visit(WhereClause n) { /* visit child to generate code to evaluate condition */
 		return true;
 	}
 
 	@Override
-	public void endVisit(WhereClause n) { /* nop, handled in chaild RelationalExpression */
+	public void endVisit(WhereClause n) { 
+		opTable.addOptableEntry(where_op, unused, unused, unused, defaultUnusedInd, lineno(n));
 	}
 
 	@Override
@@ -491,13 +490,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		n.getStartIndex().accept(this);
 		int[] ind = Arrays.copyOf(defaultUnusedInd, defaultUnusedInd.length);
 		ind[0] = operandStack.pop(); // index of loop variable overwrites the first element of the ind array, so need a copy.
-		int do_instruction = opTable.addOptableEntry(do_op, 1, unused, 0, ind, lineno(n)); //zero will be overwritten in backpatch.  1 is number of indices for consistency with pardo,
+		int do_instruction = opTable.addOptableEntry(do_op, toBackpatch, 1 , unused, ind, lineno(n)); //1 is number of indices for consistency with pardo,
 		// visit remaining children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
-		opTable.backpatchBranch(do_instruction); // packpatches the do
+		opTable.backpatchArg0(do_instruction); // packpatches the do
 													// instruction to add the pc
 													// of this endDo to
 													// "result_array" field
@@ -523,8 +522,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		int parent = operandStack.pop();
 		// replace ind[0] with index of loop variable
 		ind[0] = operandStack.pop();
-		int dosubindex_instruction = opTable.addOptableEntry(dosubindex_op,
-				parent, unused, 0, ind, lineno(n)); // the zero is put in "result_array"
+		int dosubindex_instruction = opTable.addOptableEntry(dosubindex_op,toBackpatch,
+				parent, unused, ind, lineno(n)); // the zero is put in "result_array"
 											// slot to reserve
 											// space for backpatch. Parent goes
 											// in op1_array slot.
@@ -533,13 +532,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
-		opTable.backpatchBranch(dosubindex_instruction); // packpatches the do
+		opTable.backpatchArg0(dosubindex_instruction); // packpatches the do
 															// instruction to
 															// add the pc of
 															// this endDo to
 															// "result_array"
 															// field
-		opTable.addOptableEntry(enddosubindex_op, parent, unused, unused, ind,
+		opTable.addOptableEntry(enddosubindex_op, unused, parent,unused, ind,
 				lineno(n.getEndIndex())); // parent in op_1 slot for consistency
 		return false;
 
@@ -557,14 +556,14 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		// the index array is on top of the indexArrayStack
 		int num_indices = n.getStartIndices().size();
 		int[] ind = indexArrayStack.pop();
-		int pardo_instruction = opTable.addOptableEntry(pardo_op, num_indices, unused, unused, ind, lineno(n));
+		int pardo_instruction = opTable.addOptableEntry(pardo_op, toBackpatch, num_indices, unused, ind, lineno(n));
 		// visit children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);
 		if (n.getStatementList() != null)
 			n.getStatementList().accept(this);
-		opTable.backpatchBranch(pardo_instruction);
-		opTable.addOptableEntry(endpardo_op, num_indices, unused, unused, ind, lineno(n.getEndIndices()));
+		opTable.backpatchArg0(pardo_instruction);
+		opTable.addOptableEntry(endpardo_op, unused, num_indices, unused, ind, lineno(n.getEndIndices()));
 		return false;
 	}
 
@@ -584,41 +583,50 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 
 	@Override
-	public boolean visit(IfStatement n) {/* visit children */
-		return true;
+	public boolean visit(IfStatement n) {
+		// visit children manually
+		// visit relational expression
+		n.getRelationalExpression().accept(this);
+		int jmpzPC = opTable.addOptableEntry(jump_if_zero_op, toBackpatch, unused, unused,  defaultUndefInd,lineno(n));
+		// visit the statements of the if block
+		n.getStatementList().accept(this);
+		// add a goto to jump over the else part, destination will be added later
+		// backpatch the jump_if_zero instruction
+		opTable.backpatchArg0(jmpzPC);
+		return false;
+		
 	}
 
 	@Override
-	public void endVisit(IfStatement n) {
-		// the relational expression has generated a jmpz instruction
-		// and pushed its address on the bakcpatchInstruction stack
-		int pc = backpatchInstructionStack.pop();
-		// set the result index to the index of next instruction
-		opTable.backpatchBranch(pc);
+	public void endVisit(IfStatement n) { /* nop */
+//		// the relational expression has generated a jmpz instruction
+//		// and pushed its address on the bakcpatchInstruction stack
+//		int pc = backpatchInstructionStack.pop();
+//		// set arg0 to the index of next instruction
+//		opTable.backpatchArg0(pc);
 	}
-
+//	// add a jz and push its index onto the
+//	// backPatchInstructionStack
+//	int opTableIndex = opTable.addOptableEntry(jump_if_zero_op, toBackpatch, unused, unused,  defaultUndefInd,
+//			lineno(n));
+//	backpatchInstructionStack.push(opTableIndex); // TODO move to parent???
 	@Override
 	public boolean visit(IfElseStatement n) {
 		// visit children manually
-
 		// visit relational expression
 		n.getRelationalExpression().accept(this);
-		// the relational instruction visit method has generated a jmpz
-		// instruction
-		// and pushed its address on the backpatchInstruction stack
-		int jmpzPC = backpatchInstructionStack.pop();
-		assert jmpzPC == opTable.nOps - 1 : "backpatch stack had unexpected value in IfElseStatement";
+		int jmpzPC = opTable.addOptableEntry(jump_if_zero_op, toBackpatch, unused, unused,  defaultUndefInd,lineno(n));
 		// visit the statements of the if block
 		n.getifStatements().accept(this);
 		// add a goto to jump over the else part, destination will be added later
-		int gotoPC = opTable.addOptableEntry(goto_op, unused, unused,0, defaultUnusedInd,
+		int gotoPC = opTable.addOptableEntry(goto_op, toBackpatch, unused, unused, defaultUnusedInd,
 				lineno(n));
-		// patch the jmpz instruction
-		opTable.backpatchBranch(jmpzPC);
+		// backpatch the jump_if_zero instruction
+		opTable.backpatchArg0(jmpzPC);
 		// visit the statements of the else block
 		n.getelseStatements().accept(this);
 		// backpatch the goto statement
-		opTable.backpatchBranch(gotoPC);
+		opTable.backpatchArg0(gotoPC);
 		return false;
 	}
 
@@ -762,10 +770,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	}
 
 	@Override
-	public void endVisit(RequestStatement n) { // FIXME: eliminate the "hint"?
-		if (n.getIdentOpt() != null) {
-			operandStack.pop(); // discard hint
-		}
+	public void endVisit(RequestStatement n) { 
 		int arrayTAbleSlot = operandStack.pop();
 		int[] ind = indexArrayStack.pop();
 		int rank = arrayTable.getRank(arrayTAbleSlot);
@@ -802,9 +807,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public void endVisit(CollectiveStatement n) {
-		int rhsIndex = operandStack.pop();
 		int lhsIndex = operandStack.pop();
-		opTable.addOptableEntry(collective_sum_op, rhsIndex, lhsIndex, unused,
+		opTable.addOptableEntry(collective_sum_op, lhsIndex, unused, unused,
 				defaultUnusedInd, lineno(n));
 	}
 
@@ -818,7 +822,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		ArgList args = n.getArgList();
 		int numArgs = args.size();
 		int functionAddr = operandStack.pop();
-		opTable.addOptableEntry(execute_op, functionAddr, unused, numArgs,
+		opTable.addOptableEntry(execute_op, functionAddr,  numArgs, unused, 
 				defaultUndefInd, lineno(n));
 	}
 	
@@ -925,12 +929,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public boolean visit(AllocIndexIdent n) {
-//		IDec dec = n.getDec();
-//		int identIndex;
-//		identIndex = indexTable.getIndex(dec);
-//		operandStack.push(identIndex);
-//		return false;
-		return true;
+		IDec dec = n.getDec();
+		int identIndex;
+		identIndex = indexTable.getIndex(dec);
+		operandStack.push(identIndex);
+		return false;
 	}
 
 	@Override
@@ -1060,11 +1063,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			opcode = getRelOpcodeInt(n.getRelOp());
 		} 
 		opTable.addOptableEntry(opcode, unused, unused, unused, defaultUndefInd, lineno(n));
-		// add a jz and push its index onto the
-		// backPatchInstructionStack
-		int opTableIndex = opTable.addOptableEntry(jump_if_zero_op, unused, unused, toBackpatch, defaultUndefInd,
-				lineno(n));
-		backpatchInstructionStack.push(opTableIndex); // TODO move to parent???
+//		// add a jz and push its index onto the
+//		// backPatchInstructionStack
+//		int opTableIndex = opTable.addOptableEntry(jump_if_zero_op, toBackpatch, unused, unused,  defaultUndefInd,
+//				lineno(n));
+//		backpatchInstructionStack.push(opTableIndex); // TODO move to parent???
 		return;
 	}
 
@@ -1530,9 +1533,34 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	@Override
 	public void endVisit(PrintStatement n) { 
 		IExpression e = n.getExpression();
-		EnumSet<EType> argType = ASTUtils.getIExprTypes(e); 											
-		Opcode opcode = getPrintOpcode(argType);
-		opTable.addOptableEntry(opcode, 0 /*do not add /n */, unused, unused, defaultUnusedInd, lineno(n));		
+		EnumSet<EType> argType = ASTUtils.getIExprTypes(e); 
+		Opcode opcode = invalid_op;
+		int appendNewLine = 0; /*do not add /n */
+		int slot = unused;
+		if (argType.contains(SCALAR)){
+			opcode = Opcode.print_scalar_op;
+		if (e instanceof IdentExpr){
+			IDec dec = ((IdentExpr) e).getDec();
+			slot = arrayTable.getIndex(dec);
+		}
+		}
+		else if (argType.contains(INT)){
+			opcode = Opcode.print_int_op;
+			if (e instanceof IdentExpr){
+				IDec dec = ((IdentExpr) e).getDec();
+				slot = intTable.getIntIndex((IntDec) dec);
+			}
+		}
+		else if (argType.contains(INDEX)){
+			opcode = Opcode.print_index_op;
+			IDec dec = ((IdentExpr)e).getDec();  //this must be an IdentExpr of an index
+			slot = indexTable.getIndex(dec);
+		}
+		else if (argType.contains(STRING)){
+			opcode = Opcode.print_string_op;
+		}
+		else assert false: "printing blocks not yet implemented";
+		opTable.addOptableEntry(opcode, appendNewLine, slot, unused, defaultUnusedInd, lineno(n));		
 	}
 
 	@Override 
@@ -1543,27 +1571,34 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	@Override
 	public void endVisit(PrintlnStatement n) { 		
 		IExpression e = n.getExpression();
-		EnumSet<EType> argType = ASTUtils.getIExprTypes(e); 											
-		Opcode opcode = getPrintOpcode(argType);
-		opTable.addOptableEntry(opcode, 1 /* add /n */, unused, unused, defaultUnusedInd, lineno(n));	
-	}
-
-	private Opcode getPrintOpcode(EnumSet<EType> argType) {
-		Opcode opcode;
-		if (argType.contains(SCALAR)) {
-			opcode = print_scalar_op;	
+		EnumSet<EType> argType = ASTUtils.getIExprTypes(e); 
+		Opcode opcode = invalid_op;
+		int appendNewLine = 1; /*do add /n */
+		int slot = unused;
+		if (argType.contains(SCALAR)){
+			opcode = Opcode.print_scalar_op;
+		if (e instanceof IdentExpr){
+			IDec dec = ((IdentExpr) e).getDec();
+			slot = arrayTable.getIndex(dec);
+		}
 		}
 		else if (argType.contains(INT)){
-			opcode = print_int_op;
+			opcode = Opcode.print_int_op;
+			if (e instanceof IdentExpr){
+				IDec dec = ((IdentExpr) e).getDec();
+				slot = intTable.getIntIndex((IntDec) dec);
+			}
 		}
 		else if (argType.contains(INDEX)){
-			opcode = print_index_op;
+			opcode = Opcode.print_index_op;
+			IDec dec = ((IdentExpr)e).getDec();  //this must be an IdentExpr of an index
+			slot = indexTable.getIndex(dec);
 		}
 		else if (argType.contains(STRING)){
-			opcode = print_string_op;
+			opcode = Opcode.print_string_op;
 		}
-		else {assert false : "block arg to print not implemented"; opcode = invalid_op;}
-		return opcode;
+		else assert false: "printing blocks not yet implemented";
+		opTable.addOptableEntry(opcode, appendNewLine, slot, unused, defaultUnusedInd, lineno(n));		
 	}
 	
 
@@ -1879,7 +1914,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 //			int lhs_index = lhs_selector[i];
 			String lhs_index = lhsIndices.getIdentAt(i).getName();
 			int j;
-			for (j = 0; j < rhsRank && rhsIndices.getIdentAt(j).getName() != lhs_index; ++j)
+			for (j = 0; j < rhsRank && !(rhsIndices.getIdentAt(j).getName().equals(lhs_index)); ++j)
 			{/* keep looking until matching index found */}
 			permutation[j] = i;
 		}
@@ -2020,6 +2055,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			}
 			else {//this is a contract to scalar.  evaluates the contraction and leaves result on sip expression stack
 				opTable.addOptableEntry(block_contract_to_scalar_op, unused, unused, unused, defaultUnusedInd, lineno(n));
+				return;
 			}
 		}
 		if (resultType.contains(BLOCK)){
@@ -2145,7 +2181,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	/**Generates code to load the value onto the expression stack.  (DoubleLitArg is the case where it is treated like a block)
 	 */
 	@Override
-	public boolean visit(DoubleLitExpr n) {
+	public boolean visit(DoubleLitExpr n) { //TODO  refactor to put most of this in the Scalar table
+		
 		double val = getDoubleVal(n.getDOUBLELIT());
 		int nScalars = scalarTable.nScalars; // current number of scalars
 		int scalarTableSlot = scalarTable.addDoubleLiteral(val); //searches the scalar table for this value.  If it is already there, it returns the index, if not it adds it and returns the new index.
@@ -2263,14 +2300,16 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	}
 
 	@Override
-	public boolean visit(StringLitExpr n) {/* visit child StringLiteral */
-	      return true;
+	public boolean visit(StringLitExpr n) { /* generates string_load_literal instruction */
+		String s = ASTUtils.getStringVal(n);
+	    int stringTableSlot = stringLiteralTable.getAndAdd(s);	
+		opTable.addOptableEntry(string_load_literal_op,stringTableSlot, unused, unused, defaultUnusedInd, lineno(n));
+		return false;
 	}
 
 	@Override
-	public void endVisit(StringLitExpr n) {
-		int stringTableSlot = operandStack.pop();
-		opTable.addOptableEntry(string_load_literal_op,stringTableSlot, unused, unused, defaultUnusedInd, lineno(n));
+	public void endVisit(StringLitExpr n) { /*nop*/
+
 	}
 
 //	@Override

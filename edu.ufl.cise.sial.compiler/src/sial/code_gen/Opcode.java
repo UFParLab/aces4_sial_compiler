@@ -1,11 +1,14 @@
 package sial.code_gen;
 
+
+
 //opcodes
 public enum Opcode {
+
 	
 //sequential control
 	//branch
-	goto_op("","","","optable slot of destination","unconditional jump"),
+	goto_op("optable slot of destination","","","","unconditional jump"),
 	jump_if_zero_op("optable slot of destination","","","","jump if top of sip control stack is zero"),
 	stop_op("","","","","immediately halt sial program.  Useful during debugging"),
 
@@ -14,22 +17,22 @@ public enum Opcode {
 	return_op("","","","","return from procedure. optable slot of caller is on the control stack"),	
 	
 	//user provided super instruction
-	execute_op("super instruction table slot","","number of arguments","",
+	execute_op("super instruction table slot","number of arguments","","",
 			"execute indicated user provided super instruction.  The argumnents are on the block selector stack"),	
 	
 	//sequential loops
-	do_op("","","optable slot of enddo","first element is slot of loop index variable","serial do loop"),	
-	enddo_op("","","","first element is slot of loop index variable","marks end of serial do loop"),		
-	dosubindex_op("parent index","","optable slot of enddosubindex","first element is slot of loop index variable","serial loop over subindex"),	
-	enddosubindex_op("parent","","","first element is slot of loop index variable","marks end of loop over subindex variable"),
+	do_op("optable slot of enddo","number of indices = 1","","first element is slot of loop index variable","serial do loop"),	
+	enddo_op("","number of indices","","first element is slot of loop index variable","marks end of serial do loop"),		
+	dosubindex_op("optable slot of enddosubindex", "parent index","","first element is slot of loop index variable","serial loop over subindex"),	
+	enddosubindex_op("","parent","","first element is slot of loop index variable","marks end of loop over subindex variable"),
 	exit_op("","","","","exit current do loop"),		
 	where_op("","","","",""),			
 	
 //parallel control
 	
 	//parallel loop
-	pardo_op("number of indices","","","indices indicated in loop","beginning of pardo loop"),	
-	endpardo_op("number of indices","","","indices indicated in loop","end of pardo loop"),	
+	pardo_op("optable slot of enddo","number of indices","","indices indicated in loop","beginning of pardo loop"),	
+	endpardo_op("","number of indices","","indices indicated in loop","end of pardo loop"),	
 	
 	//structure multiple parallel loops
 	begin_pardo_section_op("","","","","start of a pardo section"),
@@ -75,7 +78,7 @@ public enum Opcode {
 	
 //integer expressions and local data movement-
 	int_load_value_op("IntTable slot","","","","loads current value of indicated int onto sip control stack"),
-	int_load_literal_op("","","","",""),
+	int_load_literal_op("value","","","","loads value encoded in arg0 of instruction onto sip control stack"),
 	int_store_op("IntTable slot","opcode of operator, or int_store_op if plain assignment","","",
 			"removes value from top of sip control stack, performs indicated op with value of given int, and stores in given int"),
 	index_load_value_op("IndexTable slot","","","","load current value of index and stores it on the control stack"),
@@ -101,7 +104,7 @@ public enum Opcode {
 	scalar_subtract_op("","","","","removes top two elements from expression stack, subtracts top from next-to-top (i.e. args pushed left to right),  pushes result on expressio stack"),
 	scalar_multiply_op("","","","","removes top two elements from expression stack, multiplies together, pushes result on expression stack"),
 	scalar_divide_op("","","","","removes top two elements from expression stack, divides next-to-top by top (i.e. args pushed left to right), pushes result on expression stack"),
-	scalar_exp_op("","","","","removes top two elements s,t from expression stack, computer s^t (c++ pow(s,t)), args pushed from left to right, pushes result onto expression stack"),
+	scalar_exp_op("","","","","removes top two elements s,t from expression stack, computes s**t (c++ pow(s,t)), args pushed from left to right, pushes result onto expression stack"),
 	scalar_eq_op("","","","","==, args are popped from sip expression stack, result is placed on control stack"),
 	scalar_ne_op("","","","","!=, args are popped from sip expression stack, result is placed on control stack"),
 	scalar_ge_op("","","","",">=, args are popped from sip expression stack, result is placed on control stack"),
@@ -115,8 +118,8 @@ public enum Opcode {
 
 	//scalar collective operations
 	
-	collective_sum_op("array table slot of rhs scalar","array table slot of lhs scalar","","",
-			"allreduce of rhs scalar into lhs scalar"),
+	collective_sum_op("array table slot of lhs scalar","","","",
+			"allreduce of rhs value into lhs scalar. This operation synchronizes the workers"),
 	assert_same_op("array table slot of scalan","","","","checks that value of scalar is within epsilon on all workers, and resets all to master's value"),
 
 	
@@ -141,12 +144,13 @@ public enum Opcode {
 	//expressions and operations on strings
 	string_load_literal_op("slot in string literal table","","","","loads slot in string table onto control stack."),
 
-	//output commands
-	print_string_op("add \n if  1","string table slot of string to print","","","master prints the string; slot in string table is on the sip control stack"),
-	println_op("","","","","master prints '\n')"),
-	print_index_op("add \n if  1","","","","master prints the current value of given index; the value is on the sip control stack"),
-	print_scalar_op("add \n if  1","","","","master prints scalar; value is on the sip epression stack "),
-	print_int_op("add \n if  1","","","","master prints int; value is on the sip control stack"),
+	//output command
+	print_string_op("append NL if  1","","","","print the string whose slot in string table is on the sip control stack"),
+	println_op("","","","","print NL)"),
+	print_index_op("append NL if  1","index table slot","","","print current value of given index; the value is on the sip control stack"),
+	print_scalar_op("append NL if  1","array table slot, or unused if literal","","","print scalar whose value is on the sip epression stack "),
+	print_int_op("append NL  1","array table slot or unused if literal","","","print int; value is on the sip control stack"),
+
 	
 	//gpu commands
 	gpu_on_op("","","","",""),
@@ -172,9 +176,9 @@ public enum Opcode {
 	invalid_op("","","","","");
 	
 	
-	String arg1Desc, arg2Desc, arg3Desc, indDesc, comment; 
+	String arg0Desc, arg2Desc, arg3Desc, indDesc, comment; 
 	private Opcode(String arg1Desc, String arg2Desc, String arg3Desc, String indDesc, String comment ){
-		this.arg1Desc = arg1Desc;
+		this.arg0Desc = arg1Desc;
 		this.arg2Desc = arg2Desc;
 		this.arg3Desc = arg3Desc;
 		this.indDesc = indDesc;
@@ -184,8 +188,8 @@ public enum Opcode {
 	final int offset = 100;
 	int opcodeValue = this.ordinal()+ offset;
 	
-	
-	public String arg1(){return arg1Desc;}
+	public int getOpcodeValue(){ return opcodeValue;}
+	public String arg1(){return arg0Desc;}
 	public String arg2(){return arg2Desc;}
 	public String arg3(){return arg3Desc;}
 	public String indArray(){return indDesc;}
@@ -223,27 +227,32 @@ public enum Opcode {
 	}
 		
 
-	String latexLine(){return "";}
+//	String latexLine(){return "";}
+	
+
 	public static String generateLatexTable(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("\\documentclass{article}\n");
+		sb.append("\\usepackage{underscore}\n");
+		sb.append("\\usepackage[landscape, margin=1.0in]{geometry}\n");
+		sb.append("\\usepackage{longtable}");
 		sb.append("\\begin{document}\n");
-		sb.append("\\begin{tabular}{r l c c c c p{2in}}\n");
+		sb.append("\\centering\n");
+		sb.append("\\begin{longtable}{r p{1in} p{.5in} p{.5in} p{.5in}  p{2in}}\n");
 		sb.append("\\hline\\hline\n");
-		sb.append("opcode & name & arg 1 & arg 2 & arg 3 * selector array & comment \\\\\n");
+		sb.append("opcode & name & arg0 & arg1 & selector array & comment \\\\\n");
 		sb.append("\\hline\\hline\n");
 		for (Opcode op: Opcode.values()){
 			sb.append(op.opcodeValue).append('&');
-			sb.append("\\verb|").append(op.name()).append("|&");
-			sb.append("\\verb|").append(op.arg1()).append("|&");
-			sb.append("\\verb|").append(op.arg2()).append("|&");
-			sb.append("\\verb|").append(op.arg2()).append("|&");
-			sb.append("\\verb|").append(op.arg1()).append("|&");
+			sb.append(op.name()).append("&");
+			sb.append(op.arg1()).append("&");
+			sb.append(op.arg2()).append("&");
+			//sb.append(op.arg3()).append("&");
+			sb.append(op.indArray()).append("&");
 			sb.append(op.comment());
 			sb.append("\\\\\n\\hline\n");
-
 		}
-		sb.append("\\end{tabular}\n");
+		sb.append("\\end{longtable}\n");
 		sb.append("\\end{document}\n");
 		return sb.toString();
 	}

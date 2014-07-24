@@ -57,10 +57,10 @@ public final static int
     magic = 70707,  //recorded in header and checked at load time
     version = 2,    //recorded in header and checked at load time
     release = 0,    //recorded in header and checked at load time
-    wild = 90909,   // indicates wild card value for allocate statements
-    push_result_int = -1,  //indicates that result of expression evaluation should be pushed onto the sip control_stack
-    push_result_scalar = -2,  //indicates that the result of expression evaluation should be pushed onto the sip expression stack
-    invalid_dest_for_block = -3;  //temporary value for destiniation of expressions with block values.  This should be replaced during code generation.
+    wild = 90909;   // indicates wild card value for allocate statements
+//    push_result_int = -1,  //indicates that result of expression evaluation should be pushed onto the sip control_stack
+//    push_result_scalar = -2,  //indicates that the result of expression evaluation should be pushed onto the sip expression stack
+//    invalid_dest_for_block = -3;  //temporary value for destiniation of expressions with block values.  This should be replaced during code generation.
     
 
 

@@ -17,7 +17,7 @@ public class IntTable implements SipConstants {
 	
 //	static public class Entry {
 //		int attributes;  //should be either attr_int, or attr_int | attr_predefined
-//		int value;       //zero unless an int literal.
+//		int value;       //zero unless an int literal or given a value when declared.
 //		
 //	Entry(int attributes, int value){
 //		this.attributes = attributes;
@@ -34,7 +34,7 @@ public class IntTable implements SipConstants {
 	BiMap<Integer, Integer> intLiteralBiMap;  //maps int literals to 
 	                                 //index in integer array	
 	ArrayList<Integer> integers; // the integer table itself. 
-
+	ArrayList<Integer> attributes; //the attributes.  
 	int nIntegers; //number of ints
 
 	
@@ -103,9 +103,9 @@ public class IntTable implements SipConstants {
 		return index;
 	}
 
-	int addConstant(IntDec dec){
-	    return addInteger(dec, 0);
-	}
+//	int addConstant(IntDec dec){
+//	    return addInteger(dec, 0);
+//	}
 	
 //	public String toString(){  //currently shows only scalars,
 //		                       //all ints are symbolic constants
@@ -178,8 +178,17 @@ public class IntTable implements SipConstants {
 		output.writeInt(nIntegers);
 		for (int i = 0; i != nIntegers; i++){
 			output.writeInt(integers.get(i));  //value
-			output.writeInt(ASTUtils.getModifierAttributes(intBiMap.inverse().get(i))); //attributes
-			output.writeString(getIntName(i));  //bane or "Integer Literal"
+			int attributes = ASTUtils.getModifierAttributes(intBiMap.inverse().get(i)) | int_value_t;
+			output.writeInt(attributes);
+//			output.writeInt(ASTUtils.getModifierAttributes(intBiMap.inverse().get(i))); //attributes--.  Just get attribute from the dec
+//			output.writeInt(attributes.get(i));
+			output.writeString(getIntName(i));  //name or "Integer Literal"
 		}
+	}
+
+
+	public void addIntEntry(IntDec n, int attribute, int slot) {
+		// TODO Auto-generated method stub
+		
 	}
 }

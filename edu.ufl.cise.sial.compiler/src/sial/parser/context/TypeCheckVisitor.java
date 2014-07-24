@@ -1211,10 +1211,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 
 	@Override
 	public void endVisit(CollectiveStatement n) {
-		IDec lhsDec = n.getLHSIdent().getDec();
+		IDec lhsDec = n.getIdent().getDec();
 		check(lhsDec instanceof ScalarDec, n, "Collective requires scalar arguments");
-		IDec rhsDec = n.getRHSIdent().getDec();
-		check(rhsDec instanceof ScalarDec, n, "Collective requires scalar arguments");
+		EnumSet<EType> t  = ASTUtils.getIExprTypes(n.getExpression());
+		check(t.contains(SCALAR), n, "rhs of collective sum must be scalar expression " + n);	
 		int op = n.getAssignOp().getop().getKind();
 		check(op == TK_PLUS_ASSIGN, n, "Collective operator must be +=");
 	}
@@ -1501,7 +1501,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		if (t0.contains(INT) && t1.contains(INT)){
 			n.addType(INT);
 			return;
-		}	
+		}
+		if (t0.contains(BLOCK) && t1.contains(BLOCK)){
+			IExpression e0 = n.getExpression();
+			ITerm e1 = n.getTerm();
+			check(e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr, n, "Both xpression must be a data block");
+			checkCompatibleBlocks(n, ((DataBlockExpr)e0).getDataBlock(), ((DataBlockExpr)e1).getDataBlock());
+		}
 	    check(false, n, " incompatible types in expression");
 	}
 
@@ -1522,6 +1528,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			n.addType(INT);
 			return;
 		}	
+		if (t0.contains(BLOCK) && t1.contains(BLOCK)){
+			IExpression e0 = n.getExpression();
+			ITerm e1 = n.getTerm();
+			check(e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr, n, "Both xpression must be a data block");
+			checkCompatibleBlocks(n, ((DataBlockExpr)e0).getDataBlock(), ((DataBlockExpr)e1).getDataBlock());
+		}
 	    check(false, n, " incompatible types in expression");
 	}
 
@@ -1538,20 +1550,20 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		EnumSet<EType> t1 = getIExprTypes(rightOperand);
 
 		if (t0.contains(BLOCK) && t1.contains(BLOCK)){
-			check(leftOperand instanceof DataBlock && rightOperand instanceof DataBlock, n, "only simple binary expression involving blocks allowed");
+			check(leftOperand instanceof DataBlockExpr && rightOperand instanceof DataBlockExpr, n, "only simple binary expression involving blocks allowed");
 			//check to see if result is scalar
-			ArrayList<Ident> resultIndices = getContractionResultIndices ((DataBlock)leftOperand, (DataBlock)rightOperand);
+			ArrayList<Ident> resultIndices = getContractionResultIndices ( ((DataBlockExpr)leftOperand).getDataBlock()   , ((DataBlockExpr)rightOperand).getDataBlock() );
 			if (resultIndices.size() == 0) n.addType(SCALAR); 
 			n.addType(BLOCK);
 			return;
 		}
 		if (t0.contains(SCALAR) && t1.contains(BLOCK)){
-			check(rightOperand instanceof DataBlock, n, "only simple binary expression involving blocks allowed");
+			check(rightOperand instanceof DataBlockExpr, n, "only nonnested binary expressions involving blocks allowed");
 			n.addType(BLOCK);
 			return;
 		}		
 		if (t0.contains(BLOCK) && t1.contains(SCALAR)){
-			check(leftOperand instanceof DataBlock, n, "only simple binary expression involving blocks allowed");
+			check(leftOperand instanceof DataBlockExpr, n, "only nonnested binary expressions");
 			n.addType(BLOCK);
 			return;
 		}
@@ -1599,10 +1611,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		IExponentExpression rightOperand = n.getExponentExpression();
 		EnumSet<EType> t0 = getIExprTypes(leftOperand);
 		EnumSet<EType> t1 = getIExprTypes(rightOperand);
-		if (!check(t0.contains(BLOCK) && leftOperand instanceof DataBlock && t1.contains(BLOCK) && rightOperand instanceof DataBlock, n, "arguments to ^ must be data blocks with disjoint index sets")) return;
+		if (!check(t0.contains(BLOCK) && leftOperand instanceof DataBlockExpr && t1.contains(BLOCK) && rightOperand instanceof DataBlockExpr, n, "arguments to ^ must be data blocks")) return;
 			//ensure that index sets are disjoint
-		ArrayList<Ident> resultIndices = getContractionResultIndices ((DataBlock)leftOperand, (DataBlock)rightOperand);
-		check (resultIndices.size() == ((DataBlock)leftOperand).getIndices().size() + ((DataBlock)rightOperand).getIndices().size(), n, "arguments to ^ must be data blocks with disjoint index sets");
+		ArrayList<Ident> resultIndices = getContractionResultIndices (((DataBlockExpr)leftOperand).getDataBlock(), ((DataBlockExpr)rightOperand).getDataBlock());
+		check (resultIndices.size() == ((DataBlockExpr)leftOperand).getDataBlock().getIndices().size() + ((DataBlockExpr)rightOperand).getDataBlock().getIndices().size(), n, "arguments to ^ must be data blocks with disjoint index sets");
 		n.addType(BLOCK);	
 	}
 	
@@ -1829,7 +1841,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		else if (dec instanceof IndexDec)
 			n.addType(INDEX);
 		else
-
 			check(false, n, "unexpected type in IdentExpr " + dec);
 	}
 
