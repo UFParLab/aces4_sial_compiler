@@ -8,6 +8,7 @@ package sial.parser.Ast;
  *<li>IntCastExpr
  *<li>ScalarCastExpr
  *<li>NegatedUnaryExpr
+ *<li>SqrtUnaryExpr
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr
@@ -19,6 +20,6 @@ package sial.parser.Ast;
  *</ul>
  *</b>
  */
-public interface ICastExpression extends ITerm {}
+public interface ICastExpression extends IExponentExpression {}
 
 

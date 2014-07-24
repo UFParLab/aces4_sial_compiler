@@ -13,7 +13,6 @@ package sial.parser.Ast;
  *<li>PardoStatement
  *<li>Section
  *<li>ExitStatement
- *<li>CycleStatement
  *<li>IfStatement
  *<li>IfElseStatement
  *<li>AllocateStatement
@@ -26,25 +25,22 @@ package sial.parser.Ast;
  *<li>GetStatement
  *<li>PrepareStatement
  *<li>RequestStatement
- *<li>PrequestStatement
  *<li>CollectiveStatement
  *<li>DestroyStatement
- *<li>PrintlnStatement
  *<li>PrintStatement
- *<li>PrintIndexStatement
- *<li>PrintScalarStatement
- *<li>PrintIntStatement
+ *<li>PrintlnStatement
  *<li>ExecuteStatement
  *<li>AssignToIdent
  *<li>AssignToBlock
  *<li>GPUSection
- *<li>GPUAllocateBlock
- *<li>GPUFreeBlock
- *<li>GPUPutBlock
- *<li>GPUGetBlock
+ *<li>GPUAllocate
+ *<li>GPUFree
+ *<li>GPUPut
+ *<li>GPUGet
  *<li>SetPersistent
  *<li>RestorePersistent
  *<li>AssertSame
+ *<li>BroadcastStatic
  *</ul>
  *</b>
  */

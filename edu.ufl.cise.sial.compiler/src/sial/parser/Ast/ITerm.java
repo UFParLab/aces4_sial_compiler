@@ -8,9 +8,11 @@ package sial.parser.Ast;
  *<li>StarExpr
  *<li>DivExpr
  *<li>TensorExpr
+ *<li>ExponentExpr
  *<li>IntCastExpr
  *<li>ScalarCastExpr
  *<li>NegatedUnaryExpr
+ *<li>SqrtUnaryExpr
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr

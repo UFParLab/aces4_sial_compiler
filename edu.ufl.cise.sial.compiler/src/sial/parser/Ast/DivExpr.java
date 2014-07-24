@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 139:  Term ::= Term /$ CastExpression
+ *<li>Rule 135:  Term ::= Term /$ ExponentExpression
  *</b>
  */
 public class DivExpr extends ASTNode implements ITerm
@@ -22,22 +22,22 @@ public class DivExpr extends ASTNode implements ITerm
     public SialParser getEnvironment() { return environment; }
 
     private ITerm _Term;
-    private ICastExpression _CastExpression;
+    private IExponentExpression _ExponentExpression;
 
     public ITerm getTerm() { return _Term; }
-    public ICastExpression getCastExpression() { return _CastExpression; }
+    public IExponentExpression getExponentExpression() { return _ExponentExpression; }
 
     public DivExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
                    ITerm _Term,
-                   ICastExpression _CastExpression)
+                   IExponentExpression _ExponentExpression)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
         this._Term = _Term;
         ((ASTNode) _Term).setParent(this);
-        this._CastExpression = _CastExpression;
-        ((ASTNode) _CastExpression).setParent(this);
+        this._ExponentExpression = _ExponentExpression;
+        ((ASTNode) _ExponentExpression).setParent(this);
         initialize();
     }
 
@@ -48,7 +48,7 @@ public class DivExpr extends ASTNode implements ITerm
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Term);
-        list.add(_CastExpression);
+        list.add(_ExponentExpression);
         return list;
     }
 
@@ -59,7 +59,7 @@ public class DivExpr extends ASTNode implements ITerm
         if (! super.equals(o)) return false;
         DivExpr other = (DivExpr) o;
         if (! _Term.equals(other._Term)) return false;
-        if (! _CastExpression.equals(other._CastExpression)) return false;
+        if (! _ExponentExpression.equals(other._ExponentExpression)) return false;
         return true;
     }
 
@@ -67,7 +67,7 @@ public class DivExpr extends ASTNode implements ITerm
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Term.hashCode());
-        hash = hash * 31 + (_CastExpression.hashCode());
+        hash = hash * 31 + (_ExponentExpression.hashCode());
         return hash;
     }
 
@@ -84,17 +84,18 @@ public class DivExpr extends ASTNode implements ITerm
         if (checkChildren)
         {
             _Term.accept(v);
-            _CastExpression.accept(v);
+            _ExponentExpression.accept(v);
         }
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
   public EnumSet<EType> getTypeSet() { return typeSet;}
   public void addType(EType t){
-  if (typeSet == null){ 
-     typeSet = EnumSet.of(t);
-	 }
-     else typeSet.add(t);
+//	  if (typeSet == null){ 
+//	     typeSet = EnumSet.of(t);
+//		 }
+//	     else typeSet.add(t);
+     typeSet.add(t);
   }
   public boolean hasType(EType t){
   return typeSet.contains(t);

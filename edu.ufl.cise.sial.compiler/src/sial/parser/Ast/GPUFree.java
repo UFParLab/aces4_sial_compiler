@@ -12,22 +12,22 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 84:  ContiguousAllocIndexExpr ::= Expression
+ *<li>Rule 109:  Statement ::= gpu_free$ Arg
  *</b>
  */
-public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguousAllocIndexExpr
+public class GPUFree extends ASTNode implements IStatement
 {
-    private IExpression _Expression;
+    private IArg _Arg;
 
-    public IExpression getExpression() { return _Expression; }
+    public IArg getArg() { return _Arg; }
 
-    public ContiguousAllocIndexSingleExpr(IToken leftIToken, IToken rightIToken,
-                                          IExpression _Expression)
+    public GPUFree(IToken leftIToken, IToken rightIToken,
+                   IArg _Arg)
     {
         super(leftIToken, rightIToken);
 
-        this._Expression = _Expression;
-        ((ASTNode) _Expression).setParent(this);
+        this._Arg = _Arg;
+        ((ASTNode) _Arg).setParent(this);
         initialize();
     }
 
@@ -37,24 +37,24 @@ public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguo
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Expression);
+        list.add(_Arg);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof ContiguousAllocIndexSingleExpr)) return false;
+        if (! (o instanceof GPUFree)) return false;
         if (! super.equals(o)) return false;
-        ContiguousAllocIndexSingleExpr other = (ContiguousAllocIndexSingleExpr) o;
-        if (! _Expression.equals(other._Expression)) return false;
+        GPUFree other = (GPUFree) o;
+        if (! _Arg.equals(other._Arg)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Expression.hashCode());
+        hash = hash * 31 + (_Arg.hashCode());
         return hash;
     }
 
@@ -69,7 +69,7 @@ public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguo
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _Expression.accept(v);
+            _Arg.accept(v);
         v.endVisit(this);
     }
 }

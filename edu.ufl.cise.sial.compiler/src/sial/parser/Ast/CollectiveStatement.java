@@ -12,32 +12,32 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 97:  Statement ::= collective$ Ident$LHSIdent AssignOp Ident$RHSIdent
+ *<li>Rule 94:  Statement ::= collective$ Ident AssignOp Expression
  *</b>
  */
 public class CollectiveStatement extends ASTNode implements IStatement
 {
-    private Ident _LHSIdent;
+    private Ident _Ident;
     private AssignOp _AssignOp;
-    private Ident _RHSIdent;
+    private IExpression _Expression;
 
-    public Ident getLHSIdent() { return _LHSIdent; }
+    public Ident getIdent() { return _Ident; }
     public AssignOp getAssignOp() { return _AssignOp; }
-    public Ident getRHSIdent() { return _RHSIdent; }
+    public IExpression getExpression() { return _Expression; }
 
     public CollectiveStatement(IToken leftIToken, IToken rightIToken,
-                               Ident _LHSIdent,
+                               Ident _Ident,
                                AssignOp _AssignOp,
-                               Ident _RHSIdent)
+                               IExpression _Expression)
     {
         super(leftIToken, rightIToken);
 
-        this._LHSIdent = _LHSIdent;
-        ((ASTNode) _LHSIdent).setParent(this);
+        this._Ident = _Ident;
+        ((ASTNode) _Ident).setParent(this);
         this._AssignOp = _AssignOp;
         ((ASTNode) _AssignOp).setParent(this);
-        this._RHSIdent = _RHSIdent;
-        ((ASTNode) _RHSIdent).setParent(this);
+        this._Expression = _Expression;
+        ((ASTNode) _Expression).setParent(this);
         initialize();
     }
 
@@ -47,9 +47,9 @@ public class CollectiveStatement extends ASTNode implements IStatement
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_LHSIdent);
+        list.add(_Ident);
         list.add(_AssignOp);
-        list.add(_RHSIdent);
+        list.add(_Expression);
         return list;
     }
 
@@ -59,18 +59,18 @@ public class CollectiveStatement extends ASTNode implements IStatement
         if (! (o instanceof CollectiveStatement)) return false;
         if (! super.equals(o)) return false;
         CollectiveStatement other = (CollectiveStatement) o;
-        if (! _LHSIdent.equals(other._LHSIdent)) return false;
+        if (! _Ident.equals(other._Ident)) return false;
         if (! _AssignOp.equals(other._AssignOp)) return false;
-        if (! _RHSIdent.equals(other._RHSIdent)) return false;
+        if (! _Expression.equals(other._Expression)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_LHSIdent.hashCode());
+        hash = hash * 31 + (_Ident.hashCode());
         hash = hash * 31 + (_AssignOp.hashCode());
-        hash = hash * 31 + (_RHSIdent.hashCode());
+        hash = hash * 31 + (_Expression.hashCode());
         return hash;
     }
 
@@ -86,9 +86,9 @@ public class CollectiveStatement extends ASTNode implements IStatement
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            _LHSIdent.accept(v);
+            _Ident.accept(v);
             _AssignOp.accept(v);
-            _RHSIdent.accept(v);
+            _Expression.accept(v);
         }
         v.endVisit(this);
     }

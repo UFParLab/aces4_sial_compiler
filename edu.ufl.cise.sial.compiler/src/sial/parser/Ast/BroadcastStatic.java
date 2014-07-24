@@ -1,6 +1,5 @@
 package sial.parser.Ast;
 
-import sial.parser.*;
 import lpg.runtime.*;
 
 import org.eclipse.imp.parser.IParser;
@@ -13,26 +12,27 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 143:  UnaryExpression ::= -$ Primary
+ *<li>Rule 115:  Statement ::= broadcast_from$ Primary Ident
  *</b>
  */
-public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
+public class BroadcastStatic extends ASTNode implements IStatement
 {
-    private SialParser environment;
-    public SialParser getEnvironment() { return environment; }
-
     private IPrimary _Primary;
+    private Ident _Ident;
 
     public IPrimary getPrimary() { return _Primary; }
+    public Ident getIdent() { return _Ident; }
 
-    public NegatedUnaryExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                            IPrimary _Primary)
+    public BroadcastStatic(IToken leftIToken, IToken rightIToken,
+                           IPrimary _Primary,
+                           Ident _Ident)
     {
         super(leftIToken, rightIToken);
 
-        this.environment = environment;
         this._Primary = _Primary;
         ((ASTNode) _Primary).setParent(this);
+        this._Ident = _Ident;
+        ((ASTNode) _Ident).setParent(this);
         initialize();
     }
 
@@ -43,16 +43,18 @@ public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Primary);
+        list.add(_Ident);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof NegatedUnaryExpr)) return false;
+        if (! (o instanceof BroadcastStatic)) return false;
         if (! super.equals(o)) return false;
-        NegatedUnaryExpr other = (NegatedUnaryExpr) o;
+        BroadcastStatic other = (BroadcastStatic) o;
         if (! _Primary.equals(other._Primary)) return false;
+        if (! _Ident.equals(other._Ident)) return false;
         return true;
     }
 
@@ -60,6 +62,7 @@ public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Primary.hashCode());
+        hash = hash * 31 + (_Ident.hashCode());
         return hash;
     }
 
@@ -74,21 +77,12 @@ public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
+        {
             _Primary.accept(v);
+            _Ident.accept(v);
+        }
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
-  public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
-     typeSet.add(t);
-  }
-  public boolean hasType(EType t){
-  return typeSet.contains(t);
-  }
- }
+}
 
 

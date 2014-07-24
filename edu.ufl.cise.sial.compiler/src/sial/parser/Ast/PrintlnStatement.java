@@ -12,22 +12,22 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 99:  Statement ::= println$ StringLiteral
+ *<li>Rule 97:  Statement ::= println$ Expression
  *</b>
  */
 public class PrintlnStatement extends ASTNode implements IStatement
 {
-    private StringLiteral _StringLiteral;
+    private IExpression _Expression;
 
-    public StringLiteral getStringLiteral() { return _StringLiteral; }
+    public IExpression getExpression() { return _Expression; }
 
     public PrintlnStatement(IToken leftIToken, IToken rightIToken,
-                            StringLiteral _StringLiteral)
+                            IExpression _Expression)
     {
         super(leftIToken, rightIToken);
 
-        this._StringLiteral = _StringLiteral;
-        ((ASTNode) _StringLiteral).setParent(this);
+        this._Expression = _Expression;
+        ((ASTNode) _Expression).setParent(this);
         initialize();
     }
 
@@ -37,7 +37,7 @@ public class PrintlnStatement extends ASTNode implements IStatement
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_StringLiteral);
+        list.add(_Expression);
         return list;
     }
 
@@ -47,14 +47,14 @@ public class PrintlnStatement extends ASTNode implements IStatement
         if (! (o instanceof PrintlnStatement)) return false;
         if (! super.equals(o)) return false;
         PrintlnStatement other = (PrintlnStatement) o;
-        if (! _StringLiteral.equals(other._StringLiteral)) return false;
+        if (! _Expression.equals(other._Expression)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_StringLiteral.hashCode());
+        hash = hash * 31 + (_Expression.hashCode());
         return hash;
     }
 
@@ -69,7 +69,7 @@ public class PrintlnStatement extends ASTNode implements IStatement
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _StringLiteral.accept(v);
+            _Expression.accept(v);
         v.endVisit(this);
     }
 }

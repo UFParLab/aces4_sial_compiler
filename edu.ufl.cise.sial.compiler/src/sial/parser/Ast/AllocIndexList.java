@@ -12,8 +12,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 79:  AllocIndexList ::= AllocIndex
- *<li>Rule 80:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
+ *<li>Rule 78:  AllocIndexList ::= AllocIndex
+ *<li>Rule 79:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
  *</b>
  */
 public class AllocIndexList extends AbstractASTNodeList implements IAllocIndexList

@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 143:  CastExpression ::= ($ scalar$ )$ CastExpression
+ *<li>Rule 141:  CastExpression ::= ($ scalar$ )$ CastExpression
  *</b>
  */
 public class ScalarCastExpr extends ASTNode implements ICastExpression
@@ -77,13 +77,14 @@ public class ScalarCastExpr extends ASTNode implements ICastExpression
             _CastExpression.accept(v);
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
   public EnumSet<EType> getTypeSet() { return typeSet;}
   public void addType(EType t){
-  if (typeSet == null){ 
-     typeSet = EnumSet.of(t);
-	 }
-     else typeSet.add(t);
+//	  if (typeSet == null){ 
+//	     typeSet = EnumSet.of(t);
+//		 }
+//	     else typeSet.add(t);
+     typeSet.add(t);
   }
   public boolean hasType(EType t){
   return typeSet.contains(t);

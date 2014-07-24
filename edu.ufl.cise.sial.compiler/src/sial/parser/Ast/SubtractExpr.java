@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 136:  Expression ::= Expression - Term
+ *<li>Rule 132:  Expression ::= Expression - Term
  *</b>
  */
 public class SubtractExpr extends ASTNode implements IExpression
@@ -97,13 +97,14 @@ public class SubtractExpr extends ASTNode implements IExpression
         }
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
   public EnumSet<EType> getTypeSet() { return typeSet;}
   public void addType(EType t){
-  if (typeSet == null){ 
-     typeSet = EnumSet.of(t);
-	 }
-     else typeSet.add(t);
+//	  if (typeSet == null){ 
+//	     typeSet = EnumSet.of(t);
+//		 }
+//	     else typeSet.add(t);
+     typeSet.add(t);
   }
   public boolean hasType(EType t){
   return typeSet.contains(t);

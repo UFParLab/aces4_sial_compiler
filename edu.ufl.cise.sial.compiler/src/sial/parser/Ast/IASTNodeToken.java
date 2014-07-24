@@ -29,7 +29,6 @@ import org.eclipse.imp.parser.IParser;
  *<li>PardoStatement
  *<li>Section
  *<li>ExitStatement
- *<li>CycleStatement
  *<li>IfStatement
  *<li>IfElseStatement
  *<li>AllocateStatement
@@ -38,48 +37,35 @@ import org.eclipse.imp.parser.IParser;
  *<li>AllocIndexWildCard
  *<li>ContiguousAllocateStatement
  *<li>ContiguousDeallocateStatement
- *<li>ContiguousAllocIndexSingleExpr
- *<li>ContiguousAllocIndexRangeExpr
- *<li>ContiguousAllocIndexWildExpr
  *<li>CreateStatement
  *<li>DeleteStatement
  *<li>PutStatement
  *<li>GetStatement
  *<li>PrepareStatement
  *<li>RequestStatement
- *<li>PrequestStatement
  *<li>CollectiveStatement
  *<li>DestroyStatement
- *<li>PrintlnStatement
  *<li>PrintStatement
- *<li>PrintIndexStatement
- *<li>PrintScalarStatement
- *<li>PrintIntStatement
+ *<li>PrintlnStatement
  *<li>DataBlockArg
  *<li>IdentArg
  *<li>DoubleLitArg
+ *<li>IntLitArg
  *<li>ExecuteStatement
  *<li>AssignToIdent
  *<li>AssignToBlock
  *<li>GPUSection
- *<li>GPUAllocateBlock
- *<li>GPUFreeBlock
- *<li>GPUPutBlock
- *<li>GPUGetBlock
+ *<li>GPUAllocate
+ *<li>GPUFree
+ *<li>GPUPut
+ *<li>GPUGet
  *<li>SetPersistent
  *<li>RestorePersistent
  *<li>AssertSame
+ *<li>BroadcastStatic
  *<li>AssignOp
  *<li>DataBlock
  *<li>RelOp
- *<li>AddExpr
- *<li>SubtractExpr
- *<li>StarExpr
- *<li>DivExpr
- *<li>TensorExpr
- *<li>IntCastExpr
- *<li>ScalarCastExpr
- *<li>NegatedUnaryExpr
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr

@@ -12,30 +12,22 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 91:  Statement ::= delete$ Ident AllocIndexListopt
+ *<li>Rule 89:  Statement ::= delete$ Ident
  *</b>
  */
 public class DeleteStatement extends ASTNode implements IStatement
 {
     private Ident _Ident;
-    private AllocIndexListopt _AllocIndexListopt;
 
     public Ident getIdent() { return _Ident; }
-    /**
-     * The value returned by <b>getAllocIndexListopt</b> may be <b>null</b>
-     */
-    public AllocIndexListopt getAllocIndexListopt() { return _AllocIndexListopt; }
 
     public DeleteStatement(IToken leftIToken, IToken rightIToken,
-                           Ident _Ident,
-                           AllocIndexListopt _AllocIndexListopt)
+                           Ident _Ident)
     {
         super(leftIToken, rightIToken);
 
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
-        this._AllocIndexListopt = _AllocIndexListopt;
-        if (_AllocIndexListopt != null) ((ASTNode) _AllocIndexListopt).setParent(this);
         initialize();
     }
 
@@ -46,7 +38,6 @@ public class DeleteStatement extends ASTNode implements IStatement
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Ident);
-        list.add(_AllocIndexListopt);
         return list;
     }
 
@@ -57,10 +48,6 @@ public class DeleteStatement extends ASTNode implements IStatement
         if (! super.equals(o)) return false;
         DeleteStatement other = (DeleteStatement) o;
         if (! _Ident.equals(other._Ident)) return false;
-        if (_AllocIndexListopt == null)
-            if (other._AllocIndexListopt != null) return false;
-            else; // continue
-        else if (! _AllocIndexListopt.equals(other._AllocIndexListopt)) return false;
         return true;
     }
 
@@ -68,7 +55,6 @@ public class DeleteStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Ident.hashCode());
-        hash = hash * 31 + (_AllocIndexListopt == null ? 0 : _AllocIndexListopt.hashCode());
         return hash;
     }
 
@@ -83,10 +69,7 @@ public class DeleteStatement extends ASTNode implements IStatement
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-        {
             _Ident.accept(v);
-            if (_AllocIndexListopt != null) _AllocIndexListopt.accept(v);
-        }
         v.endVisit(this);
     }
 }

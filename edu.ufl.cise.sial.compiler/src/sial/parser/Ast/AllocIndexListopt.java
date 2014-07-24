@@ -12,11 +12,11 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<em>
- *<li>Rule 81:  AllocIndexListopt ::= $Empty
+ *<li>Rule 80:  AllocIndexListopt ::= $Empty
  *</em>
  *<p>
  *<b>
- *<li>Rule 82:  AllocIndexListopt ::= [ AllocIndexList ]
+ *<li>Rule 81:  AllocIndexListopt ::= [ AllocIndexList ]
  *</b>
  */
 public class AllocIndexListopt extends ASTNode implements IAllocIndexListopt

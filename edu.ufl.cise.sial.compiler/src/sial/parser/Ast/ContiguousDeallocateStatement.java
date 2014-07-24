@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 84:  Statement ::= deallocate contiguous$ Ident [$ ContiguousAllocIndexExprList ]$
+ *<li>Rule 83:  Statement ::= deallocate contiguous$ Ident [$ ContiguousAllocIndexExprList ]$
  *</b>
  */
 public class ContiguousDeallocateStatement extends ASTNode implements IStatement

@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 106:  Arg ::= DOUBLELIT
+ *<li>Rule 100:  Arg ::= DOUBLELIT
  *</b>
  */
 public class DoubleLitArg extends ASTNodeToken implements IArg

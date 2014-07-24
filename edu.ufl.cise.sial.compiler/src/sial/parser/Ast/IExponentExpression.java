@@ -5,11 +5,6 @@ package sial.parser.Ast;
  *<b>
  *<ul>
  *<li>DataBlock
- *<li>AddExpr
- *<li>SubtractExpr
- *<li>StarExpr
- *<li>DivExpr
- *<li>TensorExpr
  *<li>ExponentExpr
  *<li>IntCastExpr
  *<li>ScalarCastExpr
@@ -26,6 +21,6 @@ package sial.parser.Ast;
  *</ul>
  *</b>
  */
-public interface IExpression extends IContiguousAllocIndexExpr {}
+public interface IExponentExpression extends ITerm {}
 
 

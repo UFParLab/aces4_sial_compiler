@@ -222,6 +222,7 @@ Aliases:
     [ ::= LEFTSQUARE
     ] ::= RIGHTSQUARE
     : ::= COLON
+    ** ::= EXP
 
 
 Start:
@@ -259,6 +260,7 @@ Terminals:
     LEFTSQUARE
     RIGHTSQUARE
     COLON
+    EXP
     sial
     endsial
     proc
@@ -326,6 +328,8 @@ Terminals:
     restore_persistent
     sparse
     assert_same
+    broadcast_from
+    sqrt
     EOF_TOKEN
     SINGLE_LINE_COMMENT
     IDENTIFIER
@@ -408,95 +412,99 @@ Rules:
 62                       | WhereClauseList WhereClause EOLs $
 63     Statement$CallStatement ::= call $ Ident
 64     Statement$ReturnStatement ::= return $
-65     Statement$ServerBarrierStatement ::= server_barrier $ IdentOpt
-66     Statement$SipBarrierStatement ::= sip_barrier $ IdentOpt
+65     Statement$ServerBarrierStatement ::= server_barrier $
+66     Statement$SipBarrierStatement ::= sip_barrier $
 67     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
 68     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
 69     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
 70     Statement$Section ::= section $ EOLs $ StatementList endsection $
 71     Statement$ExitStatement ::= exit $
-72     Statement$CycleStatement ::= cycle $ Ident
-73     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
-74     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
-75     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
-76     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
-77     AllocIndex$AllocIndexIdent ::= Ident
-78     AllocIndex$AllocIndexWildCard ::= * $
-79     AllocIndexList$$AllocIndex ::= AllocIndex
-80                      | AllocIndexList , $ AllocIndex
-81     AllocIndexListopt ::= $Empty
-82                         | [ AllocIndexList ]
-83     Statement$ContiguousAllocateStatement ::= allocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
-84     Statement$ContiguousDeallocateStatement ::= deallocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
-85     ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
-86     ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::= Expression $StartExpr : Expression $EndExpr
-87     ContiguousAllocIndexExpr$ContiguousAllocIndexWildExpr ::= * $
-88     ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr
-89                                    | ContiguousAllocIndexExprList , $ ContiguousAllocIndexExpr
-90     Statement$CreateStatement ::= create $ Ident AllocIndexListopt
-91     Statement$DeleteStatement ::= delete $ Ident AllocIndexListopt
-92     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-93     Statement$GetStatement ::= get $ DataBlock
-94     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
-95     Statement$RequestStatement ::= request $ DataBlock IdentOpt
-96     Statement$PrequestStatement ::= prequest $ DataBlock $LHSDataBlock = $ DataBlock $RHSDataBlock
-97     Statement$CollectiveStatement ::= collective $ Ident $LHSIdent AssignOp Ident $RHSIdent
-98     Statement$DestroyStatement ::= destroy $ Ident
-99     Statement$PrintlnStatement ::= println $ StringLiteral
-100    Statement$PrintStatement ::= print $ StringLiteral
-101    Statement$PrintIndexStatement ::= print_index $ Ident
-102    Statement$PrintScalarStatement ::= print_scalar $ Ident
-103    Statement$PrintIntStatement ::= print_int $ Ident
-104    Arg$DataBlockArg ::= DataBlock
-105    Arg$IdentArg ::= IDENTIFIER
-106    Arg$DoubleLitArg ::= DOUBLELIT
-107    ArgList$$Arg ::= $Empty
-108              | ArgList Arg
-109    Statement$ExecuteStatement ::= execute $ Ident ArgList
-110    Statement$AssignToIdent ::= Ident AssignOp Expression
-111    Statement$AssignToBlock ::= DataBlock AssignOp Expression
-112    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
-113    Statement$GPUAllocateBlock ::= gpu_allocate $ Arg
-114    Statement$GPUFreeBlock ::= gpu_free $ Arg
-115    Statement$GPUPutBlock ::= gpu_put $ Arg
-116    Statement$GPUGetBlock ::= gpu_get $ Arg
-117    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
-118    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
-119    Statement$AssertSame ::= assert_same $ Ident
-120    AssignOp$AssignOp ::= = $op
-121               | += $op
-122               | -= $op
-123               | *= $op
-124    DataBlock ::= Ident [ $ Indices ] $
-125    Indices$$Ident ::= Ident
-126              | Indices , $ Ident
-127    RelOp$RelOp ::= < $op
-128            | > $op
-129            | <= $op
-130            | >= $op
-131            | == $op
-132            | != $op
-133    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
-134    Expression ::= Term
-135    Expression$AddExpr ::= Expression + Term
-136    Expression$SubtractExpr ::= Expression - Term
-137    Term ::= CastExpression
-138    Term$StarExpr ::= Term * $ CastExpression
-139    Term$DivExpr ::= Term / $ CastExpression
-140    Term$TensorExpr ::= Term ^ CastExpression
-141    CastExpression ::= UnaryExpression
-142    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
-143    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
-144    UnaryExpression ::= Primary
-145    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
-146    Primary$ParenExpr ::= ( $ Expression ) $
-147    Primary$IntLitExpr ::= INTLIT
-148    Primary$DoubleLitExpr ::= DOUBLELIT
-149    Primary$IdentExpr ::= Ident
-150    Primary$DataBlockExpr ::= DataBlock
-151    Primary$StringLitExpr ::= StringLiteral
-152    StringLiteral ::= STRINGLIT
-153    Ident ::= IDENTIFIER
+72     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
+73     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
+74     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
+75     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
+76     AllocIndex$AllocIndexIdent ::= Ident
+77     AllocIndex$AllocIndexWildCard ::= * $
+78     AllocIndexList$$AllocIndex ::= AllocIndex
+79                      | AllocIndexList , $ AllocIndex
+80     AllocIndexListopt ::= $Empty
+81                         | [ AllocIndexList ]
+82     Statement$ContiguousAllocateStatement ::= allocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
+83     Statement$ContiguousDeallocateStatement ::= deallocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
+84     ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
+85     ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::= Expression $StartExpr : Expression $EndExpr
+86     ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr
+87                                    | ContiguousAllocIndexExprList , $ ContiguousAllocIndexExpr
+88     Statement$CreateStatement ::= create $ Ident
+89     Statement$DeleteStatement ::= delete $ Ident
+90     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+91     Statement$GetStatement ::= get $ DataBlock
+92     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+93     Statement$RequestStatement ::= request $ DataBlock
+94     Statement$CollectiveStatement ::= collective $ Ident AssignOp Expression
+95     Statement$DestroyStatement ::= destroy $ Ident
+96     Statement$PrintStatement ::= print $ Expression
+97     Statement$PrintlnStatement ::= println $ Expression
+98     Arg$DataBlockArg ::= DataBlock
+99     Arg$IdentArg ::= IDENTIFIER
+100    Arg$DoubleLitArg ::= DOUBLELIT
+101    Arg$IntLitArg ::= INTLIT
+102    ArgList$$Arg ::= $Empty
+103              | ArgList Arg
+104    Statement$ExecuteStatement ::= execute $ Ident ArgList
+105    Statement$AssignToIdent ::= Ident AssignOp Expression
+106    Statement$AssignToBlock ::= DataBlock AssignOp Expression
+107    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
+108    Statement$GPUAllocate ::= gpu_allocate $ Arg
+109    Statement$GPUFree ::= gpu_free $ Arg
+110    Statement$GPUPut ::= gpu_put $ Arg
+111    Statement$GPUGet ::= gpu_get $ Arg
+112    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
+113    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
+114    Statement$AssertSame ::= assert_same $ Ident
+115    Statement$BroadcastStatic ::= broadcast_from $ Primary Ident
+116    AssignOp$AssignOp ::= = $op
+117               | += $op
+118               | -= $op
+119               | *= $op
+120    DataBlock ::= Ident [ $ Indices ] $
+121    Indices$$Ident ::= Ident
+122              | Indices , $ Ident
+123    RelOp$RelOp ::= < $op
+124            | > $op
+125            | <= $op
+126            | >= $op
+127            | == $op
+128            | != $op
+129    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
+130    Expression ::= Term
+131    Expression$AddExpr ::= Expression + Term
+132    Expression$SubtractExpr ::= Expression - Term
+133    Term ::= ExponentExpression
+134    Term$StarExpr ::= Term * $ ExponentExpression
+135    Term$DivExpr ::= Term / $ ExponentExpression
+136    Term$TensorExpr ::= Term ^ ExponentExpression
+137    ExponentExpression ::= CastExpression
+138    ExponentExpression$ExponentExpr ::= CastExpression ** ExponentExpression
+139    CastExpression ::= UnaryExpression
+140    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
+141    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
+142    UnaryExpression ::= Primary
+143    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
+144    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
+145    Primary$ParenExpr ::= ( $ Expression ) $
+146    Primary$IntLitExpr ::= INTLIT
+147    Primary$DoubleLitExpr ::= DOUBLELIT
+148    Primary$IdentExpr ::= Ident
+149    Primary$DataBlockExpr ::= DataBlock
+150    Primary$StringLitExpr ::= StringLiteral
+151    StringLiteral ::= STRINGLIT
+152    Ident ::= IDENTIFIER
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:27:1:27:5:302:306: Informative: The terminal cycle is useless.
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:36:1:36:8:351:358: Informative: The terminal prequest is useless.
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:72:1:72:11:686:696: Informative: The terminal print_index is useless.
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:73:1:73:12:698:709: Informative: The terminal print_scalar is useless.
+/home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:74:1:74:9:711:719: Informative: The terminal print_int is useless.
 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)
@@ -526,6 +534,7 @@ RIGHTPAREN ::= )
 LEFTSQUARE ::= [
 RIGHTSQUARE ::= ]
 COLON ::= :
+EXP ::= **
 sial ::= sial
 endsial ::= endsial
 proc ::= proc
@@ -593,6 +602,8 @@ set_persistent ::= set_persistent
 restore_persistent ::= restore_persistent
 sparse ::= sparse
 assert_same ::= assert_same
+broadcast_from ::= broadcast_from
+sqrt ::= sqrt
 EOF_TOKEN ::= EOF_TOKEN
 SINGLE_LINE_COMMENT ::= SINGLE_LINE_COMMENT
 IDENTIFIER ::= IDENTIFIER
@@ -626,12 +637,13 @@ ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr
 Expression ::= Expression
 DataBlock ::= DataBlock
 AssignOp ::= AssignOp
-StringLiteral ::= StringLiteral
 Arg ::= Arg
+StringLiteral ::= StringLiteral
+Primary ::= Primary
 RelOp ::= RelOp
 Term ::= Term
+ExponentExpression ::= ExponentExpression
 CastExpression ::= CastExpression
-Primary ::= Primary
 EOLsopt ::= 
 ImportProgList ::= 
 DecList ::= 

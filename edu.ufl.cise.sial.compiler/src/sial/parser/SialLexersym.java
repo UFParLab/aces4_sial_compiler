@@ -2,7 +2,7 @@ package sial.parser;
 
 public interface SialLexersym {
     public final static int
-      Char_CtlCharNotWS = 101,
+      Char_CtlCharNotWS = 102,
       Char_LF = 98,
       Char_CR = 99,
       Char_HT = 13,
@@ -70,7 +70,7 @@ public interface SialLexersym {
       Char_7 = 9,
       Char_8 = 10,
       Char_9 = 11,
-      Char_AfterASCII = 102,
+      Char_AfterASCII = 103,
       Char_Space = 67,
       Char_DoubleQuote = 69,
       Char_SingleQuote = 85,
@@ -103,7 +103,8 @@ public interface SialLexersym {
       Char_LeftParen = 83,
       Char_RightParen = 84,
       Char_Equal = 1,
-      Char_EOF = 100;
+      Char_Exp = 100,
+      Char_EOF = 101;
 
     public final static String orderedTerminalSymbols[] = {
                  "",
@@ -206,6 +207,7 @@ public interface SialLexersym {
                  "QuestionMark",
                  "LF",
                  "CR",
+                 "Exp",
                  "EOF",
                  "CtlCharNotWS",
                  "AfterASCII"

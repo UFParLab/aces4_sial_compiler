@@ -7,6 +7,7 @@ package sial.parser.Ast;
  *<li>DataBlockArg
  *<li>IdentArg
  *<li>DoubleLitArg
+ *<li>IntLitArg
  *<li>DataBlock
  *</ul>
  *</b>

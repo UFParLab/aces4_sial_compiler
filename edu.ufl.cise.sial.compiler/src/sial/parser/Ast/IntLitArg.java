@@ -12,12 +12,14 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 77:  AllocIndex ::= *$
+ *<li>Rule 101:  Arg ::= INTLIT
  *</b>
  */
-public class AllocIndexWildCard extends ASTNodeToken implements IAllocIndex
+public class IntLitArg extends ASTNodeToken implements IArg
 {
-    public AllocIndexWildCard(IToken token) { super(token); initialize(); }
+    public IToken getINTLIT() { return leftIToken; }
+
+    public IntLitArg(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

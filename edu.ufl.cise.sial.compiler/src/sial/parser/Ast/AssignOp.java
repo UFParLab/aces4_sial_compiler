@@ -12,10 +12,10 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 120:  AssignOp ::= =$op
- *<li>Rule 121:  AssignOp ::= +=$op
- *<li>Rule 122:  AssignOp ::= -=$op
- *<li>Rule 123:  AssignOp ::= *=$op
+ *<li>Rule 116:  AssignOp ::= =$op
+ *<li>Rule 117:  AssignOp ::= +=$op
+ *<li>Rule 118:  AssignOp ::= -=$op
+ *<li>Rule 119:  AssignOp ::= *=$op
  *</b>
  */
 public class AssignOp extends ASTNodeToken implements IAssignOp

@@ -6,6 +6,7 @@ package sial.parser.Ast;
  *<ul>
  *<li>DataBlock
  *<li>NegatedUnaryExpr
+ *<li>SqrtUnaryExpr
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr

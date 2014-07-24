@@ -13,34 +13,34 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 136:  Term ::= Term ^ ExponentExpression
+ *<li>Rule 138:  ExponentExpression ::= CastExpression ** ExponentExpression
  *</b>
  */
-public class TensorExpr extends ASTNode implements ITerm
+public class ExponentExpr extends ASTNode implements IExponentExpression
 {
     private SialParser environment;
     public SialParser getEnvironment() { return environment; }
 
-    private ITerm _Term;
-    private ASTNodeToken _TENSOR;
+    private ICastExpression _CastExpression;
+    private ASTNodeToken _EXP;
     private IExponentExpression _ExponentExpression;
 
-    public ITerm getTerm() { return _Term; }
-    public ASTNodeToken getTENSOR() { return _TENSOR; }
+    public ICastExpression getCastExpression() { return _CastExpression; }
+    public ASTNodeToken getEXP() { return _EXP; }
     public IExponentExpression getExponentExpression() { return _ExponentExpression; }
 
-    public TensorExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                      ITerm _Term,
-                      ASTNodeToken _TENSOR,
-                      IExponentExpression _ExponentExpression)
+    public ExponentExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
+                        ICastExpression _CastExpression,
+                        ASTNodeToken _EXP,
+                        IExponentExpression _ExponentExpression)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
-        this._Term = _Term;
-        ((ASTNode) _Term).setParent(this);
-        this._TENSOR = _TENSOR;
-        ((ASTNode) _TENSOR).setParent(this);
+        this._CastExpression = _CastExpression;
+        ((ASTNode) _CastExpression).setParent(this);
+        this._EXP = _EXP;
+        ((ASTNode) _EXP).setParent(this);
         this._ExponentExpression = _ExponentExpression;
         ((ASTNode) _ExponentExpression).setParent(this);
         initialize();
@@ -52,8 +52,8 @@ public class TensorExpr extends ASTNode implements ITerm
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Term);
-        list.add(_TENSOR);
+        list.add(_CastExpression);
+        list.add(_EXP);
         list.add(_ExponentExpression);
         return list;
     }
@@ -61,11 +61,11 @@ public class TensorExpr extends ASTNode implements ITerm
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof TensorExpr)) return false;
+        if (! (o instanceof ExponentExpr)) return false;
         if (! super.equals(o)) return false;
-        TensorExpr other = (TensorExpr) o;
-        if (! _Term.equals(other._Term)) return false;
-        if (! _TENSOR.equals(other._TENSOR)) return false;
+        ExponentExpr other = (ExponentExpr) o;
+        if (! _CastExpression.equals(other._CastExpression)) return false;
+        if (! _EXP.equals(other._EXP)) return false;
         if (! _ExponentExpression.equals(other._ExponentExpression)) return false;
         return true;
     }
@@ -73,8 +73,8 @@ public class TensorExpr extends ASTNode implements ITerm
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Term.hashCode());
-        hash = hash * 31 + (_TENSOR.hashCode());
+        hash = hash * 31 + (_CastExpression.hashCode());
+        hash = hash * 31 + (_EXP.hashCode());
         hash = hash * 31 + (_ExponentExpression.hashCode());
         return hash;
     }
@@ -91,8 +91,8 @@ public class TensorExpr extends ASTNode implements ITerm
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            _Term.accept(v);
-            _TENSOR.accept(v);
+            _CastExpression.accept(v);
+            _EXP.accept(v);
             _ExponentExpression.accept(v);
         }
         v.endVisit(this);

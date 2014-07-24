@@ -13,10 +13,10 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 143:  UnaryExpression ::= -$ Primary
+ *<li>Rule 144:  UnaryExpression ::= sqrt$ Primary
  *</b>
  */
-public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
+public class SqrtUnaryExpr extends ASTNode implements IUnaryExpression
 {
     private SialParser environment;
     public SialParser getEnvironment() { return environment; }
@@ -25,8 +25,8 @@ public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
 
     public IPrimary getPrimary() { return _Primary; }
 
-    public NegatedUnaryExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                            IPrimary _Primary)
+    public SqrtUnaryExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
+                         IPrimary _Primary)
     {
         super(leftIToken, rightIToken);
 
@@ -49,9 +49,9 @@ public class NegatedUnaryExpr extends ASTNode implements IUnaryExpression
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof NegatedUnaryExpr)) return false;
+        if (! (o instanceof SqrtUnaryExpr)) return false;
         if (! super.equals(o)) return false;
-        NegatedUnaryExpr other = (NegatedUnaryExpr) o;
+        SqrtUnaryExpr other = (SqrtUnaryExpr) o;
         if (! _Primary.equals(other._Primary)) return false;
         return true;
     }
