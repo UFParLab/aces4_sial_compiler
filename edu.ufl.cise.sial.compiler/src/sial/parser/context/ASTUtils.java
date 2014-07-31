@@ -22,6 +22,7 @@ import sial.parser.Ast.DivExpr;
 import sial.parser.Ast.DoStatement;
 import sial.parser.Ast.DoubleLitExpr;
 import sial.parser.Ast.ExecuteStatement;
+import sial.parser.Ast.ExponentExpr;
 import sial.parser.Ast.IDec;
 import sial.parser.Ast.IExpression;
 import sial.parser.Ast.IRangeVal;
@@ -43,6 +44,7 @@ import sial.parser.Ast.Program;
 import sial.parser.Ast.ScalarCastExpr;
 import sial.parser.Ast.ScalarDec;
 import sial.parser.Ast.Sial;
+import sial.parser.Ast.SqrtUnaryExpr;
 import sial.parser.Ast.StarExpr;
 import sial.parser.Ast.StringLitExpr;
 import sial.parser.Ast.SubIndexDec;
@@ -577,6 +579,35 @@ public class ASTUtils implements SialParsersym, SipConstants{
 //	  return typeSet.contains(t);
 //	  }
     
+	/**
+	 * IExpression is implemented by:
+	 *<b>
+	 *<ul>
+	 *<li>DataBlock
+	 *<li>AddExpr
+	 *<li>SubtractExpr
+	 *<li>StarExpr
+	 *<li>DivExpr
+	 *<li>TensorExpr
+	 *<li>ExponentExpr
+	 *<li>IntCastExpr
+	 *<li>ScalarCastExpr
+	 *<li>NegatedUnaryExpr
+	 *<li>SqrtUnaryExpr
+	 *<li>ParenExpr
+	 *<li>IntLitExpr
+	 *<li>DoubleLitExpr
+	 *<li>IdentExpr
+	 *<li>DataBlockExpr
+	 *<li>StringLitExpr
+	 *<li>StringLiteral
+	 *<li>Ident
+	 *</ul>
+	 *</b>
+	 */
+	
+	
+	
     //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
     public static EnumSet<EType> getIExprTypes(IExpression e){
     	if (e instanceof IdentExpr) return ((IdentExpr)e).getTypeSet();
@@ -593,29 +624,32 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	if (e instanceof SubtractExpr) return ((SubtractExpr)e).getTypeSet();
     	if (e instanceof DataBlockExpr) return ((DataBlockExpr)e).getTypeSet();
     	if (e instanceof StringLitExpr) return ((StringLitExpr)e).getTypeSet();
-    	assert false;
+    	if (e instanceof ExponentExpr)return ((ExponentExpr)e).getTypeSet();
+    	if (e instanceof SqrtUnaryExpr)return ((SqrtUnaryExpr)e).getTypeSet();
+    	assert false: "compiler bug: unexpected type in getIExprTypes";
     	return null;
+
     }
     
     
-    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
-    public static void addExprType(IExpression e, EType t){
-    	if (e instanceof IdentExpr) { ((IdentExpr)e).addType(t); return;}
-    	if (e instanceof IntLitExpr){ ((IntLitExpr)e).addType(t); return; }
-    	if (e instanceof DoubleLitExpr) {((DoubleLitExpr)e).addType(t); return;}
-    	if (e instanceof NegatedUnaryExpr) {((NegatedUnaryExpr)e).addType(t); return;}
-    	if (e instanceof ParenExpr) {getIExprTypes( ((ParenExpr)e).getExpression() ); return;}  //TODO FIXME 
-    	if (e instanceof ScalarCastExpr) {((ScalarCastExpr)e).addType(t); return;}
-    	if (e instanceof IntCastExpr) {((IntCastExpr)e).addType(t); return;}
-    	if (e instanceof StarExpr) {((StarExpr)e).addType(t); return;}
-    	if (e instanceof DivExpr){ ((DivExpr)e).addType(t); return;}
-    	if (e instanceof TensorExpr){ ((TensorExpr)e).addType(t); return;}
-    	if (e instanceof AddExpr) {((AddExpr)e).addType(t); return;}
-    	if (e instanceof SubtractExpr){ ((SubtractExpr)e).addType(t); return;}
-    	if (e instanceof DataBlockExpr){ ((DataBlockExpr)e).addType(t); return;}
-    	if (e instanceof StringLitExpr) {((StringLitExpr)e).addType(t); return;}
-    	assert false;
-    }
+//    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
+//    public static void addExprType(IExpression e, EType t){
+//    	if (e instanceof IdentExpr) { ((IdentExpr)e).addType(t); return;}
+//    	if (e instanceof IntLitExpr){ ((IntLitExpr)e).addType(t); return; }
+//    	if (e instanceof DoubleLitExpr) {((DoubleLitExpr)e).addType(t); return;}
+//    	if (e instanceof NegatedUnaryExpr) {((NegatedUnaryExpr)e).addType(t); return;}
+//    	if (e instanceof ParenExpr) {getIExprTypes( ((ParenExpr)e).getExpression() ); return;}  //TODO FIXME 
+//    	if (e instanceof ScalarCastExpr) {((ScalarCastExpr)e).addType(t); return;}
+//    	if (e instanceof IntCastExpr) {((IntCastExpr)e).addType(t); return;}
+//    	if (e instanceof StarExpr) {((StarExpr)e).addType(t); return;}
+//    	if (e instanceof DivExpr){ ((DivExpr)e).addType(t); return;}
+//    	if (e instanceof TensorExpr){ ((TensorExpr)e).addType(t); return;}
+//    	if (e instanceof AddExpr) {((AddExpr)e).addType(t); return;}
+//    	if (e instanceof SubtractExpr){ ((SubtractExpr)e).addType(t); return;}
+//    	if (e instanceof DataBlockExpr){ ((DataBlockExpr)e).addType(t); return;}
+//    	if (e instanceof StringLitExpr) {((StringLitExpr)e).addType(t); return;}
+//    	assert false;
+//    }
 	
 	public static boolean isBinary(IExpression e){
     	if (e instanceof IdentExpr) return false;

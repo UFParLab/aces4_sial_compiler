@@ -88,6 +88,7 @@ sparse
 assert_same
 broadcast_from
 sqrt
+stop
 
 %End
 
@@ -184,7 +185,7 @@ sqrt
 		| a s s e r t _ s a m e  /.$setResult($_assert_same);./		
 		| b r o a d c a s t _ f r o m /.$setResult($_broadcast_from);./
 		| s q r t  /.$setResult($_sqrt);./						
-									  						   
+		| s t o p  /.$setResult($_stop);./										  						   
 								  		 
 
 														

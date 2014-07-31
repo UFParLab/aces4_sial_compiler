@@ -1,0 +1,27 @@
+sial block_expressions
+	predefined int norb
+	aoindex i = 1:norb
+	aoindex j = 1:norb
+	temp a[i,j]
+	temp b[i,j]
+	temp c[i,j]
+    temp d[i,j]
+    temp e[i,j]
+    scalar x = 0.0
+	
+	do i
+		do j
+			a[i,j] = 42.0
+			b[i,j] = a[i,j]
+			c[i,j] = a[i,j] + b[i,j]
+			d[i,j] = a[i,j] - c[i,j]
+			a[i,j] = 2.0
+			d[i,j] = 3.0
+			x = a[i,j]*b[i,j]
+			y += a[i,j]*b[i,j]
+		enddo j
+	enddo i
+	
+	println "end of tmp_arrays"
+	
+endsial block_expressions

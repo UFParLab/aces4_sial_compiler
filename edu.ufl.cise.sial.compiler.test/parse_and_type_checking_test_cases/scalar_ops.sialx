@@ -1,0 +1,29 @@
+sial scalar_ops
+
+scalar l
+scalar nl
+int i
+int ni
+
+scalar s0
+scalar si0
+scalar sd
+scalar sr0
+scalar sr1
+scalar e0
+
+
+
+l = 42.0
+nl = -42.0
+s0 = l + 2.0*nl + l  # should be 0
+i = 42
+ni = -42 
+si0 = (scalar)(i + 2*ni + i)
+sd = l/2.0
+sr0 = sqrt 256.0
+
+e0 = 2.0 ** 3.0
+
+	
+endsial scalar_ops

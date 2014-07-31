@@ -153,7 +153,8 @@
 		     | '['       /. makeToken($_LEFTSQUARE);./
             | ']'      /. makeToken($_RIGHTSQUARE);./   
             | ':'      /.makeToken($_COLON);./
-			| '**'   /.makeToken($_EXP);./			 
+            | '*' '*'   /.makeToken($_EXP);./
+		 
 --	    mlc  ::= '/' '#' Inside Hashes '/'
 
 	stringlit ::=  '"' SLBody '"'

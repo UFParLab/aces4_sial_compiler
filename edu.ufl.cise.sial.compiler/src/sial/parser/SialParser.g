@@ -260,6 +260,7 @@
 	  Statement$CallStatement ::= call$  Ident
 	 
 	  Statement$ReturnStatement ::= return$
+	  Statement$StopStatement ::= stop$
 	 
 	 --TODO check need for IdentOpt
 	--TODO AcesHack decl is there to easily allow "binary compatibility" with existing sip
@@ -471,13 +472,9 @@ Statement$GPUGet ::= gpu_get$ Arg
 
     Expression ::= Term
 	Expression$AddExpr ::= Expression '+' Term
-	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -488,11 +485,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	Expression$SubtractExpr ::= Expression '-' Term
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -505,11 +498,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	Term$StarExpr ::= Term '*'$ ExponentExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -519,11 +508,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	Term$DivExpr ::= Term '/'$ ExponentExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -533,11 +518,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	Term$TensorExpr ::= Term '^' ExponentExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -546,14 +527,11 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 ./
 	
 	ExponentExpression ::= CastExpression
-	ExponentExpression$ExponentExpr ::= CastExpression  '**'  ExponentExpression 
+--	ExponentExpression$ExponentExpr ::= CastExpression  '**'  ExponentExpression 
+    ExponentExpression$ExponentExpr ::=   ExponentExpression  '**' CastExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -565,11 +543,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	CastExpression$IntCastExpr ::= '('$  int$ ')'$ CastExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -579,11 +553,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	CastExpression$ScalarCastExpr ::= '('$  scalar$ ')'$ CastExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -595,11 +565,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	UnaryExpression$NegatedUnaryExpr ::= '-'$ Primary
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -609,11 +575,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 UnaryExpression$SqrtUnaryExpr ::= 'sqrt'$ Primary
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+	  public void addType(EType t){;
          typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
@@ -622,7 +584,7 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 ./
 	
 	Primary$ParenExpr ::= '('$ Expression ')'$
-	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){
          typeSet.add(t);
@@ -636,26 +598,20 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 ./
 
 		Primary$IntLitExpr ::= INTLIT
-		/.  EnumSet<EType>  typeSet;
+		/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-	  if (typeSet == null){ 
-	     typeSet = EnumSet.of(t);
-		 }
-	     else typeSet.add(t);
+	  public void addType(EType t){;
+         typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
 	  return typeSet.contains(t);
 	  }
 	 ./
 	Primary$DoubleLitExpr ::= DOUBLELIT
-		/.  EnumSet<EType>  typeSet;
+		/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-	  if (typeSet == null){ 
-	     typeSet = EnumSet.of(t);
-		 }
-	     else typeSet.add(t);
+	  public void addType(EType t){;
+         typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
 	  return typeSet.contains(t);
@@ -663,18 +619,14 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 ./
 	 
 	Primary$IdentExpr  ::= Ident
-		/.  EnumSet<EType>  typeSet;
+		/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
-	  public void addType(EType t){
-	  if (typeSet == null){ 
-	     typeSet = EnumSet.of(t);
-		 }
-	     else typeSet.add(t);
+	  public void addType(EType t){;
+         typeSet.add(t);
 	  }
 	  public boolean hasType(EType t){
 	  return typeSet.contains(t);
 	  }
-	 
 	 
 	  IDec dec;
 	  public void setDec(IDec dec) { this.dec = dec; }

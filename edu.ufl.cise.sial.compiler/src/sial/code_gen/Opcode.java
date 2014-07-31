@@ -10,7 +10,7 @@ public enum Opcode {
 	//branch
 	goto_op("optable slot of destination","","","","unconditional jump"),
 	jump_if_zero_op("optable slot of destination","","","","jump if top of sip control stack is zero"),
-	stop_op("","","","","immediately halt sial program.  Useful during debugging"),
+	stop_op("","","","","immediately abort sial program.  Useful during debugging but should not be used in production code-"),
 
 	//procedure calls
 	call_op("optable slot of procedure","","","","call a sial procedure, first push slot of next instruction on control stack"),
@@ -49,8 +49,8 @@ public enum Opcode {
 //	get_block_for_accumulate_op("array table slot","","","selector","gets indicated block, creating and initializing to zero if it doesn't exists.  Push the BlockPtr onto sip block selector stack"),
 //	get_block_for_writing_op("array table slot","","","selector","gets indicated block, creating it if it doesn't exist.  Push the BlockPtr onto sip block stack"),
 //	get_block_for_update_op("","","","",""),
-	allocate_op("array table slot","","","block selector indices(may contain wild cards)","allocate block(s) of local array.  "),
-	deallocate_op("array table slot","","","block selector indices","deallocate block(s) of local array"),
+	allocate_op("rank","array_table_slot","","block selector indices(may contain wild cards)","allocate block(s) of local array.  "),
+	deallocate_op("rank","array_table_slot","","block selector indices","deallocate block(s) of local array"),
 	allocate_contiguous_op("array","rank","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
 	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
 	deallocate_contiguous_op("array","rank","","","deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
@@ -119,7 +119,7 @@ public enum Opcode {
 	//scalar collective operations
 	
 	collective_sum_op("array table slot of lhs scalar","","","",
-			"allreduce of rhs value into lhs scalar. This operation synchronizes the workers"),
+			"allreduce of rhs value which is on expression stack into lhs scalar. This operation synchronizes the workers"),
 	assert_same_op("array table slot of scalan","","","","checks that value of scalar is within epsilon on all workers, and resets all to master's value"),
 
 	
@@ -129,7 +129,7 @@ public enum Opcode {
 			"copies block from top of block selector stack to block in instruction. If one array is larger than the other, the extra indices are simple"),
 	block_permute_op("","","","permutation",
 			"permute the block on the right side using the given permutation . RHS and LHS block selectors have been pushed onto block selector stack, first rhs then lhs"),
-	fill_block_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block instruction.  Adds the scalar value to all of the elements of the block"),
+	block_fill_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from instruction.  Sets each element of the block to the given value"),
 	scale_block_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value"),
 	accumulate_scalar_into_block_op("lhs rank","lhs arrayTable slot","","lhs selector indices","gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block"),
 	block_add_op("lhs rank","lhs array slot","","lhs selector","adds two blocks together element-wise and puts the result in the lhs array"),
@@ -149,10 +149,11 @@ public enum Opcode {
 	println_op("","","","","print NL)"),
 	print_index_op("append NL if  1","index table slot","","","print current value of given index; the value is on the sip control stack"),
 	print_scalar_op("append NL if  1","array table slot, or unused if literal","","","print scalar whose value is on the sip epression stack "),
-	print_int_op("append NL  1","array table slot or unused if literal","","","print int; value is on the sip control stack"),
-
+	print_int_op("append NL if  1","array table slot or unused if literal","","","print int; value is on the sip control stack"),
+    print_block_op("append NL if 1", "","","","print the block whose selector is on the selector stack"),
 	
 	//gpu commands
+    //TODO
 	gpu_on_op("","","","",""),
 	gpu_off_op("","","","",""),
 	gpu_allocate_op("","","","",""),

@@ -11,7 +11,7 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 101&jump_if_zero_op&optable slot of destination&&&jump if top of sip control stack is zero\\
 \hline
-102&stop_op&&&&immediately halt sial program.  Useful during debugging\\
+102&stop_op&&&&immediately abort sial program.  Useful during debugging but should not be used in production code-\\
 \hline
 103&call_op&optable slot of procedure&&&call a sial procedure, first push slot of next instruction on control stack\\
 \hline
@@ -45,9 +45,9 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 118&push_block_selector_op&rank&array table slot&selector slots&push the block selector onto the sip block selector stack.  If the rank is 0, this is either a scalar or a static or contig array given without a selector\\
 \hline
-119&allocate_op&array table slot&&block selector indices(may contain wild cards)&allocate block(s) of local array.  \\
+119&allocate_op&rank&array_table_slot&block selector indices(may contain wild cards)&allocate block(s) of local array.  \\
 \hline
-120&deallocate_op&array table slot&&block selector indices&deallocate block(s) of local array\\
+120&deallocate_op&rank&array_table_slot&block selector indices&deallocate block(s) of local array\\
 \hline
 121&allocate_contiguous_op&array&rank&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
 \hline
@@ -127,7 +127,7 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 159&cast_to_scalar_op&&&&removes top element from control stack, converts to double and leaves on top of expression stack\\
 \hline
-160&collective_sum_op&array table slot of lhs scalar&&&allreduce of rhs value into lhs scalar. This operation synchronizes the workers\\
+160&collective_sum_op&array table slot of lhs scalar&&&allreduce of rhs value which is on expression stack into lhs scalar. This operation synchronizes the workers\\
 \hline
 161&assert_same_op&array table slot of scalan&&&checks that value of scalar is within epsilon on all workers, and resets all to master's value\\
 \hline
@@ -137,7 +137,7 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 164&block_permute_op&&&permutation&permute the block on the right side using the given permutation . RHS and LHS block selectors have been pushed onto block selector stack, first rhs then lhs\\
 \hline
-165&fill_block_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block instruction.  Adds the scalar value to all of the elements of the block\\
+165&block_fill_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Sets each element of the block to the given value\\
 \hline
 166&scale_block_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value\\
 \hline
@@ -169,35 +169,37 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 180&print_scalar_op&append NL if  1&array table slot, or unused if literal&&print scalar whose value is on the sip epression stack \\
 \hline
-181&print_int_op&append NL  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
+181&print_int_op&append NL if  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
 \hline
-182&gpu_on_op&&&&\\
+182&print_block_op&append NL if 1&&&print the block whose selector is on the selector stack\\
 \hline
-183&gpu_off_op&&&&\\
+183&gpu_on_op&&&&\\
 \hline
-184&gpu_allocate_op&&&&\\
+184&gpu_off_op&&&&\\
 \hline
-185&gpu_free_op&&&&\\
+185&gpu_allocate_op&&&&\\
 \hline
-186&gpu_put_op&&&&\\
+186&gpu_free_op&&&&\\
 \hline
-187&gpu_get_op&&&&\\
+187&gpu_put_op&&&&\\
 \hline
-188&gpu_get_int_op&&&&\\
+188&gpu_get_op&&&&\\
 \hline
-189&gpu_put_int_op&&&&\\
+189&gpu_get_int_op&&&&\\
 \hline
-190&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
+190&gpu_put_int_op&&&&\\
 \hline
-191&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
+191&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
 \hline
-192&idup_op&&&&duplicates the value on top of the control (integer) stack\\
+192&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
 \hline
-193&iswap_op&&&&swaps the top two values on the control (integer) stack\\
+193&idup_op&&&&duplicates the value on top of the control (integer) stack\\
 \hline
-194&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+194&iswap_op&&&&swaps the top two values on the control (integer) stack\\
 \hline
-195&invalid_op&&&&\\
+195&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+\hline
+196&invalid_op&&&&\\
 \hline
 \end{longtable}
 \end{document}

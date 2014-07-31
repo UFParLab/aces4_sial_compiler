@@ -1328,6 +1328,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(DataBlock n) {
 		IDec identDec = n.getIdent().getDec();
+		if (identDec == null) return; //error alreaday reported
 		if (!check(identDec instanceof ArrayDec, n, n.getIdent() + " must be an array"))
 			return;
 		IdentList indices = n.getIndices();
@@ -1494,6 +1495,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(AddExpr n) {
 		EnumSet<EType> t0 = getIExprTypes(n.getExpression());
 		EnumSet<EType> t1 = getIExprTypes(n.getTerm());
+		if(t0.isEmpty() || t1.isEmpty()) return;  //expr doesn't have type, error already reported.
 		if (t0.contains(SCALAR) && t1.contains(SCALAR)){
 			n.addType(SCALAR);
 			return;
@@ -1507,6 +1509,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			ITerm e1 = n.getTerm();
 			check(e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr, n, "Both xpression must be a data block");
 			checkCompatibleBlocks(n, ((DataBlockExpr)e0).getDataBlock(), ((DataBlockExpr)e1).getDataBlock());
+			n.addType(BLOCK);
+			return;
 		}
 	    check(false, n, " incompatible types in expression");
 	}
@@ -1520,6 +1524,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(SubtractExpr n) {
 		EnumSet<EType> t0 = getIExprTypes(n.getExpression());
 		EnumSet<EType> t1 = getIExprTypes(n.getTerm());
+		if (t0.isEmpty() || t1.isEmpty()) return; //contains error already reported by child
 		if (t0.contains(SCALAR) && t1.contains(SCALAR)){
 			n.addType(SCALAR);
 			return;
@@ -1533,6 +1538,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			ITerm e1 = n.getTerm();
 			check(e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr, n, "Both xpression must be a data block");
 			checkCompatibleBlocks(n, ((DataBlockExpr)e0).getDataBlock(), ((DataBlockExpr)e1).getDataBlock());
+			n.addType(BLOCK);
+			return;
 		}
 	    check(false, n, " incompatible types in expression");
 	}
@@ -1548,7 +1555,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		IExponentExpression rightOperand = n.getExponentExpression();
 		EnumSet<EType> t0 = getIExprTypes(leftOperand);
 		EnumSet<EType> t1 = getIExprTypes(rightOperand);
-
+		if (t0.isEmpty() || t1.isEmpty()) return;
 		if (t0.contains(BLOCK) && t1.contains(BLOCK)){
 			check(leftOperand instanceof DataBlockExpr && rightOperand instanceof DataBlockExpr, n, "only simple binary expression involving blocks allowed");
 			//check to see if result is scalar
@@ -1589,6 +1596,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(DivExpr n) {
 		EnumSet<EType> t0 = getIExprTypes(n.getTerm());
 		EnumSet<EType> t1 = getIExprTypes(n.getExponentExpression());
+		if (t0.isEmpty() || t1.isEmpty()) return;
 		if (t0.contains(SCALAR) && t1.contains(SCALAR)){
 			n.addType(SCALAR);
 			return;
@@ -1611,6 +1619,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		IExponentExpression rightOperand = n.getExponentExpression();
 		EnumSet<EType> t0 = getIExprTypes(leftOperand);
 		EnumSet<EType> t1 = getIExprTypes(rightOperand);
+		if (t0.isEmpty() || t1.isEmpty()) return;
 		if (!check(t0.contains(BLOCK) && leftOperand instanceof DataBlockExpr && t1.contains(BLOCK) && rightOperand instanceof DataBlockExpr, n, "arguments to ^ must be data blocks")) return;
 			//ensure that index sets are disjoint
 		ArrayList<Ident> resultIndices = getContractionResultIndices (((DataBlockExpr)leftOperand).getDataBlock(), ((DataBlockExpr)rightOperand).getDataBlock());
@@ -1622,6 +1631,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
     public void endVisit(ExponentExpr n) { 
 		EnumSet<EType> t0 = getIExprTypes(n.getCastExpression());
 		EnumSet<EType> t1 = getIExprTypes(n.getExponentExpression());
+		if (t0.isEmpty() || t1.isEmpty()) return;
+		if (t0.isEmpty() || t1.isEmpty()) return;
 		if (t0.contains(SCALAR) && t1.contains(SCALAR)){
 			n.addType(SCALAR);
 			return;
@@ -1637,6 +1648,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(IntCastExpr n) {
 		EnumSet<EType> t = getIExprTypes(n.getCastExpression());
+		if (t.isEmpty()) return;
 		check(t.contains(SCALAR), n, "cast to int only allowed from scalar");
 		n.addType(INT);
 	}
@@ -1649,7 +1661,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(ScalarCastExpr n) {
 		EnumSet<EType> t = getIExprTypes(n.getCastExpression());
-		check(t.contains(INT), n, "cast to scalar only allowed from int");
+		if (t.isEmpty()) return;
+		check(t.contains(INT) || t.contains(INDEX), n, "cast to scalar only allowed from int or index");
 		n.addType(SCALAR);
 	}
 
@@ -1661,6 +1674,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(NegatedUnaryExpr n) {
 		EnumSet<EType> t = getIExprTypes(n.getPrimary());
+		if (t.isEmpty()) return;
 		if (t.contains(SCALAR)){
 			n.addType(SCALAR);
 			return;
@@ -1677,7 +1691,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
     public void endVisit(SqrtUnaryExpr n) { 
 		EnumSet<EType> t = getIExprTypes(n.getPrimary());
-		check(t.contains(SCALAR),n, "negation only supported for scalar expressions");
+		if (t.isEmpty()) return;
+		check(t.contains(SCALAR),n, "srt only supported for scalar expressions");
 		n.addType(SCALAR);
 		return;
     }
@@ -1832,16 +1847,21 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(IdentExpr n) {
 		IDec dec = n.getDec();
+		if (dec == null) return;  //not declared. Error already reported
+//			if (!check(dec != null, n, "identifier " + n.getName() + "  not declared")){
+//				return;
+//			}
 		if (dec instanceof IntDec)
 			n.addType(INT);
 		else if (dec instanceof ScalarDec)
 			n.addType(SCALAR);
 		else if (dec instanceof ArrayDec)
 			n.addType(ARRAY);
-		else if (dec instanceof IndexDec)
-			n.addType(INDEX);
+		else if (dec instanceof IndexDec){
+			n.addType(INDEX); n.addType(INT);
+		}
 		else
-			check(false, n, "unexpected type in IdentExpr " + dec);
+			check(false, n, "compiler bug:  unexpected type in IdentExpr " + dec);
 	}
 
 	@Override
@@ -1924,10 +1944,11 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(AssignToIdent n) { //TODO allow static to static 
 		Ident lhs = n.getIdent();
 		IDec dec = lhs.getDec();
+		if (dec == null) return;  //lhs not declare, error was reported by child
 		IExpression expr = n.getExpression();
 		EnumSet<EType> t = ASTUtils.getIExprTypes(expr);
-		if (dec instanceof IntDec && t.contains(INT))
-			return; // lhs declared as int, rhs is int expr
+		if (dec instanceof IntDec && (t.contains(INT) || t.contains(INDEX)))
+			return; // lhs declared as int, rhs is int expr or an index
 		if (dec instanceof ScalarDec && t.contains(SCALAR))
 			return; // lhs declared as scalar, rhs is scalar expr. This will be the case if it is really a scalar expr, or if it is a block with all simple indices, or a contraction with result of rank 0.
 //		if (dec instanceof ScalarDec && t.contains(BLOCK)){ // lhs is scalar,
@@ -1968,8 +1989,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		DataBlock lhs = n.getDataBlock();
 		IExpression expr = n.getExpression();
 		EnumSet<EType> t = ASTUtils.getIExprTypes(expr);
+		if (t.isEmpty()) return;  //error already reported by child
 		int op = n.getAssignOp().getop().getKind();
-		if (!check(t.contains(SCALAR) || t.contains(BLOCK), n, "incompatible type is assignment"))
+		if (!check(t.contains(SCALAR) || t.contains(BLOCK), n, "incompatible type in assignment"))
 			return;
 		if (t.contains(SCALAR))
 			return;
@@ -2491,7 +2513,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 
 	@Override
 	public boolean visit(StringLitExpr n) {
-		ASTUtils.addExprType(n,STRING);
+		n.addType(STRING);
 		return false;
 	}
 
@@ -2527,7 +2549,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 
 	@Override
 	public void endVisit(PrintStatement n) { 
-		
+		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
+		check(t.contains(SCALAR) || t.contains(INT) || t.contains(INDEX) 
+				|| t.contains(STRING) || t.contains(BLOCK) || t.contains(ARRAY), n,
+				"unexpected argument for print statement");
 	}
 
 	@Override
@@ -2536,7 +2561,11 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	}
 
 	@Override
-	public void endVisit(PrintlnStatement n) { /* nop */
+	public void endVisit(PrintlnStatement n) { 
+		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
+		check(t.contains(SCALAR) || t.contains(INT) || t.contains(INDEX) || t.contains(STRING) 
+				|| t.contains(BLOCK) || t.contains(ARRAY), n,
+				"unexpected argument for println statement");
 	}
 
 //	@Override

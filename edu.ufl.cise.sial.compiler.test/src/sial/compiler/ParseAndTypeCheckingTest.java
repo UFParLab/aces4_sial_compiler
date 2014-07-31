@@ -249,4 +249,25 @@ public class ParseAndTypeCheckingTest {
 	public void nested_pardo_and_barrier_fail() throws IOException{
 		runTypeCheckTest("nested_pardo_and_barrier_fail",1);
 	}
+	
+	@Test 
+	public void scalar_ops() throws IOException{
+		runTypeCheckTest("scalar_ops",0);
+	}
+	
+	@Test 
+	public void check_scale_block_code_gen() throws IOException{
+		runTypeCheckTest("check_scale_block_code_gen",0);
+	}
+	
+	@Test 
+	public void block_expresssions() throws IOException{
+		runTypeCheckTest("block_expresssions",0);
+	}
+	
+	@Test 
+	public void scalar_valued_arrays() throws IOException{
+		runTypeCheckTest("scalar_valued_arrays",0);
+	}
+	
 }

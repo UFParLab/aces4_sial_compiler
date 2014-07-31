@@ -1,0 +1,17 @@
+sial tmp_arrays
+	predefined int norb
+	aoindex i = 1:norb
+	aoindex j = 1:norb
+	special print_block r
+	temp a[i,j]
+
+	do i
+	do j
+	a[i,j] = 9.0
+	a[i,j] *= -1.0
+	execute print_block a[i,j]
+	enddo j
+	enddo i
+
+	
+endsial tmp_arrays
