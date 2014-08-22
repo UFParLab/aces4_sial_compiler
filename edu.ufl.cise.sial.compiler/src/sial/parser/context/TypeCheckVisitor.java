@@ -1237,6 +1237,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 				+ expected_args);
 	}
 	
+	// A ContiguousDataBlock arg encloses a ContiguousDataBlock.  Visiting the children suffices.
+    @Override
+    public boolean visit(ContiguousDataBlockArg n){  return true; }
+    
+    @Override
+    public void endVisit(ContiguousDataBlockArg n){}
+
+	
 	//a DataBlock arg encloses a DataBlock.  Visiting the children suffices
 	@Override
     public boolean visit(DataBlockArg n) {  return true; }
@@ -1251,7 +1259,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			check(dec != null, n, n.toString() + " not declared");
 			if (dec instanceof ScalarDec) return false;
 			if (dec instanceof ArrayDec){
-				check(ASTUtils.isStaticOrContiguousArray(dec)||nonstatic_noselector_array_allowed(n),n,"Array requires block selector");
+				check(ASTUtils.isStaticOrContiguousArray(dec)||nonstatic_noselector_array_allowed(n),n,"Normally, a non-contiguous array requires block selector. " +
+						"A list of special cases is built in to the compiler.  This super instruction is not in the list");
 				return false;
 			}
 			check(false, n, "illegal argument type for execute statement");
@@ -1369,6 +1378,32 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(IdentList n) { /* nop */
 	}
+	
+	@Override
+	public boolean visit(ContiguousDataBlock n){
+		return true;
+	}
+	@Override
+	public void endVisit(ContiguousDataBlock n){
+		IDec identDec = n.getIdent().getDec();
+		if (identDec == null) return; //error alreaday reported
+		if (!check(identDec instanceof ArrayDec, n, n.getIdent() + " must be an array"))
+			return;
+		if (!check(ASTUtils.isContiguous(identDec), n, n.getIdent() + "must be contiguous"))
+			return;
+		ContiguousIndexRangeExprList ranges = n.getContiguousIndexRangeExprList();
+		DimensionList declaredDimensionList = ((ArrayDec) identDec).getDimensionList();
+		if (!check(ranges.size() == declaredDimensionList.size(), n, "number of indices of " + n.getIdent()
+				+ " does not match declaration"))
+			return;
+		for (int i = 0; i < ranges.size(); i++) {
+			ContiguousIndexRangeExpr range = ranges.getContiguousIndexRangeExprAt(i);
+			IExpression startExpr = range.getStartExpr();  
+		    check(ASTUtils.getIExprTypes(startExpr).contains(INT), range, "lower value of range must be int");
+		    IExpression endExpr = range.getEndExpr();
+		    check(ASTUtils.getIExprTypes(endExpr).contains(INT), range, "upper value of range must be int");		    
+		}	
+	}
 
 	@Override
 	public boolean visit(AllocIndexIdent n) {
@@ -1409,9 +1444,11 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(ContiguousAllocateStatement n) {
 		IDec arrayDec = n.getIdent().getDec();
-		check (arrayDec instanceof ArrayDec && ASTUtils.isLocal(arrayDec) && ASTUtils.isContiguous(arrayDec), n , "array " + n + " must be declared as contiguous local array");
+		check (arrayDec instanceof ArrayDec , n , "array " + n.getIdent().getName() + " must be declared as an array");
+		check (ASTUtils.isLocal(arrayDec) , n , "array " + n.getIdent().getName() + " must be declared as  local array");
+		check (ASTUtils.isContiguous(arrayDec), n , "array " + n.getIdent().getName() + " must be declared as contiguous ");
 		int rank = ((ArrayDec)arrayDec).getDimensionList().size();
-		check (n.getContiguousAllocIndexExprList().size() == rank, n, "number of indices does not match delcaration of array");		
+		check (n.getContiguousIndexRangeExprList().size() == rank, n, "number of indices does not match delcaration of array");		
 	}
 
 	@Override
@@ -1424,27 +1461,17 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		IDec arrayDec = n.getIdent().getDec();
 		check (arrayDec instanceof ArrayDec && ASTUtils.isLocal(arrayDec) && ASTUtils.isContiguous(arrayDec), n , "array " + n + " must be declared as contiguous local array");
 		int rank = ((ArrayDec)arrayDec).getDimensionList().size();
-		check (n.getContiguousAllocIndexExprList().size() == rank, n, "number of indices does not match delcaration of array");		
+		check (n.getContiguousIndexRangeExprList().size() == rank, n, "number of indices does not match delcaration of array");		
 	}
 
+
 	@Override
-	public boolean visit(ContiguousAllocIndexSingleExpr n) {
+	public boolean visit(ContiguousIndexRangeExpr n) {
 		return true;
 	}
 
 	@Override
-	public void endVisit(ContiguousAllocIndexSingleExpr n) {
-		EnumSet<EType> t  = ASTUtils.getIExprTypes(n.getExpression());
-		check(t.contains(INT), n, "illegal type of allocate argument " + n);
-	}
-
-	@Override
-	public boolean visit(ContiguousAllocIndexRangeExpr n) {
-		return true;
-	}
-
-	@Override
-	public void endVisit(ContiguousAllocIndexRangeExpr n) {
+	public void endVisit(ContiguousIndexRangeExpr n) {
 		EnumSet<EType> ts  = ASTUtils.getIExprTypes(n.getStartExpr());
 		check(ts.contains(INT), n, "illegal type of allocate argument " + n);		
 		EnumSet<EType> te  = ASTUtils.getIExprTypes(n.getStartExpr());
@@ -1462,12 +1489,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 //	}
 
 	@Override
-	public boolean visit(ContiguousAllocIndexExprList n) {
+	public boolean visit(ContiguousIndexRangeExprList n) {
 		return true;
 	}
 
 	@Override
-	public void endVisit(ContiguousAllocIndexExprList n) {
+	public void endVisit(ContiguousIndexRangeExprList n) {
 		/*nop*/
 	}
 
@@ -1741,6 +1768,16 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			n.addType(SCALAR);
 		}
 	}
+	
+	@Override
+	public boolean visit(ContiguousDataBlockExpr n){
+		return true;
+	}
+	
+	@Override
+	public void endVisit(ContiguousDataBlockExpr n){
+		n.addType(CONTIG_BLOCK);
+	}
 
 	// //This is necessary due to the limitations of LPG AST generation. If we
 	// could add methods to interfaces, we wouldn't need this hack.
@@ -1979,6 +2016,26 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		check(false, n, "incompatible types in assignment statement");
 	}
 
+	
+	// returns true if given indices are same as declared
+	boolean hasMatchingDeclaredIndices(DataBlock block, ContiguousDataBlock cblock) {
+		IDec dec = block.getIdent().getDec();
+		IDec cdec = cblock.getIdent().getDec();
+		if (dec == null || cdec == null)
+			return false;
+		DimensionList declaredIndices = ((ArrayDec) dec).getDimensionList();
+		DimensionList cDeclaredIndices = ((ArrayDec) cdec).getDimensionList();
+		if (declaredIndices.size() != cDeclaredIndices.size()) {
+			return false; 
+		}
+		for (int i = 0; i < declaredIndices.size(); ++i) {
+			Ident ident = declaredIndices.getDimensionAt(i);
+			Ident cIdent = cDeclaredIndices.getDimensionAt(i);
+			if (!ident.getName().equals(cIdent.getName()))
+				return false;
+		}
+		return true;
+	}
 	@Override
 	public boolean visit(AssignToBlock n) {
 		return true;
@@ -1991,7 +2048,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		EnumSet<EType> t = ASTUtils.getIExprTypes(expr);
 		if (t.isEmpty()) return;  //error already reported by child
 		int op = n.getAssignOp().getop().getKind();
-		if (!check(t.contains(SCALAR) || t.contains(BLOCK), n, "incompatible type in assignment"))
+		if (!check(t.contains(SCALAR) || t.contains(BLOCK) || t.contains(CONTIG_BLOCK), n, "incompatible type in assignment"))
 			return;
 		if (t.contains(SCALAR))
 			return;
@@ -2018,6 +2075,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			// op == +=, -=, *=
 			check(hasCompatibleIndices(lhs), n, "improper indices on lhs of assignment");
 			check(hasCompatibleIndices(rhs), n, "improper indices on rhs of assignment");
+			return;
+		}
+		if (expr instanceof ContiguousDataBlockExpr){ //rhs is a block from a contiguous local
+			ContiguousDataBlock rhs = ((ContiguousDataBlockExpr)expr).getContiguousDataBlock();
+			check (op == TK_ASSIGN, n, "only plain assignment supported with contiguous locals");
+			//check that the declared indices of the lhs and rhs match
+			check(hasMatchingDeclaredIndices(lhs, rhs), n, "incompatible declared indices on left and right side");
 			return;
 		}
 		if (expr instanceof StarExpr) {

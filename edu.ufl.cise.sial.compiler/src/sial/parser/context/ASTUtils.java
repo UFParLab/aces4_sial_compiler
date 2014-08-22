@@ -17,6 +17,7 @@ import sial.parser.Ast.ASTNodeToken;
 import sial.parser.Ast.AddExpr;
 import sial.parser.Ast.ArrayDec;
 import sial.parser.Ast.CallStatement;
+import sial.parser.Ast.ContiguousDataBlockExpr;
 import sial.parser.Ast.DataBlockExpr;
 import sial.parser.Ast.DivExpr;
 import sial.parser.Ast.DoStatement;
@@ -298,23 +299,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
 	}
 
 
-//	/**  Indicates whether given Idec has the constant modifier */
-//    public static boolean isConstant(IDec n){
-//    	List modifiers = null;
-//    	if (n instanceof ScalarDec)
-//    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
-//    	else if (n instanceof IndexDec)
-//    		modifiers = ((IndexDec) n).getModifiersopt().getList();
-//    	else if (n instanceof IntDec)
-//    		modifiers = ((IntDec) n).getModifiersopt().getList();
-//    	else if (n instanceof ArrayDec)
-//    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-//    	if (modifiers== null || modifiers.isEmpty()) return false;
-//    	for( Object m: modifiers){
-//    		if (m instanceof ConstantModifier) return true;
-//    	}
-//    	return false;
-//    }	
+
     
     /** returns true if the given IDec is an array, and is static or contiguous */
     public static boolean isStaticOrContiguousArray(IDec n){
@@ -359,6 +344,10 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		}
 		return false;
 	}
+	
+	public static boolean isLocal(IDec n){
+		return  (n instanceof ArrayDec) && ((ArrayDec)n).getArrayKind().toString().equals("local");
+	}
     
     public static boolean isPredefined(IDec n){
     	List modifiers = null;
@@ -398,24 +387,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return false;
     }
     
-    public static boolean isLocal(IDec n){
-    	List modifiers = null;
-    	if (n instanceof ScalarDec)
-    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
-    	else if (n instanceof IndexDec)
-    		modifiers = ((IndexDec) n).getModifiersopt().getList();
-    	else if (n instanceof IntDec)
-    		modifiers = ((IntDec) n).getModifiersopt().getList();
-    	else if (n instanceof ArrayDec)
-    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-    	else if (n instanceof ScalarDec)
-    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
-    	if (modifiers== null || modifiers.isEmpty()) return false;
-    	for( Object m: modifiers){
-    		if (((Modifier) m).getmodifier().getKind() == TK_local) return true; 
-    	}
-    	return false;
-    }
+
     
     public static int getModifierAttributes(IDec n){
     	List modifiers = null;
@@ -441,54 +413,13 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return attributes;
     }
     
-//    public static boolean isPersistent(IDec n){
-//    	List modifiers = null;
-//    	if (n instanceof ScalarDec)
-//    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
-//    	else if (n instanceof IndexDec)
-//    		modifiers = ((IndexDec) n).getModifiersopt().getList();
-//    	else if (n instanceof IntDec)
-//    		modifiers = ((IntDec) n).getModifiersopt().getList();
-//    	else if (n instanceof ArrayDec
-//    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-//    	else if (n instanceof ScalarDec)
-//    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
-//    	if (modifiers== null || modifiers.isEmpty()) return false;
-//    	for( Object m: modifiers){
-//    		if (m instanceof PersistentModifier) return true;
-//    	}
-//    	return false;
-//    }
 
     public static int getContractionRank(ArrayList<Integer> a1, ArrayList<Integer> a2){
     	int numContractedIndices = getContractedIndices(a1,a2).length;
     	return (a1.size() - numContractedIndices) + (a2.size() - numContractedIndices);   	
     }
     
-//    public static int[] getContractedIndices(int[] a1, int[] a2) {
-//    	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];
-//    	//size of interesection not more than smallest input array
-//    	int[] intersection = new int[ a1.length>=a2.length? a2.length : a1.length];
-//    	int count = 0;
-//    	//find the intersection we have
-//    	//this alg is OK for the small number of indices
-//    	int val1;
-//    	for (int i = 0; i < a1.length && 0 < (val1 = a1[i]) ; i++){
-//    		//search for val in a2
-//    		int j;
-//    		int val2;
-//    		for (j = 0; j < a2.length && 0 < (val2 = a2[j]) ; j++){
-//    			if (val2 == val1){
-//    				intersection[count++]=val1;
-//    				break;
-//    			}
-//    		}
-//    	}
-//    	//sort the nonzero elements
-//    	Arrays.sort(intersection,0,count);
-//    	//return, padding with zeros
-//    	return Arrays.copyOf(intersection, TypeConstantMap.max_rank);
-//	}
+
     
     public static int[] getContractedIndices(ArrayList<Integer> a1, ArrayList<Integer> a2) {
     	if (a1 == null || a2 == null) return new int[TypeConstantMap.max_rank];
@@ -522,74 +453,12 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		return tnode;
 	}
 	
-	/** here is a list of classes implementing IExpression
-	 *  *<li>DataBlock
-	 *<li>AddExpr
-	 *<li>SubtractExpr
-	 *<li>StarExpr
-	 *<li>DivExpr
-	 *<li>HatExpr
-	 *<li>IntCastExpr
-	 *<li>ScalarCastExpr
-	 *<li>NegatedUnaryExpr
-	 *<li>ParenExpr
-	 *<li>IntLitExpr
-	 *<li>DoubleLitExpr
-	 *<li>IdentExpr
-	 *<li>DataBlockExpr
-	 *<li>StringLitExpr
-	 *<li>StringLiteral
-	 *<li>Ident
-    */
-	
 	/**
-	 * @param e
-	 * @return
-	 */
-	
-//    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
-//    public static EType getIExprType(IExpression e){
-//    	if (e instanceof IdentExpr) return ((IdentExpr)e).type.getType();
-//    	if (e instanceof IntLitExpr) return ((IntLitExpr)e).type.getType();
-//    	if (e instanceof DoubleLitExpr) return ((DoubleLitExpr)e).type.getType();
-//    	if (e instanceof NegatedUnaryExpr) return ((NegatedUnaryExpr)e).type.getType();
-//    	if (e instanceof ParenExpr) return getIExprType( ((ParenExpr)e).getExpression() );
-//    	if (e instanceof ScalarCastExpr) return ((ScalarCastExpr)e).type.getType();
-//    	if (e instanceof IntCastExpr) return ((IntCastExpr)e).type.getType();
-//    	if (e instanceof StarExpr) return ((StarExpr)e).type.getType();
-//    	if (e instanceof DivExpr) return ((DivExpr)e).type.getType();
-//    	if (e instanceof TensorExpr) return ((TensorExpr)e).type.getType();
-//    	if (e instanceof AddExpr) return ((AddExpr)e).type.getType();
-//    	if (e instanceof SubtractExpr) return ((SubtractExpr)e).type.getType();
-//    	if (e instanceof DataBlockExpr) return ((DataBlockExpr)e).type.getType();
-//    	if (e instanceof StringLitExpr) return ((StringLitExpr)e).type.getType();
-//    	assert false;
-//    	return null;
-//    }
-	
-//	  EnumSet<EType>  typeSet;
-//	  public EnumSet<EType> getTypeSet() { return typeSet;}
-//	  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
-//	  }
-//	  public boolean hasType(EType t){
-//	  return typeSet.contains(t);
-//	  }
-    
-	/**
-	 * IExpression is implemented by:
+	 * is implemented by:
 	 *<b>
 	 *<ul>
 	 *<li>DataBlock
-	 *<li>AddExpr
-	 *<li>SubtractExpr
-	 *<li>StarExpr
-	 *<li>DivExpr
-	 *<li>TensorExpr
-	 *<li>ExponentExpr
+	 *<li>ContiguousDataBlock
 	 *<li>IntCastExpr
 	 *<li>ScalarCastExpr
 	 *<li>NegatedUnaryExpr
@@ -599,6 +468,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
 	 *<li>DoubleLitExpr
 	 *<li>IdentExpr
 	 *<li>DataBlockExpr
+	 *<li>ContiguousDataBlockExpr
 	 *<li>StringLitExpr
 	 *<li>StringLiteral
 	 *<li>Ident
@@ -626,30 +496,13 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	if (e instanceof StringLitExpr) return ((StringLitExpr)e).getTypeSet();
     	if (e instanceof ExponentExpr)return ((ExponentExpr)e).getTypeSet();
     	if (e instanceof SqrtUnaryExpr)return ((SqrtUnaryExpr)e).getTypeSet();
+    	if (e instanceof ContiguousDataBlockExpr) return ((ContiguousDataBlockExpr)e).getTypeSet();
     	assert false: "compiler bug: unexpected type in getIExprTypes";
     	return null;
 
     }
     
-    
-//    //This is necessary due to the limitations of LPG AST generation.  If we could add methods to interfaces, we wouldn't need this hack.
-//    public static void addExprType(IExpression e, EType t){
-//    	if (e instanceof IdentExpr) { ((IdentExpr)e).addType(t); return;}
-//    	if (e instanceof IntLitExpr){ ((IntLitExpr)e).addType(t); return; }
-//    	if (e instanceof DoubleLitExpr) {((DoubleLitExpr)e).addType(t); return;}
-//    	if (e instanceof NegatedUnaryExpr) {((NegatedUnaryExpr)e).addType(t); return;}
-//    	if (e instanceof ParenExpr) {getIExprTypes( ((ParenExpr)e).getExpression() ); return;}  //TODO FIXME 
-//    	if (e instanceof ScalarCastExpr) {((ScalarCastExpr)e).addType(t); return;}
-//    	if (e instanceof IntCastExpr) {((IntCastExpr)e).addType(t); return;}
-//    	if (e instanceof StarExpr) {((StarExpr)e).addType(t); return;}
-//    	if (e instanceof DivExpr){ ((DivExpr)e).addType(t); return;}
-//    	if (e instanceof TensorExpr){ ((TensorExpr)e).addType(t); return;}
-//    	if (e instanceof AddExpr) {((AddExpr)e).addType(t); return;}
-//    	if (e instanceof SubtractExpr){ ((SubtractExpr)e).addType(t); return;}
-//    	if (e instanceof DataBlockExpr){ ((DataBlockExpr)e).addType(t); return;}
-//    	if (e instanceof StringLitExpr) {((StringLitExpr)e).addType(t); return;}
-//    	assert false;
-//    }
+
 	
 	public static boolean isBinary(IExpression e){
     	if (e instanceof IdentExpr) return false;
@@ -666,36 +519,10 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	if (e instanceof SubtractExpr) return true;
     	if (e instanceof DataBlockExpr) return false;
     	if (e instanceof StringLitExpr) return false;
+    	if (e instanceof ContiguousDataBlockExpr) return false;
     	assert false;
     	return false;
 	}
      
-/*
- * 	static IAst getEnclosingLoopOrIDec(Ident n, IAst node){
-		IndexDec dec = (IndexDec) n.getDec();
-		IAst tnode = node.getParent();
-		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
-			tnode = tnode.getParent();
-		}
-		if (tnode == null ) return tnode; //not found
-		if (tnode instanceof IDec) return tnode; //the context of this ident was a declaration.
-		if (tnode instanceof DoStatement){
-			DoStatement doStatement = (DoStatement)tnode;
-			IDec doVarDec = doStatement.getStartIndex().getDec();
-			if (doVarDec == dec) return doStatement;
-			return getEnclosingLoopOrIDec(n, doStatement);
-		}
-		if (tnode instanceof PardoStatement){
-			PardoStatement pardoStatement = (PardoStatement)tnode;
-			IdentList identList  = pardoStatement.getStartIndices();
-			for (int i = 0; i < identList.size(); ++i){
-				Ident pardoVar = (Ident) identList.getElementAt(i);
-				IDec pardoVarDec = pardoVar.getDec();
-				if (pardoVarDec == dec) return pardoStatement;
-			}
-			return getEnclosingLoopOrIDec(n, pardoStatement);
-		}
-		return null;
-	}
- */
+
 }

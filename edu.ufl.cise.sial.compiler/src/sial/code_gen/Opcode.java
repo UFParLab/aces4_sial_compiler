@@ -51,9 +51,9 @@ public enum Opcode {
 //	get_block_for_update_op("","","","",""),
 	allocate_op("rank","array_table_slot","","block selector indices(may contain wild cards)","allocate block(s) of local array.  "),
 	deallocate_op("rank","array_table_slot","","block selector indices","deallocate block(s) of local array"),
-	allocate_contiguous_op("array","rank","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
+	allocate_contiguous_op("rank","arra_table_slot","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
 	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
-	deallocate_contiguous_op("array","rank","","","deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
+	deallocate_contiguous_op("rank","array_table_slot","","","deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
 	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
 	
 //distributed and served arrays
@@ -130,8 +130,10 @@ public enum Opcode {
 	block_permute_op("","","","permutation",
 			"permute the block on the right side using the given permutation . RHS and LHS block selectors have been pushed onto block selector stack, first rhs then lhs"),
 	block_fill_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from instruction.  Sets each element of the block to the given value"),
-	scale_block_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value"),
-	accumulate_scalar_into_block_op("lhs rank","lhs arrayTable slot","","lhs selector indices","gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block"),
+	block_scale_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value"),
+	block_scale_assign_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value and leaves the result in the lhs block"),
+	block_scale_accumulate_op("lhs rank","lhs array table slot","","lhs indices","gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value add to the lhs block"),
+	block_accumulate_scalar_op("lhs rank","lhs slot","","lhs selector indices","gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block"),
 	block_add_op("lhs rank","lhs array slot","","lhs selector","adds two blocks together element-wise and puts the result in the lhs array"),
 	block_subtract_op("lhs rank","lhs array slot","","lhs selector","subtracts two blocks elementwise and puts the result in the lhs array"),
 	block_contract_op("lhs rank","lhs array slot","","lhs selector","contracts two blocks and puts the result in the lhs array"),

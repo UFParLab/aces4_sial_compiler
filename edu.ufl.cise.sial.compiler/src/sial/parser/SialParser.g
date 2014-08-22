@@ -308,9 +308,7 @@
 	 
 	 Statement$IfStatement ::=  if$ RelationalExpression EOLs$ StatementList endif$
 	 
-	 Statement$IfElseStatement ::= if$ RelationalExpression EOLs$ StatementList$ifStatements  else$ EOLs$ StatementList$elseStatements endif$
-
-	 
+	 Statement$IfElseStatement ::= if$ RelationalExpression EOLs$ StatementList$ifStatements  else$ EOLs$ StatementList$elseStatements endif$ 
 	 	 
 	Statement$AllocateStatement ::= allocate$ Ident AllocIndexListopt
 	
@@ -334,14 +332,14 @@
 	AllocIndexList$$AllocIndex ::= AllocIndex | AllocIndexList ',' $ AllocIndex
     AllocIndexListopt ::= %empty | '[' AllocIndexList ']'
 	
-	Statement$ContiguousAllocateStatement ::= allocate contiguous$ Ident '['$ ContiguousAllocIndexExprList ']'$
+	Statement$ContiguousAllocateStatement ::= allocate contiguous$ Ident '['$ ContiguousIndexRangeExprList ']'$
 
-	Statement$ContiguousDeallocateStatement ::= deallocate contiguous$ Ident '['$ ContiguousAllocIndexExprList ']'$
+	Statement$ContiguousDeallocateStatement ::= deallocate contiguous$ Ident '['$ ContiguousIndexRangeExprList ']'$
 	
-	ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
-	ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::=  Expression$StartExpr ':' Expression$EndExpr
+--	ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
+	ContiguousIndexRangeExpr$ContiguousIndexRangeExpr ::=  Expression$StartExpr ':' Expression$EndExpr
 --	ContiguousAllocIndexExpr$ContiguousAllocIndexWildExpr ::= '*'$ 
-	ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr | ContiguousAllocIndexExprList ',' $ ContiguousAllocIndexExpr
+	ContiguousIndexRangeExprList$$ContiguousIndexRangeExpr ::= ContiguousIndexRangeExpr | ContiguousIndexRangeExprList ',' $ ContiguousIndexRangeExpr
 
     Statement$CreateStatement ::= create$ Ident 
 	 
@@ -368,7 +366,8 @@ Statement$CollectiveStatement ::= collective$ Ident AssignOp Expression
 --	Statement$PrintIntStatement::= print_int$ Ident
     Statement$PrintStatement ::= print$ Expression
 	Statement$PrintlnStatement ::= println$ Expression
- 
+
+Arg$ContiguousDataBlockArg ::= ContiguousDataBlock 
 Arg$DataBlockArg ::= DataBlock
 Arg$IdentArg ::= IDENTIFIER
 	/.
@@ -420,7 +419,7 @@ Statement$GPUAllocate ::= gpu_allocate$ Arg
 Statement$GPUFree ::= gpu_free$ Arg
 Statement$GPUPut ::= gpu_put$ Arg
 Statement$GPUGet ::= gpu_get$ Arg
-	 
+	
 	 Statement$SetPersistent ::= set_persistent$ Ident StringLiteral
 	 --	/. 
 	 -- String stringValue;
@@ -457,13 +456,10 @@ Statement$GPUGet ::= gpu_get$ Arg
 --	ScalarOrBlockVar ::= Ident | DataBlock
 
  --	DataBlock ::= Ident '('$ Indices ')'$
-    DataBlock ::= Ident '['$ Indices ']'$
+    DataBlock$DataBlock ::= Ident '['$ Indices ']'$
 	Indices$$Ident ::= Ident | Indices ','$ Ident
 	
-
-	
-	
-
+    ContiguousDataBlock$ContiguousDataBlock ::= Ident '['$ ContiguousIndexRangeExprList ']'$
 	
 	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op 
 	
@@ -645,6 +641,19 @@ Statement$GPUGet ::= gpu_get$ Arg
 	  }
 	 ./
 	Primary$DataBlockExpr ::= DataBlock
+		/.  EnumSet<EType>  typeSet;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){
+	  if (typeSet == null){ 
+	     typeSet = EnumSet.of(t);
+		 }
+	     else typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
+	 ./
+	 Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
 		/.  EnumSet<EType>  typeSet;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){

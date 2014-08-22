@@ -270,4 +270,15 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("scalar_valued_arrays",0);
 	}
 	
+	@Test
+	public void contiguous_local_pass() throws IOException{
+		runTypeCheckTest("contiguous_local_pass",0);
+	}
+	
+	@Test
+	public void contiguous_local_fail() throws IOException{
+		runTypeCheckTest("contiguous_local_fail",1);
+	}
+	
+	
 }

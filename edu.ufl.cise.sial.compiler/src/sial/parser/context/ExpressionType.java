@@ -23,7 +23,7 @@ public class ExpressionType {
 	
 	
 	public enum EType {
-		INDEX, INT, SCALAR, BLOCK, ARRAY, STRING;
+		INDEX, INT, SCALAR, BLOCK, CONTIG_BLOCK, ARRAY, STRING;
 	}
 	
 //	EnumSet<Etype> etype;
