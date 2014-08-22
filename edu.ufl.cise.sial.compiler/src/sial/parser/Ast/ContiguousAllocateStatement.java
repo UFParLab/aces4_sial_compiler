@@ -12,23 +12,23 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 82:  Statement ::= allocate contiguous$ Ident [$ ContiguousAllocIndexExprList ]$
+ *<li>Rule 83:  Statement ::= allocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
  *</b>
  */
 public class ContiguousAllocateStatement extends ASTNode implements IStatement
 {
     private ASTNodeToken _allocate;
     private Ident _Ident;
-    private ContiguousAllocIndexExprList _ContiguousAllocIndexExprList;
+    private ContiguousIndexRangeExprList _ContiguousIndexRangeExprList;
 
     public ASTNodeToken getallocate() { return _allocate; }
     public Ident getIdent() { return _Ident; }
-    public ContiguousAllocIndexExprList getContiguousAllocIndexExprList() { return _ContiguousAllocIndexExprList; }
+    public ContiguousIndexRangeExprList getContiguousIndexRangeExprList() { return _ContiguousIndexRangeExprList; }
 
     public ContiguousAllocateStatement(IToken leftIToken, IToken rightIToken,
                                        ASTNodeToken _allocate,
                                        Ident _Ident,
-                                       ContiguousAllocIndexExprList _ContiguousAllocIndexExprList)
+                                       ContiguousIndexRangeExprList _ContiguousIndexRangeExprList)
     {
         super(leftIToken, rightIToken);
 
@@ -36,8 +36,8 @@ public class ContiguousAllocateStatement extends ASTNode implements IStatement
         ((ASTNode) _allocate).setParent(this);
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
-        this._ContiguousAllocIndexExprList = _ContiguousAllocIndexExprList;
-        ((ASTNode) _ContiguousAllocIndexExprList).setParent(this);
+        this._ContiguousIndexRangeExprList = _ContiguousIndexRangeExprList;
+        ((ASTNode) _ContiguousIndexRangeExprList).setParent(this);
         initialize();
     }
 
@@ -49,7 +49,7 @@ public class ContiguousAllocateStatement extends ASTNode implements IStatement
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_allocate);
         list.add(_Ident);
-        list.add(_ContiguousAllocIndexExprList);
+        list.add(_ContiguousIndexRangeExprList);
         return list;
     }
 
@@ -61,7 +61,7 @@ public class ContiguousAllocateStatement extends ASTNode implements IStatement
         ContiguousAllocateStatement other = (ContiguousAllocateStatement) o;
         if (! _allocate.equals(other._allocate)) return false;
         if (! _Ident.equals(other._Ident)) return false;
-        if (! _ContiguousAllocIndexExprList.equals(other._ContiguousAllocIndexExprList)) return false;
+        if (! _ContiguousIndexRangeExprList.equals(other._ContiguousIndexRangeExprList)) return false;
         return true;
     }
 
@@ -70,7 +70,7 @@ public class ContiguousAllocateStatement extends ASTNode implements IStatement
         int hash = super.hashCode();
         hash = hash * 31 + (_allocate.hashCode());
         hash = hash * 31 + (_Ident.hashCode());
-        hash = hash * 31 + (_ContiguousAllocIndexExprList.hashCode());
+        hash = hash * 31 + (_ContiguousIndexRangeExprList.hashCode());
         return hash;
     }
 
@@ -88,7 +88,7 @@ public class ContiguousAllocateStatement extends ASTNode implements IStatement
         {
             _allocate.accept(v);
             _Ident.accept(v);
-            _ContiguousAllocIndexExprList.accept(v);
+            _ContiguousIndexRangeExprList.accept(v);
         }
         v.endVisit(this);
     }

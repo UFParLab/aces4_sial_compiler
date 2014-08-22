@@ -590,7 +590,7 @@ public class SialLexer implements RuleAction, ILexer
             break;
             }
             //
-            // Rule 29:  Token ::= **
+            // Rule 29:  Token ::= * *
             //
             case 29: { 
             makeToken(SialParsersym.TK_EXP);

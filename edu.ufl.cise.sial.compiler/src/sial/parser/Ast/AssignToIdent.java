@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 105:  Statement ::= Ident AssignOp Expression
+ *<li>Rule 106:  Statement ::= Ident AssignOp Expression
  *</b>
  */
 public class AssignToIdent extends ASTNode implements IStatement

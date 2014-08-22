@@ -5,11 +5,13 @@ package sial.parser.Ast;
  *<b>
  *<ul>
  *<li>DataBlock
+ *<li>ContiguousDataBlock
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr
  *<li>IdentExpr
  *<li>DataBlockExpr
+ *<li>ContiguousDataBlockExpr
  *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident

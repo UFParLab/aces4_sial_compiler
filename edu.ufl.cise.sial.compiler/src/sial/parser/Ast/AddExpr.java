@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 131:  Expression ::= Expression + Term
+ *<li>Rule 133:  Expression ::= Expression + Term
  *</b>
  */
 public class AddExpr extends ASTNode implements IExpression
@@ -97,13 +97,9 @@ public class AddExpr extends ASTNode implements IExpression
         }
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
   public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+  public void addType(EType t){;
      typeSet.add(t);
   }
   public boolean hasType(EType t){

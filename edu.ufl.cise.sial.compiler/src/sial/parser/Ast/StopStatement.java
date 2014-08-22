@@ -12,12 +12,12 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 87:  ContiguousAllocIndexExpr ::= *$
+ *<li>Rule 65:  Statement ::= stop$
  *</b>
  */
-public class ContiguousAllocIndexWildExpr extends ASTNodeToken implements IContiguousAllocIndexExpr
+public class StopStatement extends ASTNodeToken implements IStatement
 {
-    public ContiguousAllocIndexWildExpr(IToken token) { super(token); initialize(); }
+    public StopStatement(IToken token) { super(token); initialize(); }
 
     public void accept(IAstVisitor v)
     {

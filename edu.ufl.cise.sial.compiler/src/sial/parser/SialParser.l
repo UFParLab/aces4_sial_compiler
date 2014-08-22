@@ -330,6 +330,7 @@ Terminals:
     assert_same
     broadcast_from
     sqrt
+    stop
     EOF_TOKEN
     SINGLE_LINE_COMMENT
     IDENTIFIER
@@ -412,29 +413,29 @@ Rules:
 62                       | WhereClauseList WhereClause EOLs $
 63     Statement$CallStatement ::= call $ Ident
 64     Statement$ReturnStatement ::= return $
-65     Statement$ServerBarrierStatement ::= server_barrier $
-66     Statement$SipBarrierStatement ::= sip_barrier $
-67     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
-68     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
-69     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
-70     Statement$Section ::= section $ EOLs $ StatementList endsection $
-71     Statement$ExitStatement ::= exit $
-72     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
-73     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
-74     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
-75     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
-76     AllocIndex$AllocIndexIdent ::= Ident
-77     AllocIndex$AllocIndexWildCard ::= * $
-78     AllocIndexList$$AllocIndex ::= AllocIndex
-79                      | AllocIndexList , $ AllocIndex
-80     AllocIndexListopt ::= $Empty
-81                         | [ AllocIndexList ]
-82     Statement$ContiguousAllocateStatement ::= allocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
-83     Statement$ContiguousDeallocateStatement ::= deallocate contiguous $ Ident [ $ ContiguousAllocIndexExprList ] $
-84     ContiguousAllocIndexExpr$ContiguousAllocIndexSingleExpr ::= Expression
-85     ContiguousAllocIndexExpr$ContiguousAllocIndexRangeExpr ::= Expression $StartExpr : Expression $EndExpr
-86     ContiguousAllocIndexExprList$$ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr
-87                                    | ContiguousAllocIndexExprList , $ ContiguousAllocIndexExpr
+65     Statement$StopStatement ::= stop $
+66     Statement$ServerBarrierStatement ::= server_barrier $
+67     Statement$SipBarrierStatement ::= sip_barrier $
+68     Statement$DoStatement ::= do $ Ident $StartIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex
+69     Statement$DoStatementSubIndex ::= do $ Ident $StartIndex in $ Ident $StartParentIndex EOLs $ WhereClauseList StatementList enddo $ Ident $EndIndex in $ Ident $EndParentIndex
+70     Statement$PardoStatement ::= pardo $ Indices $StartIndices EOLs $ WhereClauseList StatementList endpardo $ Indices $EndIndices
+71     Statement$Section ::= section $ EOLs $ StatementList endsection $
+72     Statement$ExitStatement ::= exit $
+73     Statement$IfStatement ::= if $ RelationalExpression EOLs $ StatementList endif $
+74     Statement$IfElseStatement ::= if $ RelationalExpression EOLs $ StatementList $ifStatements else $ EOLs $ StatementList $elseStatements endif $
+75     Statement$AllocateStatement ::= allocate $ Ident AllocIndexListopt
+76     Statement$DeallocateStatement ::= deallocate $ Ident AllocIndexListopt
+77     AllocIndex$AllocIndexIdent ::= Ident
+78     AllocIndex$AllocIndexWildCard ::= * $
+79     AllocIndexList$$AllocIndex ::= AllocIndex
+80                      | AllocIndexList , $ AllocIndex
+81     AllocIndexListopt ::= $Empty
+82                         | [ AllocIndexList ]
+83     Statement$ContiguousAllocateStatement ::= allocate contiguous $ Ident [ $ ContiguousIndexRangeExprList ] $
+84     Statement$ContiguousDeallocateStatement ::= deallocate contiguous $ Ident [ $ ContiguousIndexRangeExprList ] $
+85     ContiguousIndexRangeExpr$ContiguousIndexRangeExpr ::= Expression $StartExpr : Expression $EndExpr
+86     ContiguousIndexRangeExprList$$ContiguousIndexRangeExpr ::= ContiguousIndexRangeExpr
+87                                    | ContiguousIndexRangeExprList , $ ContiguousIndexRangeExpr
 88     Statement$CreateStatement ::= create $ Ident
 89     Statement$DeleteStatement ::= delete $ Ident
 90     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
@@ -445,61 +446,64 @@ Rules:
 95     Statement$DestroyStatement ::= destroy $ Ident
 96     Statement$PrintStatement ::= print $ Expression
 97     Statement$PrintlnStatement ::= println $ Expression
-98     Arg$DataBlockArg ::= DataBlock
-99     Arg$IdentArg ::= IDENTIFIER
-100    Arg$DoubleLitArg ::= DOUBLELIT
-101    Arg$IntLitArg ::= INTLIT
-102    ArgList$$Arg ::= $Empty
-103              | ArgList Arg
-104    Statement$ExecuteStatement ::= execute $ Ident ArgList
-105    Statement$AssignToIdent ::= Ident AssignOp Expression
-106    Statement$AssignToBlock ::= DataBlock AssignOp Expression
-107    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
-108    Statement$GPUAllocate ::= gpu_allocate $ Arg
-109    Statement$GPUFree ::= gpu_free $ Arg
-110    Statement$GPUPut ::= gpu_put $ Arg
-111    Statement$GPUGet ::= gpu_get $ Arg
-112    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
-113    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
-114    Statement$AssertSame ::= assert_same $ Ident
-115    Statement$BroadcastStatic ::= broadcast_from $ Primary Ident
-116    AssignOp$AssignOp ::= = $op
-117               | += $op
-118               | -= $op
-119               | *= $op
-120    DataBlock ::= Ident [ $ Indices ] $
-121    Indices$$Ident ::= Ident
-122              | Indices , $ Ident
-123    RelOp$RelOp ::= < $op
-124            | > $op
-125            | <= $op
-126            | >= $op
-127            | == $op
-128            | != $op
-129    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
-130    Expression ::= Term
-131    Expression$AddExpr ::= Expression + Term
-132    Expression$SubtractExpr ::= Expression - Term
-133    Term ::= ExponentExpression
-134    Term$StarExpr ::= Term * $ ExponentExpression
-135    Term$DivExpr ::= Term / $ ExponentExpression
-136    Term$TensorExpr ::= Term ^ ExponentExpression
-137    ExponentExpression ::= CastExpression
-138    ExponentExpression$ExponentExpr ::= CastExpression ** ExponentExpression
-139    CastExpression ::= UnaryExpression
-140    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
-141    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
-142    UnaryExpression ::= Primary
-143    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
-144    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
-145    Primary$ParenExpr ::= ( $ Expression ) $
-146    Primary$IntLitExpr ::= INTLIT
-147    Primary$DoubleLitExpr ::= DOUBLELIT
-148    Primary$IdentExpr ::= Ident
-149    Primary$DataBlockExpr ::= DataBlock
-150    Primary$StringLitExpr ::= StringLiteral
-151    StringLiteral ::= STRINGLIT
-152    Ident ::= IDENTIFIER
+98     Arg$ContiguousDataBlockArg ::= ContiguousDataBlock
+99     Arg$DataBlockArg ::= DataBlock
+100    Arg$IdentArg ::= IDENTIFIER
+101    Arg$DoubleLitArg ::= DOUBLELIT
+102    Arg$IntLitArg ::= INTLIT
+103    ArgList$$Arg ::= $Empty
+104              | ArgList Arg
+105    Statement$ExecuteStatement ::= execute $ Ident ArgList
+106    Statement$AssignToIdent ::= Ident AssignOp Expression
+107    Statement$AssignToBlock ::= DataBlock AssignOp Expression
+108    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
+109    Statement$GPUAllocate ::= gpu_allocate $ Arg
+110    Statement$GPUFree ::= gpu_free $ Arg
+111    Statement$GPUPut ::= gpu_put $ Arg
+112    Statement$GPUGet ::= gpu_get $ Arg
+113    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
+114    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
+115    Statement$AssertSame ::= assert_same $ Ident
+116    Statement$BroadcastStatic ::= broadcast_from $ Primary Ident
+117    AssignOp$AssignOp ::= = $op
+118               | += $op
+119               | -= $op
+120               | *= $op
+121    DataBlock$DataBlock ::= Ident [ $ Indices ] $
+122    Indices$$Ident ::= Ident
+123              | Indices , $ Ident
+124    ContiguousDataBlock$ContiguousDataBlock ::= Ident [ $ ContiguousIndexRangeExprList ] $
+125    RelOp$RelOp ::= < $op
+126            | > $op
+127            | <= $op
+128            | >= $op
+129            | == $op
+130            | != $op
+131    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
+132    Expression ::= Term
+133    Expression$AddExpr ::= Expression + Term
+134    Expression$SubtractExpr ::= Expression - Term
+135    Term ::= ExponentExpression
+136    Term$StarExpr ::= Term * $ ExponentExpression
+137    Term$DivExpr ::= Term / $ ExponentExpression
+138    Term$TensorExpr ::= Term ^ ExponentExpression
+139    ExponentExpression ::= CastExpression
+140    ExponentExpression$ExponentExpr ::= ExponentExpression ** CastExpression
+141    CastExpression ::= UnaryExpression
+142    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
+143    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
+144    UnaryExpression ::= Primary
+145    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
+146    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
+147    Primary$ParenExpr ::= ( $ Expression ) $
+148    Primary$IntLitExpr ::= INTLIT
+149    Primary$DoubleLitExpr ::= DOUBLELIT
+150    Primary$IdentExpr ::= Ident
+151    Primary$DataBlockExpr ::= DataBlock
+152    Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
+153    Primary$StringLitExpr ::= StringLiteral
+154    StringLiteral ::= STRINGLIT
+155    Ident ::= IDENTIFIER
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:27:1:27:5:302:306: Informative: The terminal cycle is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:36:1:36:8:351:358: Informative: The terminal prequest is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:72:1:72:11:686:696: Informative: The terminal print_index is useless.
@@ -604,6 +608,7 @@ sparse ::= sparse
 assert_same ::= assert_same
 broadcast_from ::= broadcast_from
 sqrt ::= sqrt
+stop ::= stop
 EOF_TOKEN ::= EOF_TOKEN
 SINGLE_LINE_COMMENT ::= SINGLE_LINE_COMMENT
 IDENTIFIER ::= IDENTIFIER
@@ -632,8 +637,8 @@ RelationalExpression ::= RelationalExpression
 Indices ::= Indices
 AllocIndex ::= AllocIndex
 AllocIndexList ::= AllocIndexList
-ContiguousAllocIndexExprList ::= ContiguousAllocIndexExprList
-ContiguousAllocIndexExpr ::= ContiguousAllocIndexExpr
+ContiguousIndexRangeExprList ::= ContiguousIndexRangeExprList
+ContiguousIndexRangeExpr ::= ContiguousIndexRangeExpr
 Expression ::= Expression
 DataBlock ::= DataBlock
 AssignOp ::= AssignOp
@@ -661,6 +666,7 @@ IntInitializationOpt ::=
 IdentOpt ::= 
 WhereClauseList ::= 
 AllocIndexListopt ::= 
+ContiguousDataBlock ::= 
 ArgList ::= 
 UnaryExpression ::= 
 
@@ -679,8 +685,11 @@ Statement ::= do Ident EOLs WhereClauseList StatementList  .enddo Ident
 Statement ::= if RelationalExpression EOLs StatementList  .endif 
 Statement ::= if RelationalExpression EOLs StatementList  .else EOLs 
               StatementList endif 
+ContiguousDataBlock ::= Ident LEFTSQUARE ContiguousIndexRangeExprList  .
+                        RIGHTSQUARE 
 Statement ::= gpu_on EOLs StatementList  .gpu_off 
 Statement ::= section EOLs StatementList  .endsection 
 Primary ::= LEFTPAREN Expression  .RIGHTPAREN 
 StatementList ::= StatementList Statement  .EOLs 
+ContiguousIndexRangeExpr ::= Expression  .COLON Expression 
 

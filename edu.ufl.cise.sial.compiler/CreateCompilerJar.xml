@@ -3,7 +3,7 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="/home/basbas/aces4_github/aces4/compiler/SialCompiler.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="/scratch/lfs/basbas/aces4_V2_fixed/aces4_sanders/compiler/SialCompiler.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="sial.compiler.SialCompiler"/>
                 <attribute name="Class-Path" value="."/>

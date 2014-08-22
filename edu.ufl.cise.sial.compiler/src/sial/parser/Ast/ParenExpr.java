@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 145:  Primary ::= ($ Expression )$
+ *<li>Rule 147:  Primary ::= ($ Expression )$
  *</b>
  */
 public class ParenExpr extends ASTNode implements IPrimary
@@ -77,7 +77,7 @@ public class ParenExpr extends ASTNode implements IPrimary
             _Expression.accept(v);
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
   public EnumSet<EType> getTypeSet() { return typeSet;}
   public void addType(EType t){
      typeSet.add(t);

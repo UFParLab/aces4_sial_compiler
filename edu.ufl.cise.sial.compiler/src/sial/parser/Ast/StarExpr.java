@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 134:  Term ::= Term *$ ExponentExpression
+ *<li>Rule 136:  Term ::= Term *$ ExponentExpression
  *</b>
  */
 public class StarExpr extends ASTNode implements ITerm
@@ -90,11 +90,7 @@ public class StarExpr extends ASTNode implements ITerm
     }
   EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
   public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+  public void addType(EType t){;
      typeSet.add(t);
   }
   public boolean hasType(EType t){

@@ -22,6 +22,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>IdentRangeVal
  *<li>CallStatement
  *<li>ReturnStatement
+ *<li>StopStatement
  *<li>ServerBarrierStatement
  *<li>SipBarrierStatement
  *<li>DoStatement
@@ -47,6 +48,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>DestroyStatement
  *<li>PrintStatement
  *<li>PrintlnStatement
+ *<li>ContiguousDataBlockArg
  *<li>DataBlockArg
  *<li>IdentArg
  *<li>DoubleLitArg
@@ -65,12 +67,14 @@ import org.eclipse.imp.parser.IParser;
  *<li>BroadcastStatic
  *<li>AssignOp
  *<li>DataBlock
+ *<li>ContiguousDataBlock
  *<li>RelOp
  *<li>ParenExpr
  *<li>IntLitExpr
  *<li>DoubleLitExpr
  *<li>IdentExpr
  *<li>DataBlockExpr
+ *<li>ContiguousDataBlockExpr
  *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident

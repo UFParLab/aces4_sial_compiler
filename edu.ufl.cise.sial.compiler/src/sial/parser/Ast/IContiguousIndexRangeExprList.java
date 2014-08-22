@@ -11,9 +11,9 @@ import org.eclipse.imp.parser.IParser;
   import java.util.EnumSet;
 
 /**
- * is implemented by <b>ContiguousAllocIndexExprList</b>
+ * is implemented by <b>ContiguousIndexRangeExprList</b>
  */
-public interface IContiguousAllocIndexExprList
+public interface IContiguousIndexRangeExprList
 {
     public IToken getLeftIToken();
     public IToken getRightIToken();

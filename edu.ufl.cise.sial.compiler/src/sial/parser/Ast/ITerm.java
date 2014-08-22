@@ -5,6 +5,7 @@ package sial.parser.Ast;
  *<b>
  *<ul>
  *<li>DataBlock
+ *<li>ContiguousDataBlock
  *<li>StarExpr
  *<li>DivExpr
  *<li>TensorExpr
@@ -18,6 +19,7 @@ package sial.parser.Ast;
  *<li>DoubleLitExpr
  *<li>IdentExpr
  *<li>DataBlockExpr
+ *<li>ContiguousDataBlockExpr
  *<li>StringLitExpr
  *<li>StringLiteral
  *<li>Ident

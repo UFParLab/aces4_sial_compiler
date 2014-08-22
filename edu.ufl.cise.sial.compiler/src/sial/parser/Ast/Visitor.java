@@ -102,6 +102,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(ReturnStatement n);
     void endVisit(ReturnStatement n);
 
+    boolean visit(StopStatement n);
+    void endVisit(StopStatement n);
+
     boolean visit(ServerBarrierStatement n);
     void endVisit(ServerBarrierStatement n);
 
@@ -153,14 +156,11 @@ public interface Visitor extends IAstVisitor
     boolean visit(ContiguousDeallocateStatement n);
     void endVisit(ContiguousDeallocateStatement n);
 
-    boolean visit(ContiguousAllocIndexSingleExpr n);
-    void endVisit(ContiguousAllocIndexSingleExpr n);
+    boolean visit(ContiguousIndexRangeExpr n);
+    void endVisit(ContiguousIndexRangeExpr n);
 
-    boolean visit(ContiguousAllocIndexRangeExpr n);
-    void endVisit(ContiguousAllocIndexRangeExpr n);
-
-    boolean visit(ContiguousAllocIndexExprList n);
-    void endVisit(ContiguousAllocIndexExprList n);
+    boolean visit(ContiguousIndexRangeExprList n);
+    void endVisit(ContiguousIndexRangeExprList n);
 
     boolean visit(CreateStatement n);
     void endVisit(CreateStatement n);
@@ -191,6 +191,9 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(PrintlnStatement n);
     void endVisit(PrintlnStatement n);
+
+    boolean visit(ContiguousDataBlockArg n);
+    void endVisit(ContiguousDataBlockArg n);
 
     boolean visit(DataBlockArg n);
     void endVisit(DataBlockArg n);
@@ -252,6 +255,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(IdentList n);
     void endVisit(IdentList n);
 
+    boolean visit(ContiguousDataBlock n);
+    void endVisit(ContiguousDataBlock n);
+
     boolean visit(RelOp n);
     void endVisit(RelOp n);
 
@@ -302,6 +308,9 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(DataBlockExpr n);
     void endVisit(DataBlockExpr n);
+
+    boolean visit(ContiguousDataBlockExpr n);
+    void endVisit(ContiguousDataBlockExpr n);
 
     boolean visit(StringLitExpr n);
     void endVisit(StringLitExpr n);

@@ -5,7 +5,7 @@ import lpg.runtime.*;
 public class SialKWLexer extends SialKWLexerprs
 {
     private char[] inputChars;
-    private final int keywordKind[] = new int[69 + 1];
+    private final int keywordKind[] = new int[70 + 1];
 
     public int[] getKeywordKinds() { return keywordKind; }
 
@@ -459,6 +459,11 @@ public class SialKWLexer extends SialKWLexerprs
         // Rule 69:  Keyword ::= s q r t
         //
         keywordKind[69] = (SialParsersym.TK_sqrt);
+
+        //
+        // Rule 70:  Keyword ::= s t o p
+        //
+        keywordKind[70] = (SialParsersym.TK_stop);
 
         for (int i = 0; i < keywordKind.length; i++)
         {

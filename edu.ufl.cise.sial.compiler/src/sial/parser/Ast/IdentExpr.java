@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 148:  Primary ::= Ident
+ *<li>Rule 150:  Primary ::= Ident
  *</b>
  */
 public class IdentExpr extends ASTNodeToken implements IPrimary
@@ -41,18 +41,14 @@ public class IdentExpr extends ASTNodeToken implements IPrimary
         v.visit(this);
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet;
+  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);
   public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){
-  if (typeSet == null){ 
-     typeSet = EnumSet.of(t);
-	 }
-     else typeSet.add(t);
+  public void addType(EType t){;
+     typeSet.add(t);
   }
   public boolean hasType(EType t){
   return typeSet.contains(t);
   }
- 
  
   IDec dec;
   public void setDec(IDec dec) { this.dec = dec; }

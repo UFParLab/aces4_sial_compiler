@@ -12,10 +12,10 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 85:  ContiguousAllocIndexExpr ::= Expression$StartExpr : Expression$EndExpr
+ *<li>Rule 85:  ContiguousIndexRangeExpr ::= Expression$StartExpr : Expression$EndExpr
  *</b>
  */
-public class ContiguousAllocIndexRangeExpr extends ASTNode implements IContiguousAllocIndexExpr
+public class ContiguousIndexRangeExpr extends ASTNode implements IContiguousIndexRangeExpr
 {
     private IExpression _StartExpr;
     private ASTNodeToken _COLON;
@@ -25,10 +25,10 @@ public class ContiguousAllocIndexRangeExpr extends ASTNode implements IContiguou
     public ASTNodeToken getCOLON() { return _COLON; }
     public IExpression getEndExpr() { return _EndExpr; }
 
-    public ContiguousAllocIndexRangeExpr(IToken leftIToken, IToken rightIToken,
-                                         IExpression _StartExpr,
-                                         ASTNodeToken _COLON,
-                                         IExpression _EndExpr)
+    public ContiguousIndexRangeExpr(IToken leftIToken, IToken rightIToken,
+                                    IExpression _StartExpr,
+                                    ASTNodeToken _COLON,
+                                    IExpression _EndExpr)
     {
         super(leftIToken, rightIToken);
 
@@ -56,9 +56,9 @@ public class ContiguousAllocIndexRangeExpr extends ASTNode implements IContiguou
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof ContiguousAllocIndexRangeExpr)) return false;
+        if (! (o instanceof ContiguousIndexRangeExpr)) return false;
         if (! super.equals(o)) return false;
-        ContiguousAllocIndexRangeExpr other = (ContiguousAllocIndexRangeExpr) o;
+        ContiguousIndexRangeExpr other = (ContiguousIndexRangeExpr) o;
         if (! _StartExpr.equals(other._StartExpr)) return false;
         if (! _COLON.equals(other._COLON)) return false;
         if (! _EndExpr.equals(other._EndExpr)) return false;

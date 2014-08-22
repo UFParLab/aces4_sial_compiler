@@ -7,24 +7,6 @@
     <thead><tr bgcolor="#ccccff"><td><b>Non-terminal</b></td><td><b>Description</b></td><td><b>Rules</b></td></tr></thead>
   <tbody>
   <tr>
-    <td width="10%"><a name="-Statement"><b>-Statement</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p>collective <a href="#Ident">Ident</a> <a href="#AssignOp">AssignOp</a> <a href="#Ident">Ident</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="//Statement"><b>//Statement</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p>collective <a href="#Ident">Ident</a> <a href="#AssignOp">AssignOp</a> <a href="#Ident">Ident</a></p>
-    </td>
-  </tr>
-  <tr>
     <td width="10%"><a name="AllocIndex"><b>AllocIndex</b></a>
     </td>
     <td width="50%">
@@ -116,7 +98,16 @@
     </td>
   </tr>
   <tr>
-    <td width="10%"><a name="ContiguousAllocIndexExpr"><b>ContiguousAllocIndexExpr</b></a>
+    <td width="10%"><a name="ContiguousDataBlock"><b>ContiguousDataBlock</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a> '[' <a href="#ContiguousIndexRangeExprList">ContiguousIndexRangeExprList</a> ']'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ContiguousIndexRangeExpr"><b>ContiguousIndexRangeExpr</b></a>
     </td>
     <td width="50%">
     </td>
@@ -125,13 +116,13 @@
     </td>
   </tr>
   <tr>
-    <td width="10%"><a name="ContiguousAllocIndexExprList"><b>ContiguousAllocIndexExprList</b></a>
+    <td width="10%"><a name="ContiguousIndexRangeExprList"><b>ContiguousIndexRangeExprList</b></a>
     </td>
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
-      <p><a href="#ContiguousAllocIndexExprList">ContiguousAllocIndexExprList</a> ',' <a href="#ContiguousAllocIndexExpr">ContiguousAllocIndexExpr</a></p>
+      <p><a href="#ContiguousIndexRangeExpr">ContiguousIndexRangeExpr</a></p>
+      <p><a href="#ContiguousIndexRangeExprList">ContiguousIndexRangeExprList</a> ',' <a href="#ContiguousIndexRangeExpr">ContiguousIndexRangeExpr</a></p>
     </td>
   </tr>
   <tr>
@@ -214,7 +205,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#CastExpression">CastExpression</a> '**' <a href="#ExponentExpression">ExponentExpression</a></p>
+      <p><a href="#ExponentExpression">ExponentExpression</a> '**' <a href="#CastExpression">CastExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -391,6 +382,7 @@
       <p>a s s e r t _ s a m e</p>
       <p>b r o a d c a s t _ f r o m</p>
       <p>s q r t</p>
+      <p>s t o p</p>
     </td>
   </tr>
   <tr>
@@ -548,7 +540,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+      <p>special <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
     </td>
   </tr>
   <tr>
@@ -631,7 +623,7 @@
       <p>'['</p>
       <p>']'</p>
       <p>':'</p>
-      <p>'**'</p>
+      <p>'*' '*'</p>
     </td>
   </tr>
   <tr>
@@ -906,7 +898,7 @@
     <td width="40%">
       <p><a href="#letter">letter</a></p>
       <p><a href="#digit">digit</a></p>
-      <p><a href="#special">special</a></p>
+      <p>special</p>
       <p><a href="#whiteChar">whiteChar</a></p>
     </td>
   </tr>
@@ -968,16 +960,6 @@
     <td width="40%">
       <p>'#'</p>
       <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="special"><b>special</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#specialNotDQ">specialNotDQ</a></p>
-      <p>'&quot;'</p>
     </td>
   </tr>
   <tr>

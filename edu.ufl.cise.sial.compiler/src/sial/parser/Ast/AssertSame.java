@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 114:  Statement ::= assert_same$ Ident
+ *<li>Rule 115:  Statement ::= assert_same$ Ident
  *</b>
  */
 public class AssertSame extends ASTNode implements IStatement

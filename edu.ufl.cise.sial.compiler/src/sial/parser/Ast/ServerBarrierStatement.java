@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 65:  Statement ::= server_barrier$
+ *<li>Rule 66:  Statement ::= server_barrier$
  *</b>
  */
 public class ServerBarrierStatement extends ASTNodeToken implements IStatement

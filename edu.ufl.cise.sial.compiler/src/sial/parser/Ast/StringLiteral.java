@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 151:  StringLiteral ::= STRINGLIT
+ *<li>Rule 154:  StringLiteral ::= STRINGLIT
  *</b>
  */
 public class StringLiteral extends ASTNodeToken implements IStringLiteral

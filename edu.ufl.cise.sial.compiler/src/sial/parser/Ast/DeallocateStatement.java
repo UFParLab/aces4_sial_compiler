@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 75:  Statement ::= deallocate$ Ident AllocIndexListopt
+ *<li>Rule 76:  Statement ::= deallocate$ Ident AllocIndexListopt
  *</b>
  */
 public class DeallocateStatement extends ASTNode implements IStatement

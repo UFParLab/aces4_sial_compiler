@@ -12,8 +12,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 102:  ArgList ::= $Empty
- *<li>Rule 103:  ArgList ::= ArgList Arg
+ *<li>Rule 103:  ArgList ::= $Empty
+ *<li>Rule 104:  ArgList ::= ArgList Arg
  *</b>
  */
 public class ArgList extends AbstractASTNodeList implements IArgList

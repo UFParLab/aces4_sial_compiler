@@ -6,6 +6,7 @@ package sial.parser.Ast;
  *<ul>
  *<li>CallStatement
  *<li>ReturnStatement
+ *<li>StopStatement
  *<li>ServerBarrierStatement
  *<li>SipBarrierStatement
  *<li>DoStatement

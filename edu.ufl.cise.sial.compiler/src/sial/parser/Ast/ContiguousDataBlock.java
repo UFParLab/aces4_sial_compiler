@@ -12,22 +12,27 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 72:  Statement ::= cycle$ Ident
+ *<li>Rule 124:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
  *</b>
  */
-public class CycleStatement extends ASTNode implements IStatement
+public class ContiguousDataBlock extends ASTNode implements IContiguousDataBlock
 {
     private Ident _Ident;
+    private ContiguousIndexRangeExprList _ContiguousIndexRangeExprList;
 
     public Ident getIdent() { return _Ident; }
+    public ContiguousIndexRangeExprList getContiguousIndexRangeExprList() { return _ContiguousIndexRangeExprList; }
 
-    public CycleStatement(IToken leftIToken, IToken rightIToken,
-                          Ident _Ident)
+    public ContiguousDataBlock(IToken leftIToken, IToken rightIToken,
+                               Ident _Ident,
+                               ContiguousIndexRangeExprList _ContiguousIndexRangeExprList)
     {
         super(leftIToken, rightIToken);
 
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
+        this._ContiguousIndexRangeExprList = _ContiguousIndexRangeExprList;
+        ((ASTNode) _ContiguousIndexRangeExprList).setParent(this);
         initialize();
     }
 
@@ -38,16 +43,18 @@ public class CycleStatement extends ASTNode implements IStatement
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Ident);
+        list.add(_ContiguousIndexRangeExprList);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof CycleStatement)) return false;
+        if (! (o instanceof ContiguousDataBlock)) return false;
         if (! super.equals(o)) return false;
-        CycleStatement other = (CycleStatement) o;
+        ContiguousDataBlock other = (ContiguousDataBlock) o;
         if (! _Ident.equals(other._Ident)) return false;
+        if (! _ContiguousIndexRangeExprList.equals(other._ContiguousIndexRangeExprList)) return false;
         return true;
     }
 
@@ -55,6 +62,7 @@ public class CycleStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_Ident.hashCode());
+        hash = hash * 31 + (_ContiguousIndexRangeExprList.hashCode());
         return hash;
     }
 
@@ -69,7 +77,10 @@ public class CycleStatement extends ASTNode implements IStatement
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
+        {
             _Ident.accept(v);
+            _ContiguousIndexRangeExprList.accept(v);
+        }
         v.endVisit(this);
     }
 }

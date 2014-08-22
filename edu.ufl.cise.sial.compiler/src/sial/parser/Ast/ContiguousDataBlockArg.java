@@ -12,22 +12,22 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 84:  ContiguousAllocIndexExpr ::= Expression
+ *<li>Rule 98:  Arg ::= ContiguousDataBlock
  *</b>
  */
-public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguousAllocIndexExpr
+public class ContiguousDataBlockArg extends ASTNode implements IArg
 {
-    private IExpression _Expression;
+    private ContiguousDataBlock _ContiguousDataBlock;
 
-    public IExpression getExpression() { return _Expression; }
+    public ContiguousDataBlock getContiguousDataBlock() { return _ContiguousDataBlock; }
 
-    public ContiguousAllocIndexSingleExpr(IToken leftIToken, IToken rightIToken,
-                                          IExpression _Expression)
+    public ContiguousDataBlockArg(IToken leftIToken, IToken rightIToken,
+                                  ContiguousDataBlock _ContiguousDataBlock)
     {
         super(leftIToken, rightIToken);
 
-        this._Expression = _Expression;
-        ((ASTNode) _Expression).setParent(this);
+        this._ContiguousDataBlock = _ContiguousDataBlock;
+        ((ASTNode) _ContiguousDataBlock).setParent(this);
         initialize();
     }
 
@@ -37,24 +37,24 @@ public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguo
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Expression);
+        list.add(_ContiguousDataBlock);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof ContiguousAllocIndexSingleExpr)) return false;
+        if (! (o instanceof ContiguousDataBlockArg)) return false;
         if (! super.equals(o)) return false;
-        ContiguousAllocIndexSingleExpr other = (ContiguousAllocIndexSingleExpr) o;
-        if (! _Expression.equals(other._Expression)) return false;
+        ContiguousDataBlockArg other = (ContiguousDataBlockArg) o;
+        if (! _ContiguousDataBlock.equals(other._ContiguousDataBlock)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Expression.hashCode());
+        hash = hash * 31 + (_ContiguousDataBlock.hashCode());
         return hash;
     }
 
@@ -69,7 +69,7 @@ public class ContiguousAllocIndexSingleExpr extends ASTNode implements IContiguo
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _Expression.accept(v);
+            _ContiguousDataBlock.accept(v);
         v.endVisit(this);
     }
 }

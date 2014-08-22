@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 138:  ExponentExpression ::= CastExpression ** ExponentExpression
+ *<li>Rule 140:  ExponentExpression ::= ExponentExpression ** CastExpression
  *</b>
  */
 public class ExponentExpr extends ASTNode implements IExponentExpression
@@ -21,28 +21,28 @@ public class ExponentExpr extends ASTNode implements IExponentExpression
     private SialParser environment;
     public SialParser getEnvironment() { return environment; }
 
-    private ICastExpression _CastExpression;
-    private ASTNodeToken _EXP;
     private IExponentExpression _ExponentExpression;
+    private ASTNodeToken _EXP;
+    private ICastExpression _CastExpression;
 
-    public ICastExpression getCastExpression() { return _CastExpression; }
-    public ASTNodeToken getEXP() { return _EXP; }
     public IExponentExpression getExponentExpression() { return _ExponentExpression; }
+    public ASTNodeToken getEXP() { return _EXP; }
+    public ICastExpression getCastExpression() { return _CastExpression; }
 
     public ExponentExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                        ICastExpression _CastExpression,
+                        IExponentExpression _ExponentExpression,
                         ASTNodeToken _EXP,
-                        IExponentExpression _ExponentExpression)
+                        ICastExpression _CastExpression)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
-        this._CastExpression = _CastExpression;
-        ((ASTNode) _CastExpression).setParent(this);
-        this._EXP = _EXP;
-        ((ASTNode) _EXP).setParent(this);
         this._ExponentExpression = _ExponentExpression;
         ((ASTNode) _ExponentExpression).setParent(this);
+        this._EXP = _EXP;
+        ((ASTNode) _EXP).setParent(this);
+        this._CastExpression = _CastExpression;
+        ((ASTNode) _CastExpression).setParent(this);
         initialize();
     }
 
@@ -52,9 +52,9 @@ public class ExponentExpr extends ASTNode implements IExponentExpression
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_CastExpression);
-        list.add(_EXP);
         list.add(_ExponentExpression);
+        list.add(_EXP);
+        list.add(_CastExpression);
         return list;
     }
 
@@ -64,18 +64,18 @@ public class ExponentExpr extends ASTNode implements IExponentExpression
         if (! (o instanceof ExponentExpr)) return false;
         if (! super.equals(o)) return false;
         ExponentExpr other = (ExponentExpr) o;
-        if (! _CastExpression.equals(other._CastExpression)) return false;
-        if (! _EXP.equals(other._EXP)) return false;
         if (! _ExponentExpression.equals(other._ExponentExpression)) return false;
+        if (! _EXP.equals(other._EXP)) return false;
+        if (! _CastExpression.equals(other._CastExpression)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_CastExpression.hashCode());
-        hash = hash * 31 + (_EXP.hashCode());
         hash = hash * 31 + (_ExponentExpression.hashCode());
+        hash = hash * 31 + (_EXP.hashCode());
+        hash = hash * 31 + (_CastExpression.hashCode());
         return hash;
     }
 
@@ -91,19 +91,15 @@ public class ExponentExpr extends ASTNode implements IExponentExpression
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            _CastExpression.accept(v);
-            _EXP.accept(v);
             _ExponentExpression.accept(v);
+            _EXP.accept(v);
+            _CastExpression.accept(v);
         }
         v.endVisit(this);
     }
   EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
   public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){
-//	  if (typeSet == null){ 
-//	     typeSet = EnumSet.of(t);
-//		 }
-//	     else typeSet.add(t);
+  public void addType(EType t){;
      typeSet.add(t);
   }
   public boolean hasType(EType t){

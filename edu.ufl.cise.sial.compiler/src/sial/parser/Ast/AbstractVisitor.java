@@ -105,6 +105,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ReturnStatement n) { unimplementedVisitor("visit(ReturnStatement)"); return true; }
     public void endVisit(ReturnStatement n) { unimplementedVisitor("endVisit(ReturnStatement)"); }
 
+    public boolean visit(StopStatement n) { unimplementedVisitor("visit(StopStatement)"); return true; }
+    public void endVisit(StopStatement n) { unimplementedVisitor("endVisit(StopStatement)"); }
+
     public boolean visit(ServerBarrierStatement n) { unimplementedVisitor("visit(ServerBarrierStatement)"); return true; }
     public void endVisit(ServerBarrierStatement n) { unimplementedVisitor("endVisit(ServerBarrierStatement)"); }
 
@@ -156,14 +159,11 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(ContiguousDeallocateStatement n) { unimplementedVisitor("visit(ContiguousDeallocateStatement)"); return true; }
     public void endVisit(ContiguousDeallocateStatement n) { unimplementedVisitor("endVisit(ContiguousDeallocateStatement)"); }
 
-    public boolean visit(ContiguousAllocIndexSingleExpr n) { unimplementedVisitor("visit(ContiguousAllocIndexSingleExpr)"); return true; }
-    public void endVisit(ContiguousAllocIndexSingleExpr n) { unimplementedVisitor("endVisit(ContiguousAllocIndexSingleExpr)"); }
+    public boolean visit(ContiguousIndexRangeExpr n) { unimplementedVisitor("visit(ContiguousIndexRangeExpr)"); return true; }
+    public void endVisit(ContiguousIndexRangeExpr n) { unimplementedVisitor("endVisit(ContiguousIndexRangeExpr)"); }
 
-    public boolean visit(ContiguousAllocIndexRangeExpr n) { unimplementedVisitor("visit(ContiguousAllocIndexRangeExpr)"); return true; }
-    public void endVisit(ContiguousAllocIndexRangeExpr n) { unimplementedVisitor("endVisit(ContiguousAllocIndexRangeExpr)"); }
-
-    public boolean visit(ContiguousAllocIndexExprList n) { unimplementedVisitor("visit(ContiguousAllocIndexExprList)"); return true; }
-    public void endVisit(ContiguousAllocIndexExprList n) { unimplementedVisitor("endVisit(ContiguousAllocIndexExprList)"); }
+    public boolean visit(ContiguousIndexRangeExprList n) { unimplementedVisitor("visit(ContiguousIndexRangeExprList)"); return true; }
+    public void endVisit(ContiguousIndexRangeExprList n) { unimplementedVisitor("endVisit(ContiguousIndexRangeExprList)"); }
 
     public boolean visit(CreateStatement n) { unimplementedVisitor("visit(CreateStatement)"); return true; }
     public void endVisit(CreateStatement n) { unimplementedVisitor("endVisit(CreateStatement)"); }
@@ -194,6 +194,9 @@ public abstract class AbstractVisitor implements Visitor
 
     public boolean visit(PrintlnStatement n) { unimplementedVisitor("visit(PrintlnStatement)"); return true; }
     public void endVisit(PrintlnStatement n) { unimplementedVisitor("endVisit(PrintlnStatement)"); }
+
+    public boolean visit(ContiguousDataBlockArg n) { unimplementedVisitor("visit(ContiguousDataBlockArg)"); return true; }
+    public void endVisit(ContiguousDataBlockArg n) { unimplementedVisitor("endVisit(ContiguousDataBlockArg)"); }
 
     public boolean visit(DataBlockArg n) { unimplementedVisitor("visit(DataBlockArg)"); return true; }
     public void endVisit(DataBlockArg n) { unimplementedVisitor("endVisit(DataBlockArg)"); }
@@ -255,6 +258,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(IdentList n) { unimplementedVisitor("visit(IdentList)"); return true; }
     public void endVisit(IdentList n) { unimplementedVisitor("endVisit(IdentList)"); }
 
+    public boolean visit(ContiguousDataBlock n) { unimplementedVisitor("visit(ContiguousDataBlock)"); return true; }
+    public void endVisit(ContiguousDataBlock n) { unimplementedVisitor("endVisit(ContiguousDataBlock)"); }
+
     public boolean visit(RelOp n) { unimplementedVisitor("visit(RelOp)"); return true; }
     public void endVisit(RelOp n) { unimplementedVisitor("endVisit(RelOp)"); }
 
@@ -306,6 +312,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(DataBlockExpr n) { unimplementedVisitor("visit(DataBlockExpr)"); return true; }
     public void endVisit(DataBlockExpr n) { unimplementedVisitor("endVisit(DataBlockExpr)"); }
 
+    public boolean visit(ContiguousDataBlockExpr n) { unimplementedVisitor("visit(ContiguousDataBlockExpr)"); return true; }
+    public void endVisit(ContiguousDataBlockExpr n) { unimplementedVisitor("endVisit(ContiguousDataBlockExpr)"); }
+
     public boolean visit(StringLitExpr n) { unimplementedVisitor("visit(StringLitExpr)"); return true; }
     public void endVisit(StringLitExpr n) { unimplementedVisitor("endVisit(StringLitExpr)"); }
 
@@ -347,6 +356,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof WhereClauseList) return visit((WhereClauseList) n);
         else if (n instanceof CallStatement) return visit((CallStatement) n);
         else if (n instanceof ReturnStatement) return visit((ReturnStatement) n);
+        else if (n instanceof StopStatement) return visit((StopStatement) n);
         else if (n instanceof ServerBarrierStatement) return visit((ServerBarrierStatement) n);
         else if (n instanceof SipBarrierStatement) return visit((SipBarrierStatement) n);
         else if (n instanceof DoStatement) return visit((DoStatement) n);
@@ -364,9 +374,8 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AllocIndexListopt) return visit((AllocIndexListopt) n);
         else if (n instanceof ContiguousAllocateStatement) return visit((ContiguousAllocateStatement) n);
         else if (n instanceof ContiguousDeallocateStatement) return visit((ContiguousDeallocateStatement) n);
-        else if (n instanceof ContiguousAllocIndexSingleExpr) return visit((ContiguousAllocIndexSingleExpr) n);
-        else if (n instanceof ContiguousAllocIndexRangeExpr) return visit((ContiguousAllocIndexRangeExpr) n);
-        else if (n instanceof ContiguousAllocIndexExprList) return visit((ContiguousAllocIndexExprList) n);
+        else if (n instanceof ContiguousIndexRangeExpr) return visit((ContiguousIndexRangeExpr) n);
+        else if (n instanceof ContiguousIndexRangeExprList) return visit((ContiguousIndexRangeExprList) n);
         else if (n instanceof CreateStatement) return visit((CreateStatement) n);
         else if (n instanceof DeleteStatement) return visit((DeleteStatement) n);
         else if (n instanceof PutStatement) return visit((PutStatement) n);
@@ -377,6 +386,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DestroyStatement) return visit((DestroyStatement) n);
         else if (n instanceof PrintStatement) return visit((PrintStatement) n);
         else if (n instanceof PrintlnStatement) return visit((PrintlnStatement) n);
+        else if (n instanceof ContiguousDataBlockArg) return visit((ContiguousDataBlockArg) n);
         else if (n instanceof DataBlockArg) return visit((DataBlockArg) n);
         else if (n instanceof IdentArg) return visit((IdentArg) n);
         else if (n instanceof DoubleLitArg) return visit((DoubleLitArg) n);
@@ -397,6 +407,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AssignOp) return visit((AssignOp) n);
         else if (n instanceof DataBlock) return visit((DataBlock) n);
         else if (n instanceof IdentList) return visit((IdentList) n);
+        else if (n instanceof ContiguousDataBlock) return visit((ContiguousDataBlock) n);
         else if (n instanceof RelOp) return visit((RelOp) n);
         else if (n instanceof RelationalExpression) return visit((RelationalExpression) n);
         else if (n instanceof AddExpr) return visit((AddExpr) n);
@@ -414,6 +425,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoubleLitExpr) return visit((DoubleLitExpr) n);
         else if (n instanceof IdentExpr) return visit((IdentExpr) n);
         else if (n instanceof DataBlockExpr) return visit((DataBlockExpr) n);
+        else if (n instanceof ContiguousDataBlockExpr) return visit((ContiguousDataBlockExpr) n);
         else if (n instanceof StringLitExpr) return visit((StringLitExpr) n);
         else if (n instanceof StringLiteral) return visit((StringLiteral) n);
         else if (n instanceof Ident) return visit((Ident) n);
@@ -450,6 +462,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof WhereClauseList) endVisit((WhereClauseList) n);
         else if (n instanceof CallStatement) endVisit((CallStatement) n);
         else if (n instanceof ReturnStatement) endVisit((ReturnStatement) n);
+        else if (n instanceof StopStatement) endVisit((StopStatement) n);
         else if (n instanceof ServerBarrierStatement) endVisit((ServerBarrierStatement) n);
         else if (n instanceof SipBarrierStatement) endVisit((SipBarrierStatement) n);
         else if (n instanceof DoStatement) endVisit((DoStatement) n);
@@ -467,9 +480,8 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AllocIndexListopt) endVisit((AllocIndexListopt) n);
         else if (n instanceof ContiguousAllocateStatement) endVisit((ContiguousAllocateStatement) n);
         else if (n instanceof ContiguousDeallocateStatement) endVisit((ContiguousDeallocateStatement) n);
-        else if (n instanceof ContiguousAllocIndexSingleExpr) endVisit((ContiguousAllocIndexSingleExpr) n);
-        else if (n instanceof ContiguousAllocIndexRangeExpr) endVisit((ContiguousAllocIndexRangeExpr) n);
-        else if (n instanceof ContiguousAllocIndexExprList) endVisit((ContiguousAllocIndexExprList) n);
+        else if (n instanceof ContiguousIndexRangeExpr) endVisit((ContiguousIndexRangeExpr) n);
+        else if (n instanceof ContiguousIndexRangeExprList) endVisit((ContiguousIndexRangeExprList) n);
         else if (n instanceof CreateStatement) endVisit((CreateStatement) n);
         else if (n instanceof DeleteStatement) endVisit((DeleteStatement) n);
         else if (n instanceof PutStatement) endVisit((PutStatement) n);
@@ -480,6 +492,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DestroyStatement) endVisit((DestroyStatement) n);
         else if (n instanceof PrintStatement) endVisit((PrintStatement) n);
         else if (n instanceof PrintlnStatement) endVisit((PrintlnStatement) n);
+        else if (n instanceof ContiguousDataBlockArg) endVisit((ContiguousDataBlockArg) n);
         else if (n instanceof DataBlockArg) endVisit((DataBlockArg) n);
         else if (n instanceof IdentArg) endVisit((IdentArg) n);
         else if (n instanceof DoubleLitArg) endVisit((DoubleLitArg) n);
@@ -500,6 +513,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AssignOp) endVisit((AssignOp) n);
         else if (n instanceof DataBlock) endVisit((DataBlock) n);
         else if (n instanceof IdentList) endVisit((IdentList) n);
+        else if (n instanceof ContiguousDataBlock) endVisit((ContiguousDataBlock) n);
         else if (n instanceof RelOp) endVisit((RelOp) n);
         else if (n instanceof RelationalExpression) endVisit((RelationalExpression) n);
         else if (n instanceof AddExpr) endVisit((AddExpr) n);
@@ -517,6 +531,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoubleLitExpr) endVisit((DoubleLitExpr) n);
         else if (n instanceof IdentExpr) endVisit((IdentExpr) n);
         else if (n instanceof DataBlockExpr) endVisit((DataBlockExpr) n);
+        else if (n instanceof ContiguousDataBlockExpr) endVisit((ContiguousDataBlockExpr) n);
         else if (n instanceof StringLitExpr) endVisit((StringLitExpr) n);
         else if (n instanceof StringLiteral) endVisit((StringLiteral) n);
         else if (n instanceof Ident) endVisit((Ident) n);

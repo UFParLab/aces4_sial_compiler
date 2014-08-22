@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 70:  Statement ::= section$ EOLs$ StatementList endsection$
+ *<li>Rule 71:  Statement ::= section$ EOLs$ StatementList endsection$
  *</b>
  */
 public class Section extends ASTNode implements IStatement

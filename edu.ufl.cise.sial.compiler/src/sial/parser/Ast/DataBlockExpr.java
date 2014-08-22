@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 149:  Primary ::= DataBlock
+ *<li>Rule 151:  Primary ::= DataBlock
  *</b>
  */
 public class DataBlockExpr extends ASTNode implements IPrimary

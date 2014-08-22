@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 99:  Arg ::= IDENTIFIER
+ *<li>Rule 100:  Arg ::= IDENTIFIER
  *</b>
  */
 public class IdentArg extends ASTNodeToken implements IArg

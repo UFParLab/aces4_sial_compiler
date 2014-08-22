@@ -13,26 +13,26 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 142:  CastExpression ::= ($ int$ )$ CastExpression
+ *<li>Rule 152:  Primary ::= ContiguousDataBlock
  *</b>
  */
-public class IntCastExpr extends ASTNode implements ICastExpression
+public class ContiguousDataBlockExpr extends ASTNode implements IPrimary
 {
     private SialParser environment;
     public SialParser getEnvironment() { return environment; }
 
-    private ICastExpression _CastExpression;
+    private ContiguousDataBlock _ContiguousDataBlock;
 
-    public ICastExpression getCastExpression() { return _CastExpression; }
+    public ContiguousDataBlock getContiguousDataBlock() { return _ContiguousDataBlock; }
 
-    public IntCastExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                       ICastExpression _CastExpression)
+    public ContiguousDataBlockExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
+                                   ContiguousDataBlock _ContiguousDataBlock)
     {
         super(leftIToken, rightIToken);
 
         this.environment = environment;
-        this._CastExpression = _CastExpression;
-        ((ASTNode) _CastExpression).setParent(this);
+        this._ContiguousDataBlock = _ContiguousDataBlock;
+        ((ASTNode) _ContiguousDataBlock).setParent(this);
         initialize();
     }
 
@@ -42,24 +42,24 @@ public class IntCastExpr extends ASTNode implements ICastExpression
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_CastExpression);
+        list.add(_ContiguousDataBlock);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof IntCastExpr)) return false;
+        if (! (o instanceof ContiguousDataBlockExpr)) return false;
         if (! super.equals(o)) return false;
-        IntCastExpr other = (IntCastExpr) o;
-        if (! _CastExpression.equals(other._CastExpression)) return false;
+        ContiguousDataBlockExpr other = (ContiguousDataBlockExpr) o;
+        if (! _ContiguousDataBlock.equals(other._ContiguousDataBlock)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_CastExpression.hashCode());
+        hash = hash * 31 + (_ContiguousDataBlock.hashCode());
         return hash;
     }
 
@@ -74,13 +74,16 @@ public class IntCastExpr extends ASTNode implements ICastExpression
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _CastExpression.accept(v);
+            _ContiguousDataBlock.accept(v);
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+  EnumSet<EType>  typeSet;
   public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){;
-     typeSet.add(t);
+  public void addType(EType t){
+  if (typeSet == null){ 
+     typeSet = EnumSet.of(t);
+	 }
+     else typeSet.add(t);
   }
   public boolean hasType(EType t){
   return typeSet.contains(t);
