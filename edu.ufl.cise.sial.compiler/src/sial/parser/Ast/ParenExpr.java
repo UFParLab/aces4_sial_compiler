@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 147:  Primary ::= ($ Expression )$
+ *<li>Rule 148:  Primary ::= ($ Expression )$
  *</b>
  */
 public class ParenExpr extends ASTNode implements IPrimary

@@ -33,6 +33,7 @@ package sial.parser.Ast;
  *<li>ExecuteStatement
  *<li>AssignToIdent
  *<li>AssignToBlock
+ *<li>AssignToContigousDataBlock
  *<li>GPUSection
  *<li>GPUAllocate
  *<li>GPUFree

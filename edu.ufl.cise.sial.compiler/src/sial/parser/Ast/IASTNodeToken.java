@@ -56,6 +56,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>ExecuteStatement
  *<li>AssignToIdent
  *<li>AssignToBlock
+ *<li>AssignToContigousDataBlock
  *<li>GPUSection
  *<li>GPUAllocate
  *<li>GPUFree

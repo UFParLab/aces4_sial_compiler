@@ -3,9 +3,9 @@
 \usepackage[landscape, margin=1.0in]{geometry}
 \usepackage{longtable}\begin{document}
 \centering
-\begin{longtable}{r p{1in} p{.5in} p{.5in} p{.5in}  p{2in}}
+\begin{longtable}{| l | p{1.25in} | p{1.5in} | p{1.5in} | p{1.5in} |  p{2.5in} |}
 \hline\hline
-opcode & name & arg0 & arg1 & selector array & comment \\
+opcode & name & arg0 & arg1 & selector array & description \\
 \hline\hline
 100&goto_op&optable slot of destination&&&unconditional jump\\
 \hline
@@ -49,9 +49,9 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 120&deallocate_op&rank&array_table_slot&block selector indices&deallocate block(s) of local array\\
 \hline
-121&allocate_contiguous_op&array&rank&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
+121&allocate_contiguous_op&rank&arra_table_slot&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
 \hline
-122&deallocate_contiguous_op&array&rank&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
+122&deallocate_contiguous_op&rank&array_table_slot&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
 \hline
 123&get_op&array table slot of desired block&&selector slots&get block selector from selector stack and send get request to appropriate server (args are redundant)\\
 \hline
@@ -139,67 +139,71 @@ opcode & name & arg0 & arg1 & selector array & comment \\
 \hline
 165&block_fill_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Sets each element of the block to the given value\\
 \hline
-166&scale_block_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value\\
+166&block_scale_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value\\
 \hline
-167&accumulate_scalar_into_block_op&lhs rank&lhs arrayTable slot&lhs selector indices&gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block\\
+167&block_scale_assign_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value and leaves the result in the lhs block\\
 \hline
-168&block_add_op&lhs rank&lhs array slot&lhs selector&adds two blocks together element-wise and puts the result in the lhs array\\
+168&block_scale_accumulate_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value add to the lhs block\\
 \hline
-169&block_subtract_op&lhs rank&lhs array slot&lhs selector&subtracts two blocks elementwise and puts the result in the lhs array\\
+169&block_accumulate_scalar_op&lhs rank&lhs slot&lhs selector indices&gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block\\
 \hline
-170&block_contract_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and puts the result in the lhs array\\
+170&block_add_op&lhs rank&lhs array slot&lhs selector&adds two blocks together element-wise and puts the result in the lhs array\\
 \hline
-171&block_contract_accumulate_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and accumulates the result in the lhs array\\
+171&block_subtract_op&lhs rank&lhs array slot&lhs selector&subtracts two blocks elementwise and puts the result in the lhs array\\
 \hline
-172&block_contract_to_scalar_op&&&&contracts two blocks where the result of contraction is a scalar.  Leaves the result on the sip expression stack\\
+172&block_contract_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and puts the result in the lhs array\\
 \hline
-173&block_load_scalar_op&&&&all indices of block on top of selector stack are simple, "block" is a single scalar value, load it onto the sip expression stack\\
+173&block_contract_accumulate_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and accumulates the result in the lhs array\\
 \hline
-174&slice_op&lhs rank&lhs array table slot&lhs selector indices&copies subblock on lhs from rhs superblock\\
+174&block_contract_to_scalar_op&&&&contracts two blocks where the result of contraction is a scalar.  Leaves the result on the sip expression stack\\
 \hline
-175&insert_op&lhs rank&lhs array table slot&lhs selector indices&inserts sublock on rhs into superblock on lhs\\
+175&block_load_scalar_op&&&&all indices of block on top of selector stack are simple, "block" is a single scalar value, load it onto the sip expression stack\\
 \hline
-176&string_load_literal_op&slot in string literal table&&&loads slot in string table onto control stack.\\
+176&slice_op&lhs rank&lhs array table slot&lhs selector indices&copies subblock on lhs from rhs superblock\\
 \hline
-177&print_string_op&append NL if  1&&&print the string whose slot in string table is on the sip control stack\\
+177&insert_op&lhs rank&lhs array table slot&lhs selector indices&inserts sublock on rhs into superblock on lhs\\
 \hline
-178&println_op&&&&print NL)\\
+178&string_load_literal_op&slot in string literal table&&&loads slot in string table onto control stack.\\
 \hline
-179&print_index_op&append NL if  1&index table slot&&print current value of given index; the value is on the sip control stack\\
+179&print_string_op&append NL if  1&&&print the string whose slot in string table is on the sip control stack\\
 \hline
-180&print_scalar_op&append NL if  1&array table slot, or unused if literal&&print scalar whose value is on the sip epression stack \\
+180&println_op&&&&print NL)\\
 \hline
-181&print_int_op&append NL if  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
+181&print_index_op&append NL if  1&index table slot&&print current value of given index; the value is on the sip control stack\\
 \hline
-182&print_block_op&append NL if 1&&&print the block whose selector is on the selector stack\\
+182&print_scalar_op&append NL if  1&array table slot, or unused if literal&&print scalar whose value is on the sip epression stack \\
 \hline
-183&gpu_on_op&&&&\\
+183&print_int_op&append NL if  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
 \hline
-184&gpu_off_op&&&&\\
+184&print_block_op&append NL if 1&&&print the block whose selector is on the selector stack\\
 \hline
-185&gpu_allocate_op&&&&\\
+185&gpu_on_op&&&&\\
 \hline
-186&gpu_free_op&&&&\\
+186&gpu_off_op&&&&\\
 \hline
-187&gpu_put_op&&&&\\
+187&gpu_allocate_op&&&&\\
 \hline
-188&gpu_get_op&&&&\\
+188&gpu_free_op&&&&\\
 \hline
-189&gpu_get_int_op&&&&\\
+189&gpu_put_op&&&&\\
 \hline
-190&gpu_put_int_op&&&&\\
+190&gpu_get_op&&&&\\
 \hline
-191&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
+191&gpu_get_int_op&&&&\\
 \hline
-192&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
+192&gpu_put_int_op&&&&\\
 \hline
-193&idup_op&&&&duplicates the value on top of the control (integer) stack\\
+193&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
 \hline
-194&iswap_op&&&&swaps the top two values on the control (integer) stack\\
+194&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
 \hline
-195&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+195&idup_op&&&&duplicates the value on top of the control (integer) stack\\
 \hline
-196&invalid_op&&&&\\
+196&iswap_op&&&&swaps the top two values on the control (integer) stack\\
+\hline
+197&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+\hline
+198&invalid_op&&&&\\
 \hline
 \end{longtable}
 \end{document}

@@ -456,54 +456,55 @@ Rules:
 105    Statement$ExecuteStatement ::= execute $ Ident ArgList
 106    Statement$AssignToIdent ::= Ident AssignOp Expression
 107    Statement$AssignToBlock ::= DataBlock AssignOp Expression
-108    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
-109    Statement$GPUAllocate ::= gpu_allocate $ Arg
-110    Statement$GPUFree ::= gpu_free $ Arg
-111    Statement$GPUPut ::= gpu_put $ Arg
-112    Statement$GPUGet ::= gpu_get $ Arg
-113    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
-114    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
-115    Statement$AssertSame ::= assert_same $ Ident
-116    Statement$BroadcastStatic ::= broadcast_from $ Primary Ident
-117    AssignOp$AssignOp ::= = $op
-118               | += $op
-119               | -= $op
-120               | *= $op
-121    DataBlock$DataBlock ::= Ident [ $ Indices ] $
-122    Indices$$Ident ::= Ident
-123              | Indices , $ Ident
-124    ContiguousDataBlock$ContiguousDataBlock ::= Ident [ $ ContiguousIndexRangeExprList ] $
-125    RelOp$RelOp ::= < $op
-126            | > $op
-127            | <= $op
-128            | >= $op
-129            | == $op
-130            | != $op
-131    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
-132    Expression ::= Term
-133    Expression$AddExpr ::= Expression + Term
-134    Expression$SubtractExpr ::= Expression - Term
-135    Term ::= ExponentExpression
-136    Term$StarExpr ::= Term * $ ExponentExpression
-137    Term$DivExpr ::= Term / $ ExponentExpression
-138    Term$TensorExpr ::= Term ^ ExponentExpression
-139    ExponentExpression ::= CastExpression
-140    ExponentExpression$ExponentExpr ::= ExponentExpression ** CastExpression
-141    CastExpression ::= UnaryExpression
-142    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
-143    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
-144    UnaryExpression ::= Primary
-145    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
-146    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
-147    Primary$ParenExpr ::= ( $ Expression ) $
-148    Primary$IntLitExpr ::= INTLIT
-149    Primary$DoubleLitExpr ::= DOUBLELIT
-150    Primary$IdentExpr ::= Ident
-151    Primary$DataBlockExpr ::= DataBlock
-152    Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
-153    Primary$StringLitExpr ::= StringLiteral
-154    StringLiteral ::= STRINGLIT
-155    Ident ::= IDENTIFIER
+108    Statement$AssignToContigousDataBlock ::= ContiguousDataBlock AssignOp Expression
+109    Statement$GPUSection ::= gpu_on $ EOLs $ StatementList gpu_off $
+110    Statement$GPUAllocate ::= gpu_allocate $ Arg
+111    Statement$GPUFree ::= gpu_free $ Arg
+112    Statement$GPUPut ::= gpu_put $ Arg
+113    Statement$GPUGet ::= gpu_get $ Arg
+114    Statement$SetPersistent ::= set_persistent $ Ident StringLiteral
+115    Statement$RestorePersistent ::= restore_persistent $ Ident StringLiteral
+116    Statement$AssertSame ::= assert_same $ Ident
+117    Statement$BroadcastStatic ::= broadcast_from $ Primary Ident
+118    AssignOp$AssignOp ::= = $op
+119               | += $op
+120               | -= $op
+121               | *= $op
+122    DataBlock$DataBlock ::= Ident [ $ Indices ] $
+123    Indices$$Ident ::= Ident
+124              | Indices , $ Ident
+125    ContiguousDataBlock$ContiguousDataBlock ::= Ident [ $ ContiguousIndexRangeExprList ] $
+126    RelOp$RelOp ::= < $op
+127            | > $op
+128            | <= $op
+129            | >= $op
+130            | == $op
+131            | != $op
+132    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
+133    Expression ::= Term
+134    Expression$AddExpr ::= Expression + Term
+135    Expression$SubtractExpr ::= Expression - Term
+136    Term ::= ExponentExpression
+137    Term$StarExpr ::= Term * $ ExponentExpression
+138    Term$DivExpr ::= Term / $ ExponentExpression
+139    Term$TensorExpr ::= Term ^ ExponentExpression
+140    ExponentExpression ::= CastExpression
+141    ExponentExpression$ExponentExpr ::= ExponentExpression ** CastExpression
+142    CastExpression ::= UnaryExpression
+143    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
+144    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
+145    UnaryExpression ::= Primary
+146    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
+147    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
+148    Primary$ParenExpr ::= ( $ Expression ) $
+149    Primary$IntLitExpr ::= INTLIT
+150    Primary$DoubleLitExpr ::= DOUBLELIT
+151    Primary$IdentExpr ::= Ident
+152    Primary$DataBlockExpr ::= DataBlock
+153    Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
+154    Primary$StringLitExpr ::= StringLiteral
+155    StringLiteral ::= STRINGLIT
+156    Ident ::= IDENTIFIER
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:27:1:27:5:302:306: Informative: The terminal cycle is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:36:1:36:8:351:358: Informative: The terminal prequest is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:72:1:72:11:686:696: Informative: The terminal print_index is useless.
@@ -643,6 +644,7 @@ Expression ::= Expression
 DataBlock ::= DataBlock
 AssignOp ::= AssignOp
 Arg ::= Arg
+ContiguousDataBlock ::= ContiguousDataBlock
 StringLiteral ::= StringLiteral
 Primary ::= Primary
 RelOp ::= RelOp
@@ -666,7 +668,6 @@ IntInitializationOpt ::=
 IdentOpt ::= 
 WhereClauseList ::= 
 AllocIndexListopt ::= 
-ContiguousDataBlock ::= 
 ArgList ::= 
 UnaryExpression ::= 
 

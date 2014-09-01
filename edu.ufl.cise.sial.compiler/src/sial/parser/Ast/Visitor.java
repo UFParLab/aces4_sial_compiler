@@ -219,6 +219,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(AssignToBlock n);
     void endVisit(AssignToBlock n);
 
+    boolean visit(AssignToContigousDataBlock n);
+    void endVisit(AssignToContigousDataBlock n);
+
     boolean visit(GPUSection n);
     void endVisit(GPUSection n);
 

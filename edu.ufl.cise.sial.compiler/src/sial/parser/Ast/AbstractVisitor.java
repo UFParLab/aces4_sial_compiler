@@ -222,6 +222,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(AssignToBlock n) { unimplementedVisitor("visit(AssignToBlock)"); return true; }
     public void endVisit(AssignToBlock n) { unimplementedVisitor("endVisit(AssignToBlock)"); }
 
+    public boolean visit(AssignToContigousDataBlock n) { unimplementedVisitor("visit(AssignToContigousDataBlock)"); return true; }
+    public void endVisit(AssignToContigousDataBlock n) { unimplementedVisitor("endVisit(AssignToContigousDataBlock)"); }
+
     public boolean visit(GPUSection n) { unimplementedVisitor("visit(GPUSection)"); return true; }
     public void endVisit(GPUSection n) { unimplementedVisitor("endVisit(GPUSection)"); }
 
@@ -395,6 +398,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ExecuteStatement) return visit((ExecuteStatement) n);
         else if (n instanceof AssignToIdent) return visit((AssignToIdent) n);
         else if (n instanceof AssignToBlock) return visit((AssignToBlock) n);
+        else if (n instanceof AssignToContigousDataBlock) return visit((AssignToContigousDataBlock) n);
         else if (n instanceof GPUSection) return visit((GPUSection) n);
         else if (n instanceof GPUAllocate) return visit((GPUAllocate) n);
         else if (n instanceof GPUFree) return visit((GPUFree) n);
@@ -501,6 +505,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ExecuteStatement) endVisit((ExecuteStatement) n);
         else if (n instanceof AssignToIdent) endVisit((AssignToIdent) n);
         else if (n instanceof AssignToBlock) endVisit((AssignToBlock) n);
+        else if (n instanceof AssignToContigousDataBlock) endVisit((AssignToContigousDataBlock) n);
         else if (n instanceof GPUSection) endVisit((GPUSection) n);
         else if (n instanceof GPUAllocate) endVisit((GPUAllocate) n);
         else if (n instanceof GPUFree) endVisit((GPUFree) n);
