@@ -1019,7 +1019,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		int arraySlot = operandStack.pop();
 		IDec dec = n.getIdent().getDec();
 		int rank = ((ArrayDec)dec).getDimensionList().size();
-		opTable.addOptableEntry (allocate_contiguous_op,arraySlot, rank, unused, defaultUnusedInd, lineno(n) );
+		opTable.addOptableEntry (allocate_contiguous_op,rank, arraySlot, unused, defaultUnusedInd, lineno(n) );
 	}
 
 	@Override
@@ -1601,7 +1601,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		else if (argType.contains(STRING)){
 			opcode = Opcode.print_string_op;
 		}
-		else if (argType.contains(BLOCK) || argType.contains(ARRAY)){
+		else if (argType.contains(BLOCK) || argType.contains(ARRAY) || argType.contains(CONTIG_BLOCK)){
 			opcode = Opcode.print_block_op;
 		}
 		opTable.addOptableEntry(opcode, appendNewLine, slot, unused, defaultUnusedInd, lineno(n));		
@@ -1638,7 +1638,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			slot = indexTable.getIndex(dec);
 		} else if (argType.contains(STRING)) {
 			opcode = Opcode.print_string_op;
-		} else if (argType.contains(BLOCK)) {
+		} else if (argType.contains(BLOCK) || argType.contains(ARRAY) || argType.contains(CONTIG_BLOCK)) {
 			opcode = Opcode.print_block_op;
 		}
 		opTable.addOptableEntry(opcode, appendNewLine, slot, unused, defaultUnusedInd, lineno(n));
@@ -1904,7 +1904,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 				return;
 			}
 			if (n.isSlice()){
-				opTable.addOptableEntry(insert_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+				opTable.addOptableEntry(slice_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
 				return;				
 			}
 			DataBlock lhsDataBlock = n.getDataBlock(); 
@@ -2010,6 +2010,62 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 //		assert tmpsum == psum: "Problem with calculation of permutation";
 //		return permutation;
 //	}
+	
+    public boolean visit(AssignToContigousDataBlock n) { 
+    	return true;
+    	}
+    public void endVisit(AssignToContigousDataBlock n) { 
+        //get the actual expression
+		IExpression rhs = n.getExpression();
+		while(rhs instanceof ParenExpr){ rhs = ((ParenExpr)rhs).getExpression();}
+
+//		//Every binary operation with block result needs a destination block, so there is nothing to do here.  
+//		//The expression will have already popped the slot and selector.
+//		//The StarExpr also handles case of accumulate into lhs
+		EnumSet<EType> type = ASTUtils.getIExprTypes(rhs);
+//		 if (type.contains(BLOCK) && (rhs instanceof AddExpr || rhs instanceof SubtractExpr || rhs instanceof StarExpr || rhs instanceof TensorExpr || rhs instanceof NegatedUnaryExpr)) return;
+//		
+		 //Otherwise, we could have a DoubleLitExpr, an IdentExpr, or a DatablockExpr 
+		//Get lhs info
+		int lhs_slot = operandStack.pop();
+		int lhs_rank = arrayTable.getRank(lhs_slot);
+
+		
+
+		
+		int op = n.getAssignOp().getop().getKind(); //should be one of TK_ASSIGN, TK_PLUS_ASSIGN, TK_MINUS_ASSIGN, TK_STAR_ASSIGN
+
+//		if (op == TK_ASSIGN){
+			if (type.contains(SCALAR)){ 
+			opTable.addOptableEntry(block_fill_op, lhs_rank, lhs_slot, unused,  defaultUnusedInd, lineno(n)); //gets value from expression stack, destination block selector from instruction
+			return;
+			}
+//	//		if (type.contains(CONTIG_BLOCK) || type.contains(BLOCK)){
+//				opTable.addOptableEntry(block_copy_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+//				return;
+//			}
+////		    //otherwise is a copy, transpose, slice, or insert op.  These options have been determined during type checking.  RHS block selector has been pushed, then LHS block selector
+////			if (n.isInsert()){
+////				opTable.addOptableEntry(insert_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+////				return;
+////			}
+////			if (n.isSlice()){
+////				opTable.addOptableEntry(slice_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+////				return;				
+////			}
+////			DataBlock lhsDataBlock = n.getDataBlock(); 
+//			DataBlock rhsDataBlock = ( (DataBlockExpr)n.getExpression()).getDataBlock();
+//			int[] permutation = getPermutation(lhsDataBlock, rhsDataBlock);
+//			if (permutation != null){
+//				opTable.addOptableEntry(push_block_selector_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+//				opTable.addOptableEntry(block_permute_op, unused, unused, unused, permutation, lineno(n));
+//				return;
+//			}
+			//just a plain old copy
+			opTable.addOptableEntry(block_copy_op, lhs_rank, lhs_slot, unused,  defaultUnusedInd,lineno(n));
+			return;
+		
+    }
 	@Override
 	public boolean visit(AssertSame n) { /* visit child */
 		return true;

@@ -51,10 +51,10 @@ public enum Opcode {
 //	get_block_for_update_op("","","","",""),
 	allocate_op("rank","array_table_slot","","block selector indices(may contain wild cards)","allocate block(s) of local array.  "),
 	deallocate_op("rank","array_table_slot","","block selector indices","deallocate block(s) of local array"),
-	allocate_contiguous_op("rank","arra_table_slot","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
-	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
+	allocate_contiguous_op("rank","array_table_slot","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
+	   "pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]"),
 	deallocate_contiguous_op("rank","array_table_slot","","","deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
-	   "pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc."),
+	   "pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]"),
 	
 //distributed and served arrays
 // In aces4m SIAL syntax supports distributed and served arrays as a legacy from ACES3.  They are 
@@ -241,9 +241,10 @@ public enum Opcode {
 		sb.append("\\usepackage{longtable}");
 		sb.append("\\begin{document}\n");
 		sb.append("\\centering\n");
-		sb.append("\\begin{longtable}{r p{1in} p{.5in} p{.5in} p{.5in}  p{2in}}\n");
+//		sb.append("\\begin{longtable}{r p{1in} p{.5in} p{.5in} p{.5in}  p{2in}}\n");
+		sb.append("\\begin{longtable}{| l | p{1.25in} | p{1.5in} | p{1.5in} | p{1.5in} |  p{2.5in} |}\n");
 		sb.append("\\hline\\hline\n");
-		sb.append("opcode & name & arg0 & arg1 & selector array & comment \\\\\n");
+		sb.append("opcode & name & arg0 & arg1 & selector array & description \\\\\n");
 		sb.append("\\hline\\hline\n");
 		for (Opcode op: Opcode.values()){
 			sb.append(op.opcodeValue).append('&');

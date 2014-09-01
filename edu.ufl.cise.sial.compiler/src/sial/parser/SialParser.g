@@ -410,6 +410,7 @@ Statement$AssignToBlock  ::= DataBlock AssignOp	 Expression
 	   public void setInsert(boolean val){insert = val;}
 	 ./ 
 
+Statement$AssignToContigousDataBlock ::= ContiguousDataBlock AssignOp Expression
 
 Statement$GPUSection ::= gpu_on$ EOLs$
 	 StatementList

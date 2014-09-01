@@ -43,7 +43,8 @@ public final static int
     temp_array_t = (attr_auto_allocate | attr_scope_extent), //== 24
     scalar_value_t = (attr_contiguous | attr_auto_allocate | attr_scalar), //==140
     local_array_t = 0, //all defaults give a local_array
-    int_value_t = (attr_integer | scalar_value_t);
+    int_value_t = (attr_integer | scalar_value_t),
+    local_contiguous_array_t = attr_contiguous ;
   
     
 //priorities for the block server

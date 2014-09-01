@@ -2199,6 +2199,29 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		check(false, n, "illegal assignment to block");
 
 	}
+	
+    public boolean visit(AssignToContigousDataBlock n) { 
+    	return true; 
+    	}
+    public void endVisit(AssignToContigousDataBlock n) { 
+		ContiguousDataBlock lhs = n.getContiguousDataBlock();
+		IExpression expr = n.getExpression();
+		EnumSet<EType> t = ASTUtils.getIExprTypes(expr);
+		if (t.isEmpty()) return;  //error already reported by child
+		int op = n.getAssignOp().getop().getKind();
+		if (!check((t.contains(SCALAR) || t.contains(BLOCK) ), n, "incompatible type in assignment"))
+			return;
+		if (t.contains(SCALAR))
+			return;
+		if (expr instanceof DataBlockExpr) { // rhs is a single data block
+			DataBlock rhs = ((DataBlockExpr) expr).getDataBlock();
+			check (op == TK_ASSIGN, n, "only plain assignment supported with contiguous locals");
+			//check that the declared indices of the lhs and rhs match
+			check(hasMatchingDeclaredIndices(rhs, lhs), n, "incompatible declared indices on left and right side");
+			return;
+		}		
+    }
+
 
 	// @Override
 	// public void endVisit(AssignStatement n) {
@@ -2615,7 +2638,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(PrintStatement n) { 
 		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
 		check(t.contains(SCALAR) || t.contains(INT) || t.contains(INDEX) 
-				|| t.contains(STRING) || t.contains(BLOCK) || t.contains(ARRAY), n,
+				|| t.contains(STRING) || t.contains(BLOCK) || t.contains(ARRAY) || t.contains(CONTIG_BLOCK), n,
 				"unexpected argument for print statement");
 	}
 
@@ -2628,7 +2651,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(PrintlnStatement n) { 
 		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
 		check(t.contains(SCALAR) || t.contains(INT) || t.contains(INDEX) || t.contains(STRING) 
-				|| t.contains(BLOCK) || t.contains(ARRAY), n,
+				|| t.contains(BLOCK) || t.contains(ARRAY) || t.contains(CONTIG_BLOCK), n,
 				"unexpected argument for println statement");
 	}
 
