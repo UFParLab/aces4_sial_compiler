@@ -85,7 +85,12 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		return (ProcDec) tnode;
 	}
 	
-
+    public static boolean isEnclosedByStarOrTensorExpr(IAst node){
+    	IAst tnode = node.getParent();
+    	while (tnode != null && !(tnode instanceof StarExpr) && !(tnode instanceof TensorExpr))
+    		tnode = tnode.getParent();
+    	return (tnode != null);
+    }
 	
 	/**
 	 * 

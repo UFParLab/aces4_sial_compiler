@@ -45,10 +45,6 @@ public enum Opcode {
 //local block management 
 	push_block_selector_op("rank","array table slot","","selector slots",
 			"push the block selector onto the sip block selector stack.  If the rank is 0, this is either a scalar or a static or contig array given without a selector"),
-//	get_block_for_reading_op("rank","arraySlot","","selector","gets indicated block and pushes BlockPtr onto sip block stack.  It is a fatal error if this block does not exist"),
-//	get_block_for_accumulate_op("array table slot","","","selector","gets indicated block, creating and initializing to zero if it doesn't exists.  Push the BlockPtr onto sip block selector stack"),
-//	get_block_for_writing_op("array table slot","","","selector","gets indicated block, creating it if it doesn't exist.  Push the BlockPtr onto sip block stack"),
-//	get_block_for_update_op("","","","",""),
 	allocate_op("rank","array_table_slot","","block selector indices(may contain wild cards)","allocate block(s) of local array.  "),
 	deallocate_op("rank","array_table_slot","","block selector indices","deallocate block(s) of local array"),
 	allocate_contiguous_op("rank","array_table_slot","","","allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been "+
@@ -124,6 +120,7 @@ public enum Opcode {
 
 	
 	//expressions and operations on blocks.  In many cases, the target block selector is included in the instruction.
+	//TODO dtensor_op is not used.  Delete it.
 	tensor_op("lhs rank","lhs array table slot","","lhs selector","outer product, uses same routine as tensor contraction"),
 	block_copy_op("lhs rank","lhs array table slot","","lhs selector",
 			"copies block from top of block selector stack to block in instruction. If one array is larger than the other, the extra indices are simple"),
@@ -229,9 +226,6 @@ public enum Opcode {
 		return name().substring(0,name().lastIndexOf("_op"));
 	}
 		
-
-//	String latexLine(){return "";}
-	
 
 	public static String generateLatexTable(){
 		StringBuilder sb = new StringBuilder();

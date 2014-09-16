@@ -2179,11 +2179,12 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			int lhs_rank = arrayTable.getRank(lhs_slot);
 			int[] lhs_ind = indexArrayStack.pop();
 			if (op == TK_ASSIGN){
-				if (e0Type.contains(SCALAR) || e1Type.contains(SCALAR)){
+				if (e0Type.contains(SCALAR) && !e0Type.contains(BLOCK) || e1Type.contains(SCALAR) && !e1Type.contains(BLOCK)){
+					//this is multiply scalar times block and is not a contraction
 					opTable.addOptableEntry(block_scale_assign_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
 				}
 				else {
-			    opTable.addOptableEntry(block_contract_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
+			        opTable.addOptableEntry(block_contract_op, lhs_rank, lhs_slot, unused, lhs_ind, lineno(n));
 				}
 			}
 			else if (op == TK_PLUS_ASSIGN){

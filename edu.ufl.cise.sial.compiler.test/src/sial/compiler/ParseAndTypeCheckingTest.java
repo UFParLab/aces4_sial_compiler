@@ -280,5 +280,10 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("contiguous_local_fail",1);
 	}
 	
+	@Test
+	public void block_scale_assign() throws IOException{
+		runTypeCheckTest("block_scale_assign",0);
+	}
+	
 	
 }

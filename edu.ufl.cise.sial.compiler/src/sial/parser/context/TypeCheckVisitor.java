@@ -1584,7 +1584,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		EnumSet<EType> t1 = getIExprTypes(rightOperand);
 		if (t0.isEmpty() || t1.isEmpty()) return;
 		if (t0.contains(BLOCK) && t1.contains(BLOCK)){
-			check(leftOperand instanceof DataBlockExpr && rightOperand instanceof DataBlockExpr, n, "only simple binary expression involving blocks allowed");
+			if (!check(leftOperand instanceof DataBlockExpr && rightOperand instanceof DataBlockExpr, n, "only simple binary expression involving blocks allowed")) return;
 			//check to see if result is scalar
 			ArrayList<Ident> resultIndices = getContractionResultIndices ( ((DataBlockExpr)leftOperand).getDataBlock()   , ((DataBlockExpr)rightOperand).getDataBlock() );
 			if (resultIndices.size() == 0) n.addType(SCALAR); 
@@ -1764,7 +1764,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(DataBlockExpr n) {
 		n.addType(BLOCK);
-		if (allIndicesSimple(n.getDataBlock())){
+		if (allIndicesSimple(n.getDataBlock()) && !(ASTUtils.isEnclosedByStarOrTensorExpr(n))){  //blocks in contractions are only blocks
 			n.addType(SCALAR);
 		}
 	}
@@ -1860,15 +1860,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void unimplementedVisitor(String s) {
 	}
 
-	// @Override
-	// public boolean visit(DataBlockPrimary n) { /* visit children */
-	// return true;
-	// }
-	//
-	// @Override
-	// public void endVisit(DataBlockPrimary n) { /* nop */
-	// }
-	//
 	@Override
 	public boolean visit(IdentExpr n) {
 		try {
@@ -1884,10 +1875,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(IdentExpr n) {
 		IDec dec = n.getDec();
-		if (dec == null) return;  //not declared. Error already reported
-//			if (!check(dec != null, n, "identifier " + n.getName() + "  not declared")){
-//				return;
-//			}
+		if (dec == null) return;  //not declared. Error already reported by child
 		if (dec instanceof IntDec)
 			n.addType(INT);
 		else if (dec instanceof ScalarDec)
@@ -1987,32 +1975,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		if (dec instanceof IntDec && (t.contains(INT) || t.contains(INDEX)))
 			return; // lhs declared as int, rhs is int expr or an index
 		if (dec instanceof ScalarDec && t.contains(SCALAR))
-			return; // lhs declared as scalar, rhs is scalar expr. This will be the case if it is really a scalar expr, or if it is a block with all simple indices, or a contraction with result of rank 0.
-//		if (dec instanceof ScalarDec && t.contains(BLOCK)){ // lhs is scalar,
-//																// rhs is block
-//			// there are two situations where a block can be assigned to a
-//			// scalar--
-//			// 1. rhs is a block and all indices are simple
-//			if (expr instanceof DataBlockExpr && allIndicesSimple(((DataBlockExpr) expr).getDataBlock()))
-//				return;
-//			// 2. rhs is a contraction that results in block of rank 0
-//			if (expr instanceof StarExpr) {
-//				StarExpr starExpr = (StarExpr) expr;
-//				ITerm e0 = starExpr.getTerm();
-//				IExponentExpression e1 = starExpr.getExponentExpression();
-//				if (e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr) { // rhs
-//																					// is
-//																					// block
-//																					// *
-//																					// block
-//					DataBlock b0 = ((DataBlockExpr) e0).getDataBlock();
-//					DataBlock b1 = ((DataBlockExpr) e1).getDataBlock();
-//					ArrayList<Ident> exprIndices = getContractionResultIndices(b0, b1);
-//					if (exprIndices.isEmpty())
-//						return; // rank of result is zero
-//				}
-//			}
-//		}
+			return; // lhs declared as scalar, rhs is scalar expr. 
+		    //This will be the case if it is really a scalar expr, or 
+		    //if it is a block with all simple indices, or a contraction with result of rank 0.
 		check(false, n, "incompatible types in assignment statement");
 	}
 
