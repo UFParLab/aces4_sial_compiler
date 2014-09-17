@@ -285,5 +285,10 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("block_scale_assign",0);
 	}
 	
+	@Test
+	public void return_sval_test() throws IOException{
+		runTypeCheckTest("return_sval_test",0);
+	}
+	
 	
 }

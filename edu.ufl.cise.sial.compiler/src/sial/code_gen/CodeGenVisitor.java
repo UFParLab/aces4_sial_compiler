@@ -1615,6 +1615,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	@Override
 	public void endVisit(PrintlnStatement n) {
 		IExpression e = n.getExpression();
+		while(e instanceof ParenExpr){ e = ((ParenExpr)e).getExpression();}
 		EnumSet<EType> argType = ASTUtils.getIExprTypes(e);
 		Opcode opcode = invalid_op;
 		int appendNewLine = 1; /* do add /n */

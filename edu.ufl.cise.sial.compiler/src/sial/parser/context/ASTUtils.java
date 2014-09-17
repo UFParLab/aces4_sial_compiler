@@ -85,11 +85,40 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		return (ProcDec) tnode;
 	}
 	
+	
+	/** determines if this scalar valued block should be treated as a scalar, or as a block in a contraction */
     public static boolean isEnclosedByStarOrTensorExpr(IAst node){
     	IAst tnode = node.getParent();
     	while (tnode != null && !(tnode instanceof StarExpr) && !(tnode instanceof TensorExpr))
-    		tnode = tnode.getParent();
-    	return (tnode != null);
+    		tnode = tnode.getParent(); 	
+    	if (tnode == null)  return false;
+    	if (tnode instanceof StarExpr){
+    		IExpression l = ((StarExpr) tnode).getTerm();
+    		while (l instanceof ParenExpr) {
+    			l = ((ParenExpr)l).getExpression();
+    		}
+    		IExpression r = ((StarExpr) tnode).getExponentExpression();
+    		while (r instanceof ParenExpr){
+    			r = ((ParenExpr)r).getExpression();
+    		}
+    		boolean l_is_block = l instanceof DataBlockExpr || l instanceof ContiguousDataBlockExpr;
+    		boolean r_is_block =  r instanceof DataBlockExpr || r instanceof ContiguousDataBlockExpr;
+    		return l_is_block && r_is_block;
+    	}
+    	if (tnode instanceof TensorExpr){
+    		IExpression l = ((TensorExpr)tnode).getTerm();
+    		while (l instanceof ParenExpr) {
+    			l = ((ParenExpr)l).getExpression();
+    		}
+    		IExpression r = ((TensorExpr)tnode).getExponentExpression();
+    		while (r instanceof ParenExpr){
+    			r = ((ParenExpr)r).getExpression();
+    		}
+    		boolean l_is_block = l instanceof DataBlockExpr || l instanceof ContiguousDataBlockExpr;
+    		boolean r_is_block =  r instanceof DataBlockExpr || r instanceof ContiguousDataBlockExpr;
+    		return l_is_block && r_is_block;		
+    	}
+    	return false;
     }
 	
 	/**

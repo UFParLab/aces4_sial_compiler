@@ -1589,16 +1589,21 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			ArrayList<Ident> resultIndices = getContractionResultIndices ( ((DataBlockExpr)leftOperand).getDataBlock()   , ((DataBlockExpr)rightOperand).getDataBlock() );
 			if (resultIndices.size() == 0) n.addType(SCALAR); 
 			n.addType(BLOCK);
+			//if either argument also has SCALAR, remove it 
+			t0.remove(SCALAR);
+			t1.remove(SCALAR);
 			return;
 		}
 		if (t0.contains(SCALAR) && t1.contains(BLOCK)){
 			check(rightOperand instanceof DataBlockExpr, n, "only nonnested binary expressions involving blocks allowed");
 			n.addType(BLOCK);
+			if (t1.contains(SCALAR)) n.addType(SCALAR);
 			return;
 		}		
 		if (t0.contains(BLOCK) && t1.contains(SCALAR)){
 			check(leftOperand instanceof DataBlockExpr, n, "only nonnested binary expressions");
 			n.addType(BLOCK);
+			if (t0.contains(SCALAR)) n.addType(SCALAR);
 			return;
 		}
 		//check this after first checking for containing BLOCK to disallow scalar-producing contractions to be nested in larger expression.  May want to fix this later.
@@ -1652,6 +1657,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		ArrayList<Ident> resultIndices = getContractionResultIndices (((DataBlockExpr)leftOperand).getDataBlock(), ((DataBlockExpr)rightOperand).getDataBlock());
 		check (resultIndices.size() == ((DataBlockExpr)leftOperand).getDataBlock().getIndices().size() + ((DataBlockExpr)rightOperand).getDataBlock().getIndices().size(), n, "arguments to ^ must be data blocks with disjoint index sets");
 		n.addType(BLOCK);	
+		//if either argument also has SCALAR, remove it 
+		t0.remove(SCALAR);
+		t1.remove(SCALAR);
 	}
 	
     public boolean visit(ExponentExpr n) { return true; }
@@ -1761,13 +1769,21 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return true;
 	}
 
+//	@Override
+//	public void endVisit(DataBlockExpr n) {
+//		n.addType(BLOCK);
+//		if (allIndicesSimple(n.getDataBlock()) && !(ASTUtils.isEnclosedByStarOrTensorExpr(n))){  //blocks in contractions are only blocks
+//			n.addType(SCALAR);
+//		}
+//	}
+
 	@Override
 	public void endVisit(DataBlockExpr n) {
 		n.addType(BLOCK);
-		if (allIndicesSimple(n.getDataBlock()) && !(ASTUtils.isEnclosedByStarOrTensorExpr(n))){  //blocks in contractions are only blocks
+		if (allIndicesSimple(n.getDataBlock()) ){  //blocks in contractions are only blocks
 			n.addType(SCALAR);
 		}
-	}
+	}	
 	
 	@Override
 	public boolean visit(ContiguousDataBlockExpr n){
