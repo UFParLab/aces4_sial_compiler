@@ -1,5 +1,6 @@
 aces4_sial_compiler
 ===================
+The compiler jar file is included in the aces4 project directory and integrated into its build system.  Thus, the aces4_sial_compiler project is not needed if you just want to use the compiler.  It is only required to modify the compiler.
 
 Compiler for SIAL programs in aces4
 
