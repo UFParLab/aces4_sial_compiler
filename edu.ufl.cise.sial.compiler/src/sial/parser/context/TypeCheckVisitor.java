@@ -1319,11 +1319,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		EnumSet<EType> t  = ASTUtils.getIExprTypes(n.getPrimary());
 		check(t.contains(INT), n, "illegal type of allocate argument " + n);	
 		IDec identDec = n.getIdent().getDec();
-		if (!check(identDec instanceof ArrayDec && isContiguous(identDec), n, n.getIdent() + " must be a static array"))
+		if (!check(identDec instanceof ArrayDec && ((ArrayDec) identDec).getTypeName().equals("static"), n, n.getIdent() + " must be a static array"))
 			return;
 	}
 
 
+	
 	@Override
 	public boolean visit(DataBlock n) { /* visit children */
 		return true;
