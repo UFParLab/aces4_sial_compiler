@@ -28,23 +28,6 @@ public class OpTable {
 		int[]  selector; //size is max_array_index
 		int lineno;
 
-		
-//		//execute instruction
-//		Entry(int opcode, int user_sub, int lineno){
-//			this.opcode = opcode;
-//			this.user_sub = user_sub;
-//			this.lineno = lineno;
-//			ind = new int[AcesHacks.max_array_index];
-//		}
-		//execute instruction with one argument
-//		Entry(int opcode, int result_array, int[] ind, int user_sub, int lineno){
-//			this.opcode = opcode;
-//			this.arg2 = result_array;
-//			this.selector = ind;
-////			this.user_sub = user_sub;
-//			this.lineno = lineno;
-//		}
-		
 
 		public boolean equalVals(Object other){
 			if (this == other) return true;
@@ -57,26 +40,7 @@ public class OpTable {
 			Arrays.equals(selector, o.selector) //&& //size is max_array_index	
 			;
 		}
-//		//go_to_op
-//		Entry(int opcode, int result_array, int[] ind, int lineno){
-//			this.opcode = opcode;
-//			this.arg2 = result_array;
-//			assert ind.length == TypeConstantMap.max_rank;
-//			this.selector = ind; 
-//			this.lineno = lineno;
-//		}
-//		
-//		//assign_op
-//		Entry(int opcode, int operand_array, int result_array,  int[] ind, int lineno){
-//			this.opcode = opcode;
-//			this.arg0 = operand_array;
-//			this.arg1 = -1;
-//			this.arg2 = result_array;
-//			this.selector = ind;
-//			this.lineno = lineno;
-//		}
-//		public Entry() {
-//		}
+
 
 		public Entry(int opcode, int arg0, int arg1, int arg2, int[] selector,
 				int lineno) {
@@ -87,19 +51,6 @@ public class OpTable {
 			this.selector = selector;
 			this.lineno = lineno;
 		}
-
-
-//		void read(DataInput input) throws IOException{
-//			opcode = input.readInt(); //1
-//			arg0 = input.readInt(); //2
-//			arg1 = input.readInt(); //3
-//			arg2 = input.readInt(); //4
-//			selector = new int[TypeConstantMap.max_rank]; //size is max_array_index
-//			for (int i = 0; i < TypeConstantMap.max_rank; i++){
-//				selector[i] = input.readInt();
-//			}
-//			lineno = input.readInt();     
-//		}
 
 		
 		static Entry readEntry(DataInput input) throws IOException{
@@ -159,72 +110,7 @@ public class OpTable {
 		nOps = 0; 	 
 	}
 
-//	public int addOptableEntry(int opcode, int lineno){
-//		return addOptableEntry(opcode, 0,0,0, defaultZeroInd, lineno);
-//	}
-//
-//	public int addOptableEntry(int opcode, int result_array, int[] ind, int lineno) {
-//		 int index = nOps++;
-//		 assert ind.length <= TypeConstantMap.max_rank;
-//		 entries.add(new Entry(opcode, result_array, ind, lineno));
-//		 return index;
-//	}
-//
-//	public int addOptableEntry(int op_code, int operandIndex, int resultIndex, int[] ind, 
-//			 int lineno){
-//		int index = nOps++;
-//		assert ind.length <= TypeConstantMap.max_rank;
-//		entries.add(new Entry(op_code, operandIndex, resultIndex, ind, lineno));
-//		return index;
-//	}
-//	
-//
-//	public int addOptableEntry(int opcode, int operand1, int operand2,
-//			int resultIndex, int[] ind, int lineno) {
-//		int index = nOps++;
-//		assert ind.length <= TypeConstantMap.max_rank;
-//		entries.add(new Entry(opcode, operand1, operand2, resultIndex, ind, lineno));
-//		return index;	
-//	}
-//	
-//	//do_op, enddo_op, exit_op
-//	public int addOptableEntry(int opcode, int[] ind, int lineno) {
-//		int index = nOps++;
-//		assert ind.length <= TypeConstantMap.max_rank;
-//		entries.add(new Entry(opcode, 0, 0, 0, ind, lineno));
-//		return index;
-//	}
-//	
-//
-//	
-//	//execute instruction
-//	//ACES4  TODO  check this!  
-//	public int addOptableEntry(int opcode, int result_array, int[] ind, int user_sub, int lineno){
-//		int index = nOps++;
-//		entries.add(new Entry(opcode, result_array, ind, user_sub, lineno));
-//		return index;
-//	}
 	
-//	public int addOptableEntry(Opcode opcode, int lineno){
-//		return addOptableEntry(opcode, 0,0,0, defaultZeroInd, lineno);
-//	}
-//
-//	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int lineno) {
-//		 int index = nOps++;
-//		 assert ind.length <= TypeConstantMap.max_rank;
-//		 entries.add(new Entry(opcode.ordinal(), result_array, ind, lineno));
-//		 return index;
-//	}
-//
-//	public int addOptableEntry(Opcode opcode, int operandIndex, int resultIndex, int[] ind, 
-//			 int lineno){
-//		int index = nOps++;
-//		assert ind.length <= TypeConstantMap.max_rank;
-//		entries.add(new Entry(opcode.ordinal(), operandIndex, resultIndex, ind, lineno));
-//		return index;
-//	}
-	
-
 	public int addOptableEntry(Opcode opcode, int arg0, int arg1,
 			int arg2, int[] selector, int lineno) {
 		int index = nOps++;
@@ -233,23 +119,6 @@ public class OpTable {
 		return index;	
 	}
 	
-//	//do_op, enddo_op, exit_op
-//	public int addOptableEntry(Opcode opcode, int[] ind, int lineno) {
-//		int index = nOps++;
-//		assert ind.length <= TypeConstantMap.max_rank;
-//		entries.add(new Entry(opcode.ordinal(), 0, 0, 0, ind, lineno));
-//		return index;
-//	}
-//	
-//
-//	
-//	//execute instruction
-//	//ACES4  TODO  check this!  
-//	public int addOptableEntry(Opcode opcode, int result_array, int[] ind, int user_sub, int lineno){
-//		int index = nOps++;
-//		entries.add(new Entry(opcode.ordinal(), result_array, ind, user_sub, lineno));
-//		return index;
-//	}
 	
 	public int addOptableEntry(Entry e){
 		int index = nOps++;
@@ -257,15 +126,6 @@ public class OpTable {
 		return index;
 	}
 
-	
-//	public void read(int nentries, DataInput input) throws IOException{
-//			for (int i = 0; i < nentries; i++){
-//				   Entry entry = Entry.readEntry(input);
-//				   entries.add(entry);
-//				   nOps++;
-//				}
-//		}
-	
 	
 	// returns a string representation of the op table
 	public String toString() {
@@ -323,19 +183,11 @@ public class OpTable {
     	entries.set(nOps-1, tmp);
     }
 	
-//	public void setDestination(int scalar_slot) {
-//		setDestination(scalar_slot, defaultZeroInd);
-//		
-//	}
 	
 	public Opcode lastOpcode(){
 		return Opcode.class.getEnumConstants()[entries.get(nOps-1).opcode];
 	}
 	
-//	public void updateLastOpcode(Opcode expected, Opcode replacement){
-//		assert (lastOpcode() == expected): "compiler bug, update last opcode encountered unexpected opcode";
-//		entries.get(nOps-1).opcode = replacement.ordinal();
-//	}
     boolean firstOpInitialized = false;
 
 	public boolean isFirstOpInitialized() {
@@ -345,42 +197,5 @@ public class OpTable {
 	public void setFirstOpInitialized(boolean firstOpInitialized) {
 		this.firstOpInitialized = firstOpInitialized;
 	}
-
-//	public sial.code_gen.OpTable.Entry getEntryAt(int i) {
-//		return entries.get(i);
-//	}
-
-
-//		public static OpTable readOpTable(DataInput input) throws IOException{
-//			OpTable table = new OpTable();
-//			int numOps = input.readInt();
-//			for (int i = 0; i < numOps; i++){
-//				   Entry entry = Entry.readEntry(input);
-//				   table.addOptableEntry(entry);
-//				}
-//	        return table;
-//	}
-
-
-
-
-//	/** reorders the instructions in the optable so the latest one goes before the third on in. 
-//	 * in other words, if the current Optable has entries   ...... entryN-3, entryN-2, entryN-1, then 
-//	 * after this method, the will be ....,entryN-1, entryN-3, entryN-2*/
-//    //
-//    public void swap2(){
-//    	Entry tmp = entries.get(nOps-3);
-//    	entries.set(nOps-3, entries.get(nOps-2));
-//    	entries.set(nOps-2, entries.get(nOps-1));
-//    	entries.set(nOps-1,  tmp);
-//    }
-
-
-    
-
-//	public void backpatchDoOp(int addr, int startIndex) {
-//		entries.get(addr).ind[0] = startIndex + 1;	
-//	}
-
 
 }

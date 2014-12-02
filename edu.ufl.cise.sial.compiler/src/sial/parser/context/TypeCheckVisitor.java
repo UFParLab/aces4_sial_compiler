@@ -89,51 +89,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return dec;
 	}
 
-	// private IDec findAndSetDec(IdentArg s) throws AmbiguousNameException {
-	// assert s != null : "findDec with null argument";
-	// String name = s.getName();
-	// IDec dec = symbolTable.lookup(name);
-	// s.setDec(dec);
-	// return dec;
-	// }
-
-	// /**
-	// * Finds and returns the declaration of the given IdentExpr (which is an
-	// * identifier used in an expression), and sets the IdentExpr's dec field.
-	// * If the ident is unqualified and defined in multiple imported files,
-	// this
-	// * will throw an AmbiguousNameException.
-	// *
-	// * @param s
-	// * the IdentExpr to look up
-	// * @return the IDec representing the declaration of s
-	// * @throws AmbiguousNameException
-	// */
-	// private IDec findAndSetDec(IdentExpr s) throws AmbiguousNameException {
-	// assert s != null : "findDec with null argument";
-	// String name = s.getName();
-	// IDec dec = symbolTable.lookup(name);
-	// s.setDec(dec);
-	// return dec;
-	// }
-
-	// This is obsolete code for language element sections. Needs to be
-	// revisited if sections are supported
-	// // The end of a section creates an implicit server barrier, which is
-	// treated the same as ServerBarrierStatement
-	// // "execute aceshack_server_barrier"
-	// private IDec findAndSetDec(Section n) {
-	// assert n != null : "findDec with null argument";
-	// try {
-	// String name = "aceshack_server_barrier";
-	// IDec dec = symbolTable.lookup(name);
-	// n.setDec(dec);
-	// return dec;
-	// } catch (AmbiguousNameException e) {
-	// emitError(n, e.getMessage());
-	// return null;
-	// }
-	// }
 
 	/**
 	 * Finds and returns the declaration of the given AllocIndexIdent and sets
@@ -1479,15 +1434,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		check(te.contains(INT), n, "illegal type of allocate argument " + n);				
 	}
 
-//	@Override
-//	public boolean visit(ContiguousAllocIndexWildExpr n) { /* nothing to check*/
-//		return false;
-//	}
-//
-//	@Override
-//	public void endVisit(ContiguousAllocIndexWildExpr n) {
-//		/*nop*/
-//	}
 
 	@Override
 	public boolean visit(ContiguousIndexRangeExprList n) {
@@ -1770,13 +1716,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return true;
 	}
 
-//	@Override
-//	public void endVisit(DataBlockExpr n) {
-//		n.addType(BLOCK);
-//		if (allIndicesSimple(n.getDataBlock()) && !(ASTUtils.isEnclosedByStarOrTensorExpr(n))){  //blocks in contractions are only blocks
-//			n.addType(SCALAR);
-//		}
-//	}
 
 	@Override
 	public void endVisit(DataBlockExpr n) {
@@ -1796,63 +1735,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		n.addType(CONTIG_BLOCK);
 	}
 
-	// //This is necessary due to the limitations of LPG AST generation. If we
-	// could add methods to interfaces, we wouldn't need this hack.
-	// ExpressionType getIExprType(IExpression e){
-	// if (e instanceof IdentExpr) return ((IdentExpr)e).getType();
-	// if (e instanceof IntLitExpr) return ((IntLitExpr)e).getType();
-	// if (e instanceof DoubleLitExpr) return ((DoubleLitExpr)e).getType();
-	// if (e instanceof NegatedUnaryExpr) return
-	// ((NegatedUnaryExpr)e).getType();
-	// if (e instanceof ParenExpr) return getIExprType(
-	// ((ParenExpr)e).getExpression() );
-	// if (e instanceof ScalarCastExpr) return ((ScalarCastExpr)e).getType();
-	// if (e instanceof IntCastExpr) return ((IntCastExpr)e).getType();
-	// return null;
-	// }
 
-	// @Override
-	// public boolean visit(BinaryExpression n) {/* visit children */
-	// // type checking of binary expressions done in AssignmentStatement
-	// return true;
-	// }
-	//
-	// @Override
-	// public void endVisit(BinaryExpression n) {/* nop */
-	// }
-
-	// @Override
-	// public boolean visit(NegatedUnary n) {/* visit child */
-	// return true;
-	// }
-	//
-	// @Override
-	// public void endVisit(NegatedUnary n) {
-	// // current compiler only allows negating literals
-	// // TODO upgrade this
-	// IPrimary primary = n.getPrimary();
-	// check((primary instanceof IntLitPrimary || primary instanceof
-	// DoubleLitPrimary),
-	// n, "negation of identifier not implemented");
-	// }
-
-	// @Override
-	// public boolean visit(IntLitPrimary n) { /* nothing to do */
-	// return false;
-	// }
-	//
-	// @Override
-	// public void endVisit(IntLitPrimary n) { /* nop */
-	// }
-	//
-	// @Override
-	// public boolean visit(DoubleLitPrimary n) { /* nothing to do */
-	// return false;
-	// }
-	//
-	// @Override
-	// public void endVisit(DoubleLitPrimary n) { /* nop */
-	// }
 
 	@Override
 	public boolean visit(Ident n) {
@@ -1960,10 +1843,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 //		}
 	}
 
-	// @Override
-	// public boolean visit(AssignStatement n) { /* visit children */
-	// return true;
-	// }
+
 
 	boolean allIndicesSimple(DataBlock datablock) {
 		IdentList indices = datablock.getIndices();
@@ -2125,8 +2005,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			TensorExpr tensorExpr = (TensorExpr) expr;
 			ITerm e0 = tensorExpr.getTerm();
 			IExponentExpression e1 = tensorExpr.getExponentExpression();
-//			EnumSet<EType> t0 = getIExprTypes(e0);
-//			EnumSet<EType> t1 = getIExprTypes(e1);
 			if (e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr) {
 				// rhs is b0 * b1 where b0 and b1 are blocks
 				DataBlock b0 = ((DataBlockExpr) e0).getDataBlock();
@@ -2204,171 +2082,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		}		
     }
 
-
-	// @Override
-	// public void endVisit(AssignStatement n) {
-	// IScalarOrBlockVar lhs = n.getScalarOrBlockVar();
-	// // IAssignOp op = n.getAssignOp();
-	// IExpression expr = n.getExpression();
-	// if (lhs instanceof Ident) {
-	// if (isInt(expr)) {
-	// check(((Ident) lhs).getDec() instanceof IntDec
-	// || ((Ident) lhs).getDec() instanceof ScalarDec, n,
-	// "incompatible types in assignment");
-	// } else if (isScalar(expr)) {
-	// check(((Ident) lhs).getDec() instanceof ScalarDec, n,
-	// "incompatible types in assignment");
-	// } else if (expr instanceof BinaryExpression) {
-	// check(binaryIsInt((BinaryExpression) expr)
-	// || binaryIsScalar((BinaryExpression) expr), n,
-	// "right hand side ");
-	//
-	// }
-	// lhs is an int, and rhs has int type
-	// IDec dec = ((Ident) lhs).getDec();
-	// boolean isIntExpr = isInt(expr);
-	// boolean isScalarExpr = isScalar(expr);
-	// boolean binaryIsIntVal = expr instanceof BinaryExpression &&
-	// binaryIsInt((BinaryExpression) expr);
-	// boolean binaryIsScalarVal = expr instanceof BinaryExpression &&
-	// binaryIsScalar((BinaryExpression) expr);
-	// boolean blockIsScalar = (expr instanceof DataBlock &&
-	// allIndicesSimple((DataBlock) expr))
-	// || (expr instanceof DataBlockExpr &&
-	// allIndicesSimple(((DataBlockExpr)expr).getDataBlock()));
-	// if (dec instanceof IntDec && (isIntExpr || binaryIsIntVal ||
-	// isScalarExpr)) return;
-	// if (dec instanceof ScalarDec && (isIntExpr || binaryIsIntVal ||
-	// isScalarExpr || binaryIsScalarVal || blockIsScalar)) return;
-	// check(false,n,"incompatible types on left and right side of assignment");
-	//
-	// } else { // (lhs instanceof DataBlock)
-	//
-	// IdentList lhsIndices = ((DataBlock) lhs).getIndices();
-	// if (isInt(expr) || isScalar(expr))
-	// return;
-	// if (expr instanceof DataBlockExpr) {
-	// // boolean isSlice = checkStrictSubOrEq((DataBlock) lhs,
-	// // ((DataBlockExpr) expr).getDataBlock());
-	// boolean isSlice = hasDeclaredIndices((DataBlock) lhs)
-	// && isSubBlock(((DataBlockExpr) expr).getDataBlock());
-	// if (isSlice) { // lhs is subblock of rhs
-	// n.setSlice(true);
-	// return;
-	// }
-	// boolean isInsert = hasDeclaredIndices(((DataBlockExpr) expr)
-	// .getDataBlock()) && isSubBlock((DataBlock) lhs);
-	// if (isInsert) { // rhs is subblock of lsh
-	// n.setInsert(true);
-	// return;
-	// }
-	// checkCompatibleBlockWithTranspose(n, (DataBlock) lhs,
-	// ((DataBlockExpr) expr).getDataBlock());
-	// return;
-	// }
-	// if (expr instanceof DataBlock) {
-	// assert false;
-	// return;
-	// }
-	// if (expr instanceof BinaryExpression) {
-	// BinaryExpression binExpr = (BinaryExpression) expr;
-	// IUnaryExpression expr1 = binExpr.getExpr1();
-	// IUnaryExpression expr2 = binExpr.getExpr2();
-	//
-	// if (expr1 instanceof DataBlockExpr
-	// && expr2 instanceof DataBlockExpr) {
-	// DataBlock block1 = ((DataBlockExpr) expr1)
-	// .getDataBlock();
-	// DataBlock block2 = ((DataBlockExpr) expr2)
-	// .getDataBlock();
-	// IBinOp binOp = binExpr.getBinOp();
-	// if (binOp instanceof BinOpStar
-	// || binOp instanceof BinOpTensor) { // rhs is a
-	// // contraction
-	// // or tensor
-	// ArrayList<Ident> exprIndices = getContractionResultIndices(
-	// block1, block2);
-	// int exprIndicesSize = exprIndices.size();
-	// ArrayList<String> names = new ArrayList(exprIndicesSize);
-	// for (int i = 0; i < exprIndicesSize; i++) {
-	// names.add(exprIndices.get(i).getName());
-	// }
-	// if (!check(lhsIndices.size() == exprIndices.size(), n,
-	// "left and right sides have different dimensions"))
-	// return;
-	// for (int i = 0; i < lhsIndices.size(); i++) {
-	// String lhsIndexName = lhsIndices.getIdentAt(i)
-	// .getName();
-	// if (!check(names.contains(lhsIndexName), n,
-	// "indices do not match on left and right hand sides"))
-	// return;
-	// }
-	// return;
-	// }
-	// if (binOp instanceof BinOpPlus
-	// || binOp instanceof BinOpMinus) {
-	// IdentList block1indices = block1.getIndices();
-	// IdentList block2indices = block2.getIndices();
-	// if (!check(lhsIndices.size() == block1indices.size()
-	// && lhsIndices.size() == block2indices.size(),
-	// n, "number of indices does not match"))
-	// return;
-	// for (int i = 0; i < lhsIndices.size(); i++) {
-	// String lhsIndexName = lhsIndices.getIdentAt(i)
-	// .getName();
-	// String block1IndexName = block1indices
-	// .getIdentAt(i).getName();
-	// String block2IndexName = block2indices
-	// .getIdentAt(i).getName();
-	// if (!check(lhsIndexName.equals(block1IndexName)
-	// && lhsIndexName.equals(block2IndexName), n,
-	// "indices do not match"))
-	// return;
-	// }
-	// return;
-	//
-	// }
-	// assert false;
-	// } else if (expr1 instanceof DataBlockExpr && isScalar(expr2)) {
-	// DataBlock block1 = ((DataBlockExpr) expr1)
-	// .getDataBlock();
-	// IdentList block1indices = block1.getIndices();
-	// if (!check(lhsIndices.size() == block1indices.size(), n,
-	// "number of indices does not match"))
-	// return;
-	// for (int i = 0; i < lhsIndices.size(); i++) {
-	// String lhsIndexName = lhsIndices.getIdentAt(i)
-	// .getName();
-	// String block1IndexName = block1indices.getIdentAt(i)
-	// .getName();
-	// if (!check(lhsIndexName.equals(block1IndexName), n,
-	// "indices do not match"))
-	// return;
-	// }
-	// return;
-	// } else if (expr2 instanceof DataBlockExpr && isScalar(expr1)) {
-	// DataBlock block2 = ((DataBlockExpr) expr2)
-	// .getDataBlock();
-	// IdentList block2indices = block2.getIndices();
-	// if (!check(lhsIndices.size() == block2indices.size(), n,
-	// "number of indices does not match"))
-	// return;
-	// for (int i = 0; i < lhsIndices.size(); i++) {
-	// String lhsIndexName = lhsIndices.getIdentAt(i)
-	// .getName();
-	// String block2IndexName = block2indices.getIdentAt(i)
-	// .getName();
-	// if (!check(lhsIndexName.equals(block2IndexName), n,
-	// "indices do not match"))
-	// return;
-	// }
-	// return;
-	// }
-	//
-	// }
-	// return;
-	// }
-	// }
 
 	// returns true if index1 is a subindex of index2
 	boolean isSubIndex(Ident index1, Ident index2) {
@@ -2453,66 +2166,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return isValid && subBlock;
 	}
 
-	// // This is loose for now and allows int and scalars to be mixed
-	// private boolean binaryIsScalar(BinaryExpression expr) {
-	// IUnaryExpression expr1 = expr.getExpr1();
-	// IUnaryExpression expr2 = expr.getExpr2();
-	// IBinOp op = expr.getBinOp();
-	// if (isScalar(expr1) && isScalar(expr2) && !(op instanceof BinOpTensor)) {
-	// return true;
-	// }
-	// if (isScalar(expr1) && isInt(expr2) && !(op instanceof BinOpTensor)) {
-	// return true;
-	// }
-	// if (isInt(expr1) && isScalar(expr2) && !(op instanceof BinOpTensor)) {
-	// return true;
-	// } else if (expr1 instanceof DataBlockPrimary
-	// && expr2 instanceof DataBlockPrimary && op instanceof BinOpStar) {
-	// return getContractionResultIndices(
-	// ((DataBlockPrimary) expr1).getDataBlock(),
-	// ((DataBlockPrimary) expr2).getDataBlock()).size() == 0;
-	// }
-	// return false;
-	// }
-	//
-	// private boolean isInt(IExpression expr) {
-	// return (expr instanceof IntLitPrimary)
-	// || (expr instanceof IdentExpr && ((IdentExpr) expr)
-	// .getDec() instanceof IntDec)
-	// || (expr instanceof NegatedUnary)
-	// && isInt(((NegatedUnary) expr).getPrimary())
-	// || (expr instanceof BinaryExpression)
-	// && binaryIsInt((BinaryExpression) expr);
-	// }
-	//
-	// private boolean binaryIsInt(BinaryExpression expr) {
-	// IUnaryExpression expr1 = expr.getExpr1();
-	// IUnaryExpression expr2 = expr.getExpr2();
-	// IBinOp op = expr.getBinOp();
-	// return (isInt(expr1) && isInt(expr2) && !(op instanceof BinOpTensor));
-	// }
-	//
-	// private boolean isScalar(IExpression expr) {
-	// return (expr instanceof DoubleLitPrimary)
-	// || (expr instanceof IdentExpr && ((IdentExpr) expr)
-	// .getDec() instanceof ScalarDec)
-	// || (expr instanceof NegatedUnary)
-	// && isScalar(((NegatedUnary) expr).getPrimary())
-	// || (expr instanceof DataBlockPrimary)
-	// && isDataBlockScalar((DataBlockPrimary) expr);
-	// }
-
-	// // a Data block has a scalar value when all of its indices are simple
-	// private boolean isDataBlockScalar(DataBlockExpr expr) {
-	// IdentList indices = expr.getDataBlock().getIndices();
-	// boolean allSimple = true;
-	// for (int i = 0; i < indices.size() && allSimple; i++) {
-	// IDec dec = indices.getIdentAt(i).getDec();
-	// allSimple &= (dec instanceof IndexDec)
-	// && (((IndexDec) dec).getTypeName().equals("index"));
-	// }
-	// return allSimple;
-	// }
 
 	private boolean contains(IdentList list, Ident ident) {
 		String name = ident.getName();
@@ -2524,7 +2177,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return result;
 	}
 	
-
 
 	private ArrayList<Ident> getContractionResultIndices(DataBlock block1, DataBlock block2) {
 		IdentList ind1 = block1.getIndices();
@@ -2549,8 +2201,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		return UnsharedInd;
 
 	}
-	
-
 
 	private boolean contains(ArrayList<Ident> list, Ident ident) {
 		String name = ident.getName();
@@ -2590,14 +2240,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	public void endVisit(StringLitExpr n) {/* nop */
 	}
 
-	// @Override
-	// public boolean visit(StringLiteral n) {
-	// // TODO upgrade this--for now, don't visit the children of a
-	// // PrintStatement or PrintlnStatement, so don't need to check here.
-	// check(n.getParent() instanceof ImportProg, n,
-	// "String literals may only appear in import, print, and println statements");
-	// return true;
-	// }
 
 	@Override
 	public boolean visit(StringLiteral n) { /*
@@ -2637,37 +2279,6 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 				"unexpected argument for println statement");
 	}
 
-//	@Override
-//	public boolean visit(PrintIndexStatement n) { /* don't visit children */
-//		return true;
-//	}
-//
-//	@Override
-//	public void endVisit(PrintIndexStatement n) {
-//		check(n.getIdent().getDec() instanceof IndexDec || n.getIdent().getDec() instanceof SubIndexDec, n,
-//				"Argument to print_index statement must be an index variable");
-//	}
-//
-//	@Override
-//	public boolean visit(PrintScalarStatement n) { /* don't visit children */
-//		return true;
-//	}
-//
-//	@Override
-//	public void endVisit(PrintScalarStatement n) {
-//		check(n.getIdent().getDec() instanceof ScalarDec, n,
-//				"Argument to print_scalar statement must be an scalar variable");
-//	}
-//
-//	@Override
-//	public boolean visit(PrintIntStatement n) {
-//		return true;
-//	}
-//
-//	@Override
-//	public void endVisit(PrintIntStatement n) {
-//		check(n.getIdent().getDec() instanceof IntDec, n, "Argument to print_int statement must be an int variable ");
-//	}
 
 	// @Override
 	// public boolean visit(GpuOn n) { /* no children */
