@@ -15,7 +15,6 @@ import sial.code_gen.IndexTable.Entry;
 import sial.io.SIADataInput;
 import sial.io.SIADataOutput;
 import sial.parser.SialParsersym;
-import static sial.code_gen.CodeGenVisitor.defaultZeroInd;
 
 
 

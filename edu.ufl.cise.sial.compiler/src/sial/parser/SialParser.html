@@ -89,6 +89,24 @@
     </td>
   </tr>
   <tr>
+    <td width="10%"><a name="BinOp"><b>BinOp</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>'^'</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="BinaryExpression"><b>BinaryExpression</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#UnaryExpression">UnaryExpression</a> <a href="#BinOp">BinOp</a> <a href="#UnaryExpression">UnaryExpression</a></p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="CastExpression"><b>CastExpression</b></a>
     </td>
     <td width="50%">
@@ -523,6 +541,16 @@
     <td width="40%">
       <p>%empty</p>
       <p>'=' DOUBLELIT</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="ScalarOrBlockVar"><b>ScalarOrBlockVar</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#Ident">Ident</a></p>
+      <p><a href="#DataBlock">DataBlock</a></p>
     </td>
   </tr>
   <tr>

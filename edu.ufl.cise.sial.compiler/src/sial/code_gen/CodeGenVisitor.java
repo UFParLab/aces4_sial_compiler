@@ -64,9 +64,9 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	
 
 	//the difference between 0's and 1's was inherited from aces3.  No rhyme or reason has been discovered.
-	static int[] defaultOneInd; // array initialized to ones. Needed in many opTable
+//	static int[] defaultOneInd; // array initialized to ones. Needed in many opTable
 							// entries, so do it once.
-	static int[] defaultZeroInd; // array initialized to zeros. Needed in some opTable
+//	static int[] defaultZeroInd; // array initialized to zeros. Needed in some opTable
 							// entries, so do it once.
 	static int[] defaultUndefInd; // array initialized to -1
 	
@@ -78,13 +78,13 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	int noArgExecuteArg = -1;
 	
 	static {
-		defaultOneInd = new int[TypeConstantMap.max_rank];
+//		defaultOneInd = new int[TypeConstantMap.max_rank];
 		defaultUndefInd = new int[TypeConstantMap.max_rank];
-		for (int i = 0; i != defaultOneInd.length; i++) {
-			defaultOneInd[i] = 1;
+		for (int i = 0; i != defaultUndefInd.length; i++) {
+//			defaultOneInd[i] = 1;
 			defaultUndefInd[i] = -1;
 		}
-		defaultZeroInd = new int[TypeConstantMap.max_rank];
+//		defaultZeroInd = new int[TypeConstantMap.max_rank];
 		defaultUnusedInd = defaultUndefInd;
 	}
 	
@@ -1032,7 +1032,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		int arraySlot = operandStack.pop();
 		IDec dec = n.getIdent().getDec();
 		int rank = ((ArrayDec)dec).getDimensionList().size();
-		opTable.addOptableEntry (deallocate_contiguous_op,arraySlot, rank, unused, defaultUnusedInd, lineno(n) );
+		opTable.addOptableEntry (deallocate_contiguous_op, rank, arraySlot, unused, defaultUnusedInd, lineno(n) );
 	}
 
 //	@Override
