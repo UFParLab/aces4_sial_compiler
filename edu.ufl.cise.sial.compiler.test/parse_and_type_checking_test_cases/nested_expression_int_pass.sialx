@@ -13,6 +13,7 @@ scalar z = 4.0
 
 static a[ii,ii]
 
+
 l = (i+j)*k
 l = (i-j)/k
 l = i+j*k

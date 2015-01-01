@@ -1,0 +1,50 @@
+sial contiguous_local_2
+
+# in test_basic_sial
+#		set_constant("norb", 12);
+#		int segs[] = { 3,4,5,3,4,5,3,4,5,3,4,5 };
+#		set_aoindex_info(12, segs);
+
+special get_first_block_element rw
+predefined int norb
+
+aoindex i = 1:norb
+aoindex j = 1:norb
+index k = 1:norb
+#contiguous local unused0[i,j]
+#contiguous local unused1[i,j]
+#contiguous local unused2[i,j]
+#contiguous local unused3[i,j]
+#contiguous local unused4[i,j]
+contiguous local loc1[i,j]
+contiguous local loc2[i,j]
+contiguous local loc3[k,k]
+contiguous local loc4[k,k]
+
+int ltop 
+int rbot 
+
+do k
+  execute get_first_block_element loc3[k:k,k:k] loc4[k:k,k:k]
+enddo k
+
+
+
+
+do k
+  execute get_first_block_element loc1[i:i,j:j] loc2[i:i,j:j]
+enddo k
+
+do k
+  print loc2[k:k,k:k]
+#  res[k] = loc2[k:k]
+enddo k
+
+deallocate contiguous loc1[1:ltop,1:ltop]
+deallocate contiguous loc1[1:ltop, rbot:norb]
+deallocate contiguous loc1[rbot:norb,1:ltop]
+deallocate contiguous loc2[1:norb, 1:norb]
+
+
+
+endsial contiguous_local_2

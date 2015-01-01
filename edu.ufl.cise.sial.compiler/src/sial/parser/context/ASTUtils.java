@@ -121,38 +121,38 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return false;
     }
 	
-	/**
-	 * 
-	 * @param n  The identifier represeting an index
-	 * @param node  The AST node whose ancestors should define a value for the index
-	 * @return  the AST node that is either a Dec in which the index appears, Do or Pardo loop that defines the given index, or the AST node of the procedure containing the node, or null if none of the above
-	 */
-	static IAst getEnclosingLoopOrIDec(Ident n, IAst node){
-		IndexDec dec = (IndexDec) n.getDec();
-		IAst tnode = node.getParent();
-		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
-			tnode = tnode.getParent();
-		}
-		if (tnode == null ) return tnode; //not found
-		if (tnode instanceof IDec) return tnode; //this context of this ident was a declaration.
-		if (tnode instanceof DoStatement){
-			DoStatement doStatement = (DoStatement)tnode;
-			IDec doVarDec = doStatement.getStartIndex().getDec();
-			if (doVarDec == dec) return doStatement;
-			return getEnclosingLoopOrIDec(n, doStatement);
-		}
-		if (tnode instanceof PardoStatement){
-			PardoStatement pardoStatement = (PardoStatement)tnode;
-			IdentList identList  = pardoStatement.getStartIndices();
-			for (int i = 0; i < identList.size(); ++i){
-				Ident pardoVar = (Ident) identList.getElementAt(i);
-				IDec pardoVarDec = pardoVar.getDec();
-				if (pardoVarDec == dec) return pardoStatement;
-			}
-			return getEnclosingLoopOrIDec(n, pardoStatement);
-		}
-		return null;
-	}
+//	/**
+//	 * 
+//	 * @param n  The identifier represeting an index
+//	 * @param node  The AST node whose ancestors should define a value for the index
+//	 * @return  the AST node that is either a Dec in which the index appears, Do or Pardo loop that defines the given index, or the AST node of the procedure containing the node, or null if none of the above
+//	 */
+//	static IAst getEnclosingLoopOrIDec(Ident n, IAst node){
+//		IndexDec dec = (IndexDec) n.getDec();
+//		IAst tnode = node.getParent();
+//		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
+//			tnode = tnode.getParent();
+//		}
+//		if (tnode == null ) return tnode; //not found
+//		if (tnode instanceof IDec) return tnode; //this context of this ident was a declaration.
+//		if (tnode instanceof DoStatement){
+//			DoStatement doStatement = (DoStatement)tnode;
+//			IDec doVarDec = doStatement.getStartIndex().getDec();
+//			if (doVarDec == dec) return doStatement;
+//			return getEnclosingLoopOrIDec(n, doStatement);
+//		}
+//		if (tnode instanceof PardoStatement){
+//			PardoStatement pardoStatement = (PardoStatement)tnode;
+//			IdentList identList  = pardoStatement.getStartIndices();
+//			for (int i = 0; i < identList.size(); ++i){
+//				Ident pardoVar = (Ident) identList.getElementAt(i);
+//				IDec pardoVarDec = pardoVar.getDec();
+//				if (pardoVarDec == dec) return pardoStatement;
+//			}
+//			return getEnclosingLoopOrIDec(n, pardoStatement);
+//		}
+//		return null;
+//	}
 	
 	static ArrayList<CallStatement> getCallSites(IndexDec dec, ProcDec procDec){
 		Sial root = getRoot((IAst)procDec);
@@ -557,6 +557,70 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	assert false;
     	return false;
 	}
-     
 
+	
+//	/**
+//	 * 
+//	 * @param n  The identifier expression represeting an index
+//	 * @param node  The AST node whose ancestors should define a value for the index
+//	 * @return  the AST node that is either a Dec in which the index appears, Do or Pardo loop that defines the given index, or the AST node of the procedure containing the node, or null if none of the above
+//	 */
+//	public static IAst getEnclosingLoopOrIDec(IdentExpr n, IAst node) {
+//		IndexDec dec = (IndexDec) n.getDec();
+//		IAst tnode = node.getParent();
+//		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
+//			tnode = tnode.getParent();
+//		}
+//		if (tnode == null ) return tnode; //not found
+//		if (tnode instanceof IDec) return tnode; //this context of this ident was a declaration.
+//		if (tnode instanceof DoStatement){
+//			DoStatement doStatement = (DoStatement)tnode;
+//			IDec doVarDec = doStatement.getStartIndex().getDec();
+//			if (doVarDec == dec) return doStatement;
+//			return getEnclosingLoopOrIDec(n, doStatement);
+//		}
+//		if (tnode instanceof PardoStatement){
+//			PardoStatement pardoStatement = (PardoStatement)tnode;
+//			IdentList identList  = pardoStatement.getStartIndices();
+//			for (int i = 0; i < identList.size(); ++i){
+//				Ident pardoVar = (Ident) identList.getElementAt(i);
+//				IDec pardoVarDec = pardoVar.getDec();
+//				if (pardoVarDec == dec) return pardoStatement;
+//			}
+//			return getEnclosingLoopOrIDec(n, pardoStatement);
+//		}
+//		return null;
+//	}
+     
+	/**
+	 * 
+	 * @param dec  The declaration of an index's ident or identexpr
+	 * @param node  The AST node whose ancestors should define a value for the index
+	 * @return  the AST node that is either a Dec in which the index appears, Do or Pardo loop that defines the given index, or the AST node of the procedure containing the node, or null if none of the above
+	 */
+	public static IAst getEnclosingLoopOrIDec(IndexDec dec, IAst node) {
+		IAst tnode = node.getParent();
+		while (tnode != null && !(tnode instanceof IDec || tnode instanceof ProcDec || tnode instanceof DoStatement || tnode instanceof PardoStatement)){
+			tnode = tnode.getParent();
+		}
+		if (tnode == null ) return tnode; //not found
+		if (tnode instanceof IDec) return tnode; //this context of this ident was a declaration.
+		if (tnode instanceof DoStatement){
+			DoStatement doStatement = (DoStatement)tnode;
+			IDec doVarDec = doStatement.getStartIndex().getDec();
+			if (doVarDec == dec) return doStatement;
+			return getEnclosingLoopOrIDec(dec, doStatement);
+		}
+		if (tnode instanceof PardoStatement){
+			PardoStatement pardoStatement = (PardoStatement)tnode;
+			IdentList identList  = pardoStatement.getStartIndices();
+			for (int i = 0; i < identList.size(); ++i){
+				Ident pardoVar = (Ident) identList.getElementAt(i);
+				IDec pardoVarDec = pardoVar.getDec();
+				if (pardoVarDec == dec) return pardoStatement;
+			}
+			return getEnclosingLoopOrIDec(dec, pardoStatement);
+		}
+		return null;
+	}
 }
