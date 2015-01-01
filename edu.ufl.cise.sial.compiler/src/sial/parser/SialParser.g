@@ -436,7 +436,6 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 
 	 Statement$AssertSame ::= assert_same$  Ident
 	 Statement$BroadcastStatic ::= broadcast_from$ Primary Ident
-	 --	/. 
 	 -- String stringValue;
 	 -- public void setStringValue(String stringValue){
 	 --        this.stringValue = stringValue;

@@ -236,6 +236,11 @@ public class ParseAndTypeCheckingTest {
 	}
 	
 	@Test
+	public void simple_nested_expression_int_pass() throws IOException{
+		runTypeCheckTest("simple_nested_expression_int_pass",0);
+	}
+	
+	@Test
 	public void nested_expression_and_cast_fail() throws IOException{
 		runTypeCheckTest("nested_expression_and_cast_fail",2);
 	}
@@ -288,6 +293,11 @@ public class ParseAndTypeCheckingTest {
 	@Test
 	public void return_sval_test() throws IOException{
 		runTypeCheckTest("return_sval_test",0);
+	}
+	
+	@Test
+	public void contiguous_local_2() throws IOException{
+		runTypeCheckTest("contiguous_local_2",8);
 	}
 	
 	

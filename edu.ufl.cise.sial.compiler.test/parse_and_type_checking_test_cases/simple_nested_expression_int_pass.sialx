@@ -1,0 +1,21 @@
+sial simple_nested_expression_int_pass
+
+int i = 3
+int j = 4
+int k = 5
+int l
+aoindex aoi = 3:10
+index ii = 1:100
+scalar x
+scalar y = 3.0
+scalar z = 4.0
+
+do ii 
+do aoi
+where ii < aoi
+where ii > aoi
+println "blah"
+enddo aoi
+enddo ii
+
+endsial simple_nested_expression_int_pass

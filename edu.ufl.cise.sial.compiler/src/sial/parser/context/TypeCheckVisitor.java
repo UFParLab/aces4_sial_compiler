@@ -1720,7 +1720,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	@Override
 	public void endVisit(DataBlockExpr n) {
 		n.addType(BLOCK);
-		if (allIndicesSimple(n.getDataBlock()) ){  //blocks in contractions are only blocks
+		if (allIndicesSimple(n.getDataBlock()) ){  //all indices are simple;  "blocks" in contractions are actually scalars
 			n.addType(SCALAR);
 		}
 	}	
@@ -1743,7 +1743,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			IDec decl = findAndSetDec(n);
 			check(decl != null, n, n.toString() + " not declared");
 			if (decl instanceof IndexDec) {
-				check(isDefinedInEnclosingScope(n, n), n, "index " + n.toString()
+				check(isDefinedInEnclosingScope(n, (IndexDec)decl, n), n, "index " + n.toString()
 						+ " not defined by enclosing do or pardo loop");
 			}
 		} catch (AmbiguousNameException e) {
@@ -1765,12 +1765,20 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		try {
 			IDec decl = findAndSetDec(n);
 			check(decl != null, n, n.toString() + " not declared");
-
+			if (decl instanceof IndexDec) {
+				check(isDefinedInEnclosingScope(n, (IndexDec) decl, n), n, "index " + n.toString()
+						+ " not defined by enclosing do or pardo loop");
+			}
 		} catch (AmbiguousNameException e) {
 			emitError(n, e.getMessage());
 		}
 		return true;
 	}
+
+//	private boolean isDefinedInEnclosingScope(IToken ident, IdentExpr n) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(IdentExpr n) {
@@ -2464,19 +2472,60 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	 *            node whose ancesters should define the index
 	 * @return
 	 */
-	public boolean isDefinedInEnclosingScope(Ident n, IAst node) {
-		IndexDec dec = (IndexDec) n.getDec();
-		IAst tnode = ASTUtils.getEnclosingLoopOrIDec(n, node);
-		if (tnode == null)
-			return false;
-		if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
-			return true;
-		if (tnode instanceof ProcDec) {
+//	public boolean isDefinedInEnclosingScope(Ident n, IAst node) {
+//		IndexDec dec = (IndexDec) n.getDec();
+//		IAst tnode = ASTUtils.getEnclosingLoopOrIDec(dec, node);
+//		if (tnode == null)
+//			return false;
+//		if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
+//			return true;
+//		if (tnode instanceof ProcDec) {
+////			indexAtCallSitesToCheck.add(new IndexAtCallSites(n, dec, (ProcDec) tnode));
+//		}
+//		return true;
+//	}
+	
 
-			indexAtCallSitesToCheck.add(new IndexAtCallSites(n, dec, (ProcDec) tnode));
-		}
+	public boolean isDefinedInEnclosingScope(ASTNode n, IndexDec dec, IAst node) {
+	IAst tnode = ASTUtils.getEnclosingLoopOrIDec(dec, node);
+	if (tnode == null)
+		return false;
+	if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
 		return true;
+	if (tnode instanceof ProcDec) {
+		indexAtCallSitesToCheck.add(new IndexAtCallSites(n, dec, (ProcDec) tnode));
 	}
+	return true;
+}	
+	
+	
+	
+//	/**
+//	 * determines whether the given index has a defined value at this point.
+//	 * Either it is within a pardo or do loop that defines the variable, or it
+//	 * is in a proc, and is defined in all callsites of the proc. Since the
+//	 * callsites have not necessarily been visited yet, they are added to a
+//	 * list, indexAtCallSitesToCheck. These are checked at the end of the
+//	 * program.
+//	 * 
+//	 * @param n
+//	 *            ident representing index
+//	 * @param node
+//	 *            node whose ancesters should define the index
+//	 * @return
+//	 */
+//	public boolean isDefinedInEnclosingScope(IdentExpr n,  IAst node) {
+//		IndexDec dec = (IndexDec) n.getDec();
+//		IAst tnode = ASTUtils.getEnclosingLoopOrIDec(dec, node);
+//		if (tnode == null)
+//			return false;
+//		if (tnode instanceof DoStatement || tnode instanceof PardoStatement)
+//			return true;
+//		if (tnode instanceof ProcDec) {
+//			indexAtCallSitesToCheck.add(new IndexAtCallSites(n, dec, (ProcDec) tnode));
+//		}
+//		return true;
+//	}
 
 	/** List of indices that need to be checked along with their call sites */
 	List<IndexAtCallSites> indexAtCallSitesToCheck = new ArrayList<IndexAtCallSites>();
@@ -2490,21 +2539,23 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 
 	/**
 	 * IndexAtCallSites encapsulates an index and call sites for the procedure
-	 * where this index is found. These meed to be checked to ensure that the
+	 * where this index is found. These need to be checked to ensure that the
 	 * index has a defined value at that point in the program.
 	 */
 	class IndexAtCallSites {
 		ArrayList<CallStatement> callSites;
 		ProcDec procDec;
-		Ident ident;
+        ASTNode identOrIdentExpr;
 		IndexDec indexDec;
 
-		IndexAtCallSites(Ident ident, IndexDec indexDec, ProcDec procDec) {
+
+		IndexAtCallSites(ASTNode identOrIdentExpr, IndexDec indexDec, ProcDec procDec) {
 			callSites = ASTUtils.getCallSites(indexDec, procDec);
-			this.ident = ident;
+			this.identOrIdentExpr = identOrIdentExpr;
 			this.procDec = procDec;
 			this.indexDec = indexDec;
 		}
+		
 
 		/**
 		 * traverses the list and ensures that indices are defined.
@@ -2515,12 +2566,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			Iterator<CallStatement> iter = callSites.iterator();
 			while (iter.hasNext()) {
 				CallStatement callStatement = iter.next();
-				check(isDefinedInEnclosingScope(ident, callStatement), ident, "index " + ident
+				check(isDefinedInEnclosingScope(identOrIdentExpr, indexDec, callStatement), identOrIdentExpr, "index " + identOrIdentExpr
 						+ " not defined at call site " + callStatement + " at line "
 						+ callStatement.getLeftIToken().getLine());
 			}
 			return true;
 		}
+		
 
 	}
 
