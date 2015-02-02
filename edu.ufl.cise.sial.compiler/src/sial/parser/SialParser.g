@@ -718,7 +718,7 @@ Statement$GPUGet ::= gpu_get$ Arg
  private SymbolTable symbolTable;
  public  SymbolTable getSymbolTable(){return symbolTable;}
 
-
+public static final int WARNING_CODE = 14;  //value chosen to be different from the codes defined in lpg.runtime.ParseErrorCodes
  public void resolve(ASTNode root) {
     if (root != null) {
 
@@ -775,6 +775,40 @@ Statement$GPUGet ::= gpu_get$ Arg
                     new String [] { message });
             }
 
+           public void emitWarning(IToken id, String message)
+            {   if (prs==null) prs=getIPrsStream();
+                if (lex==null){lex = prs.getILexStream();}
+                lex.getMessageHandler().handleMessage(WARNING_CODE,
+                                                      lex.getLocation(id.getStartOffset(),
+                                                                      id.getEndOffset()
+                                                                      ),
+                                                      lex.getLocation(0, 0),
+                                                      prs.getFileName(),
+                                                      new String [] { message });
+            }
+
+           public void emitWarning(ASTNode node, String message)
+           {if (prs==null) prs=getIPrsStream();
+                if (lex==null){lex = prs.getILexStream();}
+             lex.getMessageHandler().handleMessage(WARNING_CODE,
+                    			          lex.getLocation(node.getLeftIToken().getStartOffset(),
+                    			                           node.getRightIToken().getEndOffset()
+                    			                          ),
+                    				  lex.getLocation(0, 0),
+                    				  prs.getFileName(),
+                    				  new String [] { node + "--- " + message });
+            }
+
+           public void emitWarning(int startOffset, int endOffset, String message)
+           {  if (prs==null) prs=getIPrsStream();
+                if (lex==null){lex = prs.getILexStream();}
+                lex.getMessageHandler().handleMessage(
+                    WARNING_CODE,
+                    lex.getLocation(startOffset, endOffset),
+                    lex.getLocation(0, 0),
+                    prs.getFileName(),
+                    new String [] { message });
+            }
 
 
 ./

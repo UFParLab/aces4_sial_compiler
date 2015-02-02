@@ -1094,13 +1094,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public boolean visit(ContiguousIndexRangeExprList n) {
-		int rank = n.size();
-		for (int i = rank - 1; i >= 0; --i) { // visit backwards so the sip can
-												// retrieve in order
-			ASTNode expr = n.getElementAt(i);
-			expr.accept(this);
-		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -1805,7 +1799,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 																												// instruction
 			return;
 		}
-		// just a plain old copy
+		// just a plain old copy--type checking should have raised error message for other uses
 		opTable.addOptableEntry(block_copy_op, lhs_rank, lhs_slot, unused, defaultUnusedInd, lineno(n));
 		return;
 

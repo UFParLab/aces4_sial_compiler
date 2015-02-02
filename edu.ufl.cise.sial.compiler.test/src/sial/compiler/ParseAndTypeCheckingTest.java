@@ -300,5 +300,10 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("contiguous_local_2",8);
 	}
 	
+	@Test
+	public void contig_local3() throws IOException{
+		runTypeCheckTest("contig_local3",0);
+	}
+	
 	
 }

@@ -2,6 +2,8 @@ package sial.compiler;
 
 import java.io.File;
 
+import sial.parser.SialParser;
+
 import lpg.runtime.IMessageHandler;
 
 public class SystemErrMessageHandler implements ISialMessageHandler {
@@ -15,9 +17,13 @@ public class SystemErrMessageHandler implements ISialMessageHandler {
 		String message = "";
 		for (int i = 0; i < errorInfo.length; i++)
 			message += (errorInfo[i] + (i < errorInfo.length - 1 ? " " : ""));
-
+		if(errorCode == SialParser.WARNING_CODE){
+			System.err.println("Warning: " + filename + "[" + line + ":" + column + "] " + message);
+		}
+		else {
 		System.err.println(filename + "[" + line + ":" + column + "] " + message);
 		errorCount++;
+		}
 	}
 	
 	public void handleFileNotFoundMessage(String msg){

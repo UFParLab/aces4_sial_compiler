@@ -149,7 +149,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	}
 
 	public void emitWarning(ASTNode node, String message) {
-		parser.emitError(node, message);
+		parser.emitWarning(node, message);
 	}
 
 	/**
@@ -169,6 +169,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		if (condition)
 			return true;
 		emitError(n, msg);
+		return false;
+	}
+	
+	boolean checkAndWarn(boolean condition, ASTNode n, String msg) {
+		if (condition)
+			return true;
+		emitWarning(n, msg);
 		return false;
 	}
 
@@ -1901,8 +1908,15 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		for (int i = 0; i < declaredIndices.size(); ++i) {
 			Ident ident = declaredIndices.getDimensionAt(i);
 			Ident cIdent = cDeclaredIndices.getDimensionAt(i);
-			if (!ident.getName().equals(cIdent.getName()))
-				return false;
+			if (ident.getName().equals(cIdent.getName()) ){}//indices are identical
+			else { //if not, at least the index kind should be the same
+				IndexKind kind = ((IndexDec)ident.getDec()).getIndexKind();
+				IndexKind ckind = ((IndexDec)cIdent.getDec()).getIndexKind();
+				if (kind.toString().equals(ckind.toString())){}
+				else {
+					return false;
+				}
+			}	
 		}
 		return true;
 	}
