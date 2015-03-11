@@ -49,9 +49,9 @@ opcode & name & arg0 & arg1 & selector array & description \\
 \hline
 120&deallocate_op&rank&array_table_slot&block selector indices&deallocate block(s) of local array\\
 \hline
-121&allocate_contiguous_op&rank&arra_table_slot&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
+121&allocate_contiguous_op&rank&array_table_slot&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
 \hline
-122&deallocate_contiguous_op&rank&array_table_slot&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order rank-1_lower, rank-1_upper, 0_lower, 0_upper, etc.\\
+122&deallocate_contiguous_op&rank&array_table_slot&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
 \hline
 123&get_op&array table slot of desired block&&selector slots&get block selector from selector stack and send get request to appropriate server (args are redundant)\\
 \hline

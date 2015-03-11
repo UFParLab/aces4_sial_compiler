@@ -26,9 +26,6 @@ public class DoStatementSubIndex extends ASTNode implements IStatement
 
     public Ident getStartIndex() { return _StartIndex; }
     public Ident getStartParentIndex() { return _StartParentIndex; }
-    /**
-     * The value returned by <b>getWhereClauseList</b> may be <b>null</b>
-     */
     public WhereClauseList getWhereClauseList() { return _WhereClauseList; }
     public StatementList getStatementList() { return _StatementList; }
     public Ident getEndIndex() { return _EndIndex; }
@@ -49,7 +46,7 @@ public class DoStatementSubIndex extends ASTNode implements IStatement
         this._StartParentIndex = _StartParentIndex;
         ((ASTNode) _StartParentIndex).setParent(this);
         this._WhereClauseList = _WhereClauseList;
-        if (_WhereClauseList != null) ((ASTNode) _WhereClauseList).setParent(this);
+        ((ASTNode) _WhereClauseList).setParent(this);
         this._StatementList = _StatementList;
         ((ASTNode) _StatementList).setParent(this);
         this._EndIndex = _EndIndex;
@@ -82,10 +79,7 @@ public class DoStatementSubIndex extends ASTNode implements IStatement
         DoStatementSubIndex other = (DoStatementSubIndex) o;
         if (! _StartIndex.equals(other._StartIndex)) return false;
         if (! _StartParentIndex.equals(other._StartParentIndex)) return false;
-        if (_WhereClauseList == null)
-            if (other._WhereClauseList != null) return false;
-            else; // continue
-        else if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
+        if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
         if (! _StatementList.equals(other._StatementList)) return false;
         if (! _EndIndex.equals(other._EndIndex)) return false;
         if (! _EndParentIndex.equals(other._EndParentIndex)) return false;
@@ -97,7 +91,7 @@ public class DoStatementSubIndex extends ASTNode implements IStatement
         int hash = super.hashCode();
         hash = hash * 31 + (_StartIndex.hashCode());
         hash = hash * 31 + (_StartParentIndex.hashCode());
-        hash = hash * 31 + (_WhereClauseList == null ? 0 : _WhereClauseList.hashCode());
+        hash = hash * 31 + (_WhereClauseList.hashCode());
         hash = hash * 31 + (_StatementList.hashCode());
         hash = hash * 31 + (_EndIndex.hashCode());
         hash = hash * 31 + (_EndParentIndex.hashCode());
@@ -118,7 +112,7 @@ public class DoStatementSubIndex extends ASTNode implements IStatement
         {
             _StartIndex.accept(v);
             _StartParentIndex.accept(v);
-            if (_WhereClauseList != null) _WhereClauseList.accept(v);
+            _WhereClauseList.accept(v);
             _StatementList.accept(v);
             _EndIndex.accept(v);
             _EndParentIndex.accept(v);

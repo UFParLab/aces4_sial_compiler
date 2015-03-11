@@ -282,7 +282,7 @@ public class ParseAndTypeCheckingTest {
 	
 	@Test
 	public void contiguous_local_fail() throws IOException{
-		runTypeCheckTest("contiguous_local_fail",1);
+		runTypeCheckTest("contiguous_local_fail",3);
 	}
 	
 	@Test
@@ -305,5 +305,13 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("contig_local3",0);
 	}
 	
+	@Test
+	public void create_inside_pardo() throws IOException{
+		runTypeCheckTest("create_inside_pardo",1);
+	}
 	
+	@Test
+	public void pardo_with_where() throws IOException{
+		runTypeCheckTest("pardo_with_where",0);
+	}
 }

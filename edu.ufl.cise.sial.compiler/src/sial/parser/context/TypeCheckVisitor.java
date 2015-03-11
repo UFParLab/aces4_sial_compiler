@@ -339,7 +339,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	}
 
 	@Override
-	public void endVisit(ArrayDec n) {/* nop */
+	public void endVisit(ArrayDec n) {
+		n.setUsed(false);
 	}
 
 	@Override
@@ -735,6 +736,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		}
 		// check indices
 		ArrayDec arrayDec = (ArrayDec) dec;
+//		arrayDec.setUsed();
 		DimensionList decDims = arrayDec.getDimensionList();
 		if (n.getAllocIndexListopt() == null)
 			return; // no indices given
@@ -846,53 +848,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		IDec dec = n.getIdent().getDec();
 		check(dec instanceof ArrayDec && ((ArrayDec) dec).getTypeName().equals("distributed"), n, n.getIdent()
 		.toString() + " must be declared as distributed array"); 	
-//		if (!(check(dec instanceof ArrayDec && ((ArrayDec) dec).getTypeName().equals("distributed"), n, n.getIdent()
-//				.toString() + " must be declared as distributed array"))) {
-//			return;
-//		}
-//		// check indices
-//		ArrayDec arrayDec = (ArrayDec) dec;
-//		DimensionList decDims = arrayDec.getDimensionList();
-//		if (n.getAllocIndexListopt() == null)
-//			return; // no indices given
-//		AllocIndexList allocDims = n.getAllocIndexListopt().getAllocIndexList();
-//		if (!check(decDims.size() == allocDims.size(), n,
-//				"index list in allocate statement incompatible with declaration of " + n.getIdent()))
-//			return;
-//		// check that declared type and actual type of non-wildcard indices
-//		// match
-//		for (int i = 0; i < decDims.size(); i++) {
-//			IAllocIndex index = allocDims.getAllocIndexAt(i);
-//			if (index instanceof AllocIndexWildCard)
-//				continue;
-//			// not a wildcard--check type compatibility
-//			IDec indexDec = ((AllocIndexIdent) index).getDec();
-//			// The dimension list has been visited already, ensuring that
-//			// indexDec is an IndexDec or SubIndexDec
-//			IDec declaredIDec = decDims.getDimensionAt(i).getDec();
-//			if (indexDec instanceof IndexDec) {
-//				check(declaredIDec instanceof IndexDec, (AllocIndexIdent) index,
-//						"index in create statement incompatible with declaration of array");
-//				String indexType = ((IndexDec) indexDec).getTypeName();
-//
-//				IndexDec declaredDec = (IndexDec) declaredIDec;
-//				String declaredIndexType = declaredDec.getTypeName();
-//				check(indexType.equals(declaredIndexType), (AllocIndexIdent) index,
-//						"index in create statement incompatible with declaration of array");
-//				return;
-//			}
-//			// indexDec is a SubIndex, parent declarations must be the same
-//			// This rule may be too strict.
-//			check(declaredIDec instanceof SubIndexDec, (AllocIndexIdent) index,
-//					"index in create statement incompatible with declaration of array");
-//			String indexParent = ((SubIndexDec) indexDec).getParentName();
-//			SubIndexDec declaredDec = (SubIndexDec) declaredIDec;
-//			String declaredIndexParent = declaredDec.getParentName();
-//			check(indexParent.equals(declaredIndexParent), (AllocIndexIdent) index,
-//					"index in create statement incompatible with declaration of array; superindices must match");
-//			return;
-//		}
-
+//		((ArrayDec)dec).setUsed();
+		check(!isInPardo(n), n, n + " is inside pardo.");
 	}
 
 	@Override
@@ -1223,6 +1180,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			if (dec instanceof ArrayDec){
 				check(ASTUtils.isStaticOrContiguousArray(dec)||nonstatic_noselector_array_allowed(n),n,"Normally, a non-contiguous array requires block selector. " +
 						"A list of special cases is built in to the compiler.  This super instruction is not in the list");
+				((ArrayDec)dec).setUsed();
 				return false;
 			}
 			check(false, n, "illegal argument type for execute statement");
@@ -1303,6 +1261,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 		if (identDec == null) return; //error alreaday reported
 		if (!check(identDec instanceof ArrayDec, n, n.getIdent() + " must be an array"))
 			return;
+//		((ArrayDec)identDec).setUsed();
 		IdentList indices = n.getIndices();
 		DimensionList declaredDimensionList = ((ArrayDec) identDec).getDimensionList();
 		if (!check(indices.size() == declaredDimensionList.size(), n, "number of indices of " + n.getIdent()
@@ -1328,7 +1287,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			String dimensionType = (dimensionDec instanceof IndexDec) ? ((IndexDec) dimensionDec).getTypeName()
 					: ((IndexDec) ((SubIndexDec) dimensionDec).getParentIdent().getDec()).getTypeName();
 			if (!check(indexType.equals(dimensionType), n, indices.getIdentAt(i).getIDENTIFIER() + " and "
-					+ declaredDimensionList.getDimensionAt(i).getIDENTIFIER() + "have incompatible types"))
+					+ declaredDimensionList.getDimensionAt(i).getIDENTIFIER() + " have incompatible types"))
 				return;
 		}
 	}
@@ -1753,6 +1712,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 				check(isDefinedInEnclosingScope(n, (IndexDec)decl, n), n, "index " + n.toString()
 						+ " not defined by enclosing do or pardo loop");
 			}
+			if (decl instanceof ArrayDec){
+				((ArrayDec)decl).setUsed();
+			}
 		} catch (AmbiguousNameException e) {
 			emitError(n, e.getMessage());
 		}
@@ -1776,16 +1738,16 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 				check(isDefinedInEnclosingScope(n, (IndexDec) decl, n), n, "index " + n.toString()
 						+ " not defined by enclosing do or pardo loop");
 			}
+			if (decl instanceof ArrayDec){
+				((ArrayDec)decl).setUsed();
+			}
 		} catch (AmbiguousNameException e) {
 			emitError(n, e.getMessage());
 		}
 		return true;
 	}
 
-//	private boolean isDefinedInEnclosingScope(IToken ident, IdentExpr n) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
+
 
 	@Override
 	public void endVisit(IdentExpr n) {
@@ -1795,8 +1757,10 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 			n.addType(INT);
 		else if (dec instanceof ScalarDec)
 			n.addType(SCALAR);
-		else if (dec instanceof ArrayDec)
+		else if (dec instanceof ArrayDec){
 			n.addType(ARRAY);
+			((ArrayDec)dec).setUsed();
+		}
 		else if (dec instanceof IndexDec){
 			n.addType(INDEX); n.addType(INT);
 		}
@@ -2453,7 +2417,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements  SialParsersym,
 	}
 
 	/**
-	 * determines whether a given node is within a pardo statement. If it in a
+	 * determines whether a given node is within a pardo statement. If it is in a
 	 * procedure, the proc is added to a list. At the end of the program, all
 	 * call sites of the procs in the list will be checked.
 	 * 

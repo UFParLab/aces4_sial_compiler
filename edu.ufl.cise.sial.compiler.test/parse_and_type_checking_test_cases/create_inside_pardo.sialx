@@ -1,0 +1,23 @@
+import "aces_defs.sialx"
+
+sial create_inside_pardo
+
+aoindex a = 1:norb
+aoindex b = 1:norb
+aoindex ccc = 1:norb
+
+distributed x[a,b]
+distributed y[b,ccc]
+temp t[a,ccc]
+
+pardo a,b
+	create x
+   get x[a,b]
+   do ccc
+     get y[b,ccc]
+     t[a,ccc] = x[a,b] * y[b,ccc]
+   enddo ccc
+endpardo a,b
+
+endsial create_inside_pardo
+   

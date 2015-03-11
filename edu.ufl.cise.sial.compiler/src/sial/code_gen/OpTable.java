@@ -164,7 +164,7 @@ public class OpTable {
 		return true;
 	}
 	
-	//backpatch jump instruction if If statement.  
+	//backpatch jump instruction of if statement.  
 	public void backpatchArg0(int instructionToChange){
 		entries.get(instructionToChange).arg0 = nOps;
 	}

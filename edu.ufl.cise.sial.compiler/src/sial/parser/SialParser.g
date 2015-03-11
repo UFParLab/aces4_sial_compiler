@@ -163,6 +163,10 @@
 		 public String getTypeName(){
 		 return getArrayKind().toString().toLowerCase();
 		 }
+		 boolean used = false;
+		public  void setUsed(){used = true;}
+		public void setUsed(boolean val){used = val;}
+		public boolean isUsed(){return used;}
 		./
 		
 		ArrayKind$ArrayKind ::=
@@ -255,7 +259,7 @@
 	 StatementList$$Statement ::= %empty | StatementList Statement EOLs$ 
 	 
 	 WhereClause ::= where$ RelationalExpression
-	 WhereClauseList ::= %empty | WhereClauseList WhereClause EOLs$
+	 WhereClauseList$$WhereClause ::= %empty | WhereClauseList WhereClause EOLs$
 	 
 	  Statement$CallStatement ::= call$  Ident
 	 

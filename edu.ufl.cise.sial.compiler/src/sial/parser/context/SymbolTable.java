@@ -5,6 +5,7 @@ import static sial.parser.context.IdentUtils.getSimpleName;
 import static sial.parser.context.IdentUtils.isSimple;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -59,8 +60,9 @@ public class SymbolTable {
 		if (isSimple(name)) {  //name is unqualified
 			// first, check this symbol table
 			dec = simpleLookup(name);
-			if (dec != null)
+			if (dec != null){
 				return dec;
+			}
 			// not found, so check imported programs
 			int n = imports.size();
 			if (n == 0)

@@ -112,6 +112,10 @@ public class ArrayDec extends ASTNode implements IArrayDec
 	 public String getTypeName(){
 	 return getArrayKind().toString().toLowerCase();
 	 }
+	 boolean used = false;
+	public  void setUsed(){used = true;}
+	public void setUsed(boolean val){used = val;}
+	public boolean isUsed(){return used;}
 	}
 
 

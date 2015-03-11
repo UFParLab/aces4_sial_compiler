@@ -23,9 +23,6 @@ public class PardoStatement extends ASTNode implements IStatement
     private IdentList _EndIndices;
 
     public IdentList getStartIndices() { return _StartIndices; }
-    /**
-     * The value returned by <b>getWhereClauseList</b> may be <b>null</b>
-     */
     public WhereClauseList getWhereClauseList() { return _WhereClauseList; }
     public StatementList getStatementList() { return _StatementList; }
     public IdentList getEndIndices() { return _EndIndices; }
@@ -41,7 +38,7 @@ public class PardoStatement extends ASTNode implements IStatement
         this._StartIndices = _StartIndices;
         ((ASTNode) _StartIndices).setParent(this);
         this._WhereClauseList = _WhereClauseList;
-        if (_WhereClauseList != null) ((ASTNode) _WhereClauseList).setParent(this);
+        ((ASTNode) _WhereClauseList).setParent(this);
         this._StatementList = _StatementList;
         ((ASTNode) _StatementList).setParent(this);
         this._EndIndices = _EndIndices;
@@ -69,10 +66,7 @@ public class PardoStatement extends ASTNode implements IStatement
         if (! super.equals(o)) return false;
         PardoStatement other = (PardoStatement) o;
         if (! _StartIndices.equals(other._StartIndices)) return false;
-        if (_WhereClauseList == null)
-            if (other._WhereClauseList != null) return false;
-            else; // continue
-        else if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
+        if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
         if (! _StatementList.equals(other._StatementList)) return false;
         if (! _EndIndices.equals(other._EndIndices)) return false;
         return true;
@@ -82,7 +76,7 @@ public class PardoStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_StartIndices.hashCode());
-        hash = hash * 31 + (_WhereClauseList == null ? 0 : _WhereClauseList.hashCode());
+        hash = hash * 31 + (_WhereClauseList.hashCode());
         hash = hash * 31 + (_StatementList.hashCode());
         hash = hash * 31 + (_EndIndices.hashCode());
         return hash;
@@ -101,7 +95,7 @@ public class PardoStatement extends ASTNode implements IStatement
         if (checkChildren)
         {
             _StartIndices.accept(v);
-            if (_WhereClauseList != null) _WhereClauseList.accept(v);
+            _WhereClauseList.accept(v);
             _StatementList.accept(v);
             _EndIndices.accept(v);
         }

@@ -11,47 +11,30 @@ import org.eclipse.imp.parser.IParser;
   import java.util.EnumSet;
 
 /**
- *<em>
- *<li>Rule 61:  WhereClauseList ::= $Empty
- *</em>
- *<p>
  *<b>
+ *<li>Rule 61:  WhereClauseList ::= $Empty
  *<li>Rule 62:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
  *</b>
  */
-public class WhereClauseList extends ASTNode implements IWhereClauseList
+public class WhereClauseList extends AbstractASTNodeList implements IWhereClauseList
 {
-    private WhereClauseList _WhereClauseList;
-    private WhereClause _WhereClause;
+    public WhereClause getWhereClauseAt(int i) { return (WhereClause) getElementAt(i); }
 
-    /**
-     * The value returned by <b>getWhereClauseList</b> may be <b>null</b>
-     */
-    public WhereClauseList getWhereClauseList() { return _WhereClauseList; }
-    public WhereClause getWhereClause() { return _WhereClause; }
-
-    public WhereClauseList(IToken leftIToken, IToken rightIToken,
-                           WhereClauseList _WhereClauseList,
-                           WhereClause _WhereClause)
+    public WhereClauseList(IToken leftIToken, IToken rightIToken, boolean leftRecursive)
     {
-        super(leftIToken, rightIToken);
-
-        this._WhereClauseList = _WhereClauseList;
-        if (_WhereClauseList != null) ((ASTNode) _WhereClauseList).setParent(this);
-        this._WhereClause = _WhereClause;
-        ((ASTNode) _WhereClause).setParent(this);
-        initialize();
+        super(leftIToken, rightIToken, leftRecursive);
     }
 
-    /**
-     * A list of all children of this node, including the null ones.
-     */
-    public java.util.ArrayList getAllChildren()
+    public WhereClauseList(WhereClause _WhereClause, boolean leftRecursive)
     {
-        java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_WhereClauseList);
-        list.add(_WhereClause);
-        return list;
+        super((ASTNode) _WhereClause, leftRecursive);
+        ((ASTNode) _WhereClause).setParent(this);
+    }
+
+    public void add(WhereClause _WhereClause)
+    {
+        super.add((ASTNode) _WhereClause);
+        ((ASTNode) _WhereClause).setParent(this);
     }
 
     public boolean equals(Object o)
@@ -60,19 +43,20 @@ public class WhereClauseList extends ASTNode implements IWhereClauseList
         if (! (o instanceof WhereClauseList)) return false;
         if (! super.equals(o)) return false;
         WhereClauseList other = (WhereClauseList) o;
-        if (_WhereClauseList == null)
-            if (other._WhereClauseList != null) return false;
-            else; // continue
-        else if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
-        if (! _WhereClause.equals(other._WhereClause)) return false;
+        if (size() != other.size()) return false;
+        for (int i = 0; i < size(); i++)
+        {
+            WhereClause element = getWhereClauseAt(i);
+            if (! element.equals(other.getWhereClauseAt(i))) return false;
+        }
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_WhereClauseList == null ? 0 : _WhereClauseList.hashCode());
-        hash = hash * 31 + (_WhereClause.hashCode());
+        for (int i = 0; i < size(); i++)
+            hash = hash * 31 + (getWhereClauseAt(i).hashCode());
         return hash;
     }
 
@@ -82,14 +66,18 @@ public class WhereClauseList extends ASTNode implements IWhereClauseList
         enter((Visitor) v);
         v.postVisit(this);
     }
-
     public void enter(Visitor v)
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            if (_WhereClauseList != null) _WhereClauseList.accept(v);
-            _WhereClause.accept(v);
+            for (int i = 0; i < size(); i++)
+            {
+                WhereClause element = getWhereClauseAt(i);
+                if (! v.preVisit(element)) continue;
+                element.enter(v);
+                v.postVisit(element);
+            }
         }
         v.endVisit(this);
     }

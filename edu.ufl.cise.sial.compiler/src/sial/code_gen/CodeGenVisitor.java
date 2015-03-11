@@ -232,21 +232,26 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public boolean visit(ArrayDec n) {
-		int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
-		attribute = attribute | ASTUtils.getModifierAttributes(n);
-		int priority = 0;
-		if (n.getTypeName().toLowerCase() == "distributed")
-			priority = SipConstants.distributed_array_priority;
-		else if (n.getTypeName().toLowerCase() == "served")
-			priority = SipConstants.served_array_priority;
-		DimensionList dimensions = n.getDimensionList();
-		int rank = dimensions.size();
-		int[] indarray = new int[rank];
-		for (int i = 0; i != rank; i++) {
-			IDec indexIDec = dimensions.getDimensionAt(i).getDec();
-			indarray[i] = indexTable.getIndex(indexIDec);
+		if (n.isUsed()) {
+			int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
+			attribute = attribute | ASTUtils.getModifierAttributes(n);
+			int priority = 0;
+			if (n.getTypeName().toLowerCase() == "distributed")
+				priority = SipConstants.distributed_array_priority;
+			else if (n.getTypeName().toLowerCase() == "served")
+				priority = SipConstants.served_array_priority;
+			DimensionList dimensions = n.getDimensionList();
+			int rank = dimensions.size();
+			int[] indarray = new int[rank];
+			for (int i = 0; i != rank; i++) {
+				IDec indexIDec = dimensions.getDimensionAt(i).getDec();
+				indarray[i] = indexTable.getIndex(indexIDec);
+			}
+			arrayTable.addArrayEntry(n, rank, attribute, indarray, priority);
+		} else {
+			warn("Array " + n + " at line " + lineno(n)
+					+ " is never used.  It is not included in the array table.");
 		}
-		arrayTable.addArrayEntry(n, rank, attribute, indarray, priority);
 		return false;
 	}
 
@@ -373,7 +378,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	public boolean visit(ProcDec n) {
 		if (n.getCallSites().size() == 0) { // call sites should have been
 											// collected during type checking.
-			warn("Procedure " + n.getName() + "at line " + lineno(n) + " is never called.  No code generated");
+			warn("Procedure " + n.getName() + "at line " + lineno(n) + " is never called.  No code generated.");
 			return false; // if the proc is never called, don't generate code
 		} // for it.
 		int addr = opTable.nOps;
@@ -595,8 +600,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		n.getStartIndices().accept(this);
 		// the index array is on top of the indexArrayStack
 		int num_indices = n.getStartIndices().size();
+		int num_where_clauses = n.getWhereClauseList()!=null? n.getWhereClauseList().getChildren().size() : 0;
 		int[] ind = indexArrayStack.pop();
-		int pardo_instruction = opTable.addOptableEntry(pardo_op, toBackpatch, num_indices, unused, ind, lineno(n));
+		int pardo_instruction = opTable.addOptableEntry(pardo_op, toBackpatch, num_indices, num_where_clauses, ind, lineno(n));
+//		System.out.println(n + "\n*****\n number of where clauses=" + num_where_clauses + "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"); //TEST TEST TEST
 		// visit children
 		if (n.getWhereClauseList() != null)
 			n.getWhereClauseList().accept(this);

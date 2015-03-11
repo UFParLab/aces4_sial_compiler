@@ -31,7 +31,7 @@ public enum Opcode {
 //parallel control
 	
 	//parallel loop
-	pardo_op("optable slot of enddo","number of indices","","indices indicated in loop","beginning of pardo loop"),	
+	pardo_op("optable slot of enddo","number of indices","number of where clauses","indices indicated in loop","beginning of pardo loop"),	
 	endpardo_op("","number of indices","","indices indicated in loop","end of pardo loop"),	
 	
 	//structure multiple parallel loops

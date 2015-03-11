@@ -23,9 +23,6 @@ public class DoStatement extends ASTNode implements IStatement
     private Ident _EndIndex;
 
     public Ident getStartIndex() { return _StartIndex; }
-    /**
-     * The value returned by <b>getWhereClauseList</b> may be <b>null</b>
-     */
     public WhereClauseList getWhereClauseList() { return _WhereClauseList; }
     public StatementList getStatementList() { return _StatementList; }
     public Ident getEndIndex() { return _EndIndex; }
@@ -41,7 +38,7 @@ public class DoStatement extends ASTNode implements IStatement
         this._StartIndex = _StartIndex;
         ((ASTNode) _StartIndex).setParent(this);
         this._WhereClauseList = _WhereClauseList;
-        if (_WhereClauseList != null) ((ASTNode) _WhereClauseList).setParent(this);
+        ((ASTNode) _WhereClauseList).setParent(this);
         this._StatementList = _StatementList;
         ((ASTNode) _StatementList).setParent(this);
         this._EndIndex = _EndIndex;
@@ -69,10 +66,7 @@ public class DoStatement extends ASTNode implements IStatement
         if (! super.equals(o)) return false;
         DoStatement other = (DoStatement) o;
         if (! _StartIndex.equals(other._StartIndex)) return false;
-        if (_WhereClauseList == null)
-            if (other._WhereClauseList != null) return false;
-            else; // continue
-        else if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
+        if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
         if (! _StatementList.equals(other._StatementList)) return false;
         if (! _EndIndex.equals(other._EndIndex)) return false;
         return true;
@@ -82,7 +76,7 @@ public class DoStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_StartIndex.hashCode());
-        hash = hash * 31 + (_WhereClauseList == null ? 0 : _WhereClauseList.hashCode());
+        hash = hash * 31 + (_WhereClauseList.hashCode());
         hash = hash * 31 + (_StatementList.hashCode());
         hash = hash * 31 + (_EndIndex.hashCode());
         return hash;
@@ -101,7 +95,7 @@ public class DoStatement extends ASTNode implements IStatement
         if (checkChildren)
         {
             _StartIndex.accept(v);
-            if (_WhereClauseList != null) _WhereClauseList.accept(v);
+            _WhereClauseList.accept(v);
             _StatementList.accept(v);
             _EndIndex.accept(v);
         }
