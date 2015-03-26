@@ -3,7 +3,7 @@ package sial.parser;
 public interface SialParsersym {
     public final static int
       TK_COMMA = 6,
-      TK_PLUS = 4,
+      TK_PLUS = 3,
       TK_MINUS = 2,
       TK_STAR = 44,
       TK_SLASH = 48,
@@ -99,7 +99,7 @@ public interface SialParsersym {
       TK_IDENTIFIER = 1,
       TK_INTLIT = 39,
       TK_DOUBLELIT = 41,
-      TK_EOL = 3,
+      TK_EOL = 4,
       TK_STRINGLIT = 43,
       TK_ERROR_TOKEN = 100;
 
@@ -107,8 +107,8 @@ public interface SialParsersym {
                  "",
                  "IDENTIFIER",
                  "MINUS",
-                 "EOL",
                  "PLUS",
+                 "EOL",
                  "LEFTSQUARE",
                  "COMMA",
                  "return",

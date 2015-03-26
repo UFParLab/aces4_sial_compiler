@@ -172,7 +172,7 @@ public class SialParser implements RuleAction, IParser
 private SymbolTable symbolTable;
 public  SymbolTable getSymbolTable(){return symbolTable;}
 
-
+public static final int WARNING_CODE = 14;  //value chosen to be different from the codes defined in lpg.runtime.ParseErrorCodes
 public void resolve(ASTNode root) {
 if (root != null) {
 
@@ -229,6 +229,40 @@ if (root != null) {
                 new String [] { message });
         }
 
+       public void emitWarning(IToken id, String message)
+        {   if (prs==null) prs=getIPrsStream();
+            if (lex==null){lex = prs.getILexStream();}
+            lex.getMessageHandler().handleMessage(WARNING_CODE,
+                                                  lex.getLocation(id.getStartOffset(),
+                                                                  id.getEndOffset()
+                                                                  ),
+                                                  lex.getLocation(0, 0),
+                                                  prs.getFileName(),
+                                                  new String [] { message });
+        }
+
+       public void emitWarning(ASTNode node, String message)
+       {if (prs==null) prs=getIPrsStream();
+            if (lex==null){lex = prs.getILexStream();}
+         lex.getMessageHandler().handleMessage(WARNING_CODE,
+                			          lex.getLocation(node.getLeftIToken().getStartOffset(),
+                			                           node.getRightIToken().getEndOffset()
+                			                          ),
+                				  lex.getLocation(0, 0),
+                				  prs.getFileName(),
+                				  new String [] { node + "--- " + message });
+        }
+
+       public void emitWarning(int startOffset, int endOffset, String message)
+       {  if (prs==null) prs=getIPrsStream();
+            if (lex==null){lex = prs.getILexStream();}
+            lex.getMessageHandler().handleMessage(
+                WARNING_CODE,
+                lex.getLocation(startOffset, endOffset),
+                lex.getLocation(0, 0),
+                prs.getFileName(),
+                new String [] { message });
+        }
 
 
 
@@ -761,18 +795,16 @@ if (root != null) {
             // Rule 61:  WhereClauseList ::= $Empty
             //
             case 61: {
-                setResult(null);
+                setResult(
+                    new WhereClauseList(getLeftIToken(), getRightIToken(), true /* left recursive */)
+                );
                 break;
             }
             //
             // Rule 62:  WhereClauseList ::= WhereClauseList WhereClause EOLs$
             //
             case 62: {
-                setResult(
-                    new WhereClauseList(getLeftIToken(), getRightIToken(),
-                                        (WhereClauseList)getRhsSym(1),
-                                        (WhereClause)getRhsSym(2))
-                );
+                ((WhereClauseList)getRhsSym(1)).add((WhereClause)getRhsSym(2));
                 break;
             }
             //
@@ -1055,14 +1087,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+            // Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
             //
             case 90: {
                 setResult(
                     new PutStatement(getLeftIToken(), getRightIToken(),
                                      (DataBlock)getRhsSym(2),
                                      (AssignOp)getRhsSym(3),
-                                     (DataBlock)getRhsSym(4))
+                                     (IExpression)getRhsSym(4))
                 );
                 break;
             }
@@ -1077,14 +1109,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 92:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+            // Rule 92:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp Expression$Expression
             //
             case 92: {
                 setResult(
                     new PrepareStatement(getLeftIToken(), getRightIToken(),
                                          (DataBlock)getRhsSym(2),
                                          (AssignOp)getRhsSym(3),
-                                         (DataBlock)getRhsSym(4))
+                                         (IExpression)getRhsSym(4))
                 );
                 break;
             }

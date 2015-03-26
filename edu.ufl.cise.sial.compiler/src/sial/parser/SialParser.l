@@ -409,7 +409,7 @@ Rules:
 58     StatementList$$Statement ::= $Empty
 59                     | StatementList Statement EOLs $
 60     WhereClause ::= where $ RelationalExpression
-61     WhereClauseList ::= $Empty
+61     WhereClauseList$$WhereClause ::= $Empty
 62                       | WhereClauseList WhereClause EOLs $
 63     Statement$CallStatement ::= call $ Ident
 64     Statement$ReturnStatement ::= return $
@@ -438,9 +438,9 @@ Rules:
 87                                    | ContiguousIndexRangeExprList , $ ContiguousIndexRangeExpr
 88     Statement$CreateStatement ::= create $ Ident
 89     Statement$DeleteStatement ::= delete $ Ident
-90     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+90     Statement$PutStatement ::= put $ DataBlock $LHSDataBlock AssignOp Expression $Expression
 91     Statement$GetStatement ::= get $ DataBlock
-92     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp DataBlock $RHSDataBlock
+92     Statement$PrepareStatement ::= prepare $ DataBlock $LHSDataBlock AssignOp Expression $Expression
 93     Statement$RequestStatement ::= request $ DataBlock
 94     Statement$CollectiveStatement ::= collective $ Ident AssignOp Expression
 95     Statement$DestroyStatement ::= destroy $ Ident
