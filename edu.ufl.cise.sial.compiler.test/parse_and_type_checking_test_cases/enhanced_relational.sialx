@@ -1,0 +1,16 @@
+sial enhanced_relational
+
+predefined int norb
+aoindex mu = 1:norb
+index jfrag = 1:norb
+index simplemu = 1:norb
+local a[simplemu]
+
+scalar e 
+
+
+pardo jfrag,mu
+#  where jfrag == a[(index)mu]
+endpardo jfrag,mu
+
+endsial enhanced_relational

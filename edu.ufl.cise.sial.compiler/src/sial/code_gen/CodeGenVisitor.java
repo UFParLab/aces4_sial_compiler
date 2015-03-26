@@ -739,25 +739,56 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		return true;
 	}
 
+
+	
+	
+	
+	
 	@Override
 	public void endVisit(PutStatement n) {
-		int rhsArrayTableSlot = operandStack.pop();
+		IExpression rhs = n.getExpression();
+		while (rhs instanceof ParenExpr) {
+			rhs = ((ParenExpr) rhs).getExpression();
+		}
+		EnumSet<EType> type = ASTUtils.getIExprTypes(rhs);
+		//		int rhsArrayTableSlot = operandStack.pop();
 		int lhsArrayTableSlot = operandStack.pop();
-		int[] rhsInd = indexArrayStack.pop();
+		//		int[] rhsInd = indexArrayStack.pop();
 		int[] lhsInd = indexArrayStack.pop();
-		int rhsRank = arrayTable.getRank(rhsArrayTableSlot);
+		//		int rhsRank = arrayTable.getRank(rhsArrayTableSlot);
 		int lhsRank = arrayTable.getRank(lhsArrayTableSlot);
-		Opcode opcode = null;
-		if (n.getAssignOp().getop().getKind() == TK_ASSIGN) {
-			opcode = put_replace_op;
-		} else if (n.getAssignOp().getop().getKind() == TK_PLUS_ASSIGN) {
-			opcode = put_accumulate_op;
-		} else
-			assert false : "illegal operator for put statement";
-		opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
-		opTable.addOptableEntry(push_block_selector_op, rhsRank, rhsArrayTableSlot, unused, rhsInd, lineno(n));
-		opTable.addOptableEntry(opcode, rhsArrayTableSlot, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+		int opKind = n.getAssignOp().getop().getKind();
+		if (type.contains(SCALAR)){
+			opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
+			if (opKind==TK_ASSIGN){
+				opTable.addOptableEntry(put_initialize_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+			}
+			else if (opKind == TK_PLUS_ASSIGN){
+				opTable.addOptableEntry(put_increment_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+			}
+			else if (opKind == TK_STAR_ASSIGN){
+				opTable.addOptableEntry(put_scale_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));				
+			}
+			else{ 
+				assert false: "illegal operator for put statement";
+			}
+		
+		return;
+		}
+	//rhs is a block
+	Opcode opcode = null;
+	if (opKind == TK_ASSIGN) {
+		opcode = put_replace_op;
+	} else if (opKind == TK_PLUS_ASSIGN) {
+		opcode = put_accumulate_op;
+	} else {
+		assert false : "illegal operator for put statement";
 	}
+	opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
+	opTable.swap();  //swaps the lhs push block selector with the rhs block selector  to match the order expected by the runtime
+	int rhsArrayTableSlot = opTable.lastArg1();
+	opTable.addOptableEntry(opcode, rhsArrayTableSlot, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+}
 
 	@Override
 	public boolean visit(GetStatement n) {/* visit the children */
@@ -780,22 +811,48 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public void endVisit(PrepareStatement n) {
-		int rhsArrayTableSlot = operandStack.pop();
+		IExpression rhs = n.getExpression();
+		while (rhs instanceof ParenExpr) {
+			rhs = ((ParenExpr) rhs).getExpression();
+		}
+		EnumSet<EType> type = ASTUtils.getIExprTypes(rhs);
+		//		int rhsArrayTableSlot = operandStack.pop();
 		int lhsArrayTableSlot = operandStack.pop();
-		int[] rhsInd = indexArrayStack.pop();
+		//		int[] rhsInd = indexArrayStack.pop();
 		int[] lhsInd = indexArrayStack.pop();
-		int rhsRank = arrayTable.getRank(rhsArrayTableSlot);
+		//		int rhsRank = arrayTable.getRank(rhsArrayTableSlot);
 		int lhsRank = arrayTable.getRank(lhsArrayTableSlot);
-		Opcode opcode = null;
-		if (n.getAssignOp().getop().getKind() == TK_ASSIGN) {
-			opcode = put_replace_op;
-		} else if (n.getAssignOp().getop().getKind() == TK_PLUS_ASSIGN) {
-			opcode = put_accumulate_op;
-		} else
-			assert false : "illegal operator for prepare statement";
-		opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
-		opTable.addOptableEntry(push_block_selector_op, rhsRank, rhsArrayTableSlot, unused, rhsInd, lineno(n));
-		opTable.addOptableEntry(opcode, rhsArrayTableSlot, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+		int opKind = n.getAssignOp().getop().getKind();
+		if (type.contains(SCALAR)){
+			opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
+			if (opKind==TK_ASSIGN){
+				opTable.addOptableEntry(put_initialize_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+			}
+			else if (opKind == TK_PLUS_ASSIGN){
+				opTable.addOptableEntry(put_increment_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
+			}
+			else if (opKind == TK_STAR_ASSIGN){
+				opTable.addOptableEntry(put_scale_op, unused, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));				
+			}
+			else{ 
+				assert false: "illegal operator for put statement";
+			}
+		
+		return;
+		}
+	//rhs is a block
+	Opcode opcode = null;
+	if (opKind == TK_ASSIGN) {
+		opcode = put_replace_op;
+	} else if (opKind == TK_PLUS_ASSIGN) {
+		opcode = put_accumulate_op;
+	} else {
+		assert false : "illegal operator for put statement";
+	}
+	opTable.addOptableEntry(push_block_selector_op, lhsRank, lhsArrayTableSlot, unused, lhsInd, lineno(n));
+	opTable.swap();  //swaps the lhs push block selector with the rhs block selector  to match the order expected by the runtime
+	int rhsArrayTableSlot = opTable.lastArg1();
+	opTable.addOptableEntry(opcode, rhsArrayTableSlot, lhsArrayTableSlot, unused, defaultUnusedInd, lineno(n));
 	}
 
 	@Override

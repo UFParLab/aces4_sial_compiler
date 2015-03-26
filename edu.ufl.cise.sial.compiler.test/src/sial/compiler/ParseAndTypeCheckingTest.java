@@ -314,4 +314,19 @@ public class ParseAndTypeCheckingTest {
 	public void pardo_with_where() throws IOException{
 		runTypeCheckTest("pardo_with_where",0);
 	}
+	
+	@Test
+	public void get_mpi() throws IOException{
+		runTypeCheckTest("get_mpi",0);
+	}
+	
+	@Test
+	public void ccsdt_rhf() throws IOException{
+		runTypeCheckTest("ccsdt_rhf",3);
+	}
+	
+	@Test
+	public void nakultest() throws IOException{
+		runTypeCheckTest("nakultest",2);
+	}
 }

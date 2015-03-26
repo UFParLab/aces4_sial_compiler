@@ -349,11 +349,13 @@
 	 
 	 Statement$DeleteStatement ::=  delete$ Ident 
 	
-	Statement$PutStatement ::= put$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+--	Statement$PutStatement ::= put$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+    Statement$PutStatement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
 	
 	Statement$GetStatement ::=  get$  DataBlock
 	
-	Statement$PrepareStatement ::= prepare$ DataBlock$LHSDataBlock  AssignOp DataBlock$RHSDataBlock
+--	Statement$PrepareStatement ::= prepare$ DataBlock$LHSDataBlock  AssignOp DataBlock$RHSDataBlock
+    Statement$PrepareStatement ::= prepare$ DataBlock$LHSDataBlock  AssignOp Expression$Expression
 	
 	Statement$RequestStatement ::= request$ DataBlock 
 	

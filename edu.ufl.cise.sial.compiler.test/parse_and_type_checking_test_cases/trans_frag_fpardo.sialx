@@ -466,7 +466,7 @@ import "trans_frag_defs.sialx"
                         Ipp[j1,j]    = 2.0 
                         execute return_diagonal Ipp[j1,j] 
                         txx[mu,nu]    = Ipp[j1,j]*txxqq[mu,nu,j1,j] 
-                       #PUT wC_ao(mu,nu) += txx(mu,nu) 
+                      wC_ao[mu,nu] += 1.2
                         LwC_ao[mu,nu] += txx[mu,nu] 
                      endif # pcount == icount c
                   ENDDO j1  

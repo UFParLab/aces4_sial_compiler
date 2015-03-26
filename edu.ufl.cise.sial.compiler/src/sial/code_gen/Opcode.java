@@ -61,6 +61,15 @@ public enum Opcode {
 			"get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to accumulate into its copy of lhs block"),
 	put_replace_op("array table slot of right hand side","array table slot of left hand side","","",
 			"get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to replace its copy of lhs block"),
+	put_initialize_op("", "array table slot of left hand side","","",
+			"get scalar value from expression stack, and rhs selector from selector stack and sends selector and initial value to server, which " +
+			"creates the block and initializes it with the given value"),
+	put_increment_op("", "array table slot of left hand side","","",
+					"get scalar value from expression stack, and rhs selector from selector stack and send selector and initial value to server, which " +
+					"increments the block with the given value"),
+	put_scale_op("", "array table slot of left hand side","","",
+					"get scalar value from expression stack, and rhs selector from selector stack and send selector and initial value to server, which " +
+					"scales each element of the block by the given value"),
 	create_op("array table slot","","","","create distributed array.  In aces4, blocks are created lazily"),
 	delete_op("array table slot","","","","delete distributed array"),
 

@@ -188,6 +188,18 @@ public class OpTable {
 		return Opcode.class.getEnumConstants()[entries.get(nOps-1).opcode];
 	}
 	
+	public int lastArg0(){
+		return entries.get(nOps-1).arg0;
+	}
+	
+	public int lastArg1(){
+		return entries.get(nOps-1).arg1;
+	}
+	
+	public int lastArg2(){
+		return entries.get(nOps-1).arg2;
+	}
+	
     boolean firstOpInitialized = false;
 
 	public boolean isFirstOpInitialized() {
