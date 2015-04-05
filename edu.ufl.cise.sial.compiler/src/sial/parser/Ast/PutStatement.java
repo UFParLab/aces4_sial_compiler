@@ -12,23 +12,23 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp DataBlock$RHSDataBlock
+ *<li>Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
  *</b>
  */
 public class PutStatement extends ASTNode implements IStatement
 {
     private DataBlock _LHSDataBlock;
     private AssignOp _AssignOp;
-    private DataBlock _RHSDataBlock;
+    private IExpression _Expression;
 
     public DataBlock getLHSDataBlock() { return _LHSDataBlock; }
     public AssignOp getAssignOp() { return _AssignOp; }
-    public DataBlock getRHSDataBlock() { return _RHSDataBlock; }
+    public IExpression getExpression() { return _Expression; }
 
     public PutStatement(IToken leftIToken, IToken rightIToken,
                         DataBlock _LHSDataBlock,
                         AssignOp _AssignOp,
-                        DataBlock _RHSDataBlock)
+                        IExpression _Expression)
     {
         super(leftIToken, rightIToken);
 
@@ -36,8 +36,8 @@ public class PutStatement extends ASTNode implements IStatement
         ((ASTNode) _LHSDataBlock).setParent(this);
         this._AssignOp = _AssignOp;
         ((ASTNode) _AssignOp).setParent(this);
-        this._RHSDataBlock = _RHSDataBlock;
-        ((ASTNode) _RHSDataBlock).setParent(this);
+        this._Expression = _Expression;
+        ((ASTNode) _Expression).setParent(this);
         initialize();
     }
 
@@ -49,7 +49,7 @@ public class PutStatement extends ASTNode implements IStatement
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_LHSDataBlock);
         list.add(_AssignOp);
-        list.add(_RHSDataBlock);
+        list.add(_Expression);
         return list;
     }
 
@@ -61,7 +61,7 @@ public class PutStatement extends ASTNode implements IStatement
         PutStatement other = (PutStatement) o;
         if (! _LHSDataBlock.equals(other._LHSDataBlock)) return false;
         if (! _AssignOp.equals(other._AssignOp)) return false;
-        if (! _RHSDataBlock.equals(other._RHSDataBlock)) return false;
+        if (! _Expression.equals(other._Expression)) return false;
         return true;
     }
 
@@ -70,7 +70,7 @@ public class PutStatement extends ASTNode implements IStatement
         int hash = super.hashCode();
         hash = hash * 31 + (_LHSDataBlock.hashCode());
         hash = hash * 31 + (_AssignOp.hashCode());
-        hash = hash * 31 + (_RHSDataBlock.hashCode());
+        hash = hash * 31 + (_Expression.hashCode());
         return hash;
     }
 
@@ -88,7 +88,7 @@ public class PutStatement extends ASTNode implements IStatement
         {
             _LHSDataBlock.accept(v);
             _AssignOp.accept(v);
-            _RHSDataBlock.accept(v);
+            _Expression.accept(v);
         }
         v.endVisit(this);
     }
