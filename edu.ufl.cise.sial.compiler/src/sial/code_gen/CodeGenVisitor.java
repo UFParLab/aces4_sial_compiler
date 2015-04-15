@@ -240,13 +240,15 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 				priority = SipConstants.distributed_array_priority;
 			else if (n.getTypeName().toLowerCase() == "served")
 				priority = SipConstants.served_array_priority;
+			else if (n.getTypeName().toLowerCase() == "local" && n.isAllSimpleIndices())
+				priority = SipConstants.local_all_indices_simple;
 			DimensionList dimensions = n.getDimensionList();
 			int rank = dimensions.size();
 			int[] indarray = new int[rank];
 			for (int i = 0; i != rank; i++) {
-				IDec indexIDec = dimensions.getDimensionAt(i).getDec();
+				IDec indexIDec = dimensions.getDimensionAt(i).getDec();						
 				indarray[i] = indexTable.getIndex(indexIDec);
-			}
+			}			
 			arrayTable.addArrayEntry(n, rank, attribute, indarray, priority);
 		} else {
 			warn("Array " + n + " at line " + lineno(n)
@@ -1172,7 +1174,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public void endVisit(RelationalExpression n) {
-		IExpression eleft = n.getUnaryExpressionLeft();
+		IExpression eleft = n.getCastExpressionLeft();
 		EnumSet<EType> argType = ASTUtils.getIExprTypes(eleft);
 		// type checking already checked that both args have same type
 		Opcode opcode;
@@ -1781,17 +1783,17 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	private int[] getPermutation(DataBlock lhs, DataBlock rhs) {
 		int permutation[] = new int[max_rank];
-		IdentList lhsIndices = lhs.getIndices();
+		IndexCastIdentList lhsIndices = lhs.getIndexCastIndices();
 		int lhsRank = lhsIndices.size();
-		IdentList rhsIndices = rhs.getIndices();
+		IndexCastIdentList rhsIndices = rhs.getIndexCastIndices();
 		int rhsRank = rhsIndices.size();
 		if (lhsRank != rhsRank)
 			return null;
 		for (int i = 0; i < lhsRank; ++i) {
 			// int lhs_index = lhs_selector[i];
-			String lhs_index = lhsIndices.getIdentAt(i).getName();
+			String lhs_index = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
 			int j;
-			for (j = 0; j < rhsRank && !(rhsIndices.getIdentAt(j).getName().equals(lhs_index)); ++j) {/*
+			for (j = 0; j < rhsRank && !(rhsIndices.getIndexCastIdentAt(j).getIdent().getName().equals(lhs_index)); ++j) {/*
 																									 * keep
 																									 * looking
 																									 * until
@@ -2026,7 +2028,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public boolean visit(TensorExpr n) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -2248,6 +2249,29 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	public void endVisit(StringLitExpr n) { /* nop */
 
 	}
+	
+    public boolean visit(IndexCastIdentList n) {  return true; }
+    public void endVisit(IndexCastIdentList n) { 
+		// Each ident in the list represents an index
+		// Visiting the children has left the index table slot of each on the
+		// compiler's operand stack
+		// Remove them and put into an array.
+		// Push the array on the indexStack
+		int nindex = n.size();
+		int[] ind = new int[TypeConstantMap.max_rank];
+		for (int i = nindex - 1; i >= 0; i--) {
+			ind[i] = operandStack.pop();
+		}
+		indexArrayStack.push(ind);
+    }
+
+    public boolean visit(IndexCastIdent n) {  return true; }
+    public void endVisit(IndexCastIdent n) { 
+    	//TODO add runtime check for bounds if cast
+    }
+
+    public boolean visit(IndexCastopt n) { return false;}
+    public void endVisit(IndexCastopt n) {  }
 
 
 }

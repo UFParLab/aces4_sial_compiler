@@ -329,4 +329,9 @@ public class ParseAndTypeCheckingTest {
 	public void nakultest() throws IOException{
 		runTypeCheckTest("nakultest",2);
 	}
+	
+	@Test
+	public void index_cast_to_simple() throws IOException{
+		runTypeCheckTest("index_cast_to_simple",0);
+	}
 }

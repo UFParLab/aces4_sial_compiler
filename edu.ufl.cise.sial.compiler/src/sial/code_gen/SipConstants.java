@@ -50,7 +50,8 @@ public final static int
 //priorities for the block server
 public final static int
    served_array_priority = 1,
-   distributed_array_priority = 2;
+   distributed_array_priority = 2,
+   local_all_indices_simple = 3;
 
 
 //constants in .siox files
