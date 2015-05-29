@@ -9,6 +9,7 @@ package sial.parser.Ast;
  *<li>ExponentExpr
  *<li>IntCastExpr
  *<li>ScalarCastExpr
+ *<li>IndexCastExpr
  *<li>NegatedUnaryExpr
  *<li>SqrtUnaryExpr
  *<li>ParenExpr

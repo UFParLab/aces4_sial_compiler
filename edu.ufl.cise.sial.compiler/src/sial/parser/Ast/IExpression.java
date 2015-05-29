@@ -24,6 +24,7 @@ import org.eclipse.imp.parser.IParser;
  *<li>ExponentExpr
  *<li>IntCastExpr
  *<li>ScalarCastExpr
+ *<li>IndexCastExpr
  *<li>NegatedUnaryExpr
  *<li>SqrtUnaryExpr
  *<li>ParenExpr

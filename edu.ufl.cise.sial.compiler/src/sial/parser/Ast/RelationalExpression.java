@@ -12,32 +12,32 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 132:  RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
+ *<li>Rule 137:  RelationalExpression ::= Expression$CastExpressionLeft RelOp Expression$CastExpressionRight
  *</b>
  */
 public class RelationalExpression extends ASTNode implements IRelationalExpression
 {
-    private IExpression _UnaryExpressionLeft;
+    private IExpression _CastExpressionLeft;
     private RelOp _RelOp;
-    private IExpression _UnaryExpressionRight;
+    private IExpression _CastExpressionRight;
 
-    public IExpression getUnaryExpressionLeft() { return _UnaryExpressionLeft; }
+    public IExpression getCastExpressionLeft() { return _CastExpressionLeft; }
     public RelOp getRelOp() { return _RelOp; }
-    public IExpression getUnaryExpressionRight() { return _UnaryExpressionRight; }
+    public IExpression getCastExpressionRight() { return _CastExpressionRight; }
 
     public RelationalExpression(IToken leftIToken, IToken rightIToken,
-                                IExpression _UnaryExpressionLeft,
+                                IExpression _CastExpressionLeft,
                                 RelOp _RelOp,
-                                IExpression _UnaryExpressionRight)
+                                IExpression _CastExpressionRight)
     {
         super(leftIToken, rightIToken);
 
-        this._UnaryExpressionLeft = _UnaryExpressionLeft;
-        ((ASTNode) _UnaryExpressionLeft).setParent(this);
+        this._CastExpressionLeft = _CastExpressionLeft;
+        ((ASTNode) _CastExpressionLeft).setParent(this);
         this._RelOp = _RelOp;
         ((ASTNode) _RelOp).setParent(this);
-        this._UnaryExpressionRight = _UnaryExpressionRight;
-        ((ASTNode) _UnaryExpressionRight).setParent(this);
+        this._CastExpressionRight = _CastExpressionRight;
+        ((ASTNode) _CastExpressionRight).setParent(this);
         initialize();
     }
 
@@ -47,9 +47,9 @@ public class RelationalExpression extends ASTNode implements IRelationalExpressi
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_UnaryExpressionLeft);
+        list.add(_CastExpressionLeft);
         list.add(_RelOp);
-        list.add(_UnaryExpressionRight);
+        list.add(_CastExpressionRight);
         return list;
     }
 
@@ -59,18 +59,18 @@ public class RelationalExpression extends ASTNode implements IRelationalExpressi
         if (! (o instanceof RelationalExpression)) return false;
         if (! super.equals(o)) return false;
         RelationalExpression other = (RelationalExpression) o;
-        if (! _UnaryExpressionLeft.equals(other._UnaryExpressionLeft)) return false;
+        if (! _CastExpressionLeft.equals(other._CastExpressionLeft)) return false;
         if (! _RelOp.equals(other._RelOp)) return false;
-        if (! _UnaryExpressionRight.equals(other._UnaryExpressionRight)) return false;
+        if (! _CastExpressionRight.equals(other._CastExpressionRight)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_UnaryExpressionLeft.hashCode());
+        hash = hash * 31 + (_CastExpressionLeft.hashCode());
         hash = hash * 31 + (_RelOp.hashCode());
-        hash = hash * 31 + (_UnaryExpressionRight.hashCode());
+        hash = hash * 31 + (_CastExpressionRight.hashCode());
         return hash;
     }
 
@@ -86,9 +86,9 @@ public class RelationalExpression extends ASTNode implements IRelationalExpressi
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
-            _UnaryExpressionLeft.accept(v);
+            _CastExpressionLeft.accept(v);
             _RelOp.accept(v);
-            _UnaryExpressionRight.accept(v);
+            _CastExpressionRight.accept(v);
         }
         v.endVisit(this);
     }

@@ -470,41 +470,47 @@ Rules:
 119               | += $op
 120               | -= $op
 121               | *= $op
-122    DataBlock$DataBlock ::= Ident [ $ Indices ] $
+122    DataBlock$DataBlock ::= Ident [ $ IndexCastIndices ] $
 123    Indices$$Ident ::= Ident
 124              | Indices , $ Ident
-125    ContiguousDataBlock$ContiguousDataBlock ::= Ident [ $ ContiguousIndexRangeExprList ] $
-126    RelOp$RelOp ::= < $op
-127            | > $op
-128            | <= $op
-129            | >= $op
-130            | == $op
-131            | != $op
-132    RelationalExpression ::= Expression $UnaryExpressionLeft RelOp Expression $UnaryExpressionRight
-133    Expression ::= Term
-134    Expression$AddExpr ::= Expression + Term
-135    Expression$SubtractExpr ::= Expression - Term
-136    Term ::= ExponentExpression
-137    Term$StarExpr ::= Term * $ ExponentExpression
-138    Term$DivExpr ::= Term / $ ExponentExpression
-139    Term$TensorExpr ::= Term ^ ExponentExpression
-140    ExponentExpression ::= CastExpression
-141    ExponentExpression$ExponentExpr ::= ExponentExpression ** CastExpression
-142    CastExpression ::= UnaryExpression
-143    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
-144    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
-145    UnaryExpression ::= Primary
-146    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
-147    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
-148    Primary$ParenExpr ::= ( $ Expression ) $
-149    Primary$IntLitExpr ::= INTLIT
-150    Primary$DoubleLitExpr ::= DOUBLELIT
-151    Primary$IdentExpr ::= Ident
-152    Primary$DataBlockExpr ::= DataBlock
-153    Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
-154    Primary$StringLitExpr ::= StringLiteral
-155    StringLiteral ::= STRINGLIT
-156    Ident ::= IDENTIFIER
+125    IndexCastIndices$$IndexCastIdent ::= IndexCastIdent
+126                       | IndexCastIndices , $ IndexCastIdent
+127    IndexCastIdent ::= IndexCastopt Ident
+128    IndexCastopt ::= $Empty
+129                   | ( $ index $ ) $IndexCast
+130    ContiguousDataBlock$ContiguousDataBlock ::= Ident [ $ ContiguousIndexRangeExprList ] $
+131    RelOp$RelOp ::= < $op
+132            | > $op
+133            | <= $op
+134            | >= $op
+135            | == $op
+136            | != $op
+137    RelationalExpression ::= Expression $CastExpressionLeft RelOp Expression $CastExpressionRight
+138    Expression ::= Term
+139    Expression$AddExpr ::= Expression + Term
+140    Expression$SubtractExpr ::= Expression - Term
+141    Term ::= ExponentExpression
+142    Term$StarExpr ::= Term * $ ExponentExpression
+143    Term$DivExpr ::= Term / $ ExponentExpression
+144    Term$TensorExpr ::= Term ^ ExponentExpression
+145    ExponentExpression ::= CastExpression
+146    ExponentExpression$ExponentExpr ::= ExponentExpression ** CastExpression
+147    CastExpression ::= UnaryExpression
+148    CastExpression$IntCastExpr ::= ( $ int $ ) $ CastExpression
+149    CastExpression$ScalarCastExpr ::= ( $ scalar $ ) $ CastExpression
+150    CastExpression$IndexCastExpr ::= ( $ index $ ) $ CastExpression
+151    UnaryExpression ::= Primary
+152    UnaryExpression$NegatedUnaryExpr ::= - $ Primary
+153    UnaryExpression$SqrtUnaryExpr ::= sqrt $ Primary
+154    Primary$ParenExpr ::= ( $ Expression ) $
+155    Primary$IntLitExpr ::= INTLIT
+156    Primary$DoubleLitExpr ::= DOUBLELIT
+157    Primary$IdentExpr ::= Ident
+158    Primary$DataBlockExpr ::= DataBlock
+159    Primary$ContiguousDataBlockExpr ::= ContiguousDataBlock
+160    Primary$StringLitExpr ::= StringLiteral
+161    StringLiteral ::= STRINGLIT
+162    Ident ::= IDENTIFIER
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:27:1:27:5:302:306: Informative: The terminal cycle is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:36:1:36:8:351:358: Informative: The terminal prequest is useless.
 /home/basbas/aces4_compiler/edu.ufl.cise.sial.compiler/src/sial/parser/SialKWLexer.gi:72:1:72:11:686:696: Informative: The terminal print_index is useless.
@@ -647,6 +653,8 @@ Arg ::= Arg
 ContiguousDataBlock ::= ContiguousDataBlock
 StringLiteral ::= StringLiteral
 Primary ::= Primary
+IndexCastIndices ::= IndexCastIndices
+IndexCastIdent ::= IndexCastIdent
 RelOp ::= RelOp
 Term ::= Term
 ExponentExpression ::= ExponentExpression
@@ -669,6 +677,7 @@ IdentOpt ::=
 WhereClauseList ::= 
 AllocIndexListopt ::= 
 ArgList ::= 
+IndexCastopt ::= 
 UnaryExpression ::= 
 
  IBM LALR Parser Generator              2.0.17 (Jul 17 2009)

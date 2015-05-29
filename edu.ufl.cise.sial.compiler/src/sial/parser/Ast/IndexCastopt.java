@@ -1,6 +1,5 @@
 package sial.parser.Ast;
 
-import sial.parser.*;
 import lpg.runtime.*;
 
 import org.eclipse.imp.parser.IParser;
@@ -12,27 +11,27 @@ import org.eclipse.imp.parser.IParser;
   import java.util.EnumSet;
 
 /**
+ *<em>
+ *<li>Rule 128:  IndexCastopt ::= $Empty
+ *</em>
+ *<p>
  *<b>
- *<li>Rule 153:  UnaryExpression ::= sqrt$ Primary
+ *<li>Rule 129:  IndexCastopt ::= ($ index$ )$IndexCast
  *</b>
  */
-public class SqrtUnaryExpr extends ASTNode implements IUnaryExpression
+public class IndexCastopt extends ASTNode implements IIndexCastopt
 {
-    private SialParser environment;
-    public SialParser getEnvironment() { return environment; }
+    private ASTNodeToken _IndexCast;
 
-    private IPrimary _Primary;
+    public ASTNodeToken getIndexCast() { return _IndexCast; }
 
-    public IPrimary getPrimary() { return _Primary; }
-
-    public SqrtUnaryExpr(SialParser environment, IToken leftIToken, IToken rightIToken,
-                         IPrimary _Primary)
+    public IndexCastopt(IToken leftIToken, IToken rightIToken,
+                        ASTNodeToken _IndexCast)
     {
         super(leftIToken, rightIToken);
 
-        this.environment = environment;
-        this._Primary = _Primary;
-        ((ASTNode) _Primary).setParent(this);
+        this._IndexCast = _IndexCast;
+        ((ASTNode) _IndexCast).setParent(this);
         initialize();
     }
 
@@ -42,24 +41,24 @@ public class SqrtUnaryExpr extends ASTNode implements IUnaryExpression
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Primary);
+        list.add(_IndexCast);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof SqrtUnaryExpr)) return false;
+        if (! (o instanceof IndexCastopt)) return false;
         if (! super.equals(o)) return false;
-        SqrtUnaryExpr other = (SqrtUnaryExpr) o;
-        if (! _Primary.equals(other._Primary)) return false;
+        IndexCastopt other = (IndexCastopt) o;
+        if (! _IndexCast.equals(other._IndexCast)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Primary.hashCode());
+        hash = hash * 31 + (_IndexCast.hashCode());
         return hash;
     }
 
@@ -74,17 +73,9 @@ public class SqrtUnaryExpr extends ASTNode implements IUnaryExpression
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _Primary.accept(v);
+            _IndexCast.accept(v);
         v.endVisit(this);
     }
-  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
-  public EnumSet<EType> getTypeSet() { return typeSet;}
-  public void addType(EType t){;
-     typeSet.add(t);
-  }
-  public boolean hasType(EType t){
-  return typeSet.contains(t);
-  }
- }
+}
 
 

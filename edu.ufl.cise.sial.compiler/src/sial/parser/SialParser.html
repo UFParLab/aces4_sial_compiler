@@ -94,7 +94,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>'(' scalar ')' <a href="#CastExpression">CastExpression</a></p>
+      <p>'(' index ')' <a href="#CastExpression">CastExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -131,7 +131,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Ident">Ident</a> '[' <a href="#Indices">Indices</a> ']'</p>
+      <p><a href="#Ident">Ident</a> '[' <a href="#IndexCastIndices">IndexCastIndices</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -256,31 +256,41 @@
     </td>
   </tr>
   <tr>
+    <td width="10%"><a name="IndexCastIdent"><b>IndexCastIdent</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#IndexCastopt">IndexCastopt</a> <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexCastIndices"><b>IndexCastIndices</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#IndexCastIdent">IndexCastIdent</a></p>
+      <p><a href="#IndexCastIndices">IndexCastIndices</a> ',' <a href="#IndexCastIdent">IndexCastIdent</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexCastopt"><b>IndexCastopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p>'(' 'index' ')'</p>
+    </td>
+  </tr>
+  <tr>
     <td width="10%"><a name="IndexDec"><b>IndexDec</b></a>
     </td>
     <td width="50%">
     </td>
     <td width="40%">
       <p><a href="#Modifiersopt">Modifiersopt</a> <a href="#IndexKind">IndexKind</a> <a href="#Ident">Ident</a> = <a href="#Range">Range</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="IndexExpression"><b>IndexExpression</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#Ident">Ident</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="IndexExpressionList"><b>IndexExpressionList</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#IndexExpression">IndexExpression</a></p>
-      <p><a href="#IndexExpressionList">IndexExpressionList</a> ',' <a href="#IndexExpression">IndexExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -559,7 +569,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>special <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
+      <p><a href="#special">special</a> <a href="#Ident">Ident</a> <a href="#IdentOpt">IdentOpt</a></p>
     </td>
   </tr>
   <tr>
@@ -671,15 +681,6 @@
     <td width="40%">
       <p>%empty</p>
       <p><a href="#WhereClauseList">WhereClauseList</a> <a href="#WhereClause">WhereClause</a> <a href="#EOLs">EOLs</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="10%"><a name="\Expression"><b>\Expression</b></a>
-    </td>
-    <td width="50%">
-    </td>
-    <td width="40%">
-      <p><a href="#Expression">Expression</a> '-' <a href="#Term">Term</a></p>
     </td>
   </tr>
   <tr>
@@ -926,7 +927,7 @@
     <td width="40%">
       <p><a href="#letter">letter</a></p>
       <p><a href="#digit">digit</a></p>
-      <p>special</p>
+      <p><a href="#special">special</a></p>
       <p><a href="#whiteChar">whiteChar</a></p>
     </td>
   </tr>
@@ -988,6 +989,16 @@
     <td width="40%">
       <p>'#'</p>
       <p><a href="#slc">slc</a> <a href="#notEOL">notEOL</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="special"><b>special</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#specialNotDQ">specialNotDQ</a></p>
+      <p>'&quot;'</p>
     </td>
   </tr>
   <tr>

@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 135:  Expression ::= Expression - Term
+ *<li>Rule 140:  Expression ::= Expression - Term
  *</b>
  */
 public class SubtractExpr extends ASTNode implements IExpression

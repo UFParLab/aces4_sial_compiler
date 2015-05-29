@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 144:  CastExpression ::= ($ scalar$ )$ CastExpression
+ *<li>Rule 149:  CastExpression ::= ($ scalar$ )$ CastExpression
  *</b>
  */
 public class ScalarCastExpr extends ASTNode implements ICastExpression

@@ -12,27 +12,30 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 130:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
+ *<li>Rule 127:  IndexCastIdent ::= IndexCastopt Ident
  *</b>
  */
-public class ContiguousDataBlock extends ASTNode implements IContiguousDataBlock
+public class IndexCastIdent extends ASTNode implements IIndexCastIdent
 {
+    private IndexCastopt _IndexCastopt;
     private Ident _Ident;
-    private ContiguousIndexRangeExprList _ContiguousIndexRangeExprList;
 
+    /**
+     * The value returned by <b>getIndexCastopt</b> may be <b>null</b>
+     */
+    public IndexCastopt getIndexCastopt() { return _IndexCastopt; }
     public Ident getIdent() { return _Ident; }
-    public ContiguousIndexRangeExprList getContiguousIndexRangeExprList() { return _ContiguousIndexRangeExprList; }
 
-    public ContiguousDataBlock(IToken leftIToken, IToken rightIToken,
-                               Ident _Ident,
-                               ContiguousIndexRangeExprList _ContiguousIndexRangeExprList)
+    public IndexCastIdent(IToken leftIToken, IToken rightIToken,
+                          IndexCastopt _IndexCastopt,
+                          Ident _Ident)
     {
         super(leftIToken, rightIToken);
 
+        this._IndexCastopt = _IndexCastopt;
+        if (_IndexCastopt != null) ((ASTNode) _IndexCastopt).setParent(this);
         this._Ident = _Ident;
         ((ASTNode) _Ident).setParent(this);
-        this._ContiguousIndexRangeExprList = _ContiguousIndexRangeExprList;
-        ((ASTNode) _ContiguousIndexRangeExprList).setParent(this);
         initialize();
     }
 
@@ -42,27 +45,30 @@ public class ContiguousDataBlock extends ASTNode implements IContiguousDataBlock
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
+        list.add(_IndexCastopt);
         list.add(_Ident);
-        list.add(_ContiguousIndexRangeExprList);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof ContiguousDataBlock)) return false;
+        if (! (o instanceof IndexCastIdent)) return false;
         if (! super.equals(o)) return false;
-        ContiguousDataBlock other = (ContiguousDataBlock) o;
+        IndexCastIdent other = (IndexCastIdent) o;
+        if (_IndexCastopt == null)
+            if (other._IndexCastopt != null) return false;
+            else; // continue
+        else if (! _IndexCastopt.equals(other._IndexCastopt)) return false;
         if (! _Ident.equals(other._Ident)) return false;
-        if (! _ContiguousIndexRangeExprList.equals(other._ContiguousIndexRangeExprList)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
+        hash = hash * 31 + (_IndexCastopt == null ? 0 : _IndexCastopt.hashCode());
         hash = hash * 31 + (_Ident.hashCode());
-        hash = hash * 31 + (_ContiguousIndexRangeExprList.hashCode());
         return hash;
     }
 
@@ -78,8 +84,8 @@ public class ContiguousDataBlock extends ASTNode implements IContiguousDataBlock
         boolean checkChildren = v.visit(this);
         if (checkChildren)
         {
+            if (_IndexCastopt != null) _IndexCastopt.accept(v);
             _Ident.accept(v);
-            _ContiguousIndexRangeExprList.accept(v);
         }
         v.endVisit(this);
     }

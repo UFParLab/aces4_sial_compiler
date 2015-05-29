@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 153:  Primary ::= ContiguousDataBlock
+ *<li>Rule 159:  Primary ::= ContiguousDataBlock
  *</b>
  */
 public class ContiguousDataBlockExpr extends ASTNode implements IPrimary

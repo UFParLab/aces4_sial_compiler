@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 151:  Primary ::= Ident
+ *<li>Rule 157:  Primary ::= Ident
  *</b>
  */
 public class IdentExpr extends ASTNodeToken implements IPrimary

@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 138:  Term ::= Term /$ ExponentExpression
+ *<li>Rule 143:  Term ::= Term /$ ExponentExpression
  *</b>
  */
 public class DivExpr extends ASTNode implements ITerm

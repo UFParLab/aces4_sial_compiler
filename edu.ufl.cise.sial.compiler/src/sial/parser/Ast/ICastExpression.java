@@ -8,6 +8,7 @@ package sial.parser.Ast;
  *<li>ContiguousDataBlock
  *<li>IntCastExpr
  *<li>ScalarCastExpr
+ *<li>IndexCastExpr
  *<li>NegatedUnaryExpr
  *<li>SqrtUnaryExpr
  *<li>ParenExpr
