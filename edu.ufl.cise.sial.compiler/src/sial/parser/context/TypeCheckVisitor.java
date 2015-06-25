@@ -349,8 +349,9 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		int numDims = dims.size();
 		for(int i = 0; i < numDims; ++i){
 			Ident ident = dims.getDimensionAt(i);
-			IndexDec dec = (IndexDec) ident.getDec();
-			if (dec.getIndexKind().getIToken().getKind() != TK_index) return false;
+			IDec dec = ident.getDec();
+			if (! (dec instanceof IndexDec)) return false;		
+			if (((IndexDec) dec).getIndexKind().getIToken().getKind() != TK_index) return false;
 		}
 		return true;
 	}
