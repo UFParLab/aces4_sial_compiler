@@ -334,4 +334,10 @@ public class ParseAndTypeCheckingTest {
 	public void index_cast_to_simple() throws IOException{
 		runTypeCheckTest("index_cast_to_simple",0);
 	}
+	
+	@Test
+	public void pardo_with_pragma() throws IOException{
+		runTypeCheckTest("pardo_with_pragma",0);
+	}
+	
 }

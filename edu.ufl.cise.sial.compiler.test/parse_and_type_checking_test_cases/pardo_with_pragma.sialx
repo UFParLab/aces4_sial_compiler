@@ -1,0 +1,34 @@
+sial pardo_with_pragma
+
+special enable_all_ranks_print
+
+predefined int norb
+index i = 1:norb
+
+static map[i]
+
+      aoindex mu     = 1: norb
+      aoindex nu     = 1: norb
+      aoindex lambda = 1: norb
+      aoindex sigma  = 1: norb
+
+execute enable_all_ranks_print
+do i
+map[i] = (scalar)i
+pardo mu, nu, lambda, sigma "I'm a pragma"
+				 WHERE mu == (int)map[i]
+				 WHERE nu == (int)map[i]
+				 WHERE lambda == (int)map[i]
+				 WHERE sigma == (int)map[i]
+
+print mu
+print nu
+print lambda
+print sigma
+println "------"
+
+endpardo mu, nu, lambda, sigma
+enddo i
+sip_barrier
+
+endsial pardo_with_pragma

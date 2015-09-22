@@ -294,10 +294,12 @@
 	 
 	 
 	 
-	 Statement$PardoStatement ::= pardo$ Indices$StartIndices EOLs$ 
+	 Statement$PardoStatement ::= pardo$ Indices$StartIndices PardoPragma$Pragma EOLs$ 
 	 WhereClauseList 
 	 StatementList 
 	 endpardo$ Indices$EndIndices
+	 
+	 PardoPragma$PardoPragma ::= %empty | StringLiteral
 	 
 	 Statement$Section ::= section$ EOLs$  --the endsection is treated like a server barrier
 	 StatementList  -- all statements must be PardoStatements, but this will be verified during type checking

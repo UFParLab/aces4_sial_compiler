@@ -599,6 +599,10 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	// ACES4 includes number of indices in instruction
 	public boolean visit(PardoStatement n) {
 		// visit children manually
+		//visit pragma first.  If present, this will generate a pardo_pragma instruction
+		if (n.getPragma() != null){
+			n.getPragma().accept(this);	
+		}	
 		n.getStartIndices().accept(this);
 		// the index array is on top of the indexArrayStack
 		int num_indices = n.getStartIndices().size();
@@ -618,6 +622,20 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 
 	@Override
 	public void endVisit(PardoStatement n) {/* nop */
+	}
+	
+	@Override
+	public boolean visit(PardoPragma n){
+		return true;
+	}
+	
+	@Override
+	public void endVisit(PardoPragma n){
+		if (n.getStringLiteral() != null){
+			String s = ASTUtils.getStringVal(n.getStringLiteral());
+			int stringTableSlot = stringLiteralTable.getAndAdd(s);
+			opTable.addOptableEntry(pardo_pragma_op, stringTableSlot, unused, unused, defaultUnusedInd, lineno(n));
+		}
 	}
 
 	@Override
