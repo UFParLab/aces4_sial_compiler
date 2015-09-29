@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 83:  Statement ::= allocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
+ *<li>Rule 85:  Statement ::= allocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
  *</b>
  */
 public class ContiguousAllocateStatement extends ASTNode implements IStatement

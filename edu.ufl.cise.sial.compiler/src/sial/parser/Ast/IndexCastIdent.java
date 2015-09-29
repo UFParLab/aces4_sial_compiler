@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 127:  IndexCastIdent ::= IndexCastopt Ident
+ *<li>Rule 129:  IndexCastIdent ::= IndexCastopt Ident
  *</b>
  */
 public class IndexCastIdent extends ASTNode implements IIndexCastIdent

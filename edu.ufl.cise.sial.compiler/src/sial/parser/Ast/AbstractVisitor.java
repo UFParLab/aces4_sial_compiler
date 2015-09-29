@@ -123,6 +123,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(PardoStatement n) { unimplementedVisitor("visit(PardoStatement)"); return true; }
     public void endVisit(PardoStatement n) { unimplementedVisitor("endVisit(PardoStatement)"); }
 
+    public boolean visit(PardoPragma n) { unimplementedVisitor("visit(PardoPragma)"); return true; }
+    public void endVisit(PardoPragma n) { unimplementedVisitor("endVisit(PardoPragma)"); }
+
     public boolean visit(Section n) { unimplementedVisitor("visit(Section)"); return true; }
     public void endVisit(Section n) { unimplementedVisitor("endVisit(Section)"); }
 
@@ -377,6 +380,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoStatement) return visit((DoStatement) n);
         else if (n instanceof DoStatementSubIndex) return visit((DoStatementSubIndex) n);
         else if (n instanceof PardoStatement) return visit((PardoStatement) n);
+        else if (n instanceof PardoPragma) return visit((PardoPragma) n);
         else if (n instanceof Section) return visit((Section) n);
         else if (n instanceof ExitStatement) return visit((ExitStatement) n);
         else if (n instanceof IfStatement) return visit((IfStatement) n);
@@ -488,6 +492,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoStatement) endVisit((DoStatement) n);
         else if (n instanceof DoStatementSubIndex) endVisit((DoStatementSubIndex) n);
         else if (n instanceof PardoStatement) endVisit((PardoStatement) n);
+        else if (n instanceof PardoPragma) endVisit((PardoPragma) n);
         else if (n instanceof Section) endVisit((Section) n);
         else if (n instanceof ExitStatement) endVisit((ExitStatement) n);
         else if (n instanceof IfStatement) endVisit((IfStatement) n);

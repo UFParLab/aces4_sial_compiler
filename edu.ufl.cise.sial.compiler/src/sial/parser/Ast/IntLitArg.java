@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 102:  Arg ::= INTLIT
+ *<li>Rule 104:  Arg ::= INTLIT
  *</b>
  */
 public class IntLitArg extends ASTNodeToken implements IArg

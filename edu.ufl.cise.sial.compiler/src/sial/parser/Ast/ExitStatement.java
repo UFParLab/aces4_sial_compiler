@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 72:  Statement ::= exit$
+ *<li>Rule 74:  Statement ::= exit$
  *</b>
  */
 public class ExitStatement extends ASTNodeToken implements IStatement

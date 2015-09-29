@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 130:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
+ *<li>Rule 132:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
  *</b>
  */
 public class ContiguousDataBlock extends ASTNode implements IContiguousDataBlock

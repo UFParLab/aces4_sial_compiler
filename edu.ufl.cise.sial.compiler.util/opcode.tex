@@ -31,179 +31,187 @@ opcode & name & arg0 & arg1 & selector array & description \\
 \hline
 111&where_op&&&&\\
 \hline
-112&pardo_op&optable slot of enddo&number of indices&indices indicated in loop&beginning of pardo loop\\
+112&pardo_pragma_op&string table slot pragma text&&&immediately precedes pardo_op if a pardo pragma has been given\\
 \hline
-113&endpardo_op&&number of indices&indices indicated in loop&end of pardo loop\\
+113&pardo_op&optable slot of enddo&number of indices&indices indicated in loop&beginning of pardo loop\\
 \hline
-114&begin_pardo_section_op&&&&start of a pardo section\\
+114&endpardo_op&&number of indices&indices indicated in loop&end of pardo loop\\
 \hline
-115&end_pardo_section_op&&&&end of a pardo section\\
+115&begin_pardo_section_op&&&&start of a pardo section\\
 \hline
-116&sip_barrier_op&&&&\\
+116&end_pardo_section_op&&&&end of a pardo section\\
 \hline
-117&broadcast_static_op&index of static array&&&broadcast static array from rank whose value is on top of control stack\\
+117&sip_barrier_op&&&&\\
 \hline
-118&push_block_selector_op&rank&array table slot&selector slots&push the block selector onto the sip block selector stack.  If the rank is 0, this is either a scalar or a static or contig array given without a selector\\
+118&broadcast_static_op&index of static array&&&broadcast static array from rank whose value is on top of control stack\\
 \hline
-119&allocate_op&rank&array_table_slot&block selector indices(may contain wild cards)&allocate block(s) of local array.  \\
+119&push_block_selector_op&rank&array table slot&selector slots&push the block selector onto the sip block selector stack.  If the rank is 0, this is either a scalar or a static or contig array given without a selector\\
 \hline
-120&deallocate_op&rank&array_table_slot&block selector indices&deallocate block(s) of local array\\
+120&allocate_op&rank&array_table_slot&block selector indices(may contain wild cards)&allocate block(s) of local array.  \\
 \hline
-121&allocate_contiguous_op&rank&array_table_slot&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
+121&deallocate_op&rank&array_table_slot&block selector indices&deallocate block(s) of local array\\
 \hline
-122&deallocate_contiguous_op&rank&array_table_slot&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
+122&allocate_contiguous_op&rank&array_table_slot&&allocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
 \hline
-123&get_op&array table slot of desired block&&selector slots&get block selector from selector stack and send get request to appropriate server (args are redundant)\\
+123&deallocate_contiguous_op&rank&array_table_slot&&deallocates memory for a region of a contiguous local array.  The boundaries are obtained from the control_stack where they have been pushed in the order they appear in the program, e.g. lower[0], upper[0]..lower[rank-1], upper[rank-1]\\
 \hline
-124&put_accumulate_op&array table slot of right hand side&array table slot of left hand side&&get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to accumulate into its copy of lhs block\\
+124&get_op&array table slot of desired block&&selector slots&get block selector from selector stack and send get request to appropriate server (args are redundant)\\
 \hline
-125&put_replace_op&array table slot of right hand side&array table slot of left hand side&&get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to replace its copy of lhs block\\
+125&put_accumulate_op&array table slot of right hand side&array table slot of left hand side&&get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to accumulate into its copy of lhs block\\
 \hline
-126&create_op&array table slot&&&create distributed array.  In aces4, blocks are created lazily\\
+126&put_replace_op&array table slot of right hand side&array table slot of left hand side&&get right and left side blocks (left pushed firsts) from selector stack and send rhs block to appropriate server to replace its copy of lhs block\\
 \hline
-127&delete_op&array table slot&&&delete distributed array\\
+127&put_initialize_op&&array table slot of left hand side&&get scalar value from expression stack, and rhs selector from selector stack and sends selector and initial value to server, which creates the block and initializes it with the given value\\
 \hline
-128&int_load_value_op&IntTable slot&&&loads current value of indicated int onto sip control stack\\
+128&put_increment_op&&array table slot of left hand side&&get scalar value from expression stack, and rhs selector from selector stack and send selector and initial value to server, which increments the block with the given value\\
 \hline
-129&int_load_literal_op&value&&&loads value encoded in arg0 of instruction onto sip control stack\\
+129&put_scale_op&&array table slot of left hand side&&get scalar value from expression stack, and rhs selector from selector stack and send selector and initial value to server, which scales each element of the block by the given value\\
 \hline
-130&int_store_op&IntTable slot&opcode of operator, or int_store_op if plain assignment&&removes value from top of sip control stack, performs indicated op with value of given int, and stores in given int\\
+130&create_op&array table slot&&&create distributed array.  In aces4, blocks are created lazily\\
 \hline
-131&index_load_value_op&IndexTable slot&&&load current value of index and stores it on the control stack\\
+131&delete_op&array table slot&&&delete distributed array\\
 \hline
-132&int_add_op&&&&removes the top two values from the control stack, adds them together, and pushes the result on the control stack.\\
+132&int_load_value_op&IntTable slot&&&loads current value of indicated int onto sip control stack\\
 \hline
-133&int_subtract_op&&&&removes the top two values from the control stack, subtracts the first popped from the second, and pushes the result onto the control stack \\
+133&int_load_literal_op&value&&&loads value encoded in arg0 of instruction onto sip control stack\\
 \hline
-134&int_multiply_op&&&&removes the top two values from the control stack, multiplies  them together, and pushes the result on the control stack.\\
+134&int_store_op&IntTable slot&opcode of operator, or int_store_op if plain assignment&&removes value from top of sip control stack, performs indicated op with value of given int, and stores in given int\\
 \hline
-135&int_divide_op&&&&removes the top two values from the control stack, divides the second popped by the first, and pushes the result onto the control stack \\
+135&index_load_value_op&IndexTable slot&&&load current value of index and stores it on the control stack\\
 \hline
-136&int_equal_op&&&&==, args are popped from sip control stack, result is placed on control stack\\
+136&int_add_op&&&&removes the top two values from the control stack, adds them together, and pushes the result on the control stack.\\
 \hline
-137&int_nequal_op&&&&!=, args are popped from sip control stack, result is placed on control stack\\
+137&int_subtract_op&&&&removes the top two values from the control stack, subtracts the first popped from the second, and pushes the result onto the control stack \\
 \hline
-138&int_ge_op&&&&>=, args are popped from sip control stack, result is placed on control stack\\
+138&int_multiply_op&&&&removes the top two values from the control stack, multiplies  them together, and pushes the result on the control stack.\\
 \hline
-139&int_le_op&&&&<=, args are popped from sip control stack, result is placed on control stack\\
+139&int_divide_op&&&&removes the top two values from the control stack, divides the second popped by the first, and pushes the result onto the control stack \\
 \hline
-140&int_gt_op&&&&>, args are popped from sip control stack, result is placed on control stack\\
+140&int_equal_op&&&&==, args are popped from sip control stack, result is placed on control stack\\
 \hline
-141&int_lt_op&&&&<,  args are popped from sip control stack, result is placed on control stack\\
+141&int_nequal_op&&&&!=, args are popped from sip control stack, result is placed on control stack\\
 \hline
-142&int_neg_op&&&&unary negation, arg is popped from sip control stack, result is placed on control stack\\
+142&int_ge_op&&&&>=, args are popped from sip control stack, result is placed on control stack\\
 \hline
-143&cast_to_int_op&&&&removes scalar value from expression stack, converts to int, and puts it on the control stack\\
+143&int_le_op&&&&<=, args are popped from sip control stack, result is placed on control stack\\
 \hline
-144&scalar_load_value_op&array table slot&&&loads value of scalar in given slot onto sip expression stack\\
+144&int_gt_op&&&&>, args are popped from sip control stack, result is placed on control stack\\
 \hline
-145&scalar_store_op&array table slot of scalar&opcode of operator or scalar_store_op if plain assignment&&removes value from top of sip expression stack, performs indicated op with value of given scalar,  and stores in given scalar\\
+145&int_lt_op&&&&<,  args are popped from sip control stack, result is placed on control stack\\
 \hline
-146&scalar_add_op&&&&removes top two elements from expression stack, adds together, pushes result on expression stack\\
+146&int_neg_op&&&&unary negation, arg is popped from sip control stack, result is placed on control stack\\
 \hline
-147&scalar_subtract_op&&&&removes top two elements from expression stack, subtracts top from next-to-top (i.e. args pushed left to right),  pushes result on expressio stack\\
+147&cast_to_int_op&&&&removes scalar value from expression stack, converts to int, and puts it on the control stack\\
 \hline
-148&scalar_multiply_op&&&&removes top two elements from expression stack, multiplies together, pushes result on expression stack\\
+148&scalar_load_value_op&array table slot&&&loads value of scalar in given slot onto sip expression stack\\
 \hline
-149&scalar_divide_op&&&&removes top two elements from expression stack, divides next-to-top by top (i.e. args pushed left to right), pushes result on expression stack\\
+149&scalar_store_op&array table slot of scalar&opcode of operator or scalar_store_op if plain assignment&&removes value from top of sip expression stack, performs indicated op with value of given scalar,  and stores in given scalar\\
 \hline
-150&scalar_exp_op&&&&removes top two elements s,t from expression stack, computes s**t (c++ pow(s,t)), args pushed from left to right, pushes result onto expression stack\\
+150&scalar_add_op&&&&removes top two elements from expression stack, adds together, pushes result on expression stack\\
 \hline
-151&scalar_eq_op&&&&==, args are popped from sip expression stack, result is placed on control stack\\
+151&scalar_subtract_op&&&&removes top two elements from expression stack, subtracts top from next-to-top (i.e. args pushed left to right),  pushes result on expressio stack\\
 \hline
-152&scalar_ne_op&&&&!=, args are popped from sip expression stack, result is placed on control stack\\
+152&scalar_multiply_op&&&&removes top two elements from expression stack, multiplies together, pushes result on expression stack\\
 \hline
-153&scalar_ge_op&&&&>=, args are popped from sip expression stack, result is placed on control stack\\
+153&scalar_divide_op&&&&removes top two elements from expression stack, divides next-to-top by top (i.e. args pushed left to right), pushes result on expression stack\\
 \hline
-154&scalar_le_op&&&&<=, args are popped from sip expression stack, result is placed on control stack\\
+154&scalar_exp_op&&&&removes top two elements s,t from expression stack, computes s**t (c++ pow(s,t)), args pushed from left to right, pushes result onto expression stack\\
 \hline
-155&scalar_gt_op&&&&>, args are popped from sip expression stack, result is placed on control stack\\
+155&scalar_eq_op&&&&==, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-156&scalar_lt_op&&&&<, args are popped from sip expression stack, result is placed on control stack\\
+156&scalar_ne_op&&&&!=, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-157&scalar_neg_op&&&&unary negation, arg is popped from sip expression stack, result is placed on expression stack\\
+157&scalar_ge_op&&&&>=, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-158&scalar_sqrt_op&&&&computes square root of value on top of sip expression stack, leaves result on top of expression stack\\
+158&scalar_le_op&&&&<=, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-159&cast_to_scalar_op&&&&removes top element from control stack, converts to double and leaves on top of expression stack\\
+159&scalar_gt_op&&&&>, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-160&collective_sum_op&array table slot of lhs scalar&&&allreduce of rhs value which is on expression stack into lhs scalar. This operation synchronizes the workers\\
+160&scalar_lt_op&&&&<, args are popped from sip expression stack, result is placed on control stack\\
 \hline
-161&assert_same_op&array table slot of scalan&&&checks that value of scalar is within epsilon on all workers, and resets all to master's value\\
+161&scalar_neg_op&&&&unary negation, arg is popped from sip expression stack, result is placed on expression stack\\
 \hline
-162&tensor_op&lhs rank&lhs array table slot&lhs selector&outer product, uses same routine as tensor contraction\\
+162&scalar_sqrt_op&&&&computes square root of value on top of sip expression stack, leaves result on top of expression stack\\
 \hline
-163&block_copy_op&lhs rank&lhs array table slot&lhs selector&copies block from top of block selector stack to block in instruction. If one array is larger than the other, the extra indices are simple\\
+163&cast_to_scalar_op&&&&removes top element from control stack, converts to double and leaves on top of expression stack\\
 \hline
-164&block_permute_op&&&permutation&permute the block on the right side using the given permutation . RHS and LHS block selectors have been pushed onto block selector stack, first rhs then lhs\\
+164&collective_sum_op&array table slot of lhs scalar&&&allreduce of rhs value which is on expression stack into lhs scalar. This operation synchronizes the workers\\
 \hline
-165&block_fill_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Sets each element of the block to the given value\\
+165&assert_same_op&array table slot of scalan&&&checks that value of scalar is within epsilon on all workers, and resets all to master's value\\
 \hline
-166&block_scale_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value\\
+166&tensor_op&lhs rank&lhs array table slot&lhs selector&outer product, uses same routine as tensor contraction\\
 \hline
-167&block_scale_assign_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value and leaves the result in the lhs block\\
+167&block_copy_op&lhs rank&lhs array table slot&lhs selector&copies block from top of block selector stack to block in instruction. If one array is larger than the other, the extra indices are simple\\
 \hline
-168&block_scale_accumulate_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value add to the lhs block\\
+168&block_permute_op&&&permutation&permute the block on the right side using the given permutation . RHS and LHS block selectors have been pushed onto block selector stack, first rhs then lhs\\
 \hline
-169&block_accumulate_scalar_op&lhs rank&lhs slot&lhs selector indices&gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block\\
+169&block_fill_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Sets each element of the block to the given value\\
 \hline
-170&block_add_op&lhs rank&lhs array slot&lhs selector&adds two blocks together element-wise and puts the result in the lhs array\\
+170&block_scale_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from instruction.  Multiplies all of the elements of the block by the value\\
 \hline
-171&block_subtract_op&lhs rank&lhs array slot&lhs selector&subtracts two blocks elementwise and puts the result in the lhs array\\
+171&block_scale_assign_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value and leaves the result in the lhs block\\
 \hline
-172&block_contract_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and puts the result in the lhs array\\
+172&block_scale_accumulate_op&lhs rank&lhs array table slot&lhs indices&gets value from expression stack and block from block selector stack. Destinatin is in instruction.  Multiplies all of the elements of the block by the value add to the lhs block\\
 \hline
-173&block_contract_accumulate_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and accumulates the result in the lhs array\\
+173&block_accumulate_scalar_op&lhs rank&lhs slot&lhs selector indices&gets scalar value from expression stack and from instruction.  Adds the scalar to each value in the block\\
 \hline
-174&block_contract_to_scalar_op&&&&contracts two blocks where the result of contraction is a scalar.  Leaves the result on the sip expression stack\\
+174&block_add_op&lhs rank&lhs array slot&lhs selector&adds two blocks together element-wise and puts the result in the lhs array\\
 \hline
-175&block_load_scalar_op&&&&all indices of block on top of selector stack are simple, "block" is a single scalar value, load it onto the sip expression stack\\
+175&block_subtract_op&lhs rank&lhs array slot&lhs selector&subtracts two blocks elementwise and puts the result in the lhs array\\
 \hline
-176&slice_op&lhs rank&lhs array table slot&lhs selector indices&copies subblock on lhs from rhs superblock\\
+176&block_contract_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and puts the result in the lhs array\\
 \hline
-177&insert_op&lhs rank&lhs array table slot&lhs selector indices&inserts sublock on rhs into superblock on lhs\\
+177&block_contract_accumulate_op&lhs rank&lhs array slot&lhs selector&contracts two blocks and accumulates the result in the lhs array\\
 \hline
-178&string_load_literal_op&slot in string literal table&&&loads slot in string table onto control stack.\\
+178&block_contract_to_scalar_op&&&&contracts two blocks where the result of contraction is a scalar.  Leaves the result on the sip expression stack\\
 \hline
-179&print_string_op&append NL if  1&&&print the string whose slot in string table is on the sip control stack\\
+179&block_load_scalar_op&&&&all indices of block on top of selector stack are simple, "block" is a single scalar value, load it onto the sip expression stack\\
 \hline
-180&println_op&&&&print NL)\\
+180&slice_op&lhs rank&lhs array table slot&lhs selector indices&copies subblock on lhs from rhs superblock\\
 \hline
-181&print_index_op&append NL if  1&index table slot&&print current value of given index; the value is on the sip control stack\\
+181&insert_op&lhs rank&lhs array table slot&lhs selector indices&inserts sublock on rhs into superblock on lhs\\
 \hline
-182&print_scalar_op&append NL if  1&array table slot, or unused if literal&&print scalar whose value is on the sip epression stack \\
+182&string_load_literal_op&slot in string literal table&&&loads slot in string table onto control stack.\\
 \hline
-183&print_int_op&append NL if  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
+183&print_string_op&append NL if  1&&&print the string whose slot in string table is on the sip control stack\\
 \hline
-184&print_block_op&append NL if 1&&&print the block whose selector is on the selector stack\\
+184&println_op&&&&print NL)\\
 \hline
-185&gpu_on_op&&&&\\
+185&print_index_op&append NL if  1&index table slot&&print current value of given index; the value is on the sip control stack\\
 \hline
-186&gpu_off_op&&&&\\
+186&print_scalar_op&append NL if  1&array table slot, or unused if literal&&print scalar whose value is on the sip epression stack \\
 \hline
-187&gpu_allocate_op&&&&\\
+187&print_int_op&append NL if  1&array table slot or unused if literal&&print int; value is on the sip control stack\\
 \hline
-188&gpu_free_op&&&&\\
+188&print_block_op&append NL if 1&&&print the block whose selector is on the selector stack\\
 \hline
-189&gpu_put_op&&&&\\
+189&gpu_on_op&&&&\\
 \hline
-190&gpu_get_op&&&&\\
+190&gpu_off_op&&&&\\
 \hline
-191&gpu_get_int_op&&&&\\
+191&gpu_allocate_op&&&&\\
 \hline
-192&gpu_put_int_op&&&&\\
+192&gpu_free_op&&&&\\
 \hline
-193&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
+193&gpu_put_op&&&&\\
 \hline
-194&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
+194&gpu_get_op&&&&\\
 \hline
-195&idup_op&&&&duplicates the value on top of the control (integer) stack\\
+195&gpu_get_int_op&&&&\\
 \hline
-196&iswap_op&&&&swaps the top two values on the control (integer) stack\\
+196&gpu_put_int_op&&&&\\
 \hline
-197&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+197&set_persistent_op&string table slot&array table slot&&Marks array with the given label as persistent. At the end of the current SIAL program, it will be saved for restoration in a future program in same run\\
 \hline
-198&invalid_op&&&&\\
+198&restore_persistent_op&string_table_slot&array_table_slot&&restores contents of persistent array with given label as indicated array\\
+\hline
+199&idup_op&&&&duplicates the value on top of the control (integer) stack\\
+\hline
+200&iswap_op&&&&swaps the top two values on the control (integer) stack\\
+\hline
+201&sswap_op&&&&swaps the top two values on the expression (scalar) stack\\
+\hline
+202&invalid_op&&&&\\
 \hline
 \end{longtable}
 \end{document}

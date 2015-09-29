@@ -120,6 +120,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(PardoStatement n);
     void endVisit(PardoStatement n);
 
+    boolean visit(PardoPragma n);
+    void endVisit(PardoPragma n);
+
     boolean visit(Section n);
     void endVisit(Section n);
 

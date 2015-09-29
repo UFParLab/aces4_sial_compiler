@@ -2,7 +2,7 @@ package sial.parser;
 
 public interface SialParsersym {
     public final static int
-      TK_COMMA = 40,
+      TK_COMMA = 41,
       TK_PLUS = 3,
       TK_MINUS = 2,
       TK_STAR = 43,
@@ -20,7 +20,7 @@ public interface SialParsersym {
       TK_STAR_ASSIGN = 59,
       TK_LEFTPAREN = 42,
       TK_RIGHTPAREN = 44,
-      TK_LEFTSQUARE = 5,
+      TK_LEFTSQUARE = 4,
       TK_RIGHTSQUARE = 45,
       TK_COLON = 52,
       TK_EXP = 46,
@@ -97,10 +97,10 @@ public interface SialParsersym {
       TK_EOF_TOKEN = 94,
       TK_SINGLE_LINE_COMMENT = 56,
       TK_IDENTIFIER = 1,
-      TK_INTLIT = 6,
+      TK_INTLIT = 5,
       TK_DOUBLELIT = 39,
-      TK_EOL = 4,
-      TK_STRINGLIT = 41,
+      TK_EOL = 6,
+      TK_STRINGLIT = 40,
       TK_ERROR_TOKEN = 100;
 
     public final static String orderedTerminalSymbols[] = {
@@ -108,9 +108,9 @@ public interface SialParsersym {
                  "IDENTIFIER",
                  "MINUS",
                  "PLUS",
-                 "EOL",
                  "LEFTSQUARE",
                  "INTLIT",
+                 "EOL",
                  "return",
                  "call",
                  "pardo",
@@ -144,8 +144,8 @@ public interface SialParsersym {
                  "broadcast_from",
                  "stop",
                  "DOUBLELIT",
-                 "COMMA",
                  "STRINGLIT",
+                 "COMMA",
                  "LEFTPAREN",
                  "STAR",
                  "RIGHTPAREN",

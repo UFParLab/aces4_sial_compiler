@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 85:  ContiguousIndexRangeExpr ::= Expression$StartExpr : Expression$EndExpr
+ *<li>Rule 87:  ContiguousIndexRangeExpr ::= Expression$StartExpr : Expression$EndExpr
  *</b>
  */
 public class ContiguousIndexRangeExpr extends ASTNode implements IContiguousIndexRangeExpr

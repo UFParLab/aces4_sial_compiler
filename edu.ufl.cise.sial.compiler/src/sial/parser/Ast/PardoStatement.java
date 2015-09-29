@@ -12,23 +12,29 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 70:  Statement ::= pardo$ Indices$StartIndices EOLs$ WhereClauseList StatementList endpardo$ Indices$EndIndices
+ *<li>Rule 70:  Statement ::= pardo$ Indices$StartIndices PardoPragma$Pragma EOLs$ WhereClauseList StatementList endpardo$ Indices$EndIndices
  *</b>
  */
 public class PardoStatement extends ASTNode implements IStatement
 {
     private IdentList _StartIndices;
+    private IPardoPragma _Pragma;
     private WhereClauseList _WhereClauseList;
     private StatementList _StatementList;
     private IdentList _EndIndices;
 
     public IdentList getStartIndices() { return _StartIndices; }
+    /**
+     * The value returned by <b>getPragma</b> may be <b>null</b>
+     */
+    public IPardoPragma getPragma() { return _Pragma; }
     public WhereClauseList getWhereClauseList() { return _WhereClauseList; }
     public StatementList getStatementList() { return _StatementList; }
     public IdentList getEndIndices() { return _EndIndices; }
 
     public PardoStatement(IToken leftIToken, IToken rightIToken,
                           IdentList _StartIndices,
+                          IPardoPragma _Pragma,
                           WhereClauseList _WhereClauseList,
                           StatementList _StatementList,
                           IdentList _EndIndices)
@@ -37,6 +43,8 @@ public class PardoStatement extends ASTNode implements IStatement
 
         this._StartIndices = _StartIndices;
         ((ASTNode) _StartIndices).setParent(this);
+        this._Pragma = _Pragma;
+        if (_Pragma != null) ((ASTNode) _Pragma).setParent(this);
         this._WhereClauseList = _WhereClauseList;
         ((ASTNode) _WhereClauseList).setParent(this);
         this._StatementList = _StatementList;
@@ -53,6 +61,7 @@ public class PardoStatement extends ASTNode implements IStatement
     {
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_StartIndices);
+        list.add(_Pragma);
         list.add(_WhereClauseList);
         list.add(_StatementList);
         list.add(_EndIndices);
@@ -66,6 +75,10 @@ public class PardoStatement extends ASTNode implements IStatement
         if (! super.equals(o)) return false;
         PardoStatement other = (PardoStatement) o;
         if (! _StartIndices.equals(other._StartIndices)) return false;
+        if (_Pragma == null)
+            if (other._Pragma != null) return false;
+            else; // continue
+        else if (! _Pragma.equals(other._Pragma)) return false;
         if (! _WhereClauseList.equals(other._WhereClauseList)) return false;
         if (! _StatementList.equals(other._StatementList)) return false;
         if (! _EndIndices.equals(other._EndIndices)) return false;
@@ -76,6 +89,7 @@ public class PardoStatement extends ASTNode implements IStatement
     {
         int hash = super.hashCode();
         hash = hash * 31 + (_StartIndices.hashCode());
+        hash = hash * 31 + (_Pragma == null ? 0 : _Pragma.hashCode());
         hash = hash * 31 + (_WhereClauseList.hashCode());
         hash = hash * 31 + (_StatementList.hashCode());
         hash = hash * 31 + (_EndIndices.hashCode());
@@ -95,6 +109,7 @@ public class PardoStatement extends ASTNode implements IStatement
         if (checkChildren)
         {
             _StartIndices.accept(v);
+            if (_Pragma != null) _Pragma.accept(v);
             _WhereClauseList.accept(v);
             _StatementList.accept(v);
             _EndIndices.accept(v);

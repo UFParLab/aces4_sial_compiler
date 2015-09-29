@@ -12,8 +12,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 125:  IndexCastIndices ::= IndexCastIdent
- *<li>Rule 126:  IndexCastIndices ::= IndexCastIndices ,$ IndexCastIdent
+ *<li>Rule 127:  IndexCastIndices ::= IndexCastIdent
+ *<li>Rule 128:  IndexCastIndices ::= IndexCastIndices ,$ IndexCastIdent
  *</b>
  */
 public class IndexCastIdentList extends AbstractASTNodeList implements IIndexCastIndices

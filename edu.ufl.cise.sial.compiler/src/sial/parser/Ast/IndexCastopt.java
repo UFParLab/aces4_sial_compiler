@@ -12,11 +12,11 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<em>
- *<li>Rule 128:  IndexCastopt ::= $Empty
+ *<li>Rule 130:  IndexCastopt ::= $Empty
  *</em>
  *<p>
  *<b>
- *<li>Rule 129:  IndexCastopt ::= ($ index$ )$IndexCast
+ *<li>Rule 131:  IndexCastopt ::= ($ index$ )$IndexCast
  *</b>
  */
 public class IndexCastopt extends ASTNode implements IIndexCastopt

@@ -12,22 +12,26 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 100:  Arg ::= ContiguousDataBlock
+ *<li>Rule 71:  PardoPragma ::= $Empty
+ *<li>Rule 72:  PardoPragma ::= StringLiteral
  *</b>
  */
-public class ContiguousDataBlockArg extends ASTNode implements IArg
+public class PardoPragma extends ASTNode implements IPardoPragma
 {
-    private ContiguousDataBlock _ContiguousDataBlock;
+    private StringLiteral _StringLiteral;
 
-    public ContiguousDataBlock getContiguousDataBlock() { return _ContiguousDataBlock; }
+    /**
+     * The value returned by <b>getStringLiteral</b> may be <b>null</b>
+     */
+    public StringLiteral getStringLiteral() { return _StringLiteral; }
 
-    public ContiguousDataBlockArg(IToken leftIToken, IToken rightIToken,
-                                  ContiguousDataBlock _ContiguousDataBlock)
+    public PardoPragma(IToken leftIToken, IToken rightIToken,
+                       StringLiteral _StringLiteral)
     {
         super(leftIToken, rightIToken);
 
-        this._ContiguousDataBlock = _ContiguousDataBlock;
-        ((ASTNode) _ContiguousDataBlock).setParent(this);
+        this._StringLiteral = _StringLiteral;
+        if (_StringLiteral != null) ((ASTNode) _StringLiteral).setParent(this);
         initialize();
     }
 
@@ -37,24 +41,27 @@ public class ContiguousDataBlockArg extends ASTNode implements IArg
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_ContiguousDataBlock);
+        list.add(_StringLiteral);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof ContiguousDataBlockArg)) return false;
+        if (! (o instanceof PardoPragma)) return false;
         if (! super.equals(o)) return false;
-        ContiguousDataBlockArg other = (ContiguousDataBlockArg) o;
-        if (! _ContiguousDataBlock.equals(other._ContiguousDataBlock)) return false;
+        PardoPragma other = (PardoPragma) o;
+        if (_StringLiteral == null)
+            if (other._StringLiteral != null) return false;
+            else; // continue
+        else if (! _StringLiteral.equals(other._StringLiteral)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_ContiguousDataBlock.hashCode());
+        hash = hash * 31 + (_StringLiteral == null ? 0 : _StringLiteral.hashCode());
         return hash;
     }
 
@@ -69,7 +76,7 @@ public class ContiguousDataBlockArg extends ASTNode implements IArg
     {
         boolean checkChildren = v.visit(this);
         if (checkChildren)
-            _ContiguousDataBlock.accept(v);
+            if (_StringLiteral != null) _StringLiteral.accept(v);
         v.endVisit(this);
     }
 }

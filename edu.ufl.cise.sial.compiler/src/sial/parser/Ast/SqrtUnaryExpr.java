@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 153:  UnaryExpression ::= sqrt$ Primary
+ *<li>Rule 155:  UnaryExpression ::= sqrt$ Primary
  *</b>
  */
 public class SqrtUnaryExpr extends ASTNode implements IUnaryExpression
