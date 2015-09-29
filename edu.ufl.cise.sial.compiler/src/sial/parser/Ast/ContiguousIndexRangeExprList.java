@@ -12,8 +12,8 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 86:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExpr
- *<li>Rule 87:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExprList ,$ ContiguousIndexRangeExpr
+ *<li>Rule 88:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExpr
+ *<li>Rule 89:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExprList ,$ ContiguousIndexRangeExpr
  *</b>
  */
 public class ContiguousIndexRangeExprList extends AbstractASTNodeList implements IContiguousIndexRangeExprList

@@ -120,6 +120,9 @@ public interface Visitor extends IAstVisitor
     boolean visit(PardoStatement n);
     void endVisit(PardoStatement n);
 
+    boolean visit(PardoPragma n);
+    void endVisit(PardoPragma n);
+
     boolean visit(Section n);
     void endVisit(Section n);
 
@@ -258,6 +261,15 @@ public interface Visitor extends IAstVisitor
     boolean visit(IdentList n);
     void endVisit(IdentList n);
 
+    boolean visit(IndexCastIdentList n);
+    void endVisit(IndexCastIdentList n);
+
+    boolean visit(IndexCastIdent n);
+    void endVisit(IndexCastIdent n);
+
+    boolean visit(IndexCastopt n);
+    void endVisit(IndexCastopt n);
+
     boolean visit(ContiguousDataBlock n);
     void endVisit(ContiguousDataBlock n);
 
@@ -290,6 +302,9 @@ public interface Visitor extends IAstVisitor
 
     boolean visit(ScalarCastExpr n);
     void endVisit(ScalarCastExpr n);
+
+    boolean visit(IndexCastExpr n);
+    void endVisit(IndexCastExpr n);
 
     boolean visit(NegatedUnaryExpr n);
     void endVisit(NegatedUnaryExpr n);

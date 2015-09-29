@@ -882,22 +882,43 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 70:  Statement ::= pardo$ Indices$StartIndices EOLs$ WhereClauseList StatementList endpardo$ Indices$EndIndices
+            // Rule 70:  Statement ::= pardo$ Indices$StartIndices PardoPragma$Pragma EOLs$ WhereClauseList StatementList endpardo$ Indices$EndIndices
             //
             case 70: {
                 setResult(
                     new PardoStatement(getLeftIToken(), getRightIToken(),
                                        (IdentList)getRhsSym(2),
-                                       (WhereClauseList)getRhsSym(4),
-                                       (StatementList)getRhsSym(5),
-                                       (IdentList)getRhsSym(7))
+                                       (IPardoPragma)getRhsSym(3),
+                                       (WhereClauseList)getRhsSym(5),
+                                       (StatementList)getRhsSym(6),
+                                       (IdentList)getRhsSym(8))
                 );
                 break;
             }
             //
-            // Rule 71:  Statement ::= section$ EOLs$ StatementList endsection$
+            // Rule 71:  PardoPragma ::= $Empty
             //
             case 71: {
+                setResult(
+                    new PardoPragma(getLeftIToken(), getRightIToken(),
+                                    (StringLiteral)null)
+                );
+                break;
+            }
+            //
+            // Rule 72:  PardoPragma ::= StringLiteral
+            //
+            case 72: {
+                setResult(
+                    new PardoPragma(getLeftIToken(), getRightIToken(),
+                                    (StringLiteral)getRhsSym(1))
+                );
+                break;
+            }
+            //
+            // Rule 73:  Statement ::= section$ EOLs$ StatementList endsection$
+            //
+            case 73: {
                 setResult(
                     new Section(getLeftIToken(), getRightIToken(),
                                 (StatementList)getRhsSym(3))
@@ -905,18 +926,18 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 72:  Statement ::= exit$
+            // Rule 74:  Statement ::= exit$
             //
-            case 72: {
+            case 74: {
                 setResult(
                     new ExitStatement(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 73:  Statement ::= if$ RelationalExpression EOLs$ StatementList endif$
+            // Rule 75:  Statement ::= if$ RelationalExpression EOLs$ StatementList endif$
             //
-            case 73: {
+            case 75: {
                 setResult(
                     new IfStatement(getLeftIToken(), getRightIToken(),
                                     (RelationalExpression)getRhsSym(2),
@@ -925,9 +946,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 74:  Statement ::= if$ RelationalExpression EOLs$ StatementList$ifStatements else$ EOLs$ StatementList$elseStatements endif$
+            // Rule 76:  Statement ::= if$ RelationalExpression EOLs$ StatementList$ifStatements else$ EOLs$ StatementList$elseStatements endif$
             //
-            case 74: {
+            case 76: {
                 setResult(
                     new IfElseStatement(getLeftIToken(), getRightIToken(),
                                         (RelationalExpression)getRhsSym(2),
@@ -937,9 +958,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 75:  Statement ::= allocate$ Ident AllocIndexListopt
+            // Rule 77:  Statement ::= allocate$ Ident AllocIndexListopt
             //
-            case 75: {
+            case 77: {
                 setResult(
                     new AllocateStatement(getLeftIToken(), getRightIToken(),
                                           (Ident)getRhsSym(2),
@@ -948,9 +969,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 76:  Statement ::= deallocate$ Ident AllocIndexListopt
+            // Rule 78:  Statement ::= deallocate$ Ident AllocIndexListopt
             //
-            case 76: {
+            case 78: {
                 setResult(
                     new DeallocateStatement(getLeftIToken(), getRightIToken(),
                                             (Ident)getRhsSym(2),
@@ -959,9 +980,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 77:  AllocIndex ::= Ident
+            // Rule 79:  AllocIndex ::= Ident
             //
-            case 77: {
+            case 79: {
                 //
                 // When garbage collection is not available, delete getRhsSym(1)
                 //
@@ -971,41 +992,41 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 78:  AllocIndex ::= *$
+            // Rule 80:  AllocIndex ::= *$
             //
-            case 78: {
+            case 80: {
                 setResult(
                     new AllocIndexWildCard(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 79:  AllocIndexList ::= AllocIndex
+            // Rule 81:  AllocIndexList ::= AllocIndex
             //
-            case 79: {
+            case 81: {
                 setResult(
                     new AllocIndexList((IAllocIndex)getRhsSym(1), true /* left recursive */)
                 );
                 break;
             }
             //
-            // Rule 80:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
+            // Rule 82:  AllocIndexList ::= AllocIndexList ,$ AllocIndex
             //
-            case 80: {
+            case 82: {
                 ((AllocIndexList)getRhsSym(1)).add((IAllocIndex)getRhsSym(3));
                 break;
             }
             //
-            // Rule 81:  AllocIndexListopt ::= $Empty
+            // Rule 83:  AllocIndexListopt ::= $Empty
             //
-            case 81: {
+            case 83: {
                 setResult(null);
                 break;
             }
             //
-            // Rule 82:  AllocIndexListopt ::= [ AllocIndexList ]
+            // Rule 84:  AllocIndexListopt ::= [ AllocIndexList ]
             //
-            case 82: {
+            case 84: {
                 setResult(
                     new AllocIndexListopt(getLeftIToken(), getRightIToken(),
                                           new ASTNodeToken(getRhsIToken(1)),
@@ -1015,9 +1036,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 83:  Statement ::= allocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
+            // Rule 85:  Statement ::= allocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
             //
-            case 83: {
+            case 85: {
                 setResult(
                     new ContiguousAllocateStatement(getLeftIToken(), getRightIToken(),
                                                     new ASTNodeToken(getRhsIToken(1)),
@@ -1027,9 +1048,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 84:  Statement ::= deallocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
+            // Rule 86:  Statement ::= deallocate contiguous$ Ident [$ ContiguousIndexRangeExprList ]$
             //
-            case 84: {
+            case 86: {
                 setResult(
                     new ContiguousDeallocateStatement(getLeftIToken(), getRightIToken(),
                                                       new ASTNodeToken(getRhsIToken(1)),
@@ -1039,9 +1060,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 85:  ContiguousIndexRangeExpr ::= Expression$StartExpr : Expression$EndExpr
+            // Rule 87:  ContiguousIndexRangeExpr ::= Expression$StartExpr : Expression$EndExpr
             //
-            case 85: {
+            case 87: {
                 setResult(
                     new ContiguousIndexRangeExpr(getLeftIToken(), getRightIToken(),
                                                  (IExpression)getRhsSym(1),
@@ -1051,25 +1072,25 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 86:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExpr
+            // Rule 88:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExpr
             //
-            case 86: {
+            case 88: {
                 setResult(
                     new ContiguousIndexRangeExprList((ContiguousIndexRangeExpr)getRhsSym(1), true /* left recursive */)
                 );
                 break;
             }
             //
-            // Rule 87:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExprList ,$ ContiguousIndexRangeExpr
+            // Rule 89:  ContiguousIndexRangeExprList ::= ContiguousIndexRangeExprList ,$ ContiguousIndexRangeExpr
             //
-            case 87: {
+            case 89: {
                 ((ContiguousIndexRangeExprList)getRhsSym(1)).add((ContiguousIndexRangeExpr)getRhsSym(3));
                 break;
             }
             //
-            // Rule 88:  Statement ::= create$ Ident
+            // Rule 90:  Statement ::= create$ Ident
             //
-            case 88: {
+            case 90: {
                 setResult(
                     new CreateStatement(getLeftIToken(), getRightIToken(),
                                         (Ident)getRhsSym(2))
@@ -1077,9 +1098,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 89:  Statement ::= delete$ Ident
+            // Rule 91:  Statement ::= delete$ Ident
             //
-            case 89: {
+            case 91: {
                 setResult(
                     new DeleteStatement(getLeftIToken(), getRightIToken(),
                                         (Ident)getRhsSym(2))
@@ -1087,9 +1108,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
+            // Rule 92:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
             //
-            case 90: {
+            case 92: {
                 setResult(
                     new PutStatement(getLeftIToken(), getRightIToken(),
                                      (DataBlock)getRhsSym(2),
@@ -1099,9 +1120,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 91:  Statement ::= get$ DataBlock
+            // Rule 93:  Statement ::= get$ DataBlock
             //
-            case 91: {
+            case 93: {
                 setResult(
                     new GetStatement(getLeftIToken(), getRightIToken(),
                                      (DataBlock)getRhsSym(2))
@@ -1109,9 +1130,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 92:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp Expression$Expression
+            // Rule 94:  Statement ::= prepare$ DataBlock$LHSDataBlock AssignOp Expression$Expression
             //
-            case 92: {
+            case 94: {
                 setResult(
                     new PrepareStatement(getLeftIToken(), getRightIToken(),
                                          (DataBlock)getRhsSym(2),
@@ -1121,9 +1142,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 93:  Statement ::= request$ DataBlock
+            // Rule 95:  Statement ::= request$ DataBlock
             //
-            case 93: {
+            case 95: {
                 setResult(
                     new RequestStatement(getLeftIToken(), getRightIToken(),
                                          (DataBlock)getRhsSym(2))
@@ -1131,9 +1152,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 94:  Statement ::= collective$ Ident AssignOp Expression
+            // Rule 96:  Statement ::= collective$ Ident AssignOp Expression
             //
-            case 94: {
+            case 96: {
                 setResult(
                     new CollectiveStatement(getLeftIToken(), getRightIToken(),
                                             (Ident)getRhsSym(2),
@@ -1143,9 +1164,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 95:  Statement ::= destroy$ Ident
+            // Rule 97:  Statement ::= destroy$ Ident
             //
-            case 95: {
+            case 97: {
                 setResult(
                     new DestroyStatement(getLeftIToken(), getRightIToken(),
                                          (Ident)getRhsSym(2))
@@ -1153,9 +1174,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 96:  Statement ::= print$ Expression
+            // Rule 98:  Statement ::= print$ Expression
             //
-            case 96: {
+            case 98: {
                 setResult(
                     new PrintStatement(getLeftIToken(), getRightIToken(),
                                        (IExpression)getRhsSym(2))
@@ -1163,9 +1184,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 97:  Statement ::= println$ Expression
+            // Rule 99:  Statement ::= println$ Expression
             //
-            case 97: {
+            case 99: {
                 setResult(
                     new PrintlnStatement(getLeftIToken(), getRightIToken(),
                                          (IExpression)getRhsSym(2))
@@ -1173,9 +1194,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 98:  Arg ::= ContiguousDataBlock
+            // Rule 100:  Arg ::= ContiguousDataBlock
             //
-            case 98: {
+            case 100: {
                 setResult(
                     new ContiguousDataBlockArg(getLeftIToken(), getRightIToken(),
                                                (ContiguousDataBlock)getRhsSym(1))
@@ -1183,9 +1204,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 99:  Arg ::= DataBlock
+            // Rule 101:  Arg ::= DataBlock
             //
-            case 99: {
+            case 101: {
                 setResult(
                     new DataBlockArg(getLeftIToken(), getRightIToken(),
                                      (DataBlock)getRhsSym(1))
@@ -1193,52 +1214,52 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 100:  Arg ::= IDENTIFIER
+            // Rule 102:  Arg ::= IDENTIFIER
             //
-            case 100: {
+            case 102: {
                 setResult(
                     new IdentArg(SialParser.this, getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 101:  Arg ::= DOUBLELIT
+            // Rule 103:  Arg ::= DOUBLELIT
             //
-            case 101: {
+            case 103: {
                 setResult(
                     new DoubleLitArg(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 102:  Arg ::= INTLIT
+            // Rule 104:  Arg ::= INTLIT
             //
-            case 102: {
+            case 104: {
                 setResult(
                     new IntLitArg(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 103:  ArgList ::= $Empty
+            // Rule 105:  ArgList ::= $Empty
             //
-            case 103: {
+            case 105: {
                 setResult(
                     new ArgList(getLeftIToken(), getRightIToken(), true /* left recursive */)
                 );
                 break;
             }
             //
-            // Rule 104:  ArgList ::= ArgList Arg
+            // Rule 106:  ArgList ::= ArgList Arg
             //
-            case 104: {
+            case 106: {
                 ((ArgList)getRhsSym(1)).add((IArg)getRhsSym(2));
                 break;
             }
             //
-            // Rule 105:  Statement ::= execute$ Ident ArgList
+            // Rule 107:  Statement ::= execute$ Ident ArgList
             //
-            case 105: {
+            case 107: {
                 setResult(
                     new ExecuteStatement(getLeftIToken(), getRightIToken(),
                                          (Ident)getRhsSym(2),
@@ -1247,9 +1268,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 106:  Statement ::= Ident AssignOp Expression
+            // Rule 108:  Statement ::= Ident AssignOp Expression
             //
-            case 106: {
+            case 108: {
                 setResult(
                     new AssignToIdent(SialParser.this, getLeftIToken(), getRightIToken(),
                                       (Ident)getRhsSym(1),
@@ -1259,9 +1280,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 107:  Statement ::= DataBlock AssignOp Expression
+            // Rule 109:  Statement ::= DataBlock AssignOp Expression
             //
-            case 107: {
+            case 109: {
                 setResult(
                     new AssignToBlock(SialParser.this, getLeftIToken(), getRightIToken(),
                                       (DataBlock)getRhsSym(1),
@@ -1271,9 +1292,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 108:  Statement ::= ContiguousDataBlock AssignOp Expression
+            // Rule 110:  Statement ::= ContiguousDataBlock AssignOp Expression
             //
-            case 108: {
+            case 110: {
                 setResult(
                     new AssignToContigousDataBlock(getLeftIToken(), getRightIToken(),
                                                    (ContiguousDataBlock)getRhsSym(1),
@@ -1283,9 +1304,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 109:  Statement ::= gpu_on$ EOLs$ StatementList gpu_off$
+            // Rule 111:  Statement ::= gpu_on$ EOLs$ StatementList gpu_off$
             //
-            case 109: {
+            case 111: {
                 setResult(
                     new GPUSection(getLeftIToken(), getRightIToken(),
                                    (StatementList)getRhsSym(3))
@@ -1293,9 +1314,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 110:  Statement ::= gpu_allocate$ Arg
+            // Rule 112:  Statement ::= gpu_allocate$ Arg
             //
-            case 110: {
+            case 112: {
                 setResult(
                     new GPUAllocate(getLeftIToken(), getRightIToken(),
                                     (IArg)getRhsSym(2))
@@ -1303,9 +1324,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 111:  Statement ::= gpu_free$ Arg
+            // Rule 113:  Statement ::= gpu_free$ Arg
             //
-            case 111: {
+            case 113: {
                 setResult(
                     new GPUFree(getLeftIToken(), getRightIToken(),
                                 (IArg)getRhsSym(2))
@@ -1313,9 +1334,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 112:  Statement ::= gpu_put$ Arg
+            // Rule 114:  Statement ::= gpu_put$ Arg
             //
-            case 112: {
+            case 114: {
                 setResult(
                     new GPUPut(getLeftIToken(), getRightIToken(),
                                (IArg)getRhsSym(2))
@@ -1323,9 +1344,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 113:  Statement ::= gpu_get$ Arg
+            // Rule 115:  Statement ::= gpu_get$ Arg
             //
-            case 113: {
+            case 115: {
                 setResult(
                     new GPUGet(getLeftIToken(), getRightIToken(),
                                (IArg)getRhsSym(2))
@@ -1333,9 +1354,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 114:  Statement ::= set_persistent$ Ident StringLiteral
+            // Rule 116:  Statement ::= set_persistent$ Ident StringLiteral
             //
-            case 114: {
+            case 116: {
                 setResult(
                     new SetPersistent(getLeftIToken(), getRightIToken(),
                                       (Ident)getRhsSym(2),
@@ -1344,9 +1365,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 115:  Statement ::= restore_persistent$ Ident StringLiteral
+            // Rule 117:  Statement ::= restore_persistent$ Ident StringLiteral
             //
-            case 115: {
+            case 117: {
                 setResult(
                     new RestorePersistent(getLeftIToken(), getRightIToken(),
                                           (Ident)getRhsSym(2),
@@ -1355,9 +1376,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 116:  Statement ::= assert_same$ Ident
+            // Rule 118:  Statement ::= assert_same$ Ident
             //
-            case 116: {
+            case 118: {
                 setResult(
                     new AssertSame(getLeftIToken(), getRightIToken(),
                                    (Ident)getRhsSym(2))
@@ -1365,9 +1386,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 117:  Statement ::= broadcast_from$ Primary Ident
+            // Rule 119:  Statement ::= broadcast_from$ Primary Ident
             //
-            case 117: {
+            case 119: {
                 setResult(
                     new BroadcastStatic(getLeftIToken(), getRightIToken(),
                                         (IPrimary)getRhsSym(2),
@@ -1376,25 +1397,7 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 118:  AssignOp ::= =$op
-            //
-            case 118: {
-                setResult(
-                    new AssignOp(getRhsIToken(1))
-                );
-                break;
-            }
-            //
-            // Rule 119:  AssignOp ::= +=$op
-            //
-            case 119: {
-                setResult(
-                    new AssignOp(getRhsIToken(1))
-                );
-                break;
-            }
-            //
-            // Rule 120:  AssignOp ::= -=$op
+            // Rule 120:  AssignOp ::= =$op
             //
             case 120: {
                 setResult(
@@ -1403,7 +1406,7 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 121:  AssignOp ::= *=$op
+            // Rule 121:  AssignOp ::= +=$op
             //
             case 121: {
                 setResult(
@@ -1412,36 +1415,98 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 122:  DataBlock ::= Ident [$ Indices ]$
+            // Rule 122:  AssignOp ::= -=$op
             //
             case 122: {
                 setResult(
-                    new DataBlock(getLeftIToken(), getRightIToken(),
-                                  (Ident)getRhsSym(1),
-                                  (IdentList)getRhsSym(3))
+                    new AssignOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 123:  Indices ::= Ident
+            // Rule 123:  AssignOp ::= *=$op
             //
             case 123: {
+                setResult(
+                    new AssignOp(getRhsIToken(1))
+                );
+                break;
+            }
+            //
+            // Rule 124:  DataBlock ::= Ident [$ IndexCastIndices ]$
+            //
+            case 124: {
+                setResult(
+                    new DataBlock(getLeftIToken(), getRightIToken(),
+                                  (Ident)getRhsSym(1),
+                                  (IndexCastIdentList)getRhsSym(3))
+                );
+                break;
+            }
+            //
+            // Rule 125:  Indices ::= Ident
+            //
+            case 125: {
                 setResult(
                     new IdentList((Ident)getRhsSym(1), true /* left recursive */)
                 );
                 break;
             }
             //
-            // Rule 124:  Indices ::= Indices ,$ Ident
+            // Rule 126:  Indices ::= Indices ,$ Ident
             //
-            case 124: {
+            case 126: {
                 ((IdentList)getRhsSym(1)).add((Ident)getRhsSym(3));
                 break;
             }
             //
-            // Rule 125:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
+            // Rule 127:  IndexCastIndices ::= IndexCastIdent
             //
-            case 125: {
+            case 127: {
+                setResult(
+                    new IndexCastIdentList((IndexCastIdent)getRhsSym(1), true /* left recursive */)
+                );
+                break;
+            }
+            //
+            // Rule 128:  IndexCastIndices ::= IndexCastIndices ,$ IndexCastIdent
+            //
+            case 128: {
+                ((IndexCastIdentList)getRhsSym(1)).add((IndexCastIdent)getRhsSym(3));
+                break;
+            }
+            //
+            // Rule 129:  IndexCastIdent ::= IndexCastopt Ident
+            //
+            case 129: {
+                setResult(
+                    new IndexCastIdent(getLeftIToken(), getRightIToken(),
+                                       (IndexCastopt)getRhsSym(1),
+                                       (Ident)getRhsSym(2))
+                );
+                break;
+            }
+            //
+            // Rule 130:  IndexCastopt ::= $Empty
+            //
+            case 130: {
+                setResult(null);
+                break;
+            }
+            //
+            // Rule 131:  IndexCastopt ::= ($ index$ )$IndexCast
+            //
+            case 131: {
+                setResult(
+                    new IndexCastopt(getLeftIToken(), getRightIToken(),
+                                     new ASTNodeToken(getRhsIToken(3)))
+                );
+                break;
+            }
+            //
+            // Rule 132:  ContiguousDataBlock ::= Ident [$ ContiguousIndexRangeExprList ]$
+            //
+            case 132: {
                 setResult(
                     new ContiguousDataBlock(getLeftIToken(), getRightIToken(),
                                             (Ident)getRhsSym(1),
@@ -1450,63 +1515,63 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 126:  RelOp ::= <$op
+            // Rule 133:  RelOp ::= <$op
             //
-            case 126: {
+            case 133: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 127:  RelOp ::= >$op
+            // Rule 134:  RelOp ::= >$op
             //
-            case 127: {
+            case 134: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 128:  RelOp ::= <=$op
+            // Rule 135:  RelOp ::= <=$op
             //
-            case 128: {
+            case 135: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 129:  RelOp ::= >=$op
+            // Rule 136:  RelOp ::= >=$op
             //
-            case 129: {
+            case 136: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 130:  RelOp ::= ==$op
+            // Rule 137:  RelOp ::= ==$op
             //
-            case 130: {
+            case 137: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 131:  RelOp ::= !=$op
+            // Rule 138:  RelOp ::= !=$op
             //
-            case 131: {
+            case 138: {
                 setResult(
                     new RelOp(getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 132:  RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
+            // Rule 139:  RelationalExpression ::= Expression$CastExpressionLeft RelOp Expression$CastExpressionRight
             //
-            case 132: {
+            case 139: {
                 setResult(
                     new RelationalExpression(getLeftIToken(), getRightIToken(),
                                              (IExpression)getRhsSym(1),
@@ -1516,14 +1581,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 133:  Expression ::= Term
+            // Rule 140:  Expression ::= Term
             //
-            case 133:
+            case 140:
                 break;
             //
-            // Rule 134:  Expression ::= Expression + Term
+            // Rule 141:  Expression ::= Expression + Term
             //
-            case 134: {
+            case 141: {
                 setResult(
                     new AddExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                 (IExpression)getRhsSym(1),
@@ -1533,9 +1598,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 135:  Expression ::= Expression - Term
+            // Rule 142:  Expression ::= Expression - Term
             //
-            case 135: {
+            case 142: {
                 setResult(
                     new SubtractExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                      (IExpression)getRhsSym(1),
@@ -1545,14 +1610,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 136:  Term ::= ExponentExpression
+            // Rule 143:  Term ::= ExponentExpression
             //
-            case 136:
+            case 143:
                 break;
             //
-            // Rule 137:  Term ::= Term *$ ExponentExpression
+            // Rule 144:  Term ::= Term *$ ExponentExpression
             //
-            case 137: {
+            case 144: {
                 setResult(
                     new StarExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                  (ITerm)getRhsSym(1),
@@ -1561,9 +1626,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 138:  Term ::= Term /$ ExponentExpression
+            // Rule 145:  Term ::= Term /$ ExponentExpression
             //
-            case 138: {
+            case 145: {
                 setResult(
                     new DivExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                 (ITerm)getRhsSym(1),
@@ -1572,9 +1637,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 139:  Term ::= Term ^ ExponentExpression
+            // Rule 146:  Term ::= Term ^ ExponentExpression
             //
-            case 139: {
+            case 146: {
                 setResult(
                     new TensorExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                    (ITerm)getRhsSym(1),
@@ -1584,14 +1649,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 140:  ExponentExpression ::= CastExpression
+            // Rule 147:  ExponentExpression ::= CastExpression
             //
-            case 140:
+            case 147:
                 break;
             //
-            // Rule 141:  ExponentExpression ::= ExponentExpression ** CastExpression
+            // Rule 148:  ExponentExpression ::= ExponentExpression ** CastExpression
             //
-            case 141: {
+            case 148: {
                 setResult(
                     new ExponentExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                      (IExponentExpression)getRhsSym(1),
@@ -1601,14 +1666,14 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 142:  CastExpression ::= UnaryExpression
+            // Rule 149:  CastExpression ::= UnaryExpression
             //
-            case 142:
+            case 149:
                 break;
             //
-            // Rule 143:  CastExpression ::= ($ int$ )$ CastExpression
+            // Rule 150:  CastExpression ::= ($ int$ )$ CastExpression
             //
-            case 143: {
+            case 150: {
                 setResult(
                     new IntCastExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                     (ICastExpression)getRhsSym(4))
@@ -1616,9 +1681,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 144:  CastExpression ::= ($ scalar$ )$ CastExpression
+            // Rule 151:  CastExpression ::= ($ scalar$ )$ CastExpression
             //
-            case 144: {
+            case 151: {
                 setResult(
                     new ScalarCastExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                        (ICastExpression)getRhsSym(4))
@@ -1626,14 +1691,24 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 145:  UnaryExpression ::= Primary
+            // Rule 152:  CastExpression ::= ($ index$ )$ CastExpression
             //
-            case 145:
+            case 152: {
+                setResult(
+                    new IndexCastExpr(SialParser.this, getLeftIToken(), getRightIToken(),
+                                      (ICastExpression)getRhsSym(4))
+                );
+                break;
+            }
+            //
+            // Rule 153:  UnaryExpression ::= Primary
+            //
+            case 153:
                 break;
             //
-            // Rule 146:  UnaryExpression ::= -$ Primary
+            // Rule 154:  UnaryExpression ::= -$ Primary
             //
-            case 146: {
+            case 154: {
                 setResult(
                     new NegatedUnaryExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                          (IPrimary)getRhsSym(2))
@@ -1641,9 +1716,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 147:  UnaryExpression ::= sqrt$ Primary
+            // Rule 155:  UnaryExpression ::= sqrt$ Primary
             //
-            case 147: {
+            case 155: {
                 setResult(
                     new SqrtUnaryExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                       (IPrimary)getRhsSym(2))
@@ -1651,9 +1726,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 148:  Primary ::= ($ Expression )$
+            // Rule 156:  Primary ::= ($ Expression )$
             //
-            case 148: {
+            case 156: {
                 setResult(
                     new ParenExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                   (IExpression)getRhsSym(2))
@@ -1661,27 +1736,27 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 149:  Primary ::= INTLIT
+            // Rule 157:  Primary ::= INTLIT
             //
-            case 149: {
+            case 157: {
                 setResult(
                     new IntLitExpr(SialParser.this, getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 150:  Primary ::= DOUBLELIT
+            // Rule 158:  Primary ::= DOUBLELIT
             //
-            case 150: {
+            case 158: {
                 setResult(
                     new DoubleLitExpr(SialParser.this, getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 151:  Primary ::= Ident
+            // Rule 159:  Primary ::= Ident
             //
-            case 151: {
+            case 159: {
                 //
                 // When garbage collection is not available, delete getRhsSym(1)
                 //
@@ -1691,9 +1766,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 152:  Primary ::= DataBlock
+            // Rule 160:  Primary ::= DataBlock
             //
-            case 152: {
+            case 160: {
                 setResult(
                     new DataBlockExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                       (DataBlock)getRhsSym(1))
@@ -1701,9 +1776,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 153:  Primary ::= ContiguousDataBlock
+            // Rule 161:  Primary ::= ContiguousDataBlock
             //
-            case 153: {
+            case 161: {
                 setResult(
                     new ContiguousDataBlockExpr(SialParser.this, getLeftIToken(), getRightIToken(),
                                                 (ContiguousDataBlock)getRhsSym(1))
@@ -1711,9 +1786,9 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 154:  Primary ::= StringLiteral
+            // Rule 162:  Primary ::= StringLiteral
             //
-            case 154: {
+            case 162: {
                 //
                 // When garbage collection is not available, delete getRhsSym(1)
                 //
@@ -1723,18 +1798,18 @@ if (root != null) {
                 break;
             }
             //
-            // Rule 155:  StringLiteral ::= STRINGLIT
+            // Rule 163:  StringLiteral ::= STRINGLIT
             //
-            case 155: {
+            case 163: {
                 setResult(
                     new StringLiteral(SialParser.this, getRhsIToken(1))
                 );
                 break;
             }
             //
-            // Rule 156:  Ident ::= IDENTIFIER
+            // Rule 164:  Ident ::= IDENTIFIER
             //
-            case 156: {
+            case 164: {
                 setResult(
                     new Ident(SialParser.this, getRhsIToken(1))
                 );

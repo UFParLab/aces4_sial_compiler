@@ -1,0 +1,23 @@
+sial index_cast_to_simple_2
+
+predefined int norb
+index i = 1:norb
+aoindex mu = 1:norb
+scalar i_aostart
+scalar i_aoend
+local SwAO_frag[i]
+int jfrag
+
+allocate SwAO_frag[*]
+
+
+
+          do mu
+              where (index)mu >= (int)i_aostart
+              where (index)mu >= (int)i_aoend
+              SwAO_frag[(index)mu] = (scalar)jfrag
+              print SwAO_frag[(index)mu]
+          enddo mu
+
+endsial index_cast_to_simple_2
+

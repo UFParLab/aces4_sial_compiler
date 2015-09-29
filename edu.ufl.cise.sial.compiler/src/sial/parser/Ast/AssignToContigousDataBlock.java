@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 108:  Statement ::= ContiguousDataBlock AssignOp Expression
+ *<li>Rule 110:  Statement ::= ContiguousDataBlock AssignOp Expression
  *</b>
  */
 public class AssignToContigousDataBlock extends ASTNode implements IStatement

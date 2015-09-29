@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 117:  Statement ::= broadcast_from$ Primary Ident
+ *<li>Rule 119:  Statement ::= broadcast_from$ Primary Ident
  *</b>
  */
 public class BroadcastStatic extends ASTNode implements IStatement

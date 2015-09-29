@@ -341,8 +341,22 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	@Override
 	public void endVisit(ArrayDec n) {
 		n.setUsed(false);
+		DimensionList dims = n.getDimensionList();
+		n.setAllSimpleIndices(allIndicesDeclaredSimple(dims));
 	}
 
+	boolean allIndicesDeclaredSimple(DimensionList dims){
+		int numDims = dims.size();
+		for(int i = 0; i < numDims; ++i){
+			Ident ident = dims.getDimensionAt(i);
+			IDec dec = ident.getDec();
+			if (! (dec instanceof IndexDec)) return false;		
+			if (((IndexDec) dec).getIndexKind().getIToken().getKind() != TK_index) return false;
+		}
+		return true;
+	}
+	
+	
 	@Override
 	public boolean visit(ArrayKind n) {
 		return false;
@@ -539,12 +553,23 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 										 * the other is an int
 										 */
 		RelationalExpression e = n.getRelationalExpression();
-		IExpression eleft = e.getUnaryExpressionLeft();
-		IExpression eright = e.getUnaryExpressionRight();
-		boolean eLeftIsIndex = eleft instanceof IdentExpr
-				&& (((IdentExpr) eleft).getDec() instanceof IndexDec || ((IdentExpr) eleft).getDec() instanceof SubIndexDec);
-		boolean eRightIsIndex = eright instanceof IdentExpr
-				&& (((IdentExpr) eright).getDec() instanceof IndexDec || ((IdentExpr) eright).getDec() instanceof SubIndexDec);
+		IExpression eleft = e.getCastExpressionLeft();
+		IExpression eright = e.getCastExpressionRight();
+		
+//		boolean eLeftIsIndex = eleft instanceof IdentExpr
+//				&& (((IdentExpr) eleft).getDec() instanceof IndexDec || ((IdentExpr) eleft).getDec() instanceof SubIndexDec);
+//		boolean eRightIsIndex = eright instanceof IdentExpr
+//				&& (((IdentExpr) eright).getDec() instanceof IndexDec || ((IdentExpr) eright).getDec() instanceof SubIndexDec);
+		
+
+		EnumSet<EType> tleft = ASTUtils.getIExprTypes(eleft);
+		if (tleft.isEmpty())
+			return; // error already reported by child
+		boolean eLeftIsIndex = tleft.contains(INDEX);
+		EnumSet<EType> tright = ASTUtils.getIExprTypes(eright);
+		if (tright.isEmpty())
+			return; // error already reported by child	
+		boolean eRightIsIndex = tright.contains(INDEX);
 		check((eLeftIsIndex || eRightIsIndex), n, "At least one argument in a where clause must be an index");
 	}
 
@@ -965,13 +990,13 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	 * error message or null if no error
 	 */
 	private String isCompatibleBockWithTranspose(DataBlock lhs, DataBlock rhs) {
-		IdentList lhsIndices = lhs.getIndices();
-		IdentList rhsIndices = rhs.getIndices();
+		IndexCastIdentList lhsIndices = lhs.getIndexCastIndices();
+		IndexCastIdentList rhsIndices = rhs.getIndexCastIndices();
 		int lhsSize = lhsIndices.size();
 		int rhsSize = rhsIndices.size();
 		if (lhsSize == rhsSize) {// must be a permutation
 			for (int i = 0; i < lhsSize; i++) {
-				if (!contains(rhsIndices, lhsIndices.getIdentAt(i)))
+				if (!contains(rhsIndices, lhsIndices.getIndexCastIdentAt(i).getIdent() ))
 					return "incompatible index lists";
 			}
 			return null;
@@ -980,19 +1005,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		// first check that common positions have the same contents
 		int i;
 		for (i = 0; i < lhsSize && i < rhsSize; i++) {
-			if (!lhsIndices.getIdentAt(i).getName().equals(rhsIndices.getIdentAt(i).getName()))
+			if (!lhsIndices.getIndexCastIdentAt(i).getIdent().getName().equals(rhsIndices.getIndexCastIdentAt(i).getIdent().getName()))
 				return "inconsistent index lists";
 
 		}
 		// if there are more on the lhs, make sure they are simple
 		for (; i < lhsSize; i++) {
-			if (!((IndexDec) lhsIndices.getIdentAt(i).getDec()).getTypeName().equals("index"))
-				return "extra indices on left side must be simple indices, i.e. the index type must be \"index\"";
+			if (!((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
+				return "extra indices on left side must be declared as simple indices, i.e. the index type must be \"index\"";
 		}
 		// if there are more on the rhs, make sure they are simple
 		for (; i < rhsSize; i++) {
-			if (!((IndexDec) rhsIndices.getIdentAt(i).getDec()).getTypeName().equals("index"))
-				return "extra indices on right side must be simple indices, i.e. the index type must be \"index\"";
+			if (!((IndexDec) rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
+				return "extra indices on right side must be declared as simple indices, i.e. the index type must be \"index\"";
 		}
 		return null;
 	}
@@ -1000,14 +1025,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	private void checkCompatibleBlocks(ASTNode n, DataBlock lhs, DataBlock rhs) {
 		// check that indices on both sides match exactly, or that there is an
 		// extra index which is a simple index
-		IdentList lhsIndices = lhs.getIndices();
-		IdentList rhsIndices = rhs.getIndices();
+		IndexCastIdentList lhsIndices = lhs.getIndexCastIndices();
+		IndexCastIdentList rhsIndices = rhs.getIndexCastIndices();
 		int lhsSize = lhsIndices.size();
 		int rhsSize = rhsIndices.size();
 		int minIndices = lhsSize < rhsSize ? lhsSize : rhsSize;
 		for (int i = 0; i < minIndices; i++) { // check that common "positions"
 												// have the same contents
-			if (!check(lhsIndices.getIdentAt(i).getName().equals(rhsIndices.getIdentAt(i).getName()), n,
+			if (!check(lhsIndices.getIndexCastIdentAt(i).getIdent().getName().equals(rhsIndices.getIndexCastIdentAt(i).getIdent().getName()), n,
 					"inconsistent index lists"))
 				return;
 		}
@@ -1015,7 +1040,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 														// indices on the lhs,
 														// make sure they are
 														// simple
-			if (!check(((IndexDec) lhsIndices.getIdentAt(i).getDec()).getTypeName().equals("index"), n,
+			if (!check(((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"), n,
 					"extra indices on left side must be simple indices, i.e. the index type must be \"index\""))
 				;
 		}
@@ -1023,7 +1048,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 														// indices on the rhs,
 														// make sure they are
 														// simple
-			if (!check(((IndexDec) rhsIndices.getIdentAt(i).getDec()).getTypeName().equals("index"), n,
+			if (!check(((IndexDec) rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"), n,
 					"extra indices on right side must be simple indices, i.e. the index type must be \"index\""))
 				;
 		}
@@ -1298,7 +1323,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	/*
-	 * checks that given indices have same type as the declaration, or be a
+	 * checks that given indices have same type as the declaration, or are a
 	 * subindex of the declared type
 	 */
 
@@ -1310,20 +1335,24 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		if (!check(identDec instanceof ArrayDec, n, n.getIdent() + " must be an array"))
 			return;
 		// ((ArrayDec)identDec).setUsed();
-		IdentList indices = n.getIndices();
+		IndexCastIdentList indices = n.getIndexCastIndices();
 		DimensionList declaredDimensionList = ((ArrayDec) identDec).getDimensionList();
 		if (!check(indices.size() == declaredDimensionList.size(), n, "number of indices of " + n.getIdent()
 				+ " does not match declaration"))
 			return;
 		for (int i = 0; i < indices.size(); i++) {
 			// get type of index
-			IDec indexDec = indices.getIdentAt(i).getDec();
+			IDec indexDec = indices.getIndexCastIdentAt(i).getIdent().getDec();
+			boolean castToIndex = indices.getIndexCastIdentAt(i).getIndexCastopt() != null;
 			if (indexDec == null) return;  //index not declared.  Error already reported.
-			if (!check(indexDec instanceof IndexDec || indexDec instanceof SubIndexDec, n, n.getIndices().getIdentAt(i)
-					.getIDENTIFIER()
+			if (!check(indexDec instanceof IndexDec || indexDec instanceof SubIndexDec, n, n.getIndexCastIndices().getIndexCastIdentAt(i)
+					.getIdent().getIDENTIFIER()
 					+ " must be an index or subindex"))
 				return;
-			String indexType = (indexDec instanceof IndexDec) ? ((IndexDec) indexDec).getTypeName()
+			String indexType;
+
+			if (castToIndex) indexType = "index";
+			else 	indexType =		 (indexDec instanceof IndexDec) ? ((IndexDec) indexDec).getTypeName()
 					: ((IndexDec) ((SubIndexDec) indexDec).getParentIdent().getDec()).getTypeName();
 			// get type of dimension in declaration
 			IDec dimensionDec = declaredDimensionList.getDimensionAt(i).getDec();
@@ -1335,7 +1364,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			// get a string representing type, could be some index or subindex
 			String dimensionType = (dimensionDec instanceof IndexDec) ? ((IndexDec) dimensionDec).getTypeName()
 					: ((IndexDec) ((SubIndexDec) dimensionDec).getParentIdent().getDec()).getTypeName();
-			if (!check(indexType.equals(dimensionType), n, indices.getIdentAt(i).getIDENTIFIER() + " and "
+			if (!check(indexType.equals(dimensionType), n, indices.getIndexCastIdentAt(i).getIdent().getIDENTIFIER() + " and "
 					+ declaredDimensionList.getDimensionAt(i).getIDENTIFIER() + " have incompatible types"))
 				return;
 		}
@@ -1471,8 +1500,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	@Override
 	public void endVisit(RelationalExpression n) {
-		EnumSet<EType> t0 = getIExprTypes(n.getUnaryExpressionLeft());
-		EnumSet<EType> t1 = getIExprTypes(n.getUnaryExpressionRight());
+		EnumSet<EType> t0 = getIExprTypes(n.getCastExpressionLeft());
+		EnumSet<EType> t1 = getIExprTypes(n.getCastExpressionRight());
 		if (t0.contains(SCALAR) && t1.contains(SCALAR))
 			return;
 		if ((t0.contains(INT) || t0.contains(INDEX)) && (t1.contains(INT) || t1.contains(INDEX)))
@@ -1639,8 +1668,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		// ensure that index sets are disjoint
 		ArrayList<Ident> resultIndices = getContractionResultIndices(((DataBlockExpr) leftOperand).getDataBlock(),
 				((DataBlockExpr) rightOperand).getDataBlock());
-		check(resultIndices.size() == ((DataBlockExpr) leftOperand).getDataBlock().getIndices().size()
-				+ ((DataBlockExpr) rightOperand).getDataBlock().getIndices().size(), n,
+		check(resultIndices.size() == ((DataBlockExpr) leftOperand).getDataBlock().getIndexCastIndices().size()
+				+ ((DataBlockExpr) rightOperand).getDataBlock().getIndexCastIndices().size(), n,
 				"arguments to ^ must be data blocks with disjoint index sets");
 		n.addType(BLOCK);
 		// if either argument also has SCALAR, remove it
@@ -1904,12 +1933,16 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	}
 
 	boolean allIndicesSimple(DataBlock datablock) {
-		IdentList indices = datablock.getIndices();
+		IndexCastIdentList indices = datablock.getIndexCastIndices();
 		for (int i = 0; i < indices.size(); ++i) {
-			Ident ind = indices.getIdentAt(i);
-			IDec dec = ind.getDec();
-			if (!(dec instanceof IndexDec && ((IndexDec) dec).getIndexKind().getIToken().getKind() == TK_index)) {
-				return false;
+			IndexCastIdent ind = indices.getIndexCastIdentAt(i);
+			Ident ident = ind.getIdent();
+			IndexCastopt cast = ind.getIndexCastopt();
+			IDec dec = ident.getDec();
+			if (!check (dec instanceof IndexDec || dec instanceof SubIndexDec, datablock,  "index " + ident.getName() + " is not an index or subindex")) return false;
+			if (cast == null){//no cast, this should have been declared as simple
+				if ( dec instanceof IndexDec && ( ((IndexDec) dec).getIndexKind().getIToken().getKind()) != TK_index  )  return false;
+				if ( dec instanceof SubIndexDec )  return false;  //TODO this doesn't allow subindices to be simple, maybe we should
 			}
 		}
 		return true;
@@ -1985,7 +2018,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		if (t.contains(SCALAR))
 			return;
 		// rhs is a block, check that indices are compatible
-		IdentList lhsIndices = lhs.getIndices();
+		IndexCastIdentList lhsIndices = lhs.getIndexCastIndices();
 		if (expr instanceof DataBlockExpr) { // rhs is a single data block
 			DataBlock rhs = ((DataBlockExpr) expr).getDataBlock();
 			if (op == TK_ASSIGN) { // slices and insertions
@@ -2036,7 +2069,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				if (!check(lhsIndices.size() == exprIndices.size(), n, "left and right sides have different dimensions"))
 					return;
 				for (int i = 0; i < lhsIndices.size(); i++) {
-					String lhsIndexName = lhsIndices.getIdentAt(i).getName();
+					String lhsIndexName = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
 					if (!check(names.contains(lhsIndexName), n, "indices do not match on left and right hand sides"))
 						return;
 				}
@@ -2045,12 +2078,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			if (e0 instanceof DataBlockExpr && t1.contains(SCALAR)) {
 				// rhs is b0 * scalar
 				DataBlock b0 = ((DataBlockExpr) e0).getDataBlock();
-				IdentList b0indices = b0.getIndices();
+				IndexCastIdentList b0indices = b0.getIndexCastIndices();
 				if (!check(lhsIndices.size() == b0indices.size(), n, "number of indices does not match"))
 					return;
 				for (int i = 0; i < lhsIndices.size(); i++) {
-					String lhsIndexName = lhsIndices.getIdentAt(i).getName();
-					String block1IndexName = b0indices.getIdentAt(i).getName();
+					String lhsIndexName = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
+					String block1IndexName = b0indices.getIndexCastIdentAt(i).getIdent().getName();
 					if (!check(lhsIndexName.equals(block1IndexName), n, "indices do not match"))
 						return;
 				}
@@ -2059,12 +2092,12 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			if (t0.contains(SCALAR) && (e1 instanceof DataBlockExpr)) {
 				// rhs is scalar * b1
 				DataBlock b1 = ((DataBlockExpr) e1).getDataBlock();
-				IdentList b1indices = b1.getIndices();
+				IndexCastIdentList b1indices = b1.getIndexCastIndices();
 				if (!check(lhsIndices.size() == b1indices.size(), n, "number of indices does not match"))
 					return;
 				for (int i = 0; i < lhsIndices.size(); i++) {
-					String lhsIndexName = lhsIndices.getIdentAt(i).getName();
-					String block2IndexName = b1indices.getIdentAt(i).getName();
+					String lhsIndexName = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
+					String block2IndexName = b1indices.getIndexCastIdentAt(i).getIdent().getName();
 					if (!check(lhsIndexName.equals(block2IndexName), n, "indices do not match"))
 						return;
 				}
@@ -2089,7 +2122,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 				if (!check(lhsIndices.size() == exprIndices.size(), n, "left and right sides have different dimensions"))
 					return;
 				for (int i = 0; i < lhsIndices.size(); i++) {
-					String lhsIndexName = lhsIndices.getIdentAt(i).getName();
+					String lhsIndexName = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
 					if (!check(names.contains(lhsIndexName), n, "indices do not match on left and right hand sides"))
 						return;
 				}
@@ -2111,15 +2144,15 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			check(e0 instanceof DataBlockExpr && e1 instanceof DataBlockExpr, n, "illegal rhs in assignment");
 			DataBlock b0 = ((DataBlockExpr) e0).getDataBlock();
 			DataBlock b1 = ((DataBlockExpr) e1).getDataBlock();
-			IdentList b0indices = b0.getIndices();
-			IdentList b1indices = b1.getIndices();
+			IndexCastIdentList b0indices = b0.getIndexCastIndices();
+			IndexCastIdentList b1indices = b1.getIndexCastIndices();
 			if (!check(lhsIndices.size() == b0indices.size() && lhsIndices.size() == b1indices.size(), n,
 					"number of indices on left and right side of assingment does not match"))
 				return;
 			for (int i = 0; i < lhsIndices.size(); i++) {
-				String lhsIndexName = lhsIndices.getIdentAt(i).getName();
-				String block1IndexName = b0indices.getIdentAt(i).getName();
-				String block2IndexName = b1indices.getIdentAt(i).getName();
+				String lhsIndexName = lhsIndices.getIndexCastIdentAt(i).getIdent().getName();
+				String block1IndexName = b0indices.getIndexCastIdentAt(i).getIdent().getName();
+				String block2IndexName = b1indices.getIndexCastIdentAt(i).getIdent().getName();
 				if (!check(lhsIndexName.equals(block1IndexName) && lhsIndexName.equals(block2IndexName), n,
 						"indices do not match"))
 					return;
@@ -2164,7 +2197,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	// returns true if given indices are same as declared
 	boolean hasDeclaredIndices(DataBlock block) {
-		IdentList indices = block.getIndices();
+		IndexCastIdentList indices = block.getIndexCastIndices();
 		IDec dec = block.getIdent().getDec();
 		if (dec == null)
 			return false;
@@ -2177,7 +2210,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		for (int i = 0; i < indices.size(); ++i) {
 			Ident declaredIdent = declaredIndices.getDimensionAt(i);
-			Ident usedIdent = indices.getIdentAt(i);
+			Ident usedIdent = indices.getIndexCastIdentAt(i).getIdent();
 			if (!declaredIdent.getName().equals(usedIdent.getName()))
 				return false;
 
@@ -2187,7 +2220,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 
 	// indices in data block have the same type as those in the declaration
 	boolean hasCompatibleIndices(DataBlock block) {
-		IdentList indices = block.getIndices();
+		IndexCastIdentList indices = block.getIndexCastIndices();
 		IDec dec = block.getIdent().getDec();
 		if (dec == null)
 			return false;
@@ -2198,15 +2231,19 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		for (int i = 0; i < indices.size(); ++i) {
 			Ident declaredIndex = declaredIndices.getDimensionAt(i);
 			IndexDec declaredIndexDec = (IndexDec) declaredIndex.getDec();
-			Ident usedIdent = indices.getIdentAt(i);
+			IndexCastIdent usedIndexCastIdent = indices.getIndexCastIdentAt(i);
+			Ident usedIdent = usedIndexCastIdent.getIdent();
 			IndexDec usedIndexDec = (IndexDec) usedIdent.getDec();
+			if (usedIndexDec == null) return false;
 			// lots' of "kinds" here. The IndexKind is the AST node representing
 			// aoindex moaindex, etc.
 			// getiKind returns the IToken, and getKind returns the parser's
 			// constant for the keyword TK_aoindex, etc.
-			if ((usedIndexDec == null) || declaredIndexDec.getIndexKind().getikind().getKind() != usedIndexDec.getIndexKind().getikind()
-					.getKind()) {
-				return false;
+			int usedIndexKind = usedIndexDec.getIndexKind().getikind().getKind();
+			int declaredIndexKind = declaredIndexDec.getIndexKind().getikind().getKind();
+			if (declaredIndexKind != usedIndexKind){
+				if (! check(declaredIndexKind == TK_index && usedIndexCastIdent.getIndexCastopt() != null,usedIndexCastIdent, "index " + usedIdent.getName() + 
+						" not compatible with declaration")) return false;		
 			}
 		}
 		return true;
@@ -2215,7 +2252,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 	// returns true if there is at least one index that is a subindex of
 	// declared index and the rest are as declared
 	boolean isSubBlock(DataBlock block) {
-		IdentList indices = block.getIndices();
+		IndexCastIdentList indices = block.getIndexCastIndices();
 		IDec dec = block.getIdent().getDec();
 		if (dec == null)
 			return false; // this ident wasn't declared. This avoids null
@@ -2231,7 +2268,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		for (int i = 0; i < indices.size(); ++i) {
 			Ident declaredIdent = declaredIndices.getDimensionAt(i);
-			Ident usedIdent = indices.getIdentAt(i);
+			Ident usedIdent = indices.getIndexCastIdentAt(i).getIdent();
 			boolean same = declaredIdent.getName().equals(usedIdent.getName());
 			boolean isSub = !same && isSubIndex(usedIdent, declaredIdent);
 			isValid = isValid & (same || isSub);
@@ -2240,25 +2277,25 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return isValid && subBlock;
 	}
 
-	private boolean contains(IdentList list, Ident ident) {
-		String name = ident.getName();
-		boolean result = false;
-		for (Object id : list.getArrayList()) {
-			String idName = ((Ident) id).getName();
-			result = result || name.equals(idName);
-		}
-		return result;
-	}
+//	private boolean contains(IdentList list, Ident ident) {
+//		String name = ident.getName();
+//		boolean result = false;
+//		for (Object id : list.getArrayList()) {
+//			String idName = ((Ident) id).getName();
+//			result = result || name.equals(idName);
+//		}
+//		return result;
+//	}
 
 	private ArrayList<Ident> getContractionResultIndices(DataBlock block1, DataBlock block2) {
-		IdentList ind1 = block1.getIndices();
-		IdentList ind2 = block2.getIndices();
+		IndexCastIdentList ind1 = block1.getIndexCastIndices();
+		IndexCastIdentList ind2 = block2.getIndexCastIndices();
 		int ind1Size = ind1.size();
 		int ind2Size = ind2.size();
 		ArrayList<Ident> SharedInd = new ArrayList<Ident>();
 		ArrayList<Ident> UnsharedInd = new ArrayList<Ident>();
 		for (int i = 0; i < ind1Size; i++) {
-			Ident id = ind1.getIdentAt(i);
+			Ident id = ind1.getIndexCastIdentAt(i).getIdent();
 			if (contains(ind2, id)) {
 				SharedInd.add(id);
 			} else {
@@ -2266,12 +2303,22 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 			}
 		}
 		for (int i = 0; i < ind2Size; i++) {
-			Ident id = ind2.getIdentAt(i);
+			Ident id = ind2.getIndexCastIdentAt(i).getIdent();
 			if (!contains(SharedInd, id))
 				UnsharedInd.add(id);
 		}
 		return UnsharedInd;
 
+	}
+
+	private boolean contains(IndexCastIdentList list, Ident ident) {
+		String name = ident.getName();
+		boolean result = false;
+		for (Object id : list.getArrayList()) {		
+			String idName = ((IndexCastIdent) id).getIdent().getName();
+			result = result || name.equals(idName);
+		}
+		return result;
 	}
 
 	private boolean contains(ArrayList<Ident> list, Ident ident) {
@@ -2635,5 +2682,32 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 
 	}
+	
+	@Override
+    public boolean visit(IndexCastIdentList n) {  return true; }
+	@Override
+    public void endVisit(IndexCastIdentList n) {  }
+
+	@Override
+    public boolean visit(IndexCastIdent n) {  return true; }
+	@Override
+    public void endVisit(IndexCastIdent n) {  }
+
+	@Override
+    public boolean visit(IndexCastopt n) { return false;}
+	@Override
+    public void endVisit(IndexCastopt n) {  }
+    
+	@Override
+    public boolean visit(IndexCastExpr n) { return true; }
+	@Override
+    public void endVisit(IndexCastExpr n) { 
+		EnumSet<EType> t = getIExprTypes(n.getCastExpression());	
+		if (t.isEmpty())
+			return;
+		check(t.contains(INDEX), n, "cast to simple  only allowed from an index type");
+		n.addType(INDEX);
+	}
+
 
 }

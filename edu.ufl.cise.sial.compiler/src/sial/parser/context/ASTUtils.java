@@ -30,6 +30,7 @@ import sial.parser.Ast.IRangeVal;
 import sial.parser.Ast.Ident;
 import sial.parser.Ast.IdentExpr;
 import sial.parser.Ast.IdentList;
+import sial.parser.Ast.IndexCastExpr;
 import sial.parser.Ast.IndexDec;
 import sial.parser.Ast.IntCastExpr;
 import sial.parser.Ast.IntDec;
@@ -339,7 +340,8 @@ public class ASTUtils implements SialParsersym, SipConstants{
     public static boolean isStaticOrContiguousArray(IDec n){
     	if (n instanceof ArrayDec){
     		ArrayDec arrayDec = (ArrayDec)n;
-    		if (arrayDec.getArrayKind().toString().equals("static")) return true;
+ //   		if (arrayDec.getArrayKind().toString().toLowerCase().equals("static")) return true;
+    		if (arrayDec.getArrayKind().getakind().getKind() == TK_static) return true;
     		//check for contiguous declaration
     		List modifiers = arrayDec.getModifiersopt().getList();
         	for( Object m: modifiers){
@@ -353,7 +355,8 @@ public class ASTUtils implements SialParsersym, SipConstants{
     public static boolean isStatic(IDec n){
     	if (n instanceof ArrayDec){
     		ArrayDec arrayDec = (ArrayDec)n;
-    		if (arrayDec.getArrayKind().toString().equals("static")) return true;
+//    		if (arrayDec.getArrayKind().toString().toLowerCase().equals("static")) return true;
+    		if (arrayDec.getArrayKind().getakind().getKind() == TK_static) return true;
 //    		//check for contiguous declaration
 //    		List modifiers = arrayDec.getModifiersopt().getList();
 //        	for( Object m: modifiers){
@@ -367,8 +370,10 @@ public class ASTUtils implements SialParsersym, SipConstants{
 	public static boolean isSparseDistributedOrServed(IDec n) {
 		if (n instanceof ArrayDec) {
 			ArrayDec arrayDec = (ArrayDec) n;
-			if (arrayDec.getArrayKind().toString().equals("distributed")
-					|| arrayDec.getArrayKind().toString().equals("served")) {
+//			if (arrayDec.getArrayKind().toString().equals("distributed")
+//					|| arrayDec.getArrayKind().toString().equals("served")) {
+			if (arrayDec.getArrayKind().getakind().getKind() == TK_distributed
+			|| arrayDec.getArrayKind().getakind().getKind() == TK_served) {
 				// check for contiguous declaration
 				List modifiers = arrayDec.getModifiersopt().getList();
 				for (Object m : modifiers) {
@@ -380,7 +385,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
 	}
 	
 	public static boolean isLocal(IDec n){
-		return  (n instanceof ArrayDec) && ((ArrayDec)n).getArrayKind().toString().equals("local");
+		return  (n instanceof ArrayDec) && ((ArrayDec)n).getArrayKind().getakind().getKind() == TK_local;
 	}
     
     public static boolean isPredefined(IDec n){
@@ -531,6 +536,7 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	if (e instanceof ExponentExpr)return ((ExponentExpr)e).getTypeSet();
     	if (e instanceof SqrtUnaryExpr)return ((SqrtUnaryExpr)e).getTypeSet();
     	if (e instanceof ContiguousDataBlockExpr) return ((ContiguousDataBlockExpr)e).getTypeSet();
+    	if (e instanceof IndexCastExpr) return ((IndexCastExpr)e).getTypeSet();
     	assert false: "compiler bug: unexpected type in getIExprTypes";
     	return null;
 
@@ -552,8 +558,11 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	if (e instanceof AddExpr) return true;
     	if (e instanceof SubtractExpr) return true;
     	if (e instanceof DataBlockExpr) return false;
+    	if (e instanceof ExponentExpr) return true;
     	if (e instanceof StringLitExpr) return false;
+    	if (e instanceof SqrtUnaryExpr) return false;
     	if (e instanceof ContiguousDataBlockExpr) return false;
+    	if (e instanceof IndexCastExpr) return false;
     	assert false;
     	return false;
 	}

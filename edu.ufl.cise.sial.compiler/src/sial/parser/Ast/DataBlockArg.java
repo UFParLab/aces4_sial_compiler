@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 99:  Arg ::= DataBlock
+ *<li>Rule 101:  Arg ::= DataBlock
  *</b>
  */
 public class DataBlockArg extends ASTNode implements IArg

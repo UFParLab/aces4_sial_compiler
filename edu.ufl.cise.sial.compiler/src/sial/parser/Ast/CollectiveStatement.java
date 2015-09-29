@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 94:  Statement ::= collective$ Ident AssignOp Expression
+ *<li>Rule 96:  Statement ::= collective$ Ident AssignOp Expression
  *</b>
  */
 public class CollectiveStatement extends ASTNode implements IStatement

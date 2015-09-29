@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 88:  Statement ::= create$ Ident
+ *<li>Rule 90:  Statement ::= create$ Ident
  *</b>
  */
 public class CreateStatement extends ASTNode implements IStatement

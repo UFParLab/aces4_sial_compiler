@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 90:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
+ *<li>Rule 92:  Statement ::= put$ DataBlock$LHSDataBlock AssignOp Expression$Expression
  *</b>
  */
 public class PutStatement extends ASTNode implements IStatement

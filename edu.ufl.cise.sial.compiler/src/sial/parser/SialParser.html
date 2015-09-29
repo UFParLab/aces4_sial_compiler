@@ -112,7 +112,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p>'(' scalar ')' <a href="#CastExpression">CastExpression</a></p>
+      <p>'(' index ')' <a href="#CastExpression">CastExpression</a></p>
     </td>
   </tr>
   <tr>
@@ -149,7 +149,7 @@
     <td width="50%">
     </td>
     <td width="40%">
-      <p><a href="#Ident">Ident</a> '[' <a href="#Indices">Indices</a> ']'</p>
+      <p><a href="#Ident">Ident</a> '[' <a href="#IndexCastIndices">IndexCastIndices</a> ']'</p>
     </td>
   </tr>
   <tr>
@@ -271,6 +271,35 @@
     <td width="40%">
       <p>%empty</p>
       <p><a href="#ImportProgList">ImportProgList</a> <a href="#ImportProg">ImportProg</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexCastIdent"><b>IndexCastIdent</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#IndexCastopt">IndexCastopt</a> <a href="#Ident">Ident</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexCastIndices"><b>IndexCastIndices</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p><a href="#IndexCastIdent">IndexCastIdent</a></p>
+      <p><a href="#IndexCastIndices">IndexCastIndices</a> ',' <a href="#IndexCastIdent">IndexCastIdent</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="IndexCastopt"><b>IndexCastopt</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p>'(' 'index' ')'</p>
     </td>
   </tr>
   <tr>
@@ -444,6 +473,16 @@
       <p><a href="#digit">digit</a></p>
       <p><a href="#specialNotDQ">specialNotDQ</a></p>
       <p><a href="#whiteChar">whiteChar</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%"><a name="PardoPragma"><b>PardoPragma</b></a>
+    </td>
+    <td width="50%">
+    </td>
+    <td width="40%">
+      <p>%empty</p>
+      <p><a href="#StringLiteral">StringLiteral</a></p>
     </td>
   </tr>
   <tr>

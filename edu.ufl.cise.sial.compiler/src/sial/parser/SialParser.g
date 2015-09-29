@@ -167,6 +167,9 @@
 		public  void setUsed(){used = true;}
 		public void setUsed(boolean val){used = val;}
 		public boolean isUsed(){return used;}
+		boolean allSimpleIndices = false;
+		public void setAllSimpleIndices(boolean val){allSimpleIndices= val;}
+		public boolean isAllSimpleIndices(){return allSimpleIndices;}
 		./
 		
 		ArrayKind$ArrayKind ::=
@@ -291,10 +294,12 @@
 	 
 	 
 	 
-	 Statement$PardoStatement ::= pardo$ Indices$StartIndices EOLs$ 
+	 Statement$PardoStatement ::= pardo$ Indices$StartIndices PardoPragma$Pragma EOLs$ 
 	 WhereClauseList 
 	 StatementList 
 	 endpardo$ Indices$EndIndices
+	 
+	 PardoPragma$PardoPragma ::= %empty | StringLiteral
 	 
 	 Statement$Section ::= section$ EOLs$  --the endsection is treated like a server barrier
 	 StatementList  -- all statements must be PardoStatements, but this will be verified during type checking
@@ -458,18 +463,45 @@ Statement$GPUGet ::= gpu_get$ Arg
 --	AssignOp$AssignOpMinus  ::=   '-='
 --	AssignOp$AssignOpStar   ::= '*='
 	
-	AssignOp$AssignOp ::= '='$op | '+='$op | '-='$op | '*='$op
---	ScalarOrBlockVar ::= Ident | DataBlock
+    AssignOp$AssignOp ::= '='$op | '+='$op | '-='$op | '*='$op
 
- --	DataBlock ::= Ident '('$ Indices ')'$
-    DataBlock$DataBlock ::= Ident '['$ Indices ']'$
+    DataBlock$DataBlock ::= Ident '['$ IndexCastIndices ']'$
 	Indices$$Ident ::= Ident | Indices ','$ Ident
+-- 
+-- 
+-- 
+   IndexCastIndices$$IndexCastIdent ::= IndexCastIdent | IndexCastIndices ','$ IndexCastIdent
+   IndexCastIdent ::= IndexCastopt Ident
+   IndexCastopt ::= %empty  | '('$ 'index'$ ')'$IndexCast
+-- 
+-- 
+--    Indices$$IndexCastIdent ::= IndexCastopt Ident | Indices ','$ IndexCastopt Ident
+--	IndexCastopt$IndexCastopt ::= %empty | '('$  'index'$indexcast ')'$
+--	IndexCast ::= '('$  index$ ')'$
+	
+--		 Modifiersopt$$Modifier ::= %Empty
+--                             | Modifiers
+	 
+							 
+--	Modifiers$$Modifier ::= Modifier
+--                          | Modifiers Modifier
+
+--    Modifier$Modifier ::=  'predefined'$modifier |  'contiguous'$modifier |  'sparse'$modifier
+
+
+	
+	
+	
+	
+	
+	
+
 	
     ContiguousDataBlock$ContiguousDataBlock ::= Ident '['$ ContiguousIndexRangeExprList ']'$
 	
 	RelOp$RelOp  ::= '<'$op | '>'$op | '<='$op | '>='$op  | '=='$op | '!='$op 
 	
-	RelationalExpression ::= Expression$UnaryExpressionLeft RelOp Expression$UnaryExpressionRight
+	RelationalExpression ::= Expression$CastExpressionLeft RelOp Expression$CastExpressionRight
 
 
     Expression ::= Term
@@ -554,6 +586,17 @@ Statement$GPUGet ::= gpu_get$ Arg
 	 ./
 	CastExpression$ScalarCastExpr ::= '('$  scalar$ ')'$ CastExpression
 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
+	  public EnumSet<EType> getTypeSet() { return typeSet;}
+	  public void addType(EType t){;
+         typeSet.add(t);
+	  }
+	  public boolean hasType(EType t){
+	  return typeSet.contains(t);
+	  }
+	 ./
+	 
+	 CastExpression$IndexCastExpr ::= '('$ index$ ')'$ CastExpression
+	 	/.  EnumSet<EType>  typeSet = EnumSet.noneOf(EType.class);;
 	  public EnumSet<EType> getTypeSet() { return typeSet;}
 	  public void addType(EType t){;
          typeSet.add(t);

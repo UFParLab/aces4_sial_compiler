@@ -13,7 +13,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 141:  ExponentExpression ::= ExponentExpression ** CastExpression
+ *<li>Rule 148:  ExponentExpression ::= ExponentExpression ** CastExpression
  *</b>
  */
 public class ExponentExpr extends ASTNode implements IExponentExpression

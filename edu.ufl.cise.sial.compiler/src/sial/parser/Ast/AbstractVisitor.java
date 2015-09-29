@@ -123,6 +123,9 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(PardoStatement n) { unimplementedVisitor("visit(PardoStatement)"); return true; }
     public void endVisit(PardoStatement n) { unimplementedVisitor("endVisit(PardoStatement)"); }
 
+    public boolean visit(PardoPragma n) { unimplementedVisitor("visit(PardoPragma)"); return true; }
+    public void endVisit(PardoPragma n) { unimplementedVisitor("endVisit(PardoPragma)"); }
+
     public boolean visit(Section n) { unimplementedVisitor("visit(Section)"); return true; }
     public void endVisit(Section n) { unimplementedVisitor("endVisit(Section)"); }
 
@@ -261,6 +264,15 @@ public abstract class AbstractVisitor implements Visitor
     public boolean visit(IdentList n) { unimplementedVisitor("visit(IdentList)"); return true; }
     public void endVisit(IdentList n) { unimplementedVisitor("endVisit(IdentList)"); }
 
+    public boolean visit(IndexCastIdentList n) { unimplementedVisitor("visit(IndexCastIdentList)"); return true; }
+    public void endVisit(IndexCastIdentList n) { unimplementedVisitor("endVisit(IndexCastIdentList)"); }
+
+    public boolean visit(IndexCastIdent n) { unimplementedVisitor("visit(IndexCastIdent)"); return true; }
+    public void endVisit(IndexCastIdent n) { unimplementedVisitor("endVisit(IndexCastIdent)"); }
+
+    public boolean visit(IndexCastopt n) { unimplementedVisitor("visit(IndexCastopt)"); return true; }
+    public void endVisit(IndexCastopt n) { unimplementedVisitor("endVisit(IndexCastopt)"); }
+
     public boolean visit(ContiguousDataBlock n) { unimplementedVisitor("visit(ContiguousDataBlock)"); return true; }
     public void endVisit(ContiguousDataBlock n) { unimplementedVisitor("endVisit(ContiguousDataBlock)"); }
 
@@ -293,6 +305,9 @@ public abstract class AbstractVisitor implements Visitor
 
     public boolean visit(ScalarCastExpr n) { unimplementedVisitor("visit(ScalarCastExpr)"); return true; }
     public void endVisit(ScalarCastExpr n) { unimplementedVisitor("endVisit(ScalarCastExpr)"); }
+
+    public boolean visit(IndexCastExpr n) { unimplementedVisitor("visit(IndexCastExpr)"); return true; }
+    public void endVisit(IndexCastExpr n) { unimplementedVisitor("endVisit(IndexCastExpr)"); }
 
     public boolean visit(NegatedUnaryExpr n) { unimplementedVisitor("visit(NegatedUnaryExpr)"); return true; }
     public void endVisit(NegatedUnaryExpr n) { unimplementedVisitor("endVisit(NegatedUnaryExpr)"); }
@@ -365,6 +380,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoStatement) return visit((DoStatement) n);
         else if (n instanceof DoStatementSubIndex) return visit((DoStatementSubIndex) n);
         else if (n instanceof PardoStatement) return visit((PardoStatement) n);
+        else if (n instanceof PardoPragma) return visit((PardoPragma) n);
         else if (n instanceof Section) return visit((Section) n);
         else if (n instanceof ExitStatement) return visit((ExitStatement) n);
         else if (n instanceof IfStatement) return visit((IfStatement) n);
@@ -411,6 +427,9 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AssignOp) return visit((AssignOp) n);
         else if (n instanceof DataBlock) return visit((DataBlock) n);
         else if (n instanceof IdentList) return visit((IdentList) n);
+        else if (n instanceof IndexCastIdentList) return visit((IndexCastIdentList) n);
+        else if (n instanceof IndexCastIdent) return visit((IndexCastIdent) n);
+        else if (n instanceof IndexCastopt) return visit((IndexCastopt) n);
         else if (n instanceof ContiguousDataBlock) return visit((ContiguousDataBlock) n);
         else if (n instanceof RelOp) return visit((RelOp) n);
         else if (n instanceof RelationalExpression) return visit((RelationalExpression) n);
@@ -422,6 +441,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ExponentExpr) return visit((ExponentExpr) n);
         else if (n instanceof IntCastExpr) return visit((IntCastExpr) n);
         else if (n instanceof ScalarCastExpr) return visit((ScalarCastExpr) n);
+        else if (n instanceof IndexCastExpr) return visit((IndexCastExpr) n);
         else if (n instanceof NegatedUnaryExpr) return visit((NegatedUnaryExpr) n);
         else if (n instanceof SqrtUnaryExpr) return visit((SqrtUnaryExpr) n);
         else if (n instanceof ParenExpr) return visit((ParenExpr) n);
@@ -472,6 +492,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof DoStatement) endVisit((DoStatement) n);
         else if (n instanceof DoStatementSubIndex) endVisit((DoStatementSubIndex) n);
         else if (n instanceof PardoStatement) endVisit((PardoStatement) n);
+        else if (n instanceof PardoPragma) endVisit((PardoPragma) n);
         else if (n instanceof Section) endVisit((Section) n);
         else if (n instanceof ExitStatement) endVisit((ExitStatement) n);
         else if (n instanceof IfStatement) endVisit((IfStatement) n);
@@ -518,6 +539,9 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof AssignOp) endVisit((AssignOp) n);
         else if (n instanceof DataBlock) endVisit((DataBlock) n);
         else if (n instanceof IdentList) endVisit((IdentList) n);
+        else if (n instanceof IndexCastIdentList) endVisit((IndexCastIdentList) n);
+        else if (n instanceof IndexCastIdent) endVisit((IndexCastIdent) n);
+        else if (n instanceof IndexCastopt) endVisit((IndexCastopt) n);
         else if (n instanceof ContiguousDataBlock) endVisit((ContiguousDataBlock) n);
         else if (n instanceof RelOp) endVisit((RelOp) n);
         else if (n instanceof RelationalExpression) endVisit((RelationalExpression) n);
@@ -529,6 +553,7 @@ public abstract class AbstractVisitor implements Visitor
         else if (n instanceof ExponentExpr) endVisit((ExponentExpr) n);
         else if (n instanceof IntCastExpr) endVisit((IntCastExpr) n);
         else if (n instanceof ScalarCastExpr) endVisit((ScalarCastExpr) n);
+        else if (n instanceof IndexCastExpr) endVisit((IndexCastExpr) n);
         else if (n instanceof NegatedUnaryExpr) endVisit((NegatedUnaryExpr) n);
         else if (n instanceof SqrtUnaryExpr) endVisit((SqrtUnaryExpr) n);
         else if (n instanceof ParenExpr) endVisit((ParenExpr) n);

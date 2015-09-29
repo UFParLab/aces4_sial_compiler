@@ -12,7 +12,7 @@ import org.eclipse.imp.parser.IParser;
 
 /**
  *<b>
- *<li>Rule 98:  Arg ::= ContiguousDataBlock
+ *<li>Rule 100:  Arg ::= ContiguousDataBlock
  *</b>
  */
 public class ContiguousDataBlockArg extends ASTNode implements IArg

@@ -116,6 +116,9 @@ public class ArrayDec extends ASTNode implements IArrayDec
 	public  void setUsed(){used = true;}
 	public void setUsed(boolean val){used = val;}
 	public boolean isUsed(){return used;}
+	boolean allSimpleIndices = false;
+	public void setAllSimpleIndices(boolean val){allSimpleIndices= val;}
+	public boolean isAllSimpleIndices(){return allSimpleIndices;}
 	}
 
 
