@@ -42,6 +42,7 @@ public class TypeConstantMap implements SipConstants, SialParsersym{
 		typeConstants.put("scope_extent", attr_scope_extent);
 		typeConstants.put("predefined", attr_predefined);
 		typeConstants.put("persistent", attr_persistent );
+		typeConstants.put("sparse",attr_sparse);
     }
     
     static int getTypeConstant(String name){
