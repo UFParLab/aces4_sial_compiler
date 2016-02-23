@@ -21,6 +21,7 @@ import java.util.Set;
 import lpg.runtime.IAst;
 import lpg.runtime.IPrsStream;
 import sial.code_gen.CodeGenVisitor;
+import sial.code_gen.DecVisitor;
 import sial.code_gen.SipTable;
 import sial.io.SIADataOutput;
 import sial.io.SIADataOutputStream;
@@ -134,7 +135,9 @@ public class SialCompiler {
 	// Returns: SipTable containing the generated code
 	SipTable generate_code(Sial ast) {
 		Timer codeGenTimer = new Timer();
-		CodeGenVisitor visitor = new CodeGenVisitor(options);
+		DecVisitor decVisitor = new DecVisitor(options);
+		ast.accept(decVisitor);
+		CodeGenVisitor visitor = new CodeGenVisitor(decVisitor.getSipTable(), options);
 		ast.accept(visitor);
 		codeGenTimer.printElapsed(options.isVERBOSE(), "codeGen time");
 		return visitor.getSipTable();

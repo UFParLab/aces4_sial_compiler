@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import sial.io.SIADataInput;
 import sial.io.SIADataOutput;
+import sial.parser.SialParsersym;
 import sial.parser.Ast.ArrayDec;
 import sial.parser.Ast.IDec;
 import sial.parser.Ast.ScalarDec;
@@ -24,7 +25,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 
-public class ArrayTable implements SipConstants {
+public class ArrayTable implements SipConstants, SialParsersym {
 
 	static public class Entry {
 		int rank; 
@@ -167,11 +168,88 @@ public class ArrayTable implements SipConstants {
 	int nvars; // number of entries in the array table
 	ArrayList<Entry> entries;  //the array_table itself
 	ArrayList<String> symbols; //used only to read .siox file
-
-
-	public ArrayTable() {
+	
+	ArrayList<Entry> distributed;
+	ArrayList<IDec>  distDec;
+	ArrayList<Entry> local;
+	ArrayList<IDec>  localDec;
+	ArrayList<Entry> temp;
+	ArrayList<IDec>  tempDec;
+	ArrayList<Entry> contigLocal;
+	ArrayList<IDec>  contigLocalDec;
+	ArrayList<Entry> sialStatic;
+	ArrayList<IDec>  sialStaticDec;
+	ArrayList<Entry> scalar;
+	ArrayList<IDec>  scalarDec;
+	
+	
+	/** Constructs the combined array table and bimap from declaration to slot number from the structures for individual array types.
+	 * All declaration should be visited prior to calling this method.  The only additional entries will be scalar literals.
+	 * 
+	 */
+	void createArrayTable(){		
 		entries = new ArrayList<Entry>();
 		arrayBiMap = HashBiMap.create();
+		//add distributed and served arrays
+		entries.addAll(distributed);
+		int begin = 0;
+		int end = entries.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(distDec.get(i-begin), i);
+		}
+		//add local arrays
+		entries.addAll(local);
+		begin = end;
+		end = begin + local.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(localDec.get(i-begin), i);
+		}
+		//add local contiguous arrays
+		entries.addAll(contigLocal);
+		begin = end;
+		end = begin + contigLocal.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(contigLocalDec.get(i-begin), i);
+		}		
+		//add temp arrays
+		entries.addAll(temp);
+		begin = end;
+		end = begin + temp.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(tempDec.get(i-begin), i);
+		}	
+		//add static arrays
+		entries.addAll(sialStatic);
+		begin = end;
+		end = begin + sialStatic.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(sialStaticDec.get(i-begin), i);
+		}
+		//add scalars
+		entries.addAll(scalar);
+		begin = end;
+		end = begin + scalar.size();
+		for (int i = begin; i < end; ++i){
+			arrayBiMap.put(scalarDec.get(i-begin), i);
+		}
+		
+		//initialize number of variables
+		nvars = entries.size();
+	}
+
+	public ArrayTable() {
+		distributed = new ArrayList<Entry>();
+		distDec = new ArrayList<IDec>();
+		local = new ArrayList<Entry>();
+		localDec = new ArrayList<IDec>();
+		temp = new ArrayList<Entry>();
+		tempDec = new ArrayList<IDec>();
+		contigLocal = new ArrayList<Entry>();
+		contigLocalDec = new ArrayList<IDec>();
+		sialStatic = new ArrayList<Entry>();
+		sialStaticDec = new ArrayList<IDec>();
+		scalar = new ArrayList<Entry>();
+		scalarDec = new ArrayList<IDec>();
 	}
 
 	
@@ -194,16 +272,52 @@ public class ArrayTable implements SipConstants {
 	}
 
 
-	int addScalarEntry(IDec dec, int attributes, int scalarIndex){
+	void addScalarEntry(IDec dec, int attributes, int scalarIndex){
 		assert ((attributes & scalar_value_t) == scalar_value_t): "Illegal attribute for scalar entry in array table";
-		return addEntry(dec, 0, attributes, null, scalarIndex);
+		Entry entry = new Entry(max_rank, 0, attributes, null, scalarIndex);
+		scalar.add(entry);
+		scalarDec.add(dec);
+
 	}
 	
-	int addArrayEntry(IDec dec, int arraynindex, int type, int[] indarray, int priority) {
-		return addEntry(dec, arraynindex, type, indarray, priority);
+	int addScalarLiteral(IDec dec, int attributes, int scalarIndex){
+		assert ((attributes & scalar_value_t) == scalar_value_t): "Illegal attribute for scalar entry in array table";
+		return addScalarEntry(dec, 0, attributes, null, scalarIndex);		
 	}
 
-	int addEntry(IDec dec, int rank, int array_type, int[] indarray, int scalar_table_slot_or_server_priority) {
+
+	void addDistributedOrServedArrayEntry(ArrayDec dec, int rank, int attributes, int[] indarray, int priority) {
+		Entry entry = new Entry(max_rank, rank, attributes, indarray, priority);
+			distributed.add(entry);
+			distDec.add(dec);
+		}
+
+	void addTempArrayEntry(ArrayDec dec, int rank, int attributes, int[] indarray, int priority) {
+		Entry entry = new Entry(max_rank, rank, attributes, indarray, priority);
+			temp.add(entry);
+			tempDec.add(dec);
+		}
+
+	void addLocalArrayEntry(ArrayDec dec, int rank, int attributes, int[] indarray, int priority) {
+		Entry entry = new Entry(max_rank, rank, attributes, indarray, priority);
+			local.add(entry);
+			localDec.add(dec);
+		}
+	
+	void addContigLocalArrayEntry(ArrayDec dec, int rank, int attributes, int[] indarray, int priority) {
+		Entry entry = new Entry(max_rank, rank, attributes, indarray, priority);
+			contigLocal.add(entry);
+			contigLocalDec.add(dec);
+		}
+	
+	
+	void addStaticArrayEntry(ArrayDec dec, int rank, int attributes, int[] indarray, int priority) {
+		Entry entry = new Entry(max_rank, rank, attributes, indarray, priority);
+		sialStatic.add(entry);
+		sialStaticDec.add(dec);
+	}
+
+	int addScalarEntry(IDec dec, int rank, int array_type, int[] indarray, int scalar_table_slot_or_server_priority) {
 		int slot = nvars++;
 		if (dec != null) arrayBiMap.put(dec, slot);
 		int max_rank = TypeConstantMap.max_rank;
@@ -224,8 +338,13 @@ public class ArrayTable implements SipConstants {
 	}
 	
 
-
+/** Precondition:  createArrayTable has been called to create combined table.
+ * 
+ * @param output
+ * @throws IOException
+ */
 	public void write(SIADataOutput output) throws IOException {
+		assert (entries != null): "Called write  array table before combined table has been created";
 		int size = entries.size();
 		assert (size == nvars): "ArrayTable entries.size= "+size + " nvars=" + nvars;
 		output.writeInt(size);

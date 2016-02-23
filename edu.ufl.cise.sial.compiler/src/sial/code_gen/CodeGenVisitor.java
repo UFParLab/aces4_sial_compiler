@@ -88,6 +88,11 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		this.sipTable = sipTable;
 		init(sipTable);
 	}
+	
+	public CodeGenVisitor(SipTable sipTable, CommandLine options) {
+		this.sipTable = sipTable;
+		init(sipTable);
+	}
 
 	public CodeGenVisitor(CommandLine options) {
 		sipTable = new SipTable();
@@ -103,7 +108,6 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		specialInstructionTable = sipTable.getSpecialInstructionTable();
 		stringLiteralTable = sipTable.getStringLiteralTable();
 		intTable = sipTable.getIntTable();
-		visitedAstCache = new HashSet<Sial>();
 		visitedAstCache = new HashSet<Sial>();
 		operandStack = new LinkedList<Integer>();
 		indexArrayStack = new LinkedList<int[]>();
@@ -192,70 +196,83 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	public void endVisit(DecList n) { /* nop */
 	}
 
+	//handled in DecVisitor
 	@Override
-	public boolean visit(ScalarDec n) {
-		int attribute = scalar_value_t;
-		attribute = attribute | ASTUtils.getModifierAttributes(n); // may be
-																	// predefined
-		ASTNodeToken initialValueToken = n.getScalarInitializationOpt().getDOUBLELIT();
-		int scalarTableSlot;
-		double value = 0.0; // default initial value is 0.0
-		if (initialValueToken != null) {
-			value = ASTUtils.getDoubleVal(initialValueToken);
-		}
-		scalarTableSlot = scalarTable.addScalar(n, value);
-		arrayTable.addScalarEntry(n, attribute, scalarTableSlot);
+	public boolean visit(ScalarDec n){
 		return false;
 	}
+//	@Override
+//	public boolean visit(ScalarDec n) {
+//		int attribute = scalar_value_t;
+//		attribute = attribute | ASTUtils.getModifierAttributes(n); // may be
+//																	// predefined
+//		ASTNodeToken initialValueToken = n.getScalarInitializationOpt().getDOUBLELIT();
+//		int scalarTableSlot;
+//		double value = 0.0; // default initial value is 0.0
+//		if (initialValueToken != null) {
+//			value = ASTUtils.getDoubleVal(initialValueToken);
+//		}
+//		scalarTableSlot = scalarTable.addScalar(n, value);
+//		arrayTable.addScalarEntry(n, attribute, scalarTableSlot);
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(ScalarDec n) { /* nop */
 	}
 
 	@Override
-	public boolean visit(IntDec n) {
-		int attribute = int_value_t;
-		attribute = attribute | ASTUtils.getModifierAttributes(n); // may be
-																	// predefined
-		ASTNodeToken initialValueToken = n.getIntInitializationOpt().getINTLIT();
-		int value = 0; // default initial value is zero
-		if (initialValueToken != null) {
-			value = ASTUtils.getIntLitVal(initialValueToken);
-		}
-		intTable.addInteger(n, value);
+	public boolean visit(IntDec n){
 		return false;
 	}
+//	@Override
+//	public boolean visit(IntDec n) {
+//		int attribute = int_value_t;
+//		attribute = attribute | ASTUtils.getModifierAttributes(n); // may be
+//																	// predefined
+//		ASTNodeToken initialValueToken = n.getIntInitializationOpt().getINTLIT();
+//		int value = 0; // default initial value is zero
+//		if (initialValueToken != null) {
+//			value = ASTUtils.getIntLitVal(initialValueToken);
+//		}
+//		intTable.addInteger(n, value);
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(IntDec n) { /* nop */
 	}
 
 	@Override
-	public boolean visit(ArrayDec n) {
-		if (n.isUsed()) {
-			int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
-			attribute = attribute | ASTUtils.getModifierAttributes(n);
-			int priority = 0;
-			if (n.getTypeName().toLowerCase() == "distributed")
-				priority = SipConstants.distributed_array_priority;
-			else if (n.getTypeName().toLowerCase() == "served")
-				priority = SipConstants.served_array_priority;
-			else if (n.getTypeName().toLowerCase() == "local" && n.isAllSimpleIndices())
-				priority = SipConstants.local_all_indices_simple;
-			DimensionList dimensions = n.getDimensionList();
-			int rank = dimensions.size();
-			int[] indarray = new int[rank];
-			for (int i = 0; i != rank; i++) {
-				IDec indexIDec = dimensions.getDimensionAt(i).getDec();						
-				indarray[i] = indexTable.getIndex(indexIDec);
-			}			
-			arrayTable.addArrayEntry(n, rank, attribute, indarray, priority);
-		} else {
-			warn("Array " + n + " at line " + lineno(n)
-					+ " is never used.  It is not included in the array table.");
-		}
+	public boolean visit(ArrayDec n){
 		return false;
 	}
+//	@Override
+//	public boolean visit(ArrayDec n) {
+//		if (n.isUsed()) {
+//			int attribute = TypeConstantMap.getTypeConstant(n.getTypeName());
+//			attribute = attribute | ASTUtils.getModifierAttributes(n);
+//			int priority = 0;
+//			if (n.getTypeName().toLowerCase() == "distributed")
+//				priority = SipConstants.distributed_array_priority;
+//			else if (n.getTypeName().toLowerCase() == "served")
+//				priority = SipConstants.served_array_priority;
+//			else if (n.getTypeName().toLowerCase() == "local" && n.isAllSimpleIndices())
+//				priority = SipConstants.local_all_indices_simple;
+//			DimensionList dimensions = n.getDimensionList();
+//			int rank = dimensions.size();
+//			int[] indarray = new int[rank];
+//			for (int i = 0; i != rank; i++) {
+//				IDec indexIDec = dimensions.getDimensionAt(i).getDec();						
+//				indarray[i] = indexTable.getIndex(indexIDec);
+//			}			
+//			arrayTable.addArrayEntry(n, rank, attribute, indarray, priority);
+//		} else {
+//			warn("Array " + n + " at line " + lineno(n)
+//					+ " is never used.  It is not included in the array table.");
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(ArrayDec n) { /* nop */
@@ -283,36 +300,41 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	public void endVisit(DimensionList n) {
 		/* nop */
 	}
-
+	
 	@Override
 	public boolean visit(IndexDec n) {
-		int indexTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
-		int bseg, eseg;
-		boolean bsegIsSymbolic = false;
-		boolean esegIsSymbolic = false;
-		IRangeVal range1 = n.getRange().getRangeValStart();
-		if (range1 instanceof IdentRangeVal) { // this must be a predefined int,
-												// already checked during type
-												// checking
-			IntDec dec1 = (IntDec) ((IdentRangeVal) range1).getDec();
-			bseg = intTable.getIntIndex(dec1);
-			bsegIsSymbolic = true;
-		} else {
-			bseg = getIntVal(range1);
-		}
-		IRangeVal range2 = n.getRange().getRangeValEnd();
-		if (range2 instanceof IdentRangeVal) { // this must be a predefined int,
-												// already checked during type
-												// checking
-			IntDec dec2 = (IntDec) ((IdentRangeVal) range2).getDec();
-			eseg = intTable.getIntIndex(dec2);
-			esegIsSymbolic = true;
-		} else {
-			eseg = getIntVal(range2);
-		}
-		indexTable.addEntry(n, bseg, bsegIsSymbolic, eseg, esegIsSymbolic, indexTypeNum);
 		return false;
 	}
+
+//	@Override
+//	public boolean visit(IndexDec n) {
+//		int indexTypeNum = TypeConstantMap.getTypeConstant(n.getTypeName());
+//		int bseg, eseg;
+//		boolean bsegIsSymbolic = false;
+//		boolean esegIsSymbolic = false;
+//		IRangeVal range1 = n.getRange().getRangeValStart();
+//		if (range1 instanceof IdentRangeVal) { // this must be a predefined int,
+//												// already checked during type
+//												// checking
+//			IntDec dec1 = (IntDec) ((IdentRangeVal) range1).getDec();
+//			bseg = intTable.getIntIndex(dec1);
+//			bsegIsSymbolic = true;
+//		} else {
+//			bseg = getIntVal(range1);
+//		}
+//		IRangeVal range2 = n.getRange().getRangeValEnd();
+//		if (range2 instanceof IdentRangeVal) { // this must be a predefined int,
+//												// already checked during type
+//												// checking
+//			IntDec dec2 = (IntDec) ((IdentRangeVal) range2).getDec();
+//			eseg = intTable.getIntIndex(dec2);
+//			esegIsSymbolic = true;
+//		} else {
+//			eseg = getIntVal(range2);
+//		}
+//		indexTable.addEntry(n, bseg, bsegIsSymbolic, eseg, esegIsSymbolic, indexTypeNum);
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(IndexDec n) { /* nop */
@@ -326,15 +348,20 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	@Override
 	public void endVisit(IndexKind n) { /* nop */
 	}
-
+	
 	@Override
 	public boolean visit(SubIndexDec n) {
-		int indexTypeNum = TypeConstantMap.getTypeConstant("subindex");
-		IndexDec parentDec = (IndexDec) n.getParentIdent().getDec();
-		int parentIndex = indexTable.getIndex(parentDec);
-		indexTable.addEntry(n, parentIndex, false /* unused */, unused, false /* unused */, indexTypeNum);
 		return false;
-	}
+	}	
+
+//	@Override
+//	public boolean visit(SubIndexDec n) {
+//		int indexTypeNum = TypeConstantMap.getTypeConstant("subindex");
+//		IndexDec parentDec = (IndexDec) n.getParentIdent().getDec();
+//		int parentIndex = indexTable.getIndex(parentDec);
+//		indexTable.addEntry(n, parentIndex, false /* unused */, unused, false /* unused */, indexTypeNum);
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(SubIndexDec n) {/* nop */
@@ -397,14 +424,18 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 	}
 
 	@Override
-	public boolean visit(SpecialDec n) {
-		String name = n.getIdent().getName();
-		// append '@' followed by the signature string to the end of the name
-		String sig = n.getNumArgs() == 0 ? "" : n.getSignature().getName();
-		int index = specialInstructionTable.addEntry(name + '@' + sig);
-		n.setAddr(index); // store index into special instruction table
+	public boolean visit(SpecialDec n){
 		return false;
 	}
+//	@Override
+//	public boolean visit(SpecialDec n) {
+//		String name = n.getIdent().getName();
+//		// append '@' followed by the signature string to the end of the name
+//		String sig = n.getNumArgs() == 0 ? "" : n.getSignature().getName();
+//		int index = specialInstructionTable.addEntry(name + '@' + sig);
+//		n.setAddr(index); // store index into special instruction table
+//		return false;
+//	}
 
 	@Override
 	public void endVisit(SpecialDec n) { /* nop */
@@ -1005,7 +1036,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		int arrayTableSlot;
 		if (scalarTable.nScalars > nScalars) {
 			// this is a new value, add to array table
-			arrayTableSlot = arrayTable.addScalarEntry(null, scalar_value_t, scalarTableSlot);
+			arrayTableSlot = arrayTable.addScalarLiteral(null, scalar_value_t, scalarTableSlot);
 		} else
 			arrayTableSlot = arrayTable.getIndexOfScalarEntry(scalarTableSlot);
 		opTable.addOptableEntry(push_block_selector_op, 0, arrayTableSlot, unused, defaultUnusedInd, lineno(n));
@@ -2158,7 +2189,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		int arrayTableSlot;
 		if (scalarTable.nScalars > nScalars) {
 			// this is a new value, add to array table
-			arrayTableSlot = arrayTable.addScalarEntry(null, scalar_value_t, scalarTableSlot);
+			arrayTableSlot = arrayTable.addScalarLiteral(null, scalar_value_t, scalarTableSlot);
 		} else
 			arrayTableSlot = arrayTable.getIndexOfScalarEntry(scalarTableSlot);
 		opTable.addOptableEntry(scalar_load_value_op, arrayTableSlot, unused, unused, defaultUnusedInd, lineno(n));
