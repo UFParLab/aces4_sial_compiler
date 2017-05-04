@@ -384,6 +384,18 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		return false;
 	}
 	
+	/** If the given declaration is for an array, it returns its kind, otherwise, it returns -1
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public static int get_kind(IDec n){
+		if (n instanceof ArrayDec){
+			return ((ArrayDec)n).getArrayKind().getakind().getKind();
+		}
+		return -1;
+	}
+	
 	public static boolean isLocal(IDec n){
 		return  (n instanceof ArrayDec) && ((ArrayDec)n).getArrayKind().getakind().getKind() == TK_local;
 	}
@@ -426,6 +438,24 @@ public class ASTUtils implements SialParsersym, SipConstants{
     	return false;
     }
     
+    public static boolean isDistributed(IDec n){
+    	List modifiers = null;
+    	if (n instanceof ScalarDec)
+    	    modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	else if (n instanceof IndexDec)
+    		modifiers = ((IndexDec) n).getModifiersopt().getList();
+    	else if (n instanceof IntDec)
+    		modifiers = ((IntDec) n).getModifiersopt().getList();
+    	else if (n instanceof ArrayDec)
+    		modifiers = ((ArrayDec) n).getModifiersopt().getList();
+    	else if (n instanceof ScalarDec)
+    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
+    	if (modifiers== null || modifiers.isEmpty()) return false;
+    	for( Object m: modifiers){
+    		if (((Modifier) m).getmodifier().getKind() == TK_contiguous) return true; 
+    	}
+    	return false;
+    }
 
     
     public static int getModifierAttributes(IDec n){
@@ -438,8 +468,6 @@ public class ASTUtils implements SialParsersym, SipConstants{
     		modifiers = ((IntDec) n).getModifiersopt().getList();
     	else if (n instanceof ArrayDec)
     		modifiers = ((ArrayDec) n).getModifiersopt().getList();
-    	else if (n instanceof ScalarDec)
-    		modifiers = ((ScalarDec) n).getModifiersopt().getList();
     	if (modifiers== null || modifiers.isEmpty()) return 0;
     	int attributes = 0;
     	for( Object modifier: modifiers){
