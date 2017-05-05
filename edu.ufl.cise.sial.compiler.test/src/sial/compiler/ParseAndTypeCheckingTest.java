@@ -340,4 +340,9 @@ public class ParseAndTypeCheckingTest {
 		runTypeCheckTest("pardo_with_pragma",0);
 	}
 	
+	@Test
+	public void collectiveSumWithStatic() throws IOException{
+		runTypeCheckTest("collectiveSumWithStatic",0);
+	}
+	
 }

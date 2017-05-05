@@ -1021,6 +1021,21 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		return null;
 	}
+	
+	//all indices have consistent declarations
+	//where consistent means the same type and ranges are statically the same
+	private void checkCompatibleStatics(ASTNode n,  ArrayDec  lhs, ArrayDec rhs){
+		DimensionList lhsList = lhs.getDimensionList();
+		DimensionList rhsList = rhs.getDimensionList();
+		check(lhsList.size() == rhsList.size(), n, "static arrays have incompatible declarations");
+		for (int i = 0; i < lhsList.size() ; ++i){
+			IndexDec lhsIndexDec =  (IndexDec)  lhsList.getDimensionAt(i).getDec();
+			IndexDec rhsIndexDec =  (IndexDec)  rhsList.getDimensionAt(i).getDec();
+			check( lhsIndexDec.getIndexKind() == rhsIndexDec.getIndexKind()   
+					&&   lhsIndexDec.getRange().equals(rhsIndexDec.getRange()), n, "static array have incompatible definitions");
+		}
+		
+	}
 
 	private void checkCompatibleBlocks(ASTNode n, DataBlock lhs, DataBlock rhs) {
 		// check that indices on both sides match exactly, or that there is an
@@ -1178,14 +1193,37 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		return true;
 	}
 
+//	@Override
+//	public void endVisit(CollectiveStatement n) {
+//		IDec lhsDec = n.getIdent().getDec();
+//		check(lhsDec instanceof ScalarDec, n, "Collective requires scalar arguments");
+//		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
+//		check(t.contains(SCALAR), n, "rhs of collective sum must be scalar expression " + n);
+//		int op = n.getAssignOp().getop().getKind();
+//		check(op == TK_PLUS_ASSIGN, n, "Collective operator must be +=");
+//	}
+	
+	// Collective sum allows static arguments and static arrays
 	@Override
 	public void endVisit(CollectiveStatement n) {
-		IDec lhsDec = n.getIdent().getDec();
-		check(lhsDec instanceof ScalarDec, n, "Collective requires scalar arguments");
-		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
-		check(t.contains(SCALAR), n, "rhs of collective sum must be scalar expression " + n);
 		int op = n.getAssignOp().getop().getKind();
 		check(op == TK_PLUS_ASSIGN, n, "Collective operator must be +=");
+		IDec lhsDec = n.getIdent().getDec();
+		if (lhsDec instanceof ScalarDec) {
+			EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
+			check(t.contains(SCALAR), n, "rhs of collective sum must match (scalar ) lhs " + n);
+			return;
+		}
+		if (ASTUtils.isStatic(lhsDec)) {
+			IExpression e = n.getExpression();
+			check(e instanceof IdentExpr, n,
+					"rhs of collective sum must be a scalar or static array name without a block selector");
+			IDec rhsDec = ((IdentExpr) e).getDec();
+			check(ASTUtils.isStatic(rhsDec), n, "rhs of collective sum must match (static) rhs" + n);
+			checkCompatibleStatics(n, (ArrayDec) lhsDec, (ArrayDec) rhsDec);
+			return;
+		}
+		check(false, n, "left side of collective sum statement must be scalar or static array");
 	}
 
 	@Override
