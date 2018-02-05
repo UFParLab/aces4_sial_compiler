@@ -84,6 +84,7 @@ public class OpTable {
 		@Override
 		public String toString(){
 			StringBuilder sb = new StringBuilder();
+//			sb.append(Opcode.toString(opcode));sb.append(':');
 			sb.append(opcode); sb.append(',');//1  
 			sb.append(arg0); sb.append(',');//2
 			sb.append(arg1); sb.append(',');//3
@@ -102,7 +103,7 @@ public class OpTable {
 	
   	 HashBiMap<String,Integer> procBiMap;  //maps procedure names optable index
    	 ArrayList<Entry> entries;
-   	 int nOps;
+   	 private int nOps;
    	 
 	OpTable(){
 		procBiMap = HashBiMap.create();
@@ -133,6 +134,7 @@ public class OpTable {
 		sb.append(nOps);
 		sb.append('\n');
 		for (int i = 0; i != nOps; i++) {
+			sb.append(i).append(": ");
 			sb.append(entries.get(i).toString());
 			sb.append('\n');
 		}
@@ -184,8 +186,16 @@ public class OpTable {
     }
 	
 	
-	public Opcode lastOpcode(){
-		return Opcode.class.getEnumConstants()[entries.get(nOps-1).opcode];
+//	public Opcode lastOpcode(){
+//		return Opcode.class.getEnumConstants()[entries.get(nOps-1).opcode - Opcode.offset];
+//	}
+	
+	public int getArg0(int pc){
+		return entries.get(pc).arg0;
+	}
+	
+	public int getArg1(int pc){
+		return entries.get(pc).arg1;
 	}
 	
 	public int lastArg0(){
@@ -209,5 +219,25 @@ public class OpTable {
 	public void setFirstOpInitialized(boolean firstOpInitialized) {
 		this.firstOpInitialized = firstOpInitialized;
 	}
+	
+	public int getOpcode(int pc){
+		return entries.get(pc).opcode;
+	}
+	
+	public int getLine(int pc){
+		return entries.get(pc).lineno;
+	}
+
+
+	public int getnOps() {
+		return nOps;
+	}
+	
+	public String optableEntrytoString(int pc){
+		return entries.get(pc).toString();
+	}
+
+
+
 
 }

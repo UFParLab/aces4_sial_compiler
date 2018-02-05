@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="edu.ufl.cise.sial.compiler">
+    <property environment="env"/>
+    <property name="edu.ufl.cise.sial.compiler.test.location" value="../edu.ufl.cise.sial.compiler.test"/>
+    <property name="edu.ufl.cise.sial.compiler.util.location" value="../edu.ufl.cise.sial.compiler.util"/>
+    <property name="edu.ufl.cise.sial.ide.location" value="../edu.ufl.cise.sial.ide"/>
+    <property name="ECLIPSE_HOME" value="../../../../../eclipse/eclipse-parallel-juno-SR1-win32-x86_64/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="edu.ufl.cise.sial.compiler.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/guava-13.0.1.jar"/>
+        <pathelement location="lib/lpg-java-runtime-bin-2.0.18.jar"/>
+    </path>
+	<!-- this target is only run if the 'version' property is undefined -->
+	<target name="update-version-string"  unless="version">
+	        <!-- get a new version string using git describe if possible -->
+	        <echo message="Updating version string..."/>
+	        <exec executable="git" outputproperty="version"
+	                failifexecutionfails="false">
+	                <arg value="describe"/>
+	        </exec>
+	        <antcall target="-store-version-string"/>
+	        <!-- ensure version is defined even if git was not available -->
+	        <property file="${res.dir}/Version.properties"/>
+	</target>
+	<target name="mytesttarget">
+		<echo message="this is mytesttarget"/>
+		</target> 
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+                <exclude name="sial/parser/context/SymbolTable_backup.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <exclude name="sial/parser/context/SymbolTable_backup.java"/>
+            <classpath refid="edu.ufl.cise.sial.compiler.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.compiler.test.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.compiler.test.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.compiler.util.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.compiler.util.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.ide.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${edu.ufl.cise.sial.ide.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="SialCompiler">
+        <java classname="sial.compiler.SialCompiler" failonerror="true" fork="yes">
+            <classpath refid="edu.ufl.cise.sial.compiler.classpath"/>
+        </java>
+    </target>
+
+</project>
