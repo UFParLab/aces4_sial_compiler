@@ -2,8 +2,11 @@ package sial.code_gen;
 
 
 
+
 //opcodes
 public enum Opcode {
+	
+	
 
 	
 //sequential control
@@ -21,7 +24,7 @@ public enum Opcode {
 			"execute indicated user provided super instruction.  The argumnents are on the block selector stack"),	
 	
 	//sequential loops
-	do_op("optable slot of enddo","number of indices = 1","","first element is slot of loop index variable","serial do loop"),	
+	do_op("optable slot of enddo","number of indices = 1","number of where clauses","first element is slot of loop index variable","serial do loop"),	
 	enddo_op("","number of indices","","first element is slot of loop index variable","marks end of serial do loop"),		
 	dosubindex_op("optable slot of enddosubindex", "parent index","","first element is slot of loop index variable","serial loop over subindex"),	
 	enddosubindex_op("","parent","","first element is slot of loop index variable","marks end of loop over subindex variable"),
@@ -195,7 +198,7 @@ public enum Opcode {
 		this.comment = comment;
 	}
 	
-	final int offset = 100;
+	public static final int offset = 100;
 	int opcodeValue = this.ordinal()+ offset;
 	
 	public int getOpcodeValue(){ return opcodeValue;}
@@ -236,6 +239,11 @@ public enum Opcode {
 		return name().substring(0,name().lastIndexOf("_op"));
 	}
 		
+//       public static String toString(int opcode){
+//              int enumVal = opcode - offset;
+//	              Opcode op = Opcode.values()[enumVal];
+//	             return op.toString();
+//	      }
 
 	public static String generateLatexTable(){
 		StringBuilder sb = new StringBuilder();

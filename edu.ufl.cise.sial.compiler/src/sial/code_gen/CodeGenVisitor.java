@@ -130,7 +130,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		visitedAstCache.add(n);
 		this.ast = n;
 		// add initial instruction: jump to optable instruction 1
-		if (opTable.nOps == 0) { // this program is the main program being
+		if (opTable.getnOps() == 0) { // this program is the main program being
 									// compiled.
 									// insert the jump instruction to the value
 									// needed for an empty program.
@@ -410,7 +410,7 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 			warn("Procedure " + n.getName() + "at line " + lineno(n) + " is never called.  No code generated.");
 			return false; // if the proc is never called, don't generate code
 		} // for it.
-		int addr = opTable.nOps;
+		int addr = opTable.getnOps();
 		n.setAddr(addr);
 		return true;
 	}
@@ -551,7 +551,8 @@ public class CodeGenVisitor extends AbstractVisitor implements SialParsersym, Si
 		ind[0] = operandStack.pop(); // index of loop variable overwrites the
 										// first element of the ind array, so
 										// need a copy.
-		int do_instruction = opTable.addOptableEntry(do_op, toBackpatch, 1, unused, ind, lineno(n)); // 1
+		int num_where_clauses = n.getWhereClauseList()!=null? n.getWhereClauseList().getChildren().size() : 0;
+		int do_instruction = opTable.addOptableEntry(do_op, toBackpatch, 1, num_where_clauses, ind, lineno(n)); // 1
 																										// is
 																										// number
 																										// of
