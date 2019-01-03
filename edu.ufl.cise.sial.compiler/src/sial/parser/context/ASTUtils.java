@@ -333,7 +333,14 @@ public class ASTUtils implements SialParsersym, SipConstants{
 		return builder.toString();
 	}
 
-
+    /** returns true if given IDec is for a simple index */
+	public static boolean isSimpleIndex(IDec n){
+		if (n  instanceof IndexDec){
+			IndexDec dec = (IndexDec)n;
+			if (dec.getIndexKind().getIToken().getKind() == TK_index) return true;
+		}
+		return false;
+	}
 
     
     /** returns true if the given IDec is an array, and is static or contiguous */

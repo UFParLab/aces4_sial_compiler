@@ -1011,13 +1011,17 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 		// if there are more on the lhs, make sure they are simple
 		for (; i < lhsSize; i++) {
-			if (!((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
-				return "extra indices on left side must be declared as simple indices, i.e. the index type must be \"index\"";
+		//	if (!((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
+			   if (! ASTUtils.isSimpleIndex(lhsIndices.getIndexCastIdentAt(i).getIdent().getDec())){
+				    return "extra indices on left side must be declared as simple indices, i.e. the index type must be \"index\"";
+			   }
 		}
 		// if there are more on the rhs, make sure they are simple
 		for (; i < rhsSize; i++) {
-			if (!((IndexDec) rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
-				return "extra indices on right side must be declared as simple indices, i.e. the index type must be \"index\"";
+		//	if (!((IndexDec) rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"))
+			   if (! ASTUtils.isSimpleIndex(rhsIndices.getIndexCastIdentAt(i).getIdent().getDec())){
+				   return "extra indices on right side must be declared as simple indices, i.e. the index type must be \"index\"";
+		      }
 		}
 		return null;
 	}
@@ -1046,8 +1050,11 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		int rhsSize = rhsIndices.size();
 		int minIndices = lhsSize < rhsSize ? lhsSize : rhsSize;
 		for (int i = 0; i < minIndices; i++) { // check that common "positions"
-												// have the same contents
-			if (!check(lhsIndices.getIndexCastIdentAt(i).getIdent().getName().equals(rhsIndices.getIndexCastIdentAt(i).getIdent().getName()), n,
+												// have the same contents, or both are simple
+			if (!check(lhsIndices.getIndexCastIdentAt(i).getIdent().getName().equals(rhsIndices.getIndexCastIdentAt(i).getIdent().getName()) ||
+					(  ASTUtils.isSimpleIndex(lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()) && 
+					  ASTUtils.isSimpleIndex( rhsIndices.getIndexCastIdentAt(i).getIdent().getDec())
+					  ), n,
 					"inconsistent index lists"))
 				return;
 		}
@@ -1055,7 +1062,8 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 														// indices on the lhs,
 														// make sure they are
 														// simple
-			if (!check(((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"), n,
+//			if (!check(((IndexDec) lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"), n,
+			if (!check(ASTUtils.isSimpleIndex(lhsIndices.getIndexCastIdentAt(i).getIdent().getDec()), n,
 					"extra indices on left side must be simple indices, i.e. the index type must be \"index\""))
 				;
 		}
@@ -1063,7 +1071,7 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 														// indices on the rhs,
 														// make sure they are
 														// simple
-			if (!check(((IndexDec) rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()).getTypeName().equals("index"), n,
+			if (!check(ASTUtils.isSimpleIndex( rhsIndices.getIndexCastIdentAt(i).getIdent().getDec()), n,
 					"extra indices on right side must be simple indices, i.e. the index type must be \"index\""))
 				;
 		}
@@ -1140,68 +1148,14 @@ public class TypeCheckVisitor extends AbstractVisitor implements SialParsersym, 
 		}
 	}
 
-	// @Override
-	// public boolean visit(PrequestStatement n) { /* visit children */
-	// return true;
-	// }
-	//
-	// @Override
-	// public void endVisit(PrequestStatement n) {
-	// DataBlock lhs = n.getLHSDataBlock();
-	// DataBlock rhs = n.getRHSDataBlock();
-	// // check that lhs is a temp array
-	// IDec lhsDec = lhs.getIdent().getDec();
-	// if (!(check(lhsDec instanceof ArrayDec && ((ArrayDec)
-	// lhsDec).getTypeName().equals("temp"), n, lhs.getIdent()
-	// .toString() + " must be a temp array"))) {
-	// return;
-	// }
-	// // check that rhs is served array
-	// IDec rhsDec = rhs.getIdent().getDec();
-	// if (!(check(rhsDec instanceof ArrayDec && ((ArrayDec)
-	// rhsDec).getTypeName().equals("served"), n, lhs.getIdent()
-	// .toString() + " must be a served array"))) {
-	// return;
-	// }
-	// // check that indices on both sides have compatible types.
-	// // this means that the indices are identical until some point where the
-	// // lhs indices change to
-	// // something of index type
-	// // example T(a,b,i,j) = S(a,b,c,d) where i and j are declared index.
-	// IdentList lhsIndices = lhs.getIndices();
-	// IdentList rhsIndices = rhs.getIndices();
-	// if (!check(lhsIndices.size() == rhsIndices.size(), n,
-	// "index lists do not have the same size")) {
-	// return;
-	// }
-	//
-	// for (int i = 0; i < lhsIndices.size(); i++) {
-	// String lhsType = ((IndexDec)
-	// lhsIndices.getIdentAt(i).getDec()).getTypeName();
-	// String rhsType = ((IndexDec)
-	// rhsIndices.getIdentAt(i).getDec()).getTypeName();
-	//
-	// if (!check(lhsType.equals(rhsType) || lhsType.equals("index"), n,
-	// "inconsistent types for indices "
-	// + lhsType + " and " + rhsType))
-	// return;
-	// }
-	// }
+
 
 	@Override
 	public boolean visit(CollectiveStatement n) { /* visit children */
 		return true;
 	}
 
-//	@Override
-//	public void endVisit(CollectiveStatement n) {
-//		IDec lhsDec = n.getIdent().getDec();
-//		check(lhsDec instanceof ScalarDec, n, "Collective requires scalar arguments");
-//		EnumSet<EType> t = ASTUtils.getIExprTypes(n.getExpression());
-//		check(t.contains(SCALAR), n, "rhs of collective sum must be scalar expression " + n);
-//		int op = n.getAssignOp().getop().getKind();
-//		check(op == TK_PLUS_ASSIGN, n, "Collective operator must be +=");
-//	}
+
 	
 	// Collective sum allows static arguments and static arrays
 	@Override
