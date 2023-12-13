@@ -253,17 +253,18 @@ public enum Opcode {
 		sb.append("\\usepackage{longtable}");
 		sb.append("\\begin{document}\n");
 		sb.append("\\centering\n");
+
 //		sb.append("\\begin{longtable}{r p{1in} p{.5in} p{.5in} p{.5in}  p{2in}}\n");
-		sb.append("\\begin{longtable}{| l | p{1.25in} | p{1.5in} | p{1.5in} | p{1.5in} |  p{2.5in} |}\n");
-		sb.append("\\hline\\hline\n");
-		sb.append("opcode & name & arg0 & arg1 & selector array & description \\\\\n");
-		sb.append("\\hline\\hline\n");
+		sb.append("\\begin{longtable}{| l | p{1.0in} | p{1.0in} | p{1.0in} | p{1.25in} | p{1in} | p{2.5in} |}\n");
+		sb.append("\\hline\n");
+		sb.append("{\\bf opcode & name & arg0 & arg1 & arg2 & selector array & description} \\endhead\n");
+		sb.append("\\hline\n");
 		for (Opcode op: Opcode.values()){
 			sb.append(op.opcodeValue).append('&');
 			sb.append(op.name()).append("&");
 			sb.append(op.arg1()).append("&");
 			sb.append(op.arg2()).append("&");
-			//sb.append(op.arg3()).append("&");
+			sb.append(op.arg3()).append("&");
 			sb.append(op.indArray()).append("&");
 			sb.append(op.comment());
 			sb.append("\\\\\n\\hline\n");
